@@ -23,9 +23,9 @@
       align-items: center;
       min-height: 100vh;
     }
-    .form-container, .card-container {
+    .form-container {
       width: 100%;
-      max-width: 400px;
+      max-width: 500px;
       background: white;
       border-radius: 15px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.12);
@@ -39,27 +39,35 @@
     }
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: 1fr;
       gap: 1rem;
       margin-bottom: 1.5rem;
     }
     .input-group {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
     }
-    input, textarea {
+    .input-group label {
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+    }
+    .input-group label span {
+      color: red;
+    }
+    input, textarea, select {
       width: 100%;
       padding: 0.7rem;
       border: 1px solid var(--neutral-light);
       border-radius: 6px;
       font-size: 0.9rem;
     }
+    input:invalid, textarea:invalid {
+      border-color: red;
+    }
     textarea {
       resize: vertical;
     }
     .image-upload-group {
-      grid-column: 1 / -1;
       text-align: center;
       border: 2px dashed var(--neutral-light);
       padding: 1rem;
@@ -83,17 +91,23 @@
       border-radius: 6px;
       cursor: pointer;
     }
+    /* Optional spacing for live chat fields */
+    .live-chat-group {
+      border-top: 1px solid #ccc;
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
   </style>
 </head>
 <body>
-  <!-- Form Section -->
   <div class="form-container">
     <div class="form-header">
       <h2>Create Business Card</h2>
       <p>Fill in all required information</p>
     </div>
     <div class="form-grid">
-      <div class="image-upload-group">
+      <!-- Profile Photo Upload -->
+      <div class="input-group image-upload-group">
         <label for="profileImage">
           <i class="fas fa-camera fa-2x"></i>
           <p>Upload Profile Photo</p>
@@ -101,41 +115,79 @@
         <input type="file" id="profileImage" accept="image/*" hidden onchange="previewImage(event)" />
         <img id="imagePreview" alt="Profile Preview" />
       </div>
+      <!-- Required Fields -->
       <div class="input-group">
-        <input type="text" id="name" placeholder="Full Name" required />
+        <label for="name">Full Name <span>*</span></label>
+        <input type="text" id="name" placeholder="Enter full name" required />
       </div>
       <div class="input-group">
-        <input type="text" id="businessName" placeholder="Business Name" required />
+        <label for="businessName">Business Name <span>*</span></label>
+        <input type="text" id="businessName" placeholder="Enter business name" required />
       </div>
       <div class="input-group">
-        <textarea id="businessInfo" placeholder="Enter 3 to 5 paragraphs (Max 150 words each) separated by a new line" rows="6" required></textarea>
-        <small style="color: var(--neutral-dark); font-size: 0.8rem;">
-          <strong>Instructions:</strong> Write 3 to 5 paragraphs. Each paragraph must not exceed 150 words. Separate paragraphs with a new line.
-        </small>
+        <label for="businessInfo">Business Info <span>*</span></label>
+        <textarea id="businessInfo" placeholder="Enter 3 to 5 paragraphs (Max 150 words each), each separated by a new line" rows="6" required></textarea>
+        <small>Each paragraph must not exceed 150 words. (Separate paragraphs with a new line.)</small>
       </div>
       <div class="input-group">
-        <input type="text" id="address" placeholder="Business Address" required />
+        <label for="address">Business Address <span>*</span></label>
+        <input type="text" id="address" placeholder="Enter business address" required />
+      </div>
+      <!-- International Phone Number with Country Code -->
+      <div class="input-group">
+        <label for="countryCode">Country Code <span>*</span></label>
+        <select id="countryCode" required>
+          <option value="+92">Pakistan (+92)</option>
+          <option value="+91">India (+91)</option>
+          <option value="+1">USA (+1)</option>
+          <option value="+44">UK (+44)</option>
+          <option value="+61">Australia (+61)</option>
+        </select>
       </div>
       <div class="input-group">
-        <input type="tel" id="phone" placeholder="Phone Number" required />
+        <label for="phone">Cell Number <span>*</span></label>
+        <input type="tel" id="phone" placeholder="Enter cell number" pattern="\d{10}" required />
+        <small>Enter a 10‑digit number (without country code).</small>
       </div>
       <div class="input-group">
-        <input type="email" id="email" placeholder="Email Address" required />
+        <label for="email">Email Address <span>*</span></label>
+        <input type="email" id="email" placeholder="Enter email address" required />
+      </div>
+      <!-- Optional Social URLs -->
+      <div class="input-group">
+        <label for="facebook">Facebook URL</label>
+        <input type="url" id="facebook" placeholder="Enter Facebook profile URL" />
       </div>
       <div class="input-group">
-        <input type="url" id="facebook" placeholder="Facebook URL" />
+        <label for="instagram">Instagram URL</label>
+        <input type="url" id="instagram" placeholder="Enter Instagram profile URL" />
       </div>
       <div class="input-group">
-        <input type="url" id="instagram" placeholder="Instagram URL" />
+        <label for="youtube">YouTube URL</label>
+        <input type="url" id="youtube" placeholder="Enter YouTube channel URL" />
       </div>
+      <!-- Live Chat Fields (Optional) -->
+      <div class="live-chat-group">
+        <div class="input-group">
+          <label for="liveChatFacebook">Live Chat: Facebook Messenger Link</label>
+          <input type="url" id="liveChatFacebook" placeholder="Enter Messenger link (optional)" />
+        </div>
+        <div class="input-group">
+          <label for="liveChatEmail">Live Chat: Email</label>
+          <input type="email" id="liveChatEmail" placeholder="Enter live chat email (optional)" />
+        </div>
+      </div>
+      <!-- Extra Info Field (Optional) -->
       <div class="input-group">
-        <input type="url" id="youtube" placeholder="YouTube URL" />
+        <label for="extraInfo">Extra Info (Optional)</label>
+        <textarea id="extraInfo" placeholder="Any additional information" rows="3"></textarea>
       </div>
     </div>
     <button id="generateCard">Generate Card</button>
   </div>
+
   <script>
-    // Preview the image on the form using FileReader.
+    // Image preview using FileReader.
     function previewImage(event) {
       const reader = new FileReader();
       const preview = document.getElementById('imagePreview');
@@ -146,44 +198,71 @@
       reader.readAsDataURL(event.target.files[0]);
     }
 
-    // Stub function to simulate Imgur upload.
-    // Replace this with your actual Imgur integration.
+    // Stub for Imgur upload – replace with your actual integration.
     function uploadToImgur(file) {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          // For debugging, we return a dummy Imgur URL.
           resolve("https://i.imgur.com/dummyImage.png");
         }, 500);
       });
     }
 
-    // Generate Card – Validate inputs, process image, save data to localStorage, then redirect.
+    // Validate required fields; mark missing fields with red border.
+    function validateForm(formData) {
+      let valid = true;
+      const requiredIds = ["name", "businessName", "businessInfo", "address", "phone", "email"];
+      requiredIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (!formData[id] || formData[id].trim() === "") {
+          el.style.borderColor = "red";
+          valid = false;
+        } else {
+          el.style.borderColor = "";
+        }
+      });
+      // Validate phone number based on selected country.
+      const phonePattern = /^\d{10}$/; // For simplicity (modify per country as needed)
+      if (!phonePattern.test(formData.phone)) {
+        document.getElementById("phone").style.borderColor = "red";
+        valid = false;
+      }
+      return valid;
+    }
+
+    // Generate Card – validate inputs, process image via Imgur, and save data.
     document.getElementById('generateCard').onclick = async function() {
+      // Gather form data.
       const formData = {
         name: document.getElementById('name').value.trim(),
         businessName: document.getElementById('businessName').value.trim(),
         businessInfo: document.getElementById('businessInfo').value.trim(),
         address: document.getElementById('address').value.trim(),
+        countryCode: document.getElementById('countryCode').value,
         phone: document.getElementById('phone').value.trim(),
         email: document.getElementById('email').value.trim(),
         facebook: document.getElementById('facebook').value.trim(),
         instagram: document.getElementById('instagram').value.trim(),
-        youtube: document.getElementById('youtube').value.trim()
+        youtube: document.getElementById('youtube').value.trim(),
+        liveChatFacebook: document.getElementById('liveChatFacebook').value.trim(),
+        liveChatEmail: document.getElementById('liveChatEmail').value.trim(),
+        extraInfo: document.getElementById('extraInfo').value.trim()
       };
 
-      // Validate mandatory fields.
-      if (!formData.name || !formData.businessName || !formData.businessInfo || !formData.address || !formData.phone || !formData.email) {
-        alert('Please fill all required fields');
+      // Validate required fields.
+      if (!validateForm(formData)) {
+        alert("Please fill in all required fields correctly.");
         return;
       }
 
-      // Validate that businessInfo has 3-5 paragraphs.
-      const paragraphs = formData.businessInfo.split('\n').filter(p => p.trim() !== '');
+      // Combine country code with phone.
+      formData.phone = formData.countryCode + formData.phone;
+
+      // Validate businessInfo paragraphs.
+      const paragraphs = formData.businessInfo.split('\n').filter(p => p.trim() !== "");
       if (paragraphs.length < 3 || paragraphs.length > 5) {
         alert('Please enter 3 to 5 paragraphs for the business info.');
         return;
       }
-      // Validate each paragraph word limit (max 150 words).
       for (const paragraph of paragraphs) {
         const words = paragraph.split(/\s+/).filter(word => word.length > 0);
         if (words.length > 150) {
@@ -192,12 +271,12 @@
         }
       }
 
-      // Process image if available.
+      // Process profile image if available.
       const imageInput = document.getElementById('profileImage');
       if (imageInput.files.length > 0) {
         try {
           const imgurUrl = await uploadToImgur(imageInput.files[0]);
-          formData.profileImage = imgurUrl; // Use the Imgur URL for the card.
+          formData.profileImage = imgurUrl;
           localStorage.setItem('profileImage', imgurUrl);
         } catch (error) {
           console.error("Imgur upload failed", error);
@@ -208,7 +287,7 @@
         formData.profileImage = "";
       }
 
-      // Save all form data in localStorage.
+      // Save formData in localStorage.
       localStorage.setItem('formData', JSON.stringify(formData));
       // Redirect to card.html.
       window.location.href = 'card.html';
