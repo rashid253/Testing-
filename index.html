@@ -6,7 +6,7 @@
   <title>Business Card Generator</title>
   <!-- Font Awesome for icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
-  <!-- intl-tel-input CSS for international phone input -->
+  <!-- intl-tel-input CSS for international phone input (includes all country codes and flags) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
   <style>
     :root {
@@ -34,6 +34,7 @@
       box-shadow: 0 8px 30px rgba(0,0,0,0.12);
       padding: 1.5rem;
       margin: 1rem;
+      box-sizing: border-box;
     }
     .form-header {
       color: var(--primary-color);
@@ -65,6 +66,7 @@
       border-radius: 6px;
       font-size: 0.9rem;
       transition: border-color 0.2s ease;
+      box-sizing: border-box;
     }
     input:focus, textarea:focus, select:focus {
       border-color: var(--secondary-color);
@@ -123,6 +125,7 @@
     </div>
 
     <div class="form-grid">
+      <!-- Profile Image Upload -->
       <div class="image-upload-group">
         <label for="profileImage">
           <i class="fas fa-camera fa-2x"></i>
@@ -132,16 +135,15 @@
         <img id="imagePreview" alt="Profile Preview" />
       </div>
 
+      <!-- Text Inputs -->
       <div class="input-group">
         <label for="name">Full Name <span class="required">*</span></label>
         <input type="text" id="name" placeholder="Full Name" required />
       </div>
-
       <div class="input-group">
         <label for="businessName">Business Name <span class="required">*</span></label>
         <input type="text" id="businessName" placeholder="Business Name" required />
       </div>
-
       <div class="input-group">
         <label for="businessInfo">Business Info <span class="required">*</span></label>
         <textarea id="businessInfo" placeholder="Enter 3 to 5 paragraphs (Max 150 words each) separated by a new line" rows="6" required></textarea>
@@ -149,7 +151,6 @@
           <strong>Instructions:</strong> Write 3 to 5 paragraphs. Each paragraph must not exceed 150 words. Separate paragraphs with a new line.
         </small>
       </div>
-
       <div class="input-group">
         <label for="address">Business Address <span class="required">*</span></label>
         <input type="text" id="address" placeholder="Business Address" required />
@@ -165,17 +166,14 @@
         <label for="email">Email Address <span class="required">*</span></label>
         <input type="email" id="email" placeholder="Email Address" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address." />
       </div>
-
       <div class="input-group">
         <label for="facebook">Facebook URL</label>
         <input type="url" id="facebook" placeholder="Facebook URL" pattern="https?://(www\.)?facebook\.com/.*" title="Please enter a valid Facebook URL." />
       </div>
-
       <div class="input-group">
         <label for="instagram">Instagram URL</label>
         <input type="url" id="instagram" placeholder="Instagram URL" pattern="https?://(www\.)?instagram\.com/.*" title="Please enter a valid Instagram URL." />
       </div>
-
       <div class="input-group">
         <label for="youtube">YouTube URL</label>
         <input type="url" id="youtube" placeholder="YouTube URL" pattern="https?://(www\.)?youtube\.com/.*" title="Please enter a valid YouTube URL." />
@@ -191,10 +189,10 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
   <!-- intl-tel-input JS for international phone input -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-  <!-- (Optional) utils script for number formatting/validation -->
+  <!-- Optional utils script for number formatting/validation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
   <script>
-    // Firebase configuration – replace with your own configuration details.
+    // Firebase configuration – replace with your own Firebase project details.
     var firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_AUTH_DOMAIN",
@@ -204,8 +202,8 @@
       appId: "YOUR_APP_ID"
     };
     firebase.initializeApp(firebaseConfig);
-    
-    // Initialize intl-tel-input for the phone field
+
+    // Initialize intl-tel-input for phone field (this provides all country codes and flags)
     var phoneInput = document.querySelector("#phone");
     var iti = window.intlTelInput(phoneInput, {
       initialCountry: "auto",
@@ -223,26 +221,27 @@
     function previewImage(event) {
       const reader = new FileReader();
       const preview = document.getElementById('imagePreview');
-      reader.onload = (e) => {
+      reader.onload = function(e) {
         preview.src = e.target.result;
         preview.style.display = 'block';
       };
       reader.readAsDataURL(event.target.files[0]);
     }
 
-    // Resize and compress image for upload (reduced resolution & quality)
+    // Resize and compress image before upload (reduces resolution while keeping a suitable quality)
     function resizeImage(file, callback) {
       const img = new Image();
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = function(e) {
         img.src = e.target.result;
-        img.onload = () => {
+        img.onload = function() {
           const canvas = document.createElement('canvas');
           const MAX_WIDTH = 150;
           const MAX_HEIGHT = 150;
           let width = img.width;
           let height = img.height;
 
+          // Maintain aspect ratio
           if (width > height) {
             if (width > MAX_WIDTH) {
               height = height * (MAX_WIDTH / width);
@@ -258,7 +257,7 @@
           canvas.height = height;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
-          canvas.toBlob((blob) => {
+          canvas.toBlob(function(blob) {
             callback(blob);
           }, 'image/jpeg', 0.4);
         };
@@ -266,51 +265,51 @@
       reader.readAsDataURL(file);
     }
 
-    // Validate mandatory and optional fields
+    // Validate form fields and display alerts on errors
     function validateForm() {
       let valid = true;
-      // Clear any previous error highlighting
-      const fields = ['name', 'businessName', 'businessInfo', 'address', 'email'];
-      fields.forEach(id => {
-        const elem = document.getElementById(id);
-        if (elem) elem.classList.remove('error');
+      // Clear previous error styles
+      const fieldIds = ['name', 'businessName', 'businessInfo', 'address', 'email'];
+      fieldIds.forEach(function(id) {
+        const field = document.getElementById(id);
+        if (field) field.classList.remove('error');
       });
-      
-      // Check mandatory fields are not empty
-      fields.forEach(id => {
-        const elem = document.getElementById(id);
-        if (!elem.value.trim()) {
+
+      // Check required fields
+      fieldIds.forEach(function(id) {
+        const field = document.getElementById(id);
+        if (!field.value.trim()) {
           valid = false;
-          elem.classList.add('error');
+          field.classList.add('error');
         }
       });
       if (!valid) {
         alert("Please fill all required fields.");
         return false;
       }
-      
-      // Validate phone number using intl-tel-input validation
+
+      // Validate phone number using intl-tel-input
       if (!iti.isValidNumber()) {
         phoneInput.classList.add('error');
         alert("Please enter a valid phone number.");
         return false;
       }
-      
-      // Validate email using regex
+
+      // Validate email with regex
       const emailValue = document.getElementById('email').value.trim();
       if (!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(emailValue)) {
         document.getElementById('email').classList.add('error');
         alert("Please enter a valid email address.");
         return false;
       }
-      
+
       // Validate optional social media URLs if provided
       const socialMedia = [
         { id: 'facebook', regex: /^https?:\/\/(www\.)?facebook\.com\/.+$/i, message: "Please enter a valid Facebook URL." },
         { id: 'instagram', regex: /^https?:\/\/(www\.)?instagram\.com\/.+$/i, message: "Please enter a valid Instagram URL." },
         { id: 'youtube', regex: /^https?:\/\/(www\.)?youtube\.com\/.+$/i, message: "Please enter a valid YouTube URL." }
       ];
-      socialMedia.forEach(sm => {
+      socialMedia.forEach(function(sm) {
         const value = document.getElementById(sm.id).value.trim();
         if (value && !sm.regex.test(value)) {
           document.getElementById(sm.id).classList.add('error');
@@ -319,8 +318,8 @@
         }
       });
       if (!valid) return false;
-      
-      // Validate business info: 3 to 5 paragraphs, each up to 150 words
+
+      // Validate business info: must be 3 to 5 paragraphs and each paragraph ≤ 150 words
       const businessInfo = document.getElementById('businessInfo').value.trim();
       const paragraphs = businessInfo.split('\n').filter(p => p.trim() !== '');
       if (paragraphs.length < 3 || paragraphs.length > 5) {
@@ -328,9 +327,9 @@
         alert("Please enter 3 to 5 paragraphs for the business info.");
         return false;
       }
-      for (const paragraph of paragraphs) {
-        const words = paragraph.split(/\s+/).filter(word => word.length > 0);
-        if (words.length > 150) {
+      for (let i = 0; i < paragraphs.length; i++) {
+        const wordCount = paragraphs[i].split(/\s+/).filter(word => word.length > 0).length;
+        if (wordCount > 150) {
           document.getElementById('businessInfo').classList.add('error');
           alert("Each paragraph must not exceed 150 words. Please review your business info.");
           return false;
@@ -343,30 +342,27 @@
     function uploadImageToFirebase(blob, formData) {
       const storageRef = firebase.storage().ref();
       const imageRef = storageRef.child('profile_images/' + Date.now() + '.jpg');
-      imageRef.put(blob).then(snapshot => {
+      imageRef.put(blob).then(function(snapshot) {
         return snapshot.ref.getDownloadURL();
-      }).then(url => {
+      }).then(function(url) {
         formData.profileImage = url;
         redirectToCard(formData);
-      }).catch(error => {
+      }).catch(function(error) {
         console.error('Error uploading image:', error);
         alert('Image upload failed. Please try again.');
       });
     }
 
-    // Generate Card Function
+    // Generate card after validating form and (if needed) uploading image
     document.getElementById('generateCard').onclick = function () {
-      if (!validateForm()) {
-        return;
-      }
+      if (!validateForm()) return;
 
-      // Get form values
       const formData = {
         name: document.getElementById('name').value.trim(),
         businessName: document.getElementById('businessName').value.trim(),
         businessInfo: document.getElementById('businessInfo').value.trim(),
         address: document.getElementById('address').value.trim(),
-        phone: iti.getNumber(), // Get full international number
+        phone: iti.getNumber(), // Full international phone number
         email: document.getElementById('email').value.trim(),
         facebook: document.getElementById('facebook').value.trim(),
         instagram: document.getElementById('instagram').value.trim(),
@@ -374,9 +370,9 @@
         profileImage: document.getElementById('profileImage').files[0]
       };
 
-      // If an image was selected, resize and upload it first
+      // If an image is selected, resize then upload to Firebase; else, redirect immediately.
       if (formData.profileImage) {
-        resizeImage(formData.profileImage, (resizedBlob) => {
+        resizeImage(formData.profileImage, function(resizedBlob) {
           uploadImageToFirebase(resizedBlob, formData);
         });
       } else {
@@ -384,6 +380,7 @@
       }
     };
 
+    // Redirect to card page with form data as URL parameters
     function redirectToCard(formData) {
       const params = new URLSearchParams();
       for (let key in formData) {
