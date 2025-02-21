@@ -25,6 +25,7 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      position: relative; /* Added for gear icon positioning */
     }
     .form-container {
       width: 100%;
@@ -35,6 +36,7 @@
       padding: 1.5rem;
       margin: 1rem;
       box-sizing: border-box;
+      position: relative; /* Added for gear icon positioning */
     }
     .form-header {
       color: var(--primary-color);
@@ -108,34 +110,34 @@
       cursor: pointer;
       font-size: 1rem;
     }
+    /* Gear Icon Styles */
+    .gear-icon {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      cursor: pointer;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    .gear-icon:hover {
+      color: var(--secondary-color);
+      transform: rotate(90deg);
+    }
     @media (max-width: 480px) {
       .form-container {
         max-width: 90%;
         padding: 1rem;
       }
     }
-    /* Custom styles for dropdowns */
-    .intl-tel-input {
-      width: 100%;
-    }
-    .intl-tel-input .flag-container {
-      width: 50px;
-    }
-    .intl-tel-input .selected-flag {
-      padding: 0 8px;
-    }
-    .intl-tel-input .country-list {
-      width: 100%;
-      max-width: 300px;
-      border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .intl-tel-input .country-list .country {
-      padding: 8px 12px;
-    }
   </style>
 </head>
 <body>
+  <!-- Gear Icon for Themes/Styles/Moods -->
+  <div class="gear-icon" onclick="openSettings()">
+    <i class="fas fa-cog"></i>
+  </div>
+
   <!-- Form Section -->
   <div class="form-container">
     <div class="form-header">
@@ -407,6 +409,11 @@
       }
       window.location.href = `card.html?${params.toString()}`;
     }
+
+    // Open Settings (Gear Icon Functionality)
+    function openSettings() {
+      alert("Settings/Theme/Mood options will be added here.");
+      }
   </script>
 </body>
 </html>
