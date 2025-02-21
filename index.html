@@ -6,15 +6,15 @@
   <title>Business Card Generator</title>
   <!-- Font Awesome for icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
-  <!-- intl-tel-input CSS for international phone input (includes all country codes and flags) -->
+  <!-- intl-tel-input CSS for international phone input -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
   <style>
     :root {
-      --primary-color: #2C3E50;    /* Professional Navy */
-      --secondary-color: #3498DB;  /* Trust Blue */
-      --accent-color: #E74C3E;     /* Alert Red */
-      --neutral-light: rgba(236, 240, 241, 0.9); /* Light Gray with transparency */
-      --neutral-dark: #34495E;     /* Dark Gray */
+      --primary-color: #2C3E50;
+      --secondary-color: #3498DB;
+      --accent-color: #E74C3E;
+      --neutral-light: rgba(236, 240, 241, 0.9);
+      --neutral-dark: #34495E;
     }
     body {
       font-family: 'Segoe UI', system-ui, sans-serif;
@@ -25,6 +25,7 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      transition: background 0.3s ease;
     }
     .form-container {
       width: 100%;
@@ -35,6 +36,8 @@
       padding: 1.5rem;
       margin: 1rem;
       box-sizing: border-box;
+      position: relative;
+      transition: all 0.3s ease;
     }
     .form-header {
       color: var(--primary-color);
@@ -108,6 +111,41 @@
       cursor: pointer;
       font-size: 1rem;
     }
+    /* Settings icon and dropdown */
+    .settings-container {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+    .settings-container i {
+      font-size: 1.5rem;
+      color: var(--neutral-dark);
+    }
+    .settings-dropdown {
+      display: none;
+      position: absolute;
+      top: 35px;
+      right: 0;
+      background: white;
+      border: 1px solid var(--neutral-light);
+      border-radius: 6px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      z-index: 10;
+      width: 200px;
+      padding: 0.5rem;
+    }
+    .settings-dropdown label {
+      font-size: 0.8rem;
+      margin-bottom: 0.2rem;
+      display: block;
+      color: var(--neutral-dark);
+    }
+    .settings-dropdown select {
+      margin-bottom: 0.5rem;
+      width: 100%;
+      padding: 0.3rem;
+    }
     @media (max-width: 480px) {
       .form-container {
         max-width: 90%;
@@ -119,6 +157,30 @@
 <body>
   <!-- Form Section -->
   <div class="form-container">
+    <!-- Settings Icon and Dropdown -->
+    <div class="settings-container">
+      <i class="fas fa-cog" id="settingsIcon"></i>
+      <div class="settings-dropdown" id="settingsDropdown">
+        <label for="moodSelect">Mood (Day/Night)</label>
+        <select id="moodSelect">
+          <option value="day">Day</option>
+          <option value="night">Night</option>
+        </select>
+        <label for="themeImageSelect">Theme Images</label>
+        <select id="themeImageSelect">
+          <option value="">None</option>
+          <option value="1">Theme Image 1</option>
+          <option value="2">Theme Image 2</option>
+          <option value="3">Theme Image 3</option>
+        </select>
+        <label for="styleSelect">Form Style</label>
+        <select id="styleSelect">
+          <option value="default">Default Style</option>
+          <option value="style1">Style 1</option>
+          <option value="style2">Style 2</option>
+        </select>
+      </div>
+    </div>
     <div class="form-header">
       <h2>Create Business Card</h2>
       <p>Fill in all required information</p>
@@ -156,7 +218,7 @@
         <input type="text" id="address" placeholder="Business Address" required />
       </div>
 
-      <!-- International Phone Input using intl-tel-input -->
+      <!-- International Phone Input -->
       <div class="input-group">
         <label for="phone">Phone Number <span class="required">*</span></label>
         <input type="tel" id="phone" placeholder="Enter phone number" required />
@@ -203,7 +265,7 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    // Initialize intl-tel-input for phone field (this provides all country codes and flags)
+    // Initialize intl-tel-input for phone field
     var phoneInput = document.querySelector("#phone");
     var iti = window.intlTelInput(phoneInput, {
       initialCountry: "auto",
@@ -217,7 +279,7 @@
       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
     });
 
-    // Image Preview Function
+    // Profile Image Preview Function (unchanged)
     function previewImage(event) {
       const reader = new FileReader();
       const preview = document.getElementById('imagePreview');
@@ -228,7 +290,7 @@
       reader.readAsDataURL(event.target.files[0]);
     }
 
-    // Resize and compress image before upload (reduces resolution while keeping a suitable quality)
+    // Resize and compress image before upload (profile image effect remains unchanged)
     function resizeImage(file, callback) {
       const img = new Image();
       const reader = new FileReader();
@@ -240,8 +302,6 @@
           const MAX_HEIGHT = 150;
           let width = img.width;
           let height = img.height;
-
-          // Maintain aspect ratio
           if (width > height) {
             if (width > MAX_WIDTH) {
               height = height * (MAX_WIDTH / width);
@@ -265,17 +325,75 @@
       reader.readAsDataURL(file);
     }
 
+    // Settings functionality
+    var settingsIcon = document.getElementById('settingsIcon');
+    var settingsDropdown = document.getElementById('settingsDropdown');
+    settingsIcon.addEventListener('click', function(e) {
+      e.stopPropagation();
+      settingsDropdown.style.display = settingsDropdown.style.display === 'block' ? 'none' : 'block';
+    });
+    document.addEventListener('click', function() {
+      settingsDropdown.style.display = 'none';
+    });
+
+    // Mood change functionality (Day/Night)
+    var moodSelect = document.getElementById('moodSelect');
+    moodSelect.addEventListener('change', function() {
+      if (this.value === 'night') {
+        document.body.style.background = '#2C3E50';
+        document.body.style.color = '#ecf0f1';
+      } else {
+        document.body.style.background = 'linear-gradient(135deg, #e9ecef, #f0f4f8)';
+        document.body.style.color = '#000';
+      }
+    });
+
+    // Theme images functionality using Picsum.photos as free image library
+    var themeImageSelect = document.getElementById('themeImageSelect');
+    themeImageSelect.addEventListener('change', function() {
+      if (this.value) {
+        var imgNumber = this.value;
+        var imageUrl = 'https://picsum.photos/seed/' + imgNumber + '/800/600';
+        document.body.style.backgroundImage = 'url(' + imageUrl + ')';
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundRepeat = 'no-repeat';
+        var testImg = new Image();
+        testImg.onerror = function() {
+          document.body.style.backgroundImage = 'url(https://picsum.photos/800/600?random=' + Math.floor(Math.random()*1000) + ')';
+        };
+        testImg.src = imageUrl;
+      } else {
+        document.body.style.backgroundImage = 'none';
+      }
+    });
+
+    // Form style change functionality
+    var styleSelect = document.getElementById('styleSelect');
+    styleSelect.addEventListener('change', function() {
+      var formContainer = document.querySelector('.form-container');
+      if (this.value === 'style1') {
+        formContainer.style.borderRadius = '0';
+        formContainer.style.boxShadow = 'none';
+        formContainer.style.border = '2px solid var(--secondary-color)';
+      } else if (this.value === 'style2') {
+        formContainer.style.borderRadius = '20px';
+        formContainer.style.boxShadow = '0 10px 20px rgba(0,0,0,0.2)';
+        formContainer.style.border = 'none';
+      } else {
+        formContainer.style.borderRadius = '15px';
+        formContainer.style.boxShadow = '0 8px 30px rgba(0,0,0,0.12)';
+        formContainer.style.border = 'none';
+      }
+    });
+
     // Validate form fields and display alerts on errors
     function validateForm() {
       let valid = true;
-      // Clear previous error styles
       const fieldIds = ['name', 'businessName', 'businessInfo', 'address', 'email'];
       fieldIds.forEach(function(id) {
         const field = document.getElementById(id);
         if (field) field.classList.remove('error');
       });
-
-      // Check required fields
       fieldIds.forEach(function(id) {
         const field = document.getElementById(id);
         if (!field.value.trim()) {
@@ -287,23 +405,17 @@
         alert("Please fill all required fields.");
         return false;
       }
-
-      // Validate phone number using intl-tel-input
       if (!iti.isValidNumber()) {
         phoneInput.classList.add('error');
         alert("Please enter a valid phone number.");
         return false;
       }
-
-      // Validate email with regex
       const emailValue = document.getElementById('email').value.trim();
       if (!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(emailValue)) {
         document.getElementById('email').classList.add('error');
         alert("Please enter a valid email address.");
         return false;
       }
-
-      // Validate optional social media URLs if provided
       const socialMedia = [
         { id: 'facebook', regex: /^https?:\/\/(www\.)?facebook\.com\/.+$/i, message: "Please enter a valid Facebook URL." },
         { id: 'instagram', regex: /^https?:\/\/(www\.)?instagram\.com\/.+$/i, message: "Please enter a valid Instagram URL." },
@@ -318,8 +430,6 @@
         }
       });
       if (!valid) return false;
-
-      // Validate business info: must be 3 to 5 paragraphs and each paragraph ≤ 150 words
       const businessInfo = document.getElementById('businessInfo').value.trim();
       const paragraphs = businessInfo.split('\n').filter(p => p.trim() !== '');
       if (paragraphs.length < 3 || paragraphs.length > 5) {
@@ -356,21 +466,18 @@
     // Generate card after validating form and (if needed) uploading image
     document.getElementById('generateCard').onclick = function () {
       if (!validateForm()) return;
-
       const formData = {
         name: document.getElementById('name').value.trim(),
         businessName: document.getElementById('businessName').value.trim(),
         businessInfo: document.getElementById('businessInfo').value.trim(),
         address: document.getElementById('address').value.trim(),
-        phone: iti.getNumber(), // Full international phone number
+        phone: iti.getNumber(),
         email: document.getElementById('email').value.trim(),
         facebook: document.getElementById('facebook').value.trim(),
         instagram: document.getElementById('instagram').value.trim(),
         youtube: document.getElementById('youtube').value.trim(),
         profileImage: document.getElementById('profileImage').files[0]
       };
-
-      // If an image is selected, resize then upload to Firebase; else, redirect immediately.
       if (formData.profileImage) {
         resizeImage(formData.profileImage, function(resizedBlob) {
           uploadImageToFirebase(resizedBlob, formData);
