@@ -15,17 +15,20 @@
       --accent-color: #E74C3E;     /* Alert Red */
       --neutral-light: rgba(236, 240, 241, 0.9); /* Light Gray with transparency */
       --neutral-dark: #34495E;     /* Dark Gray */
+      --background-color: #ffffff; /* Default background */
+      --text-color: #000000;       /* Default text color */
     }
     body {
       font-family: 'Segoe UI', system-ui, sans-serif;
       margin: 0;
       padding: 1rem;
-      background: linear-gradient(135deg, #e9ecef, #f0f4f8);
+      background: var(--background-color);
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      position: relative; /* Added for gear icon positioning */
+      position: relative;
+      transition: background 0.3s ease, color 0.3s ease;
     }
     .form-container {
       width: 100%;
@@ -36,7 +39,7 @@
       padding: 1.5rem;
       margin: 1rem;
       box-sizing: border-box;
-      position: relative; /* Added for gear icon positioning */
+      position: relative;
     }
     .form-header {
       color: var(--primary-color);
@@ -124,6 +127,47 @@
       color: var(--secondary-color);
       transform: rotate(90deg);
     }
+    /* Dropdown Menu */
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 3rem;
+      right: 0;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 1rem;
+      width: 200px;
+      z-index: 1000;
+    }
+    .dropdown-menu.active {
+      display: block;
+    }
+    .dropdown-menu h4 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1rem;
+      color: var(--neutral-dark);
+    }
+    .dropdown-menu select {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    .dropdown-menu button {
+      width: 100%;
+      padding: 0.5rem;
+      background: var(--secondary-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    /* Glassy Background */
+    .glassy-background {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 1.5rem;
+    }
     @media (max-width: 480px) {
       .form-container {
         max-width: 90%;
@@ -133,13 +177,39 @@
   </style>
 </head>
 <body>
-  <!-- Gear Icon for Themes/Styles/Moods -->
-  <div class="gear-icon" onclick="openSettings()">
+  <!-- Gear Icon for Settings -->
+  <div class="gear-icon" onclick="toggleDropdown()">
     <i class="fas fa-cog"></i>
   </div>
 
+  <!-- Dropdown Menu -->
+  <div class="dropdown-menu" id="dropdownMenu">
+    <h4>Mood</h4>
+    <select id="mood">
+      <option value="day">Day</option>
+      <option value="night">Night</option>
+    </select>
+    <button onclick="applyMood()">Apply Mood</button>
+
+    <h4>Theme</h4>
+    <select id="theme">
+      <option value="default">Default</option>
+      <option value="image">Image</option>
+      <option value="color">Color</option>
+    </select>
+    <button onclick="applyTheme()">Apply Theme</button>
+
+    <h4>Style</h4>
+    <select id="style">
+      <option value="default">Default</option>
+      <option value="styleA">Style A</option>
+      <option value="styleB">Style B</option>
+    </select>
+    <button onclick="applyStyle()">Apply Style</button>
+  </div>
+
   <!-- Form Section -->
-  <div class="form-container">
+  <div class="form-container glassy-background">
     <div class="form-header">
       <h2>Create Business Card</h2>
       <p>Fill in all required information</p>
@@ -411,9 +481,62 @@
     }
 
     // Open Settings (Gear Icon Functionality)
-    function openSettings() {
-      alert("Settings/Theme/Mood options will be added here.");
+    function toggleDropdown() {
+      const dropdownMenu = document.getElementById('dropdownMenu');
+      dropdownMenu.classList.toggle('active');
+    }
+
+    // Apply Mood
+    function applyMood() {
+      const mood = document.getElementById('mood').value;
+      if (mood === 'day') {
+        document.body.style.backgroundColor = '#ffffff';
+        document.body.style.color = '#000000';
+      } else if (mood === 'night') {
+        document.body.style.backgroundColor = '#000000';
+        document.body.style.color = '#ffffff';
       }
+      alert('Mood applied!');
+    }
+
+    // Apply Theme
+    function applyTheme() {
+      const theme = document.getElementById('theme').value;
+      const formContainer = document.querySelector('.form-container');
+      if (theme === 'default') {
+        formContainer.style.background = 'white';
+      } else if (theme === 'image') {
+        const images = [
+          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
+          'https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg',
+          'https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg'
+        ];
+        const randomImage = images[Math.floor(Math.random() * images.length)];
+        formContainer.style.background = `url(${randomImage}) no-repeat center center/cover`;
+      } else if (theme === 'color') {
+        const colors = ['#3498DB', '#E74C3E', '#2ECC71', '#9B59B6', '#F1C40F'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        formContainer.style.background = randomColor;
+      }
+      alert('Theme applied!');
+    }
+
+    // Apply Style
+    function applyStyle() {
+      const style = document.getElementById('style').value;
+      const formContainer = document.querySelector('.form-container');
+      if (style === 'default') {
+        formContainer.style.borderRadius = '15px';
+        formContainer.style.boxShadow = '0 8px 30px rgba(0,0,0,0.12)';
+      } else if (style === 'styleA') {
+        formContainer.style.borderRadius = '0';
+        formContainer.style.boxShadow = 'none';
+      } else if (style === 'styleB') {
+        formContainer.style.borderRadius = '30px';
+        formContainer.style.boxShadow = '0 12px 40px rgba(0,0,0,0.2)';
+      }
+      alert('Style applied!');
+    }
   </script>
 </body>
 </html>
