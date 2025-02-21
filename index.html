@@ -147,10 +147,10 @@
       margin: 0 0 0.5rem 0;
       font-size: 1rem;
       color: var(--neutral-dark);
+      cursor: pointer;
     }
-    .dropdown-menu select {
-      width: 100%;
-      margin-bottom: 1rem;
+    .dropdown-menu h4:hover {
+      color: var(--secondary-color);
     }
     .dropdown-menu button {
       width: 100%;
@@ -161,9 +161,33 @@
       border-radius: 6px;
       cursor: pointer;
     }
+    /* Sub Dropdown Menu */
+    .sub-dropdown {
+      display: none;
+      margin-left: 1rem;
+    }
+    .sub-dropdown.active {
+      display: block;
+    }
+    .sub-dropdown button {
+      width: 100%;
+      padding: 0.5rem;
+      background: var(--neutral-light);
+      color: var(--neutral-dark);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 0.5rem;
+      text-align: left;
+    }
+    .sub-dropdown button:hover {
+      background: var(--secondary-color);
+      color: white;
+    }
     /* Image Thumbnails */
     .image-thumbnails {
       display: flex;
+      flex-wrap: wrap;
       gap: 0.5rem;
       margin-bottom: 1rem;
     }
@@ -182,6 +206,7 @@
     /* Color Thumbnails */
     .color-thumbnails {
       display: flex;
+      flex-wrap: wrap;
       gap: 0.5rem;
       margin-bottom: 1rem;
     }
@@ -219,40 +244,50 @@
 
   <!-- Dropdown Menu -->
   <div class="dropdown-menu" id="dropdownMenu">
-    <h4>Mood</h4>
-    <select id="mood">
-      <option value="day">Day</option>
-      <option value="night">Night</option>
-    </select>
-    <button onclick="applyMood()">Apply Mood</button>
-
-    <h4>Theme</h4>
-    <select id="theme" onchange="handleThemeChange()">
-      <option value="default">Default</option>
-      <option value="image">Image</option>
-      <option value="color">Color</option>
-    </select>
-    <div id="imageThumbnails" class="image-thumbnails" style="display: none;">
-      <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Nature 1" onclick="previewImage(this.src)">
-      <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Nature 2" onclick="previewImage(this.src)">
-      <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Nature 3" onclick="previewImage(this.src)">
+    <h4 onclick="toggleSubDropdown('mood')">Mood</h4>
+    <div id="moodSubDropdown" class="sub-dropdown">
+      <button onclick="previewMood('day')">Day</button>
+      <button onclick="previewMood('night')">Night</button>
+      <button onclick="applyMood()">Apply Mood</button>
     </div>
-    <div id="colorThumbnails" class="color-thumbnails" style="display: none;">
-      <div style="background-color: #3498DB;" onclick="previewColor('#3498DB')"></div>
-      <div style="background-color: #E74C3E;" onclick="previewColor('#E74C3E')"></div>
-      <div style="background-color: #2ECC71;" onclick="previewColor('#2ECC71')"></div>
-      <div style="background-color: #9B59B6;" onclick="previewColor('#9B59B6')"></div>
-      <div style="background-color: #F1C40F;" onclick="previewColor('#F1C40F')"></div>
-    </div>
-    <button onclick="applyTheme()">Apply Theme</button>
 
-    <h4>Style</h4>
-    <select id="style">
-      <option value="default">Default</option>
-      <option value="styleA">Style A</option>
-      <option value="styleB">Style B</option>
-    </select>
-    <button onclick="applyStyle()">Apply Style</button>
+    <h4 onclick="toggleSubDropdown('theme')">Theme</h4>
+    <div id="themeSubDropdown" class="sub-dropdown">
+      <button onclick="previewTheme('default')">Default</button>
+      <button onclick="toggleSubDropdown('image')">Image</button>
+      <div id="imageSubDropdown" class="sub-dropdown">
+        <div class="image-thumbnails">
+          <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Nature 1" onclick="previewImage(this.src)">
+          <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Nature 2" onclick="previewImage(this.src)">
+          <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Nature 3" onclick="previewImage(this.src)">
+          <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Nature 4" onclick="previewImage(this.src)">
+          <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Nature 5" onclick="previewImage(this.src)">
+        </div>
+        <button onclick="applyTheme()">Apply Image</button>
+      </div>
+      <button onclick="toggleSubDropdown('color')">Color</button>
+      <div id="colorSubDropdown" class="sub-dropdown">
+        <div class="color-thumbnails">
+          <div style="background-color: #3498DB;" onclick="previewColor('#3498DB')"></div>
+          <div style="background-color: #E74C3E;" onclick="previewColor('#E74C3E')"></div>
+          <div style="background-color: #2ECC71;" onclick="previewColor('#2ECC71')"></div>
+          <div style="background-color: #9B59B6;" onclick="previewColor('#9B59B6')"></div>
+          <div style="background-color: #F1C40F;" onclick="previewColor('#F1C40F')"></div>
+          <div style="background: linear-gradient(45deg, #FF9A9E, #FAD0C4);" onclick="previewColor('linear-gradient(45deg, #FF9A9E, #FAD0C4)')"></div>
+          <div style="background: linear-gradient(45deg, #A18CD1, #FBC2EB);" onclick="previewColor('linear-gradient(45deg, #A18CD1, #FBC2EB)')"></div>
+          <div style="background: linear-gradient(45deg, #96E6A1, #D4FC79);" onclick="previewColor('linear-gradient(45deg, #96E6A1, #D4FC79)')"></div>
+        </div>
+        <button onclick="applyTheme()">Apply Color</button>
+      </div>
+    </div>
+
+    <h4 onclick="toggleSubDropdown('style')">Style</h4>
+    <div id="styleSubDropdown" class="sub-dropdown">
+      <button onclick="previewStyle('default')">Default</button>
+      <button onclick="previewStyle('styleA')">Style A</button>
+      <button onclick="previewStyle('styleB')">Style B</button>
+      <button onclick="applyStyle()">Apply Style</button>
+    </div>
   </div>
 
   <!-- Form Section -->
@@ -533,21 +568,35 @@
       dropdownMenu.classList.toggle('active');
     }
 
-    // Handle Theme Change
-    function handleThemeChange() {
-      const theme = document.getElementById('theme').value;
-      const imageThumbnails = document.getElementById('imageThumbnails');
-      const colorThumbnails = document.getElementById('colorThumbnails');
+    // Toggle Sub Dropdown
+    function toggleSubDropdown(id) {
+      const subDropdown = document.getElementById(id + 'SubDropdown');
+      subDropdown.classList.toggle('active');
+    }
 
-      if (theme === 'image') {
-        imageThumbnails.style.display = 'flex';
-        colorThumbnails.style.display = 'none';
-      } else if (theme === 'color') {
-        imageThumbnails.style.display = 'none';
-        colorThumbnails.style.display = 'flex';
-      } else {
-        imageThumbnails.style.display = 'none';
-        colorThumbnails.style.display = 'none';
+    // Preview Mood
+    function previewMood(mood) {
+      if (mood === 'day') {
+        document.body.style.backgroundColor = '#ffffff';
+        document.body.style.color = '#000000';
+      } else if (mood === 'night') {
+        document.body.style.backgroundColor = '#000000';
+        document.body.style.color = '#ffffff';
+      }
+    }
+
+    // Apply Mood
+    function applyMood() {
+      alert('Mood applied!');
+      closeDropdown();
+    }
+
+    // Preview Theme
+    function previewTheme(theme) {
+      const formContainer = document.querySelector('.form-container');
+      if (theme === 'default') {
+        formContainer.style.backgroundImage = 'none';
+        formContainer.style.backgroundColor = 'white';
       }
     }
 
@@ -565,35 +614,14 @@
       formContainer.style.backgroundColor = color;
     }
 
-    // Apply Mood
-    function applyMood() {
-      const mood = document.getElementById('mood').value;
-      if (mood === 'day') {
-        document.body.style.backgroundColor = '#ffffff';
-        document.body.style.color = '#000000';
-      } else if (mood === 'night') {
-        document.body.style.backgroundColor = '#000000';
-        document.body.style.color = '#ffffff';
-      }
-      alert('Mood applied!');
-      closeDropdown();
-    }
-
     // Apply Theme
     function applyTheme() {
-      const theme = document.getElementById('theme').value;
-      const formContainer = document.querySelector('.form-container');
-      if (theme === 'default') {
-        formContainer.style.backgroundImage = 'none';
-        formContainer.style.backgroundColor = 'white';
-      }
       alert('Theme applied!');
       closeDropdown();
     }
 
-    // Apply Style
-    function applyStyle() {
-      const style = document.getElementById('style').value;
+    // Preview Style
+    function previewStyle(style) {
       const formContainer = document.querySelector('.form-container');
       if (style === 'default') {
         formContainer.style.borderRadius = '15px';
@@ -605,6 +633,10 @@
         formContainer.style.borderRadius = '30px';
         formContainer.style.boxShadow = '0 12px 40px rgba(0,0,0,0.2)';
       }
+    }
+
+    // Apply Style
+    function applyStyle() {
       alert('Style applied!');
       closeDropdown();
     }
