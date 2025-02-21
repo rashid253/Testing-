@@ -16,24 +16,24 @@
       --neutral-light: rgba(236, 240, 241, 0.9);
       --neutral-dark: #34495E;
     }
-    /* overall permanent green gradient background (form remains white) */
+    /* مکمل سفید پس منظر */
     body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
       margin: 0;
       padding: 1rem;
-      background: linear-gradient(135deg, #4CAF50, #81C784);
+      background: #fff; /* سفید */
+      font-family: 'Segoe UI', system-ui, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
       transition: background 0.3s ease, color 0.3s ease;
     }
-    /* Form container stays centered and white */
+    /* فارم کنٹینر بھی سفید، اندرونی اسٹائل */
     .form-container {
       position: relative;
       width: 100%;
       max-width: 450px;
-      background: white;
+      background: #fff; /* اندر بھی سفید */
       border-radius: 15px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.12);
       padding: 1.5rem;
@@ -72,7 +72,7 @@
       font-size: 0.9rem;
       transition: border-color 0.2s ease;
       box-sizing: border-box;
-      background: #fff;
+      background: #fff; /* یہ بھی سفید ہی رہے */
     }
     input:focus, textarea:focus, select:focus {
       border-color: var(--secondary-color);
@@ -84,7 +84,7 @@
     .error {
       border: 2px solid var(--accent-color);
     }
-    /* Glass effect for image upload area inside container */
+    /* گلاس ایفیکٹ پروفائل امیج اپ لوڈ ایریا */
     .image-upload-group {
       grid-column: 1 / -1;
       text-align: center;
@@ -97,7 +97,9 @@
       backdrop-filter: blur(10px);
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
-    /* Fixed, glassy preview for profile image (inside container) */
+    #profileImage {
+      display: none;
+    }
     #imagePreview {
       width: 80px;
       height: 80px;
@@ -107,9 +109,6 @@
       display: none;
       border: 2px solid rgba(255,255,255,0.5);
       backdrop-filter: blur(5px);
-    }
-    #profileImage {
-      display: none;
     }
     #generateCard {
       background: var(--secondary-color);
@@ -121,7 +120,7 @@
       cursor: pointer;
       font-size: 1rem;
     }
-    /* Settings drop-down inside form container */
+    /* ڈراپ ڈاؤن گیئر آئیکون کے ساتھ */
     .settings-container {
       position: absolute;
       top: 10px;
@@ -133,6 +132,7 @@
       color: var(--neutral-dark);
       cursor: pointer;
     }
+    /* چھوٹا سا ڈراپ ڈاؤن ایک ہی باکس میں تین آپشنز */
     .settings-dropdown {
       display: none;
       position: absolute;
@@ -143,26 +143,29 @@
       border-radius: 6px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       z-index: 10;
-      width: 150px;
+      width: 150px; /* چوڑائی کم کر دی گئی */
       padding: 0.5rem;
     }
-    /* Using details/summary for sub-dropdowns */
-    .settings-dropdown details {
-      margin-bottom: 0.5rem;
+    .settings-dropdown ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
     }
-    .settings-dropdown summary {
+    .settings-dropdown li {
+      margin-bottom: 0.8rem;
+    }
+    .settings-dropdown li:last-child {
+      margin-bottom: 0;
+    }
+    .dropdown-title {
       font-size: 0.85rem;
       color: var(--neutral-dark);
-      cursor: pointer;
-      list-style: none;
-    }
-    .settings-dropdown summary::-webkit-details-marker {
-      display: none;
+      margin-bottom: 0.3rem;
+      display: block;
     }
     .settings-dropdown select {
       width: 100%;
       padding: 0.25rem;
-      margin-top: 0.25rem;
       font-size: 0.85rem;
     }
     .apply-btn {
@@ -174,8 +177,9 @@
       border-radius: 4px;
       cursor: pointer;
       width: 100%;
-      margin-top: 0.25rem;
+      margin-top: 0.3rem;
     }
+    /* صرف موبائل پر ردعملی ڈیزائن */
     @media (max-width: 480px) {
       .form-container {
         max-width: 100%;
@@ -183,7 +187,7 @@
         margin: 0.5rem;
       }
     }
-    /* Inline instructions for input fields */
+    /* ایک ہی مرتبہ ہدایات کا اسٹائل (جیسا فون والے فیلڈ میں ہے) */
     .input-instructions {
       font-size: 0.75rem;
       color: #666;
@@ -191,39 +195,41 @@
   </style>
 </head>
 <body>
-  <!-- Form Container -->
+  <!-- فارم کنٹینر -->
   <div class="form-container">
-    <!-- Settings Icon and Drop-down inside container -->
+    <!-- ڈراپ ڈاؤن -->
     <div class="settings-container">
       <i class="fas fa-cog" id="settingsIcon"></i>
       <div class="settings-dropdown" id="settingsDropdown">
-        <details id="ddInterface">
-          <summary>Interface Mode</summary>
-          <select id="displayModeSelect">
-            <option value="day">Day</option>
-            <option value="night">Night</option>
-          </select>
-          <button type="button" class="apply-btn" id="applyDisplayMode">Apply</button>
-        </details>
-        <details id="ddVisual">
-          <summary>Visual Theme</summary>
-          <select id="backgroundThemeSelect">
-            <option value="">None</option>
-            <option value="1">Theme 1</option>
-            <option value="2">Theme 2</option>
-            <option value="3">Theme 3</option>
-          </select>
-          <button type="button" class="apply-btn" id="applyBackgroundTheme">Apply</button>
-        </details>
-        <details id="ddLayout">
-          <summary>Card Design</summary>
-          <select id="formLayoutSelect">
-            <option value="default">Default</option>
-            <option value="layout1">Layout 1</option>
-            <option value="layout2">Layout 2</option>
-          </select>
-          <button type="button" class="apply-btn" id="applyFormLayout">Apply</button>
-        </details>
+        <ul>
+          <li>
+            <span class="dropdown-title">Interface Mode</span>
+            <select id="interfaceModeSelect">
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+            <button type="button" class="apply-btn" id="applyInterfaceMode">Apply</button>
+          </li>
+          <li>
+            <span class="dropdown-title">Visual Theme</span>
+            <select id="visualThemeSelect">
+              <option value="">None</option>
+              <option value="theme1">Theme 1</option>
+              <option value="theme2">Theme 2</option>
+              <option value="theme3">Theme 3</option>
+            </select>
+            <button type="button" class="apply-btn" id="applyVisualTheme">Apply</button>
+          </li>
+          <li>
+            <span class="dropdown-title">Card Design</span>
+            <select id="cardDesignSelect">
+              <option value="default">Default</option>
+              <option value="layout1">Layout 1</option>
+              <option value="layout2">Layout 2</option>
+            </select>
+            <button type="button" class="apply-btn" id="applyCardDesign">Apply</button>
+          </li>
+        </ul>
       </div>
     </div>
 
@@ -233,7 +239,7 @@
     </div>
 
     <div class="form-grid">
-      <!-- Profile Image Upload (inside container) -->
+      <!-- پروفائل امیج -->
       <div class="image-upload-group">
         <label for="profileImage">
           <i class="fas fa-camera fa-2x"></i>
@@ -243,54 +249,54 @@
         <img id="imagePreview" alt="Profile Preview" />
       </div>
 
-      <!-- Text Inputs with inline instructions -->
+      <!-- Text Inputs -->
       <div class="input-group">
         <label for="name">Full Name <span class="required">*</span></label>
         <input type="text" id="name" placeholder="Enter your full name" required />
-        <small class="input-instructions">Example: Ali Khan</small>
+        <small class="input-instructions">E.g. Ali Khan</small>
       </div>
       <div class="input-group">
         <label for="businessName">Business Name <span class="required">*</span></label>
         <input type="text" id="businessName" placeholder="Enter your business name" required />
-        <small class="input-instructions">Example: Ali Enterprises</small>
+        <small class="input-instructions">E.g. Ali Enterprises</small>
       </div>
       <div class="input-group">
         <label for="businessInfo">Business Info <span class="required">*</span></label>
-        <textarea id="businessInfo" placeholder="Enter 3 to 5 paragraphs (Max 150 words each) separated by a new line" rows="6" required></textarea>
-        <small class="input-instructions">Each paragraph max 150 words. Separate with new line.</small>
+        <textarea id="businessInfo" placeholder="3-5 paragraphs, max 150 words each. Separate by new line." rows="6" required></textarea>
+        <small class="input-instructions">E.g. Describe your services in paragraphs.</small>
       </div>
       <div class="input-group">
         <label for="address">Business Address <span class="required">*</span></label>
-        <input type="text" id="address" placeholder="Enter your business address" required />
-        <small class="input-instructions">Example: 123 Market St, City</small>
+        <input type="text" id="address" placeholder="123 Market St, City" required />
+        <small class="input-instructions">E.g. Complete address details.</small>
       </div>
 
-      <!-- International Phone Input -->
+      <!-- Phone Input -->
       <div class="input-group">
         <label for="phone">Phone Number <span class="required">*</span></label>
         <input type="tel" id="phone" placeholder="Enter phone number" required />
-        <small class="input-instructions">Enter a valid international number.</small>
+        <small class="input-instructions">Valid international format (e.g. +1 555 1234).</small>
       </div>
 
       <div class="input-group">
         <label for="email">Email Address <span class="required">*</span></label>
         <input type="email" id="email" placeholder="example@domain.com" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Format: example@domain.com" />
-        <small class="input-instructions">Format: example@domain.com</small>
+        <small class="input-instructions">E.g. example@domain.com</small>
       </div>
       <div class="input-group">
         <label for="facebook">Facebook URL</label>
         <input type="url" id="facebook" placeholder="https://www.facebook.com/username" pattern="https?://(www\.)?facebook\.com/.+" title="Format: https://www.facebook.com/username" />
-        <small class="input-instructions">Format: https://www.facebook.com/username</small>
+        <small class="input-instructions">E.g. https://www.facebook.com/username</small>
       </div>
       <div class="input-group">
         <label for="instagram">Instagram URL</label>
         <input type="url" id="instagram" placeholder="https://www.instagram.com/username" pattern="https?://(www\.)?instagram\.com/.+" title="Format: https://www.instagram.com/username" />
-        <small class="input-instructions">Format: https://www.instagram.com/username</small>
+        <small class="input-instructions">E.g. https://www.instagram.com/username</small>
       </div>
       <div class="input-group">
         <label for="youtube">YouTube URL</label>
         <input type="url" id="youtube" placeholder="https://www.youtube.com/channel/..." pattern="https?://(www\.)?youtube\.com/.+" title="Format: https://www.youtube.com/channel/..." />
-        <small class="input-instructions">Format: https://www.youtube.com/channel/...</small>
+        <small class="input-instructions">E.g. https://www.youtube.com/channel/...</small>
       </div>
     </div>
 
@@ -306,7 +312,7 @@
   <!-- Optional utils script for number formatting/validation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
   <script>
-    // Firebase configuration – replace with your own Firebase project details.
+    // ============ Firebase Config (Replace with your own) ============
     var firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_AUTH_DOMAIN",
@@ -317,7 +323,7 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    // Initialize intl-tel-input for phone field
+    // ============ Initialize intl-tel-input ============
     var phoneInput = document.querySelector("#phone");
     var iti = window.intlTelInput(phoneInput, {
       initialCountry: "auto",
@@ -331,7 +337,7 @@
       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
     });
 
-    // Profile Image Preview Function (inside container)
+    // ============ Profile Image Preview ============
     function previewImage(event) {
       const reader = new FileReader();
       const preview = document.getElementById('imagePreview');
@@ -342,7 +348,7 @@
       reader.readAsDataURL(event.target.files[0]);
     }
 
-    // Resize and compress image before upload (profile image effect remains unchanged)
+    // ============ Resize Image Before Upload ============
     function resizeImage(file, callback) {
       const img = new Image();
       const reader = new FileReader();
@@ -377,84 +383,39 @@
       reader.readAsDataURL(file);
     }
 
-    // Settings drop-down functionality using gear icon and details/summary
-    var settingsIcon = document.getElementById('settingsIcon');
-    var settingsDropdown = document.getElementById('settingsDropdown');
-    
+    // ============ Single Drop-down Toggle (No Real Effect) ============
+    const settingsIcon = document.getElementById('settingsIcon');
+    const settingsDropdown = document.getElementById('settingsDropdown');
     settingsIcon.addEventListener('click', function(e) {
       e.stopPropagation();
-      // Toggle dropdown display
-      settingsDropdown.style.display = settingsDropdown.style.display === 'block' ? 'none' : 'block';
+      settingsDropdown.style.display = (settingsDropdown.style.display === 'block') ? 'none' : 'block';
     });
     document.addEventListener('click', function(e) {
-      if (!settingsDropdown.contains(e.target)) {
+      if (!settingsDropdown.contains(e.target) && e.target !== settingsIcon) {
         settingsDropdown.style.display = 'none';
       }
     });
 
-    // Immediate preview on select change (for each sub-dropdown)
-    document.getElementById('displayModeSelect').addEventListener('change', function() {
-      if(this.value === 'night'){
-        document.body.style.background = '#2C3E50';
-        document.body.style.color = '#ecf0f1';
-      } else {
-        document.body.style.background = 'linear-gradient(135deg, #4CAF50, #81C784)';
-        document.body.style.color = '#000';
-      }
-    });
-    document.getElementById('backgroundThemeSelect').addEventListener('change', function() {
-      if (this.value) {
-        var imgNumber = this.value;
-        var imageUrl = 'https://picsum.photos/seed/' + imgNumber + '/800/600';
-        document.body.style.backgroundImage = 'url(' + imageUrl + ')';
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundRepeat = 'no-repeat';
-        var testImg = new Image();
-        testImg.onerror = function() {
-          document.body.style.backgroundImage = 'url(https://picsum.photos/800/600?random=' + Math.floor(Math.random()*1000) + ')';
-        };
-        testImg.src = imageUrl;
-      } else {
-        document.body.style.backgroundImage = 'none';
-      }
-    });
-    document.getElementById('formLayoutSelect').addEventListener('change', function() {
-      var formContainer = document.querySelector('.form-container');
-      if (this.value === 'layout1') {
-        formContainer.style.borderRadius = '0';
-        formContainer.style.boxShadow = 'none';
-        formContainer.style.border = '2px solid var(--secondary-color)';
-      } else if (this.value === 'layout2') {
-        formContainer.style.borderRadius = '20px';
-        formContainer.style.boxShadow = '0 10px 20px rgba(0,0,0,0.2)';
-        formContainer.style.border = 'none';
-      } else {
-        formContainer.style.borderRadius = '15px';
-        formContainer.style.boxShadow = '0 8px 30px rgba(0,0,0,0.12)';
-        formContainer.style.border = 'none';
-      }
-    });
-
-    // Apply buttons: finalize change and close dropdown
-    document.getElementById('applyDisplayMode').addEventListener('click', function() {
+    // یہ آپشنز فی الحال کوئی رنگ/بیک گراؤنڈ تبدیل نہیں کر رہے تاکہ اندر باہر سب کچھ سفید ہی رہے
+    document.getElementById('applyInterfaceMode').addEventListener('click', function() {
       settingsDropdown.style.display = 'none';
     });
-    document.getElementById('applyBackgroundTheme').addEventListener('click', function() {
+    document.getElementById('applyVisualTheme').addEventListener('click', function() {
       settingsDropdown.style.display = 'none';
     });
-    document.getElementById('applyFormLayout').addEventListener('click', function() {
+    document.getElementById('applyCardDesign').addEventListener('click', function() {
       settingsDropdown.style.display = 'none';
     });
 
-    // Validate form fields and display alerts on errors
+    // ============ Validate Form ============
     function validateForm() {
       let valid = true;
-      const fieldIds = ['name', 'businessName', 'businessInfo', 'address', 'email'];
-      fieldIds.forEach(function(id) {
-        const field = document.getElementById(id);
-        if (field) field.classList.remove('error');
+      const requiredFields = ['name', 'businessName', 'businessInfo', 'address', 'email'];
+      requiredFields.forEach(function(id) {
+        document.getElementById(id).classList.remove('error');
       });
-      fieldIds.forEach(function(id) {
+      // Check if required fields are filled
+      requiredFields.forEach(function(id) {
         const field = document.getElementById(id);
         if (!field.value.trim()) {
           valid = false;
@@ -465,31 +426,34 @@
         alert("Please fill all required fields.");
         return false;
       }
+      // Validate phone
       if (!iti.isValidNumber()) {
         phoneInput.classList.add('error');
         alert("Please enter a valid phone number.");
         return false;
       }
+      // Validate email
       const emailValue = document.getElementById('email').value.trim();
       if (!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(emailValue)) {
         document.getElementById('email').classList.add('error');
         alert("Please enter a valid email address.");
         return false;
       }
+      // Validate optional social URLs
       const socialMedia = [
         { id: 'facebook', regex: /^https?:\/\/(www\.)?facebook\.com\/.+$/i, message: "Please enter a valid Facebook URL." },
         { id: 'instagram', regex: /^https?:\/\/(www\.)?instagram\.com\/.+$/i, message: "Please enter a valid Instagram URL." },
         { id: 'youtube', regex: /^https?:\/\/(www\.)?youtube\.com\/.+$/i, message: "Please enter a valid YouTube URL." }
       ];
-      socialMedia.forEach(function(sm) {
+      for (let sm of socialMedia) {
         const value = document.getElementById(sm.id).value.trim();
         if (value && !sm.regex.test(value)) {
           document.getElementById(sm.id).classList.add('error');
           alert(sm.message);
-          valid = false;
+          return false;
         }
-      });
-      if (!valid) return false;
+      }
+      // Validate business info paragraphs
       const businessInfo = document.getElementById('businessInfo').value.trim();
       const paragraphs = businessInfo.split('\n').filter(p => p.trim() !== '');
       if (paragraphs.length < 3 || paragraphs.length > 5) {
@@ -497,8 +461,8 @@
         alert("Please enter 3 to 5 paragraphs for the business info.");
         return false;
       }
-      for (let i = 0; i < paragraphs.length; i++) {
-        const wordCount = paragraphs[i].split(/\s+/).filter(word => word.length > 0).length;
+      for (let p of paragraphs) {
+        const wordCount = p.split(/\s+/).filter(w => w.length > 0).length;
         if (wordCount > 150) {
           document.getElementById('businessInfo').classList.add('error');
           alert("Each paragraph must not exceed 150 words. Please review your business info.");
@@ -508,7 +472,7 @@
       return true;
     }
 
-    // Upload image to Firebase Storage
+    // ============ Upload Image to Firebase ============
     function uploadImageToFirebase(blob, formData) {
       const storageRef = firebase.storage().ref();
       const imageRef = storageRef.child('profile_images/' + Date.now() + '.jpg');
@@ -523,7 +487,7 @@
       });
     }
 
-    // Generate card after validating form and (if needed) uploading image
+    // ============ Generate Card ============
     document.getElementById('generateCard').onclick = function () {
       if (!validateForm()) return;
       const formData = {
@@ -547,7 +511,7 @@
       }
     };
 
-    // Redirect to card page with form data as URL parameters
+    // ============ Redirect to Card ============
     function redirectToCard(formData) {
       const params = new URLSearchParams();
       for (let key in formData) {
