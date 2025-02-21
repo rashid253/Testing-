@@ -263,13 +263,13 @@
       border-radius: 4px;
       font-size: 0.8rem;
     }
-    /* Preview Dialog Box – now inside container */
+    /* Preview Dialog Box – now inside container with modern glass effect */
     .dialog-box {
       display: none;
       position: absolute;
       top: 3rem;
       right: 90px;
-      background: #fff;
+      background: rgba(255,255,255,0.8);
       border: 1px solid var(--neutral-light);
       border-radius: 8px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.3);
@@ -277,6 +277,7 @@
       width: 150px;
       z-index: 1001;
       text-align: center;
+      backdrop-filter: blur(5px);
     }
     .dialog-box.active {
       display: block;
@@ -298,17 +299,12 @@
       border-radius: 4px;
       cursor: pointer;
       font-size: 0.8rem;
-    }
-    .dialog-box .buttons button.apply {
       background: var(--secondary-color);
       color: white;
-      border: 1px solid var(--neutral-light);
-      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
     }
     .dialog-box .buttons button.cancel {
-      background: var(--neutral-light);
+      background: #bdc3c7;
       color: var(--neutral-dark);
-      border: 1px solid var(--neutral-light);
     }
     /* Glassy Background for form container */
     .glassy-background {
@@ -341,7 +337,6 @@
       <div id="moodSubDropdown" class="sub-dropdown">
         <button onclick="previewMood('day')">Day</button>
         <button onclick="previewMood('night')">Night</button>
-        <button onclick="applyCurrent('mood')">Apply</button>
       </div>
       <h4 onclick="toggleSubDropdown('theme')">
         Theme <i class="fas fa-chevron-down arrow-icon"></i>
@@ -384,7 +379,6 @@
         <button onclick="previewStyle('default')">Default</button>
         <button onclick="previewStyle('styleA')">Style A</button>
         <button onclick="previewStyle('styleB')">Style B</button>
-        <button onclick="applyCurrent('style')">Apply</button>
       </div>
     </div>
     <!-- Preview Dialog Box -->
@@ -708,7 +702,7 @@
       });
     }
     function previewTheme(theme) {
-      const formContainer = document.querySelector('.form-container');
+      const formContainer = document.getElementById('formContainer');
       originalTheme = {
         backgroundImage: formContainer.style.backgroundImage,
         backgroundColor: formContainer.style.backgroundColor
@@ -727,7 +721,7 @@
       });
     }
     function previewStyle(style) {
-      const formContainer = document.querySelector('.form-container');
+      const formContainer = document.getElementById('formContainer');
       originalStyle = {
         borderRadius: formContainer.style.borderRadius,
         boxShadow: formContainer.style.boxShadow
@@ -750,11 +744,6 @@
         formContainer.style.borderRadius = originalStyle.borderRadius;
         formContainer.style.boxShadow = originalStyle.boxShadow;
       });
-    }
-    function applyCurrent(type) {
-      closeDialog();
-      closeDropdown();
-      alert(type.charAt(0).toUpperCase() + type.slice(1) + ' applied!');
     }
     // Updated showImageDialog with glass effect on apply
     function showImageDialog(src) {
