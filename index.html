@@ -10,13 +10,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
   <style>
     :root {
-      --primary-color: #2C3E50;    /* Professional Navy */
-      --secondary-color: #3498DB;  /* Trust Blue */
-      --accent-color: #E74C3E;     /* Alert Red */
-      --neutral-light: rgba(236, 240, 241, 0.9); /* Light Gray with transparency */
-      --neutral-dark: #34495E;     /* Dark Gray */
-      --background-color: #ffffff; /* Default background */
-      --text-color: #000000;       /* Default text color */
+      --primary-color: #2C3E50;
+      --secondary-color: #3498DB;
+      --accent-color: #E74C3E;
+      --neutral-light: rgba(236, 240, 241, 0.9);
+      --neutral-dark: #34495E;
+      --background-color: #ffffff;
+      --text-color: #000000;
     }
     body {
       font-family: 'Segoe UI', system-ui, sans-serif;
@@ -41,7 +41,7 @@
       box-sizing: border-box;
       position: relative;
     }
-    /* Moved gear icon inside the form container (top right inside border) */
+    /* Gear icon inside container */
     .gear-icon {
       position: absolute;
       top: 1rem;
@@ -127,30 +127,32 @@
       cursor: pointer;
       font-size: 1rem;
     }
-    /* Dropdown Menu */
+    /* Dropdown Menu with 3D effect */
     .dropdown-menu {
       display: none;
       position: absolute;
       top: 3rem;
       right: 0;
-      background: white;
+      background: #fff;
+      border: 1px solid var(--neutral-light);
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      padding: 1rem;
-      width: 120px; /* Reduced overall width */
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      padding: 0.5rem;
+      width: 80px; /* Reduced width */
       z-index: 1000;
+      text-align: center;
     }
     .dropdown-menu.active {
       display: block;
     }
     .dropdown-menu h4 {
-      margin: 0 0 0.5rem 0;
-      font-size: 1rem;
+      margin: 0 0 0.3rem;
+      font-size: 0.9rem;
       color: var(--neutral-dark);
       cursor: pointer;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
     }
     .dropdown-menu h4:hover {
       color: var(--secondary-color);
@@ -158,37 +160,41 @@
     /* Arrow icon for dropdown items */
     .arrow-icon {
       transition: transform 0.3s ease;
+      font-size: 0.7rem;
+      margin-left: 0.2rem;
     }
     .arrow-icon.rotated {
       transform: rotate(-180deg);
     }
     .dropdown-menu button {
       width: 100%;
-      padding: 0.5rem;
+      padding: 0.3rem 0.2rem;
+      margin: 0.2rem 0;
       background: var(--secondary-color);
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 4px;
       cursor: pointer;
+      font-size: 0.8rem;
     }
     /* Sub Dropdown Menu */
     .sub-dropdown {
       display: none;
-      margin-left: 1rem;
+      margin-left: 0;
     }
     .sub-dropdown.active {
       display: block;
     }
     .sub-dropdown button {
       width: 100%;
-      padding: 0.5rem;
+      padding: 0.3rem 0.2rem;
+      margin: 0.2rem 0;
       background: var(--neutral-light);
       color: var(--neutral-dark);
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      margin-bottom: 0.5rem;
-      text-align: left;
+      font-size: 0.8rem;
     }
     .sub-dropdown button:hover {
       background: var(--secondary-color);
@@ -197,17 +203,17 @@
     /* Image Thumbnails */
     .image-thumbnails {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.3rem;
       overflow-x: auto;
-      margin-bottom: 1rem;
+      margin-bottom: 0.3rem;
     }
     .image-thumbnails img {
-      width: 30px;  /* Thumbnail size adjusted */
-      height: 30px;
+      width: 25px;
+      height: 25px;
       object-fit: cover;
       border-radius: 4px;
       cursor: pointer;
-      border: 2px solid transparent;
+      border: 1px solid transparent;
       transition: border-color 0.2s ease;
     }
     .image-thumbnails img:hover {
@@ -216,16 +222,16 @@
     /* Color Thumbnails */
     .color-thumbnails {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.3rem;
       overflow-x: auto;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
     }
     .color-thumbnails div {
-      width: 30px; /* Thumbnail size adjusted */
-      height: 30px;
+      width: 25px;
+      height: 25px;
       border-radius: 4px;
       cursor: pointer;
-      border: 2px solid transparent;
+      border: 1px solid transparent;
       transition: border-color 0.2s ease;
     }
     .color-thumbnails div:hover {
@@ -235,47 +241,51 @@
     .gradient-picker {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
-      margin-bottom: 0.5rem;
+      gap: 0.3rem;
+      margin-bottom: 0.3rem;
     }
     .gradient-picker input {
       width: 100%;
-      padding: 0.5rem;
+      padding: 0.3rem;
       border: 1px solid var(--neutral-light);
       border-radius: 4px;
+      font-size: 0.8rem;
     }
-    /* Dialog Box positioned next to dropdown */
+    /* Preview Dialog Box moved inside container */
     .dialog-box {
       display: none;
       position: absolute;
-      top: 0;
-      left: 100%;
-      margin-left: 10px;
-      background: white;
+      top: 3rem;
+      right: 90px;
+      background: #fff;
+      border: 1px solid var(--neutral-light);
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      padding: 1rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      padding: 0.5rem;
+      width: 150px;
       z-index: 1001;
+      text-align: center;
     }
     .dialog-box.active {
       display: block;
     }
     .dialog-box img {
       width: 100%;
-      max-width: 200px;
+      max-width: 140px;
       border-radius: 8px;
     }
     .dialog-box .buttons {
       display: flex;
-      gap: 0.5rem;
-      margin-top: 1rem;
+      gap: 0.3rem;
+      margin-top: 0.5rem;
     }
     .dialog-box .buttons button {
       flex: 1;
-      padding: 0.5rem;
+      padding: 0.3rem;
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      font-size: 0.8rem;
     }
     .dialog-box .buttons button.apply {
       background: var(--secondary-color);
@@ -285,7 +295,7 @@
       background: var(--neutral-light);
       color: var(--neutral-dark);
     }
-    /* Glassy Background */
+    /* Glassy Background for form container */
     .glassy-background {
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(10px);
@@ -297,30 +307,35 @@
         max-width: 90%;
         padding: 1rem;
       }
+      .dialog-box {
+        right: 10px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Form Container with Gear Icon inside -->
   <div class="form-container glassy-background">
-    <!-- Gear Icon (now inside container) -->
     <div class="gear-icon" onclick="toggleDropdown()">
       <i class="fas fa-cog"></i>
     </div>
-
     <!-- Dropdown Menu -->
     <div class="dropdown-menu" id="dropdownMenu">
-      <h4 onclick="toggleSubDropdown('mood')">Mood <i class="fas fa-chevron-down arrow-icon"></i></h4>
+      <h4 onclick="toggleSubDropdown('mood')">
+        Mood <i class="fas fa-chevron-down arrow-icon"></i>
+      </h4>
       <div id="moodSubDropdown" class="sub-dropdown">
         <button onclick="previewMood('day')">Day</button>
         <button onclick="previewMood('night')">Night</button>
-        <button onclick="applyCurrent('mood')">Apply Mood</button>
+        <button onclick="applyCurrent('mood')">Apply</button>
       </div>
-
-      <h4 onclick="toggleSubDropdown('theme')">Theme <i class="fas fa-chevron-down arrow-icon"></i></h4>
+      <h4 onclick="toggleSubDropdown('theme')">
+        Theme <i class="fas fa-chevron-down arrow-icon"></i>
+      </h4>
       <div id="themeSubDropdown" class="sub-dropdown">
         <button onclick="previewTheme('default')">Default</button>
-        <button onclick="toggleSubDropdown('image')">Image <i class="fas fa-chevron-down arrow-icon"></i></button>
+        <button onclick="toggleSubDropdown('image')">
+          Image <i class="fas fa-chevron-down arrow-icon"></i>
+        </button>
         <div id="imageSubDropdown" class="sub-dropdown">
           <div class="image-thumbnails">
             <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Nature 1" onclick="showImageDialog(this.src)">
@@ -330,7 +345,9 @@
             <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Nature 5" onclick="showImageDialog(this.src)">
           </div>
         </div>
-        <button onclick="toggleSubDropdown('color')">Color <i class="fas fa-chevron-down arrow-icon"></i></button>
+        <button onclick="toggleSubDropdown('color')">
+          Color <i class="fas fa-chevron-down arrow-icon"></i>
+        </button>
         <div id="colorSubDropdown" class="sub-dropdown">
           <div class="color-thumbnails">
             <div style="background-color: #3498DB;" onclick="showColorDialog('#3498DB')"></div>
@@ -342,37 +359,33 @@
             <div style="background: linear-gradient(45deg, #A18CD1, #FBC2EB);" onclick="showColorDialog('linear-gradient(45deg, #A18CD1, #FBC2EB)')"></div>
             <div style="background: linear-gradient(45deg, #96E6A1, #D4FC79);" onclick="showColorDialog('linear-gradient(45deg, #96E6A1, #D4FC79)')"></div>
           </div>
-          <button onclick="showGradientPicker()">Custom Gradient</button>
+          <button onclick="showGradientPicker()">Custom</button>
         </div>
       </div>
-
-      <h4 onclick="toggleSubDropdown('style')">Style <i class="fas fa-chevron-down arrow-icon"></i></h4>
+      <h4 onclick="toggleSubDropdown('style')">
+        Style <i class="fas fa-chevron-down arrow-icon"></i>
+      </h4>
       <div id="styleSubDropdown" class="sub-dropdown">
         <button onclick="previewStyle('default')">Default</button>
         <button onclick="previewStyle('styleA')">Style A</button>
         <button onclick="previewStyle('styleB')">Style B</button>
-        <button onclick="applyCurrent('style')">Apply Style</button>
+        <button onclick="applyCurrent('style')">Apply</button>
       </div>
     </div>
-
-    <!-- Dialog Box for Previews/Selection (positioned next to dropdown) -->
+    <!-- Preview Dialog Box -->
     <div class="dialog-box" id="dialogBox">
-      <!-- For image/color, the original elements are kept -->
       <img id="dialogImage" alt="Selected Image" style="display: none;">
-      <div id="dialogColor" style="width: 100%; height: 100px; border-radius: 8px; display: none;"></div>
+      <div id="dialogColor" style="width: 100%; height: 80px; border-radius: 8px; display: none;"></div>
       <div class="buttons">
         <button class="apply" onclick="applySelection()">Apply</button>
         <button class="cancel" onclick="cancelSelection()">Cancel</button>
       </div>
     </div>
-
     <div class="form-header">
       <h2>Create Business Card</h2>
       <p>Fill in all required information</p>
     </div>
-
     <div class="form-grid">
-      <!-- Profile Image Upload -->
       <div class="image-upload-group">
         <label for="profileImage">
           <i class="fas fa-camera fa-2x"></i>
@@ -381,8 +394,6 @@
         <input type="file" id="profileImage" accept="image/*" onchange="previewImage(event)" />
         <img id="imagePreview" alt="Profile Preview" />
       </div>
-
-      <!-- Text Inputs -->
       <div class="input-group">
         <label for="name">Full Name <span class="required">*</span></label>
         <input type="text" id="name" placeholder="Full Name" required />
@@ -402,13 +413,10 @@
         <label for="address">Business Address <span class="required">*</span></label>
         <input type="text" id="address" placeholder="Business Address" required />
       </div>
-
-      <!-- International Phone Input -->
       <div class="input-group">
         <label for="phone">Phone Number <span class="required">*</span></label>
         <input type="tel" id="phone" placeholder="Enter phone number" required />
       </div>
-
       <div class="input-group">
         <label for="email">Email Address <span class="required">*</span></label>
         <input type="email" id="email" placeholder="Email Address" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address." />
@@ -426,17 +434,14 @@
         <input type="url" id="youtube" placeholder="YouTube URL" pattern="https?://(www\.)?youtube\.com/.*" title="Please enter a valid YouTube URL." />
       </div>
     </div>
-
     <button id="generateCard">Generate Card</button>
   </div>
-
   <!-- Firebase and intl-tel-input Scripts -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
   <script>
-    // Firebase configuration – replace with your own details.
     var firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_AUTH_DOMAIN",
@@ -446,8 +451,6 @@
       appId: "YOUR_APP_ID"
     };
     firebase.initializeApp(firebaseConfig);
-
-    // Initialize international telephone input
     var phoneInput = document.querySelector("#phone");
     var iti = window.intlTelInput(phoneInput, {
       initialCountry: "auto",
@@ -460,8 +463,6 @@
       },
       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
     });
-
-    // Image Preview Function
     function previewImage(event) {
       const reader = new FileReader();
       const preview = document.getElementById('imagePreview');
@@ -471,8 +472,6 @@
       };
       reader.readAsDataURL(event.target.files[0]);
     }
-
-    // Resize and compress image before upload
     function resizeImage(file, callback) {
       const img = new Image();
       const reader = new FileReader();
@@ -504,8 +503,6 @@
       };
       reader.readAsDataURL(file);
     }
-
-    // Form validation
     function validateForm() {
       let valid = true;
       const fieldIds = ['name', 'businessName', 'businessInfo', 'address', 'email'];
@@ -566,8 +563,6 @@
       }
       return true;
     }
-
-    // Upload image to Firebase Storage
     function uploadImageToFirebase(blob, formData) {
       const storageRef = firebase.storage().ref();
       const imageRef = storageRef.child('profile_images/' + Date.now() + '.jpg');
@@ -581,8 +576,6 @@
         alert('Image upload failed. Please try again.');
       });
     }
-
-    // Generate card after form validation and image upload (if any)
     document.getElementById('generateCard').onclick = function () {
       if (!validateForm()) return;
       const formData = {
@@ -605,7 +598,6 @@
         redirectToCard(formData);
       }
     };
-
     function redirectToCard(formData) {
       const params = new URLSearchParams();
       for (let key in formData) {
@@ -613,14 +605,10 @@
       }
       window.location.href = `card.html?${params.toString()}`;
     }
-
-    // Toggle dropdown visibility
     function toggleDropdown() {
       const dropdownMenu = document.getElementById('dropdownMenu');
       dropdownMenu.classList.toggle('active');
     }
-
-    // Toggle sub-dropdown and rotate its arrow
     function toggleSubDropdown(id) {
       const header = document.querySelector('h4[onclick*="' + id + '"]');
       const subDropdown = document.getElementById(id + 'SubDropdown');
@@ -630,25 +618,18 @@
         if (arrow) arrow.classList.toggle('rotated');
       }
     }
-
-    // Global variables for preview callbacks and original states
     let previewApplyCallback = null;
     let previewCancelCallback = null;
     let originalMood = { background: '', color: '' };
     let originalTheme = { backgroundImage: '', backgroundColor: '' };
     let originalStyle = { borderRadius: '', boxShadow: '' };
-
-    // Show preview dialog with apply and cancel callbacks
     function showPreviewDialog(applyCb, cancelCb) {
       previewApplyCallback = applyCb;
       previewCancelCallback = cancelCb;
-      // Hide any image/color specific content
       document.getElementById('dialogImage').style.display = 'none';
       document.getElementById('dialogColor').style.display = 'none';
       document.getElementById('dialogBox').classList.add('active');
     }
-
-    // Apply selection from preview dialog
     function applySelection() {
       if (previewApplyCallback) {
         previewApplyCallback();
@@ -656,8 +637,6 @@
         previewCancelCallback = null;
       }
     }
-
-    // Cancel selection and revert preview
     function cancelSelection() {
       if (previewCancelCallback) {
         previewCancelCallback();
@@ -666,31 +645,24 @@
       }
       closeDialog();
     }
-
-    // Close dialog box
     function closeDialog() {
       const dialogBox = document.getElementById('dialogBox');
       dialogBox.classList.remove('active');
-      // For gradient picker reset innerHTML if needed
       dialogBox.innerHTML = `
         <img id="dialogImage" alt="Selected Image" style="display: none;">
-        <div id="dialogColor" style="width: 100%; height: 100px; border-radius: 8px; display: none;"></div>
+        <div id="dialogColor" style="width: 100%; height: 80px; border-radius: 8px; display: none;"></div>
         <div class="buttons">
           <button class="apply" onclick="applySelection()">Apply</button>
           <button class="cancel" onclick="cancelSelection()">Cancel</button>
         </div>
       `;
     }
-
-    // If user clicks outside dialog while preview is active, cancel preview
     document.addEventListener('click', function(event) {
       const dialogBox = document.getElementById('dialogBox');
       if(dialogBox.classList.contains('active') && !dialogBox.contains(event.target) && !event.target.closest('.dropdown-menu')) {
         cancelSelection();
       }
     });
-
-    // Preview functions with temporary changes and dialog confirmation
     function previewMood(mood) {
       originalMood = {
         background: document.body.style.backgroundColor,
@@ -712,7 +684,6 @@
         document.body.style.color = originalMood.color;
       });
     }
-
     function previewTheme(theme) {
       const formContainer = document.querySelector('.form-container');
       originalTheme = {
@@ -732,7 +703,6 @@
         formContainer.style.backgroundColor = originalTheme.backgroundColor;
       });
     }
-
     function previewStyle(style) {
       const formContainer = document.querySelector('.form-container');
       originalStyle = {
@@ -758,17 +728,11 @@
         formContainer.style.boxShadow = originalStyle.boxShadow;
       });
     }
-
-    // A simple helper so that the "Apply" button for mood/style works via a unified function
     function applyCurrent(type) {
-      // Here you could store the current preview value if needed.
-      // For now, we simply close the dialog if one is active.
       closeDialog();
       closeDropdown();
       alert(type.charAt(0).toUpperCase() + type.slice(1) + ' applied!');
     }
-
-    // Functions for image/color dialogs (unchanged from original)
     function showImageDialog(src) {
       const dialogBox = document.getElementById('dialogBox');
       const dialogImage = document.getElementById('dialogImage');
@@ -783,15 +747,13 @@
       dialogColor.style.display = 'block';
       dialogBox.classList.add('active');
     }
-
-    // Gradient Picker for colors
     function showGradientPicker() {
       const dialogBox = document.getElementById('dialogBox');
       dialogBox.innerHTML = `
         <div class="gradient-picker">
-          <label>Start Color:</label>
+          <label>Start:</label>
           <input type="color" id="startColor" value="#FF0000">
-          <label>End Color:</label>
+          <label>End:</label>
           <input type="color" id="endColor" value="#0000FF">
         </div>
         <div class="buttons">
@@ -812,8 +774,6 @@
       closeDropdown();
       alert('Gradient applied!');
     }
-
-    // Close dropdown menu
     function closeDropdown() {
       const dropdownMenu = document.getElementById('dropdownMenu');
       dropdownMenu.classList.remove('active');
