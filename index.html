@@ -161,6 +161,41 @@
       border-radius: 6px;
       cursor: pointer;
     }
+    /* Image Thumbnails */
+    .image-thumbnails {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .image-thumbnails img {
+      width: 1cm;
+      height: 1cm;
+      object-fit: cover;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+    .image-thumbnails img:hover {
+      border-color: var(--secondary-color);
+    }
+    /* Color Thumbnails */
+    .color-thumbnails {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .color-thumbnails div {
+      width: 1cm;
+      height: 1cm;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+    .color-thumbnails div:hover {
+      border-color: var(--secondary-color);
+    }
     /* Glassy Background */
     .glassy-background {
       background: rgba(255, 255, 255, 0.1);
@@ -192,11 +227,23 @@
     <button onclick="applyMood()">Apply Mood</button>
 
     <h4>Theme</h4>
-    <select id="theme">
+    <select id="theme" onchange="handleThemeChange()">
       <option value="default">Default</option>
       <option value="image">Image</option>
       <option value="color">Color</option>
     </select>
+    <div id="imageThumbnails" class="image-thumbnails" style="display: none;">
+      <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Nature 1" onclick="previewImage(this.src)">
+      <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Nature 2" onclick="previewImage(this.src)">
+      <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Nature 3" onclick="previewImage(this.src)">
+    </div>
+    <div id="colorThumbnails" class="color-thumbnails" style="display: none;">
+      <div style="background-color: #3498DB;" onclick="previewColor('#3498DB')"></div>
+      <div style="background-color: #E74C3E;" onclick="previewColor('#E74C3E')"></div>
+      <div style="background-color: #2ECC71;" onclick="previewColor('#2ECC71')"></div>
+      <div style="background-color: #9B59B6;" onclick="previewColor('#9B59B6')"></div>
+      <div style="background-color: #F1C40F;" onclick="previewColor('#F1C40F')"></div>
+    </div>
     <button onclick="applyTheme()">Apply Theme</button>
 
     <h4>Style</h4>
@@ -486,6 +533,38 @@
       dropdownMenu.classList.toggle('active');
     }
 
+    // Handle Theme Change
+    function handleThemeChange() {
+      const theme = document.getElementById('theme').value;
+      const imageThumbnails = document.getElementById('imageThumbnails');
+      const colorThumbnails = document.getElementById('colorThumbnails');
+
+      if (theme === 'image') {
+        imageThumbnails.style.display = 'flex';
+        colorThumbnails.style.display = 'none';
+      } else if (theme === 'color') {
+        imageThumbnails.style.display = 'none';
+        colorThumbnails.style.display = 'flex';
+      } else {
+        imageThumbnails.style.display = 'none';
+        colorThumbnails.style.display = 'none';
+      }
+    }
+
+    // Preview Image
+    function previewImage(src) {
+      const formContainer = document.querySelector('.form-container');
+      formContainer.style.backgroundImage = `url(${src})`;
+      formContainer.style.backgroundSize = 'cover';
+    }
+
+    // Preview Color
+    function previewColor(color) {
+      const formContainer = document.querySelector('.form-container');
+      formContainer.style.backgroundImage = 'none';
+      formContainer.style.backgroundColor = color;
+    }
+
     // Apply Mood
     function applyMood() {
       const mood = document.getElementById('mood').value;
@@ -497,6 +576,7 @@
         document.body.style.color = '#ffffff';
       }
       alert('Mood applied!');
+      closeDropdown();
     }
 
     // Apply Theme
@@ -504,21 +584,11 @@
       const theme = document.getElementById('theme').value;
       const formContainer = document.querySelector('.form-container');
       if (theme === 'default') {
-        formContainer.style.background = 'white';
-      } else if (theme === 'image') {
-        const images = [
-          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
-          'https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg',
-          'https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg'
-        ];
-        const randomImage = images[Math.floor(Math.random() * images.length)];
-        formContainer.style.background = `url(${randomImage}) no-repeat center center/cover`;
-      } else if (theme === 'color') {
-        const colors = ['#3498DB', '#E74C3E', '#2ECC71', '#9B59B6', '#F1C40F'];
-        const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        formContainer.style.background = randomColor;
+        formContainer.style.backgroundImage = 'none';
+        formContainer.style.backgroundColor = 'white';
       }
       alert('Theme applied!');
+      closeDropdown();
     }
 
     // Apply Style
@@ -536,7 +606,23 @@
         formContainer.style.boxShadow = '0 12px 40px rgba(0,0,0,0.2)';
       }
       alert('Style applied!');
+      closeDropdown();
     }
+
+    // Close Dropdown
+    function closeDropdown() {
+      const dropdownMenu = document.getElementById('dropdownMenu');
+      dropdownMenu.classList.remove('active');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      const dropdownMenu = document.getElementById('dropdownMenu');
+      const gearIcon = document.querySelector('.gear-icon');
+      if (!dropdownMenu.contains(event.target) && !gearIcon.contains(event.target)) {
+        dropdownMenu.classList.remove('active');
+      }
+    });
   </script>
 </body>
 </html>
