@@ -1,869 +1,451 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Business Card</title>
-    <!-- Font Awesome for icons -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --primary-color: #1e1e1e;
-        --secondary-color: #1e90ff;
-        --accent-color: #ff5722;
-        --neutral-light: rgba(245,245,245,0.9);
-        --neutral-dark: #333333;
-        --card-background: #ffffff;
-        --body-bg: linear-gradient(135deg, #cfd8dc, #eceff1);
-        --business-info-bg: #e0f7fa;
-        /* For dropdown header text, use dark color */
-        --dropdown-header-color: #333;
-        --dropdown-btn-bg: #00796b;
-        --dropdown-btn-hover: #00695c;
-      }
-      body {
-        font-family: 'Segoe UI', sans-serif;
-        margin: 0;
-        padding: 1rem;
-        background: var(--body-bg);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        position: relative;
-      }
-      /* Card Container with rounded corners */
-      .card-container {
-        position: relative;
-        width: 400px;
-        max-width: 400px;
-        background: var(--card-background);
-        border-radius: 20px;
-        border: 2px solid transparent;
-        border-image: linear-gradient(45deg, var(--secondary-color), var(--accent-color), #3f51b5) 1;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-        padding: 1.5rem;
-        margin: 1rem;
-        transition: background-color 0.5s ease, box-shadow 0.5s ease;
-      }
-      /* Top Left Settings Icon (remains in place) */
-      #styleControlsContainer {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        z-index: 10;
-      }
-      #styleButton {
-        padding: 0.5rem;
-        font-size: 1.2rem;
-        border: none;
-        background: none;
-        cursor: pointer;
-        color: blue;
-      }
-      #styleButton:hover {
-        color: var(--secondary-color);
-      }
-      /* Top Right Share Icon */
-      .top-icons {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        z-index: 10;
-      }
-      .top-share-icon {
-        padding: 0.5rem;
-        font-size: 1.2rem;
-        border: none;
-        background: none;
-        cursor: pointer;
-        color: blue;
-      }
-      .top-share-icon:hover {
-        color: var(--secondary-color);
-      }
-      /* Settings Dropdown Panel (narrow and partly outside the card) */
-      #styleDropdown {
-        display: none;
-        position: absolute;
-        top: 110%;
-        left: -20px; /* About half inside, half outside */
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        z-index: 10;
-        font-size: 0.75rem;
-        width: 100px; /* Reduced width */
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      }
-      /* Each Settings Group */
-      .setting-group {
-        border-bottom: 1px solid #ddd;
-      }
-      .setting-group:last-child {
-        border-bottom: none;
-      }
-      /* 3D Effect for Group Headers ("Theme", "Mood", "Style") */
-      .setting-header {
-        background: linear-gradient(to bottom, #f8f8f8, #dcdcdc);
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-        color: var(--dropdown-header-color);
-        padding: 5px 8px;
-        cursor: pointer;
-        font-size: 0.8rem;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-        transition: all 0.3s ease;
-        margin: 3px 0;
-      }
-      .setting-header:hover {
-        box-shadow: 3px 3px 7px rgba(0,0,0,0.4);
-        transform: translateY(-1px);
-      }
-      /* Content inside each group */
-      .setting-content {
-        display: none;
-        padding: 5px;
-      }
-      .setting-options {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-      .setting-options li {
-        padding: 0.3rem 0.5rem;
-        cursor: pointer;
-        transition: background 0.3s;
-        color: #333;
-      }
-      .setting-options li:hover {
-        background: var(--secondary-color);
-        color: #fff;
-      }
-      /* Buttons inside each group (stacked vertically) */
-      .dropdown-btns {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        margin-top: 5px;
-      }
-      .dropdown-btns button {
-        padding: 0.3rem;
-        border: none;
-        background: var(--dropdown-btn-bg);
-        color: #fff;
-        cursor: pointer;
-        font-size: 0.75rem;
-        transition: box-shadow 0.3s ease;
-      }
-      .dropdown-btns button:hover {
-        background: var(--dropdown-btn-hover);
-        box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-      }
-      /* Mini Icons (Call, Email, WhatsApp, Map) */
-      .mini-icons {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        padding: 1rem;
-        border-bottom: 2px solid var(--secondary-color);
-      }
-      .mini-icons .icon {
-        font-size: 1.5rem;
-        color: var(--neutral-dark);
-        cursor: pointer;
-        border-radius: 50%;
-        padding: 0.5rem;
-        background: rgba(255,255,255,0.1);
-        transition: transform 0.3s, box-shadow 0.3s;
-      }
-      .mini-icons .icon:hover {
-        color: var(--secondary-color);
-        transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-      }
-      /* Profile Section */
-      .profile-section {
-        display: flex;
-        padding: 1rem;
-        margin: 0.5rem;
-        border-bottom: 2px solid var(--secondary-color);
-      }
-      .profile-image-container {
-        width: 40%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-right: 1rem;
-      }
-      .profile-image {
-        width: 90px;
-        height: 90px;
-        border-radius: 50%;
-        border: 2px solid var(--neutral-light);
-        object-fit: cover;
-        transition: box-shadow 0.3s ease;
-      }
-      .profile-image:hover {
-        box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
-      }
-      .profile-name {
-        color: var(--primary-color);
-        margin: 0.5rem 0 0;
-        font-size: 1.1rem;
-        text-align: center;
-      }
-      .profile-info {
-        width: 60%;
-        padding-left: 1rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-      .contact-info {
-        color: var(--neutral-dark);
-        margin: 0.3rem 0;
-        font-size: 0.85rem;
-        line-height: 1.4;
-        white-space: nowrap;
-      }
-      .connect-btn {
-        align-self: flex-end;
-        font-size: 1.2rem;
-        color: var(--secondary-color);
-        cursor: pointer;
-        transition: transform 0.3s;
-      }
-      .connect-btn:hover {
-        transform: scale(1.1);
-        color: var(--accent-color);
-      }
-      /* Business Info Section */
-      .business-info-section {
-        padding: 1rem;
-        margin: 0.5rem;
-        font-size: 0.9rem;
-        line-height: 1.5;
-        height: 150px;
-        overflow: hidden;
-        background: var(--business-info-bg);
-        border-bottom: 2px solid var(--secondary-color);
-        font-family: "Georgia", serif;
-        border-radius: 20px;
-        position: relative;
-      }
-      .business-info-content {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        display: none;
-        text-align: center;
-        font-weight: bold;
-        color: var(--neutral-dark);
-        padding: 0.5rem;
-        overflow-y: auto;
-      }
-      /* Action Buttons Section */
-      .action-buttons {
-        display: grid;
-        gap: 0.5rem;
-        padding: 0.8rem;
-      }
-      .action-btn {
-        text-align: center;
-        text-decoration: none;
-        padding: 0.6rem;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        color: #fff;
-        box-shadow: 4px 4px 6px rgba(0,0,0,0.3), inset -2px -2px 4px rgba(255,255,255,0.2);
-        transition: transform 0.3s, box-shadow 0.3s;
-      }
-      .action-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-      }
-      .action-btn:active {
-        filter: brightness(90%);
-      }
-      /* Remove transition for contact buttons */
-      .contact-btn {
-        transition: none !important;
-      }
-      /* Social Links Section */
-      .social-links {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Card Generator</title>
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+  <!-- libphonenumber-js Library for phone validation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/libphonenumber-js/1.9.47/libphonenumber-js.min.js"></script>
+  <style>
+    :root {
+      --primary-color: #2C3E50;    /* Professional Navy */
+      --secondary-color: #3498DB;  /* Trust Blue */
+      --accent-color: #E74C3C;     /* Alert Red */
+      --neutral-light: rgba(236, 240, 241, 0.9); /* Light Gray */
+      --neutral-dark: #34495E;     /* Dark Gray */
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 1rem;
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .form-container {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      padding: 1.5rem;
+      margin: 1rem;
+    }
+    .form-header {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 0.7rem;
+      border: 1px solid var(--neutral-light);
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    textarea {
+      resize: vertical;
+    }
+    .phone-group {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .phone-group select {
+      max-width: 120px;
+    }
+    .error-message {
+      color: red;
+      font-size: 0.8rem;
+      display: none;
+    }
+    .image-upload-group {
+      text-align: center;
+      border: 2px dashed var(--neutral-light);
+      padding: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #imagePreview {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0.5rem auto;
+      display: none;
+    }
+    #generateCard {
+      background: var(--secondary-color);
+      color: white;
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    @media (max-width: 480px) {
+      .form-container {
+        max-width: 90%;
         padding: 1rem;
       }
-      .social-icon {
-        font-size: 1.5rem;
-        color: var(--neutral-dark);
-        visibility: hidden;
-        border-radius: 50%;
-        text-decoration: none;
-        padding: 0.5rem;
-        background: rgba(255,255,255,0.1);
-        transition: transform 0.3s, box-shadow 0.3s;
-      }
-      .social-icon:hover {
-        color: var(--secondary-color);
-        transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-      }
-      /* Floating Feedback Button (fixed) */
-      .floating-btn {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: var(--secondary-color);
-        color: #fff;
-        border: none;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        cursor: pointer;
-        font-size: 1.5rem;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        margin-bottom: 10px;
-        transition: transform 0.3s, box-shadow 0.3s;
-      }
-      .floating-btn:hover {
-        background: var(--accent-color);
-        transform: scale(1.1);
-      }
-      /* Floating Live Chat Icon (outside card on right) */
-      #floatingChatBtn {
-        position: absolute;
-        top: 40px; /* Moved a bit lower than before */
-        right: -50px; /* Adjusted so that it overlaps the border slightly */
-        background: var(--secondary-color);
-        color: #fff;
-        border: none;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        cursor: pointer;
-        font-size: 1.5rem;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        transition: transform 0.3s, box-shadow 0.3s;
-      }
-      #floatingChatBtn:hover {
-        background: var(--accent-color);
-        transform: scale(1.1);
-      }
-      /* Live Chat Modal (centered) */
-      .modal {
-        display: none;
-        position: fixed;
-        z-index: 100;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.3);
-      }
-      .modal-content {
-        position: fixed;
-        width: 300px;
-        background-color: rgba(255,255,255,0.9);
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-      .modal-content h3 {
-        margin-top: 0;
-      }
-      /* Chat Conversation Area */
-      #chatConversation {
-        max-height: 150px;
-        overflow-y: auto;
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin-bottom: 10px;
-      }
-      .chat-message {
-        padding: 5px;
-        margin: 5px 0;
-        border-radius: 5px;
-      }
-      .chat-message.customer {
-        background-color: #e0f7fa;
-      }
-      .chat-message.auto-reply {
-        background-color: #f0f0f0;
-      }
-      .modal textarea {
-        width: 100%;
-        height: 60px;
-        margin-bottom: 10px;
-        resize: none;
-        padding: 10px;
-        font-size: 1rem;
-      }
-      .modal button {
-        padding: 10px 20px;
-        margin-right: 10px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      .modal .send-btn {
-        background-color: var(--secondary-color);
-        color: #fff;
-      }
-      .modal .cancel-btn {
-        background-color: #ccc;
-        color: #333;
-      }
-      /* Responsive adjustments */
-      @media (max-width: 480px) {
-        .card-container {
-          width: 100%;
-          max-width: 100%;
-          padding: 1rem;
-        }
-        .profile-section {
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-        }
-        .profile-image-container,
-        .profile-info {
-          width: 100%;
-          padding: 0;
-        }
-        .profile-info {
-          margin-top: 1rem;
-        }
-        .contact-info {
-          white-space: normal;
-        }
-      }
-    </style>
-    <!-- TailwindCSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body>
-    <!-- Card Container with added Tailwind classes for centering and max width -->
-    <div class="card-container max-w-md mx-auto" id="cardContainer">
-      <!-- Top Left Settings Icon -->
-      <div id="styleControlsContainer">
-        <button id="styleButton" title="Settings">
-          <i class="fas fa-cog"></i>
-        </button>
-        <!-- Settings Dropdown Panel -->
-        <div id="styleDropdown">
-          <!-- Group: Theme -->
-          <div class="setting-group" id="themeGroup">
-            <div class="setting-header">Theme</div>
-            <div class="setting-content">
-              <ul class="setting-options">
-                <li data-theme="default">Default</li>
-                <li data-theme="blue">Blue</li>
-                <li data-theme="red">Red</li>
-                <li data-theme="green">Green</li>
-              </ul>
-              <div class="dropdown-btns">
-                <!-- Preview button removed -->
-                <button class="apply-btn" data-group="theme">Apply</button>
-              </div>
-            </div>
-          </div>
-          <!-- Group: Mood -->
-          <div class="setting-group" id="moodGroup">
-            <div class="setting-header">Mood</div>
-            <div class="setting-content">
-              <ul class="setting-options">
-                <li data-mood="day">Day</li>
-                <li data-mood="night">Night</li>
-              </ul>
-              <div class="dropdown-btns">
-                <!-- Preview button removed -->
-                <button class="apply-btn" data-group="mood">Apply</button>
-              </div>
-            </div>
-          </div>
-          <!-- Group: Style -->
-          <div class="setting-group" id="iconStyleGroup">
-            <div class="setting-header">Style</div>
-            <div class="setting-content">
-              <ul class="setting-options">
-                <li data-iconstyle="none">None</li>
-                <li data-iconstyle="styleA">Style A</li>
-                <li data-iconstyle="styleB">Style B</li>
-              </ul>
-              <div class="dropdown-btns">
-                <!-- Preview button removed -->
-                <button class="apply-btn" data-group="style">Apply</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Top Right Share Icon -->
-      <div class="top-icons">
-        <button class="top-share-icon" id="topShareIcon" title="Share">
-          <i class="fas fa-share-alt"></i>
-        </button>
-      </div>
-      <!-- Mini Icons -->
-      <div class="mini-icons">
-        <a id="miniCallButton" class="icon" title="Call">
-          <i class="fas fa-phone"></i>
-        </a>
-        <a id="miniEmailButton" class="icon" title="Email">
-          <i class="fas fa-envelope"></i>
-        </a>
-        <a id="miniWhatsappButton" class="icon" title="WhatsApp">
-          <i class="fab fa-whatsapp"></i>
-        </a>
-        <a id="miniMapButton" class="icon" title="Open in Google Maps">
-          <i class="fas fa-map-marker-alt"></i>
-        </a>
-      </div>
-      <!-- Profile Section -->
-      <div class="profile-section">
-        <div class="profile-image-container">
-          <img id="cardProfileImage" class="profile-image" alt="Profile" />
-          <h3 class="profile-name" id="cardName"></h3>
-        </div>
-        <div class="profile-info">
-          <p class="contact-info" id="cardBusinessName"></p>
-          <p class="contact-info" id="cardAddress"></p>
-          <p class="contact-info" id="cardPhone"></p>
-          <p class="contact-info" id="cardEmail"></p>
-        </div>
-        <!-- Connect (vCard) Button -->
-        <div class="connect-btn" id="connectButton" title="Save Contact">
-          <i class="fas fa-save"></i>
-        </div>
-      </div>
-      <!-- Business Info Section -->
-      <div class="business-info-section">
-        <div id="businessInfoContent"></div>
-      </div>
-      <!-- Action Buttons Section -->
-      <div class="action-buttons">
-        <a id="callButton" class="action-btn contact-btn" style="background: var(--secondary-color);">
-          Call
-        </a>
-        <a id="whatsappButton" class="action-btn contact-btn" style="background: #25d366;">
-          WhatsApp
-        </a>
-        <a id="emailButton" class="action-btn contact-btn" style="background: var(--accent-color);">
-          Email
-        </a>
-      </div>
-      <!-- Social Links Section -->
-      <div class="social-links">
-        <a id="facebookButton" class="social-icon">
-          <i class="fab fa-facebook-f"></i>
-        </a>
-        <a id="instagramButton" class="social-icon">
-          <i class="fab fa-instagram"></i>
-        </a>
-        <a id="youtubeButton" class="social-icon">
-          <i class="fab fa-youtube"></i>
-        </a>
-      </div>
-      <!-- Moved Feedback Button (replacing live chat) -->
-      <button id="feedbackBtn" title="Feedback" onclick="window.location.href='mailto:rashidncit@gmail.com?subject=Feedback on Business Card'">
-        <i class="fas fa-comment-dots"></i>
-      </button>
+    }
+  </style>
+</head>
+<body>
+  <!-- Form Section -->
+  <div class="form-container">
+    <div class="form-header">
+      <h2>Create Business Card</h2>
+      <p>Fill in all required information</p>
     </div>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Variables for settings
-        let selectedTheme = "default";
-        let selectedMood = "day";
-        let selectedIconStyle = "none";
-        const params = new URLSearchParams(window.location.search);
-        console.log("Current URL:", window.location.href);
-        
-        /* -------------------- Populate Card Info -------------------- */
-        const profileImage = params.get("profileImage") || "https://i.imgur.com/048d9400ce02b71.jpeg";
-        document.getElementById("cardProfileImage").src = profileImage;
-        document.getElementById("cardName").textContent = params.get("name") || "";
-        document.getElementById("cardBusinessName").textContent = params.get("businessName") || "";
-        document.getElementById("cardAddress").textContent = params.get("address") || "";
-        document.getElementById("cardPhone").textContent = params.get("phone") || "";
-        document.getElementById("cardEmail").textContent = params.get("email") || "";
-        
-        const businessInfo = params.get("businessInfo") || "";
-        const paragraphs = businessInfo.split("\n").filter((p) => p.trim() !== "");
-        const businessInfoContainer = document.getElementById("businessInfoContent");
-        businessInfoContainer.innerHTML = paragraphs
-          .map((p) => `<div class="business-info-content"><p>${p}</p></div>`)
-          .join("");
-        const paragraphDivs = businessInfoContainer.querySelectorAll(".business-info-content");
-        let currentIndex = 0;
-        paragraphDivs.forEach((div, idx) => {
-          div.style.display = idx === 0 ? "block" : "none";
-        });
-        if (paragraphDivs.length > 0) {
-          setInterval(() => {
-            paragraphDivs[currentIndex].style.display = "none";
-            currentIndex = (currentIndex + 1) % paragraphDivs.length;
-            paragraphDivs[currentIndex].style.display = "block";
-          }, 8000);
-        }
-        
-        /* -------------------- Social Links -------------------- */
-        const socialLinks = {
-          facebook: document.getElementById("facebookButton"),
-          instagram: document.getElementById("instagramButton"),
-          youtube: document.getElementById("youtubeButton"),
-        };
-        Object.entries(socialLinks).forEach(([platform, element]) => {
-          const url = params.get(platform);
-          if (url) {
-            element.href = url;
-            element.style.visibility = "visible";
-            element.target = "_blank";
-          } else {
-            element.style.visibility = "hidden";
-          }
-        });
-        
-        /* -------------------- Mini Icons -------------------- */
-        const phoneParam = params.get("phone") || "";
-        const emailParam = params.get("email") || "";
-        const addressParam = params.get("address") || "";
-        document.getElementById("miniCallButton").onclick = () => {
-          if (phoneParam) window.location.href = `tel:${phoneParam}`;
-        };
-        document.getElementById("miniEmailButton").onclick = () => {
-          if (emailParam) window.location.href = `mailto:${emailParam}`;
-        };
-        document.getElementById("miniWhatsappButton").onclick = () => {
-          if (phoneParam)
-            window.location.href = `https://wa.me/${phoneParam}?text=${encodeURIComponent("I am contacting by smart link visiting card")}`;
-        };
-        document.getElementById("miniMapButton").onclick = () => {
-          if (addressParam) {
-            const encodedAddr = encodeURIComponent(addressParam);
-            window.open(`https://www.google.com/maps?q=${encodedAddr}`, "_blank");
-          }
-        };
-        
-        /* -------------------- Connect (vCard) -------------------- */
-        document.getElementById("connectButton").onclick = () => {
-          const name = params.get("name") || "Contact";
-          const vCardContent =
-            "BEGIN:VCARD\r\nVERSION:3.0\r\n" +
-            `N:;${name};;;\r\nFN:${name}\r\n` +
-            `TEL;TYPE=CELL:${phoneParam}\r\n` +
-            `EMAIL;TYPE=INTERNET:${emailParam}\r\n` +
-            `ADR;TYPE=WORK:;;${addressParam};;;;\r\nEND:VCARD\r\n`;
-          const blob = new Blob([vCardContent], { type: "text/vcard" });
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement("a");
-          link.href = url;
-          link.download = `${name}.vcf`;
-          link.click();
-          URL.revokeObjectURL(url);
-        };
-        
-        /* -------------------- Action Buttons -------------------- */
-        const callButton = document.getElementById("callButton");
-        const whatsappButton = document.getElementById("whatsappButton");
-        const emailButton = document.getElementById("emailButton");
-        if (phoneParam) {
-          callButton.href = `tel:${phoneParam}`;
-          whatsappButton.href = `https://wa.me/${phoneParam}?text=${encodeURIComponent("I am contacting by smart link visiting card")}`;
+    <div class="form-grid">
+      <div class="image-upload-group">
+        <label for="profileImage">
+          <i class="fas fa-camera fa-2x"></i>
+          <p>Upload Profile Photo</p>
+        </label>
+        <input type="file" id="profileImage" accept="image/*" hidden onchange="previewImage(event)" />
+        <img id="imagePreview" alt="Profile Preview" />
+      </div>
+      <div class="input-group">
+        <input type="text" id="name" placeholder="Full Name" required />
+      </div>
+      <div class="input-group">
+        <input type="text" id="businessName" placeholder="Business Name" required />
+      </div>
+      <div class="input-group">
+        <textarea id="businessInfo" placeholder="Enter 3 to 5 paragraphs (Max 150 words each) separated by a new line" rows="6" required></textarea>
+        <small style="color: var(--neutral-dark); font-size: 0.8rem;">
+          <strong>Instructions:</strong> Write 3 to 5 paragraphs. Each paragraph must not exceed 150 words. Separate paragraphs with a new line.
+        </small>
+      </div>
+      <div class="input-group">
+        <input type="text" id="address" placeholder="Business Address" required />
+      </div>
+      <div class="input-group phone-group">
+        <select id="countryCode">
+          <!-- Comprehensive A–Z sorted list of country codes with flag emojis -->
+          <option value="+93">🇦🇫 Afghanistan (+93)</option>
+          <option value="+355">🇦🇱 Albania (+355)</option>
+          <option value="+213">🇩🇿 Algeria (+213)</option>
+          <option value="+376">🇦🇩 Andorra (+376)</option>
+          <option value="+244">🇦🇴 Angola (+244)</option>
+          <option value="+1-268">🇦🇬 Antigua &amp; Barbuda (+1-268)</option>
+          <option value="+54">🇦🇷 Argentina (+54)</option>
+          <option value="+374">🇦🇲 Armenia (+374)</option>
+          <option value="+61">🇦🇺 Australia (+61)</option>
+          <option value="+43">🇦🇹 Austria (+43)</option>
+          <option value="+994">🇦🇿 Azerbaijan (+994)</option>
+          <option value="+1-242">🇧🇸 Bahamas (+1-242)</option>
+          <option value="+973">🇧🇭 Bahrain (+973)</option>
+          <option value="+880">🇧🇩 Bangladesh (+880)</option>
+          <option value="+1-246">🇧🇧 Barbados (+1-246)</option>
+          <option value="+375">🇧🇾 Belarus (+375)</option>
+          <option value="+32">🇧🇪 Belgium (+32)</option>
+          <option value="+501">🇧🇿 Belize (+501)</option>
+          <option value="+229">🇧🇯 Benin (+229)</option>
+          <option value="+975">🇧🇹 Bhutan (+975)</option>
+          <option value="+591">🇧🇴 Bolivia (+591)</option>
+          <option value="+387">🇧🇦 Bosnia &amp; Herzegovina (+387)</option>
+          <option value="+267">🇧🇼 Botswana (+267)</option>
+          <option value="+55">🇧🇷 Brazil (+55)</option>
+          <option value="+673">🇧🇳 Brunei (+673)</option>
+          <option value="+359">🇧🇬 Bulgaria (+359)</option>
+          <option value="+226">🇧🇫 Burkina Faso (+226)</option>
+          <option value="+257">🇧🇮 Burundi (+257)</option>
+          <option value="+855">🇰🇭 Cambodia (+855)</option>
+          <option value="+237">🇨🇲 Cameroon (+237)</option>
+          <option value="+1">🇨🇦 Canada (+1)</option>
+          <option value="+238">🇨🇻 Cape Verde (+238)</option>
+          <option value="+236">🇨🇫 Central African Republic (+236)</option>
+          <option value="+235">🇹🇩 Chad (+235)</option>
+          <option value="+56">🇨🇱 Chile (+56)</option>
+          <option value="+86">🇨🇳 China (+86)</option>
+          <option value="+57">🇨🇴 Colombia (+57)</option>
+          <option value="+269">🇰🇲 Comoros (+269)</option>
+          <option value="+242">🇨🇬 Congo (Brazzaville) (+242)</option>
+          <option value="+243">🇨🇩 Congo (Kinshasa) (+243)</option>
+          <option value="+506">🇨🇷 Costa Rica (+506)</option>
+          <option value="+385">🇭🇷 Croatia (+385)</option>
+          <option value="+53">🇨🇺 Cuba (+53)</option>
+          <option value="+357">🇨🇾 Cyprus (+357)</option>
+          <option value="+420">🇨🇿 Czech Republic (+420)</option>
+          <option value="+45">🇩🇰 Denmark (+45)</option>
+          <option value="+253">🇩🇯 Djibouti (+253)</option>
+          <option value="+1-767">🇩🇲 Dominica (+1-767)</option>
+          <option value="+1-809">🇩🇴 Dominican Republic (+1-809)</option>
+          <option value="+593">🇪🇨 Ecuador (+593)</option>
+          <option value="+20">🇪🇬 Egypt (+20)</option>
+          <option value="+503">🇸🇻 El Salvador (+503)</option>
+          <option value="+240">🇬🇶 Equatorial Guinea (+240)</option>
+          <option value="+291">🇪🇷 Eritrea (+291)</option>
+          <option value="+372">🇪🇪 Estonia (+372)</option>
+          <option value="+268">🇸🇿 Eswatini (+268)</option>
+          <option value="+251">🇪🇹 Ethiopia (+251)</option>
+          <option value="+679">🇫🇯 Fiji (+679)</option>
+          <option value="+358">🇫🇮 Finland (+358)</option>
+          <option value="+33">🇫🇷 France (+33)</option>
+          <option value="+241">🇬🇦 Gabon (+241)</option>
+          <option value="+220">🇬🇲 Gambia (+220)</option>
+          <option value="+995">🇬🇪 Georgia (+995)</option>
+          <option value="+49">🇩🇪 Germany (+49)</option>
+          <option value="+233">🇬🇭 Ghana (+233)</option>
+          <option value="+30">🇬🇷 Greece (+30)</option>
+          <option value="+1-473">🇬🇩 Grenada (+1-473)</option>
+          <option value="+502">🇬🇹 Guatemala (+502)</option>
+          <option value="+224">🇬🇳 Guinea (+224)</option>
+          <option value="+245">🇬🇼 Guinea-Bissau (+245)</option>
+          <option value="+592">🇬🇾 Guyana (+592)</option>
+          <option value="+509">🇭🇹 Haiti (+509)</option>
+          <option value="+504">🇭🇳 Honduras (+504)</option>
+          <option value="+36">🇭🇺 Hungary (+36)</option>
+          <option value="+354">🇮🇸 Iceland (+354)</option>
+          <option value="+91">🇮🇳 India (+91)</option>
+          <option value="+62">🇮🇩 Indonesia (+62)</option>
+          <option value="+98">🇮🇷 Iran (+98)</option>
+          <option value="+964">🇮🇶 Iraq (+964)</option>
+          <option value="+353">🇮🇪 Ireland (+353)</option>
+          <option value="+972">🇮🇱 Israel (+972)</option>
+          <option value="+39">🇮🇹 Italy (+39)</option>
+          <option value="+1-876">🇯🇲 Jamaica (+1-876)</option>
+          <option value="+81">🇯🇵 Japan (+81)</option>
+          <option value="+962">🇯🇴 Jordan (+962)</option>
+          <option value="+7">🇰🇿 Kazakhstan (+7)</option>
+          <option value="+254">🇰🇪 Kenya (+254)</option>
+          <option value="+686">🇰🇮 Kiribati (+686)</option>
+          <option value="+383">🇽🇰 Kosovo (+383)</option>
+          <option value="+965">🇰🇼 Kuwait (+965)</option>
+          <option value="+996">🇰🇬 Kyrgyzstan (+996)</option>
+          <option value="+856">🇱🇦 Laos (+856)</option>
+          <option value="+371">🇱🇻 Latvia (+371)</option>
+          <option value="+961">🇱🇧 Lebanon (+961)</option>
+          <option value="+266">🇱🇸 Lesotho (+266)</option>
+          <option value="+231">🇱🇷 Liberia (+231)</option>
+          <option value="+218">🇱🇾 Libya (+218)</option>
+          <option value="+423">🇱🇮 Liechtenstein (+423)</option>
+          <option value="+370">🇱🇹 Lithuania (+370)</option>
+          <option value="+352">🇱🇺 Luxembourg (+352)</option>
+          <option value="+261">🇲🇬 Madagascar (+261)</option>
+          <option value="+265">🇲🇼 Malawi (+265)</option>
+          <option value="+60">🇲🇾 Malaysia (+60)</option>
+          <option value="+960">🇲🇻 Maldives (+960)</option>
+          <option value="+223">🇲🇱 Mali (+223)</option>
+          <option value="+356">🇲🇹 Malta (+356)</option>
+          <option value="+692">🇲🇭 Marshall Islands (+692)</option>
+          <option value="+222">🇲🇷 Mauritania (+222)</option>
+          <option value="+230">🇲🇺 Mauritius (+230)</option>
+          <option value="+52">🇲🇽 Mexico (+52)</option>
+          <option value="+691">🇫🇲 Micronesia (+691)</option>
+          <option value="+373">🇲🇩 Moldova (+373)</option>
+          <option value="+377">🇲🇨 Monaco (+377)</option>
+          <option value="+976">🇲🇳 Mongolia (+976)</option>
+          <option value="+382">🇲🇪 Montenegro (+382)</option>
+          <option value="+212">🇲🇦 Morocco (+212)</option>
+          <option value="+258">🇲🇿 Mozambique (+258)</option>
+          <option value="+95">🇲🇲 Myanmar (+95)</option>
+          <option value="+264">🇳🇦 Namibia (+264)</option>
+          <option value="+674">🇳🇷 Nauru (+674)</option>
+          <option value="+977">🇳🇵 Nepal (+977)</option>
+          <option value="+31">🇳🇱 Netherlands (+31)</option>
+          <option value="+64">🇳🇿 New Zealand (+64)</option>
+          <option value="+505">🇳🇮 Nicaragua (+505)</option>
+          <option value="+227">🇳🇪 Niger (+227)</option>
+          <option value="+234">🇳🇬 Nigeria (+234)</option>
+          <option value="+850">🇰🇵 North Korea (+850)</option>
+          <option value="+389">🇲🇰 North Macedonia (+389)</option>
+          <option value="+47">🇳🇴 Norway (+47)</option>
+          <option value="+968">🇴🇲 Oman (+968)</option>
+          <option value="+92">🇵🇰 Pakistan (+92)</option>
+          <option value="+680">🇵🇼 Palau (+680)</option>
+          <option value="+507">🇵🇦 Panama (+507)</option>
+          <option value="+675">🇵🇬 Papua New Guinea (+675)</option>
+          <option value="+595">🇵🇾 Paraguay (+595)</option>
+          <option value="+51">🇵🇪 Peru (+51)</option>
+          <option value="+63">🇵🇭 Philippines (+63)</option>
+          <option value="+48">🇵🇱 Poland (+48)</option>
+          <option value="+351">🇵🇹 Portugal (+351)</option>
+          <option value="+974">🇶🇦 Qatar (+974)</option>
+          <option value="+40">🇷🇴 Romania (+40)</option>
+          <option value="+7">🇷🇺 Russia (+7)</option>
+          <option value="+250">🇷🇼 Rwanda (+250)</option>
+          <option value="+1-869">🇰🇳 Saint Kitts &amp; Nevis (+1-869)</option>
+          <option value="+1-758">🇱🇨 Saint Lucia (+1-758)</option>
+          <option value="+1-784">🇻🇨 Saint Vincent (+1-784)</option>
+          <option value="+685">🇼🇸 Samoa (+685)</option>
+          <option value="+378">🇸🇲 San Marino (+378)</option>
+          <option value="+239">🇸🇹 Sao Tome &amp; Principe (+239)</option>
+          <option value="+966">🇸🇦 Saudi Arabia (+966)</option>
+          <option value="+221">🇸🇳 Senegal (+221)</option>
+          <option value="+381">🇷🇸 Serbia (+381)</option>
+          <option value="+248">🇸🇨 Seychelles (+248)</option>
+          <option value="+232">🇸🇱 Sierra Leone (+232)</option>
+          <option value="+65">🇸🇬 Singapore (+65)</option>
+          <option value="+421">🇸🇰 Slovakia (+421)</option>
+          <option value="+386">🇸🇮 Slovenia (+386)</option>
+          <option value="+677">🇸🇧 Solomon Islands (+677)</option>
+          <option value="+252">🇸🇴 Somalia (+252)</option>
+          <option value="+27">🇿🇦 South Africa (+27)</option>
+          <option value="+82">🇰🇷 South Korea (+82)</option>
+          <option value="+211">🇸🇸 South Sudan (+211)</option>
+          <option value="+34">🇪🇸 Spain (+34)</option>
+          <option value="+94">🇱🇰 Sri Lanka (+94)</option>
+          <option value="+249">🇸🇩 Sudan (+249)</option>
+          <option value="+597">🇸🇷 Suriname (+597)</option>
+          <option value="+46">🇸🇪 Sweden (+46)</option>
+          <option value="+41">🇨🇭 Switzerland (+41)</option>
+          <option value="+963">🇸🇾 Syria (+963)</option>
+          <option value="+886">🇹🇼 Taiwan (+886)</option>
+          <option value="+992">🇹🇯 Tajikistan (+992)</option>
+          <option value="+255">🇹🇿 Tanzania (+255)</option>
+          <option value="+66">🇹🇭 Thailand (+66)</option>
+          <option value="+670">🇹🇱 Timor-Leste (+670)</option>
+          <option value="+228">🇹🇬 Togo (+228)</option>
+          <option value="+676">🇹🇴 Tonga (+676)</option>
+          <option value="+1-868">🇹🇹 Trinidad &amp; Tobago (+1-868)</option>
+          <option value="+216">🇹🇳 Tunisia (+216)</option>
+          <option value="+90">🇹🇷 Turkey (+90)</option>
+          <option value="+993">🇹🇲 Turkmenistan (+993)</option>
+          <option value="+688">🇹🇻 Tuvalu (+688)</option>
+          <option value="+256">🇺🇬 Uganda (+256)</option>
+          <option value="+380">🇺🇦 Ukraine (+380)</option>
+          <option value="+971">🇦🇪 United Arab Emirates (+971)</option>
+          <option value="+44">🇬🇧 United Kingdom (+44)</option>
+          <option value="+1">🇺🇸 United States (+1)</option>
+          <option value="+598">🇺🇾 Uruguay (+598)</option>
+          <option value="+998">🇺🇿 Uzbekistan (+998)</option>
+          <option value="+678">🇻🇺 Vanuatu (+678)</option>
+          <option value="+379">🇻🇦 Vatican City (+379)</option>
+          <option value="+58">🇻🇪 Venezuela (+58)</option>
+          <option value="+84">🇻🇳 Vietnam (+84)</option>
+          <option value="+967">🇾🇪 Yemen (+967)</option>
+          <option value="+260">🇿🇲 Zambia (+260)</option>
+          <option value="+263">🇿🇼 Zimbabwe (+263)</option>
+        </select>
+        <input type="tel" id="phone" placeholder="Phone Number" required />
+      </div>
+      <p id="phoneError" class="error-message">Invalid phone number</p>
+      <div class="input-group">
+        <input type="email" id="email" placeholder="Email Address" required />
+      </div>
+      <div class="input-group">
+        <input type="url" id="facebook" placeholder="Facebook URL" />
+      </div>
+      <div class="input-group">
+        <input type="url" id="instagram" placeholder="Instagram URL" />
+      </div>
+      <div class="input-group">
+        <input type="url" id="youtube" placeholder="YouTube URL" />
+      </div>
+    </div>
+    <button id="generateCard">Generate Card</button>
+  </div>
+
+  <script>
+    // Image Preview Function
+    function previewImage(event) {
+      const reader = new FileReader();
+      const preview = document.getElementById('imagePreview');
+      reader.onload = (e) => {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    // Phone Number Validation using libphonenumber-js
+    function validatePhoneNumber() {
+      const countryCode = document.getElementById('countryCode').value;
+      const phoneInput = document.getElementById('phone');
+      const phoneError = document.getElementById('phoneError');
+      const fullNumber = countryCode + phoneInput.value;
+
+      try {
+        const parsedNumber = libphonenumber.parsePhoneNumberFromString(fullNumber);
+        if (parsedNumber && parsedNumber.isValid()) {
+          phoneError.style.display = 'none';
+          return true;
         } else {
-          callButton.removeAttribute("href");
-          whatsappButton.removeAttribute("href");
+          phoneError.style.display = 'block';
+          return false;
         }
-        if (emailParam) {
-          emailButton.href = `mailto:${emailParam}`;
-        } else {
-          emailButton.removeAttribute("href");
+      } catch (error) {
+        phoneError.style.display = 'block';
+        return false;
+      }
+    }
+
+    document.getElementById('phone').addEventListener('input', validatePhoneNumber);
+
+    // Generate Card Function – Validates phone number before proceeding
+    document.getElementById('generateCard').addEventListener('click', function () {
+      if (!validatePhoneNumber()) {
+        alert('Please enter a valid phone number.');
+        return;
+      }
+      // Collect form data
+      const formData = {
+        name: document.getElementById('name').value,
+        businessName: document.getElementById('businessName').value,
+        businessInfo: document.getElementById('businessInfo').value,
+        address: document.getElementById('address').value,
+        phone: document.getElementById('phone').value,
+        countryCode: document.getElementById('countryCode').value,
+        email: document.getElementById('email').value,
+        facebook: document.getElementById('facebook').value,
+        instagram: document.getElementById('instagram').value,
+        youtube: document.getElementById('youtube').value,
+        profileImage: document.getElementById('profileImage').files[0]
+      };
+      // Basic mandatory field check
+      if (!formData.name || !formData.businessName || !formData.businessInfo ||
+          !formData.address || !formData.phone || !formData.email) {
+        alert('Please fill all required fields.');
+        return;
+      }
+      // Validate business info paragraphs
+      const paragraphs = formData.businessInfo.split('\n').filter(p => p.trim() !== '');
+      if (paragraphs.length < 3 || paragraphs.length > 5) {
+        alert('Please enter 3 to 5 paragraphs for the business info.');
+        return;
+      }
+      // Validate word limit per paragraph
+      for (const paragraph of paragraphs) {
+        const words = paragraph.split(/\s+/).filter(word => word.length > 0);
+        if (words.length > 150) {
+          alert(`Each paragraph must not exceed 150 words. Please check: "${paragraph.substring(0, 30)}..."`);
+          return;
         }
-        callButton.addEventListener("click", function (e) {
-          e.preventDefault();
-          setTimeout(() => {
-            window.location.href = callButton.href;
-          }, 100);
-        });
-        
-        /* -------------------- Share Icon -------------------- */
-        document.getElementById("topShareIcon").onclick = async () => {
-          try {
-            if (navigator.share) {
-              await navigator.share({
-                title: params.get("name") || "My Business Card",
-                text: "Check out this business card",
-                url: window.location.href,
-              });
-            } else {
-              alert("Sharing is not supported on this browser.");
-            }
-          } catch (err) {
-            console.error("Error sharing:", err);
-          }
+      }
+      // Save data to localStorage and proceed
+      if (formData.profileImage) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          localStorage.setItem('profileImage', e.target.result);
+          localStorage.setItem('formData', JSON.stringify(formData));
+          window.location.href = 'card.html';
         };
-        
-        /* -------------------- Settings Dropdown Behavior -------------------- */
-        const styleButton = document.getElementById("styleButton");
-        const styleDropdown = document.getElementById("styleDropdown");
-        styleButton.addEventListener("click", (e) => {
-          e.stopPropagation();
-          styleDropdown.style.display =
-            styleDropdown.style.display === "block" ? "none" : "block";
-        });
-        document.addEventListener("click", (e) => {
-          if (!document.getElementById("styleControlsContainer").contains(e.target)) {
-            styleDropdown.style.display = "none";
-          }
-        });
-        // Toggle each group’s content on header click
-        document.querySelectorAll(".setting-header").forEach((header) => {
-          header.addEventListener("click", () => {
-            const content = header.nextElementSibling;
-            content.style.display = content.style.display === "block" ? "none" : "block";
-          });
-        });
-        
-        /* -------------------- Settings Option Selection -------------------- */
-        // For Theme
-        document.querySelectorAll("#themeGroup .setting-options li").forEach((li) => {
-          li.addEventListener("click", () => {
-            selectedTheme = li.getAttribute("data-theme");
-            document.querySelectorAll("#themeGroup .setting-options li").forEach(
-              (el) => (el.style.background = "")
-            );
-            li.style.background = "#ddd";
-          });
-        });
-        // For Mood
-        document.querySelectorAll("#moodGroup .setting-options li").forEach((li) => {
-          li.addEventListener("click", () => {
-            selectedMood = li.getAttribute("data-mood");
-            document.querySelectorAll("#moodGroup .setting-options li").forEach(
-              (el) => (el.style.background = "")
-            );
-            li.style.background = "#ddd";
-          });
-        });
-        // For Icon Style (Style)
-        document.querySelectorAll("#iconStyleGroup .setting-options li").forEach((li) => {
-          li.addEventListener("click", () => {
-            selectedIconStyle = li.getAttribute("data-iconstyle");
-            document.querySelectorAll("#iconStyleGroup .setting-options li").forEach(
-              (el) => (el.style.background = "")
-            );
-            li.style.background = "#ddd";
-          });
-        });
-        
-        /* -------------------- Update Card Appearance -------------------- */
-        function updateCardAppearance() {
-          const card = document.querySelector(".card-container");
-          // Apply Theme Colors
-          if (selectedTheme === "default") {
-            document.documentElement.style.setProperty("--secondary-color", "#009688");
-            document.documentElement.style.setProperty("--accent-color", "#FF5722");
-            document.documentElement.style.setProperty("--card-background", "#FFFFFF");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #CFD8DC, #ECEFF1)");
-            card.style.borderImage = `linear-gradient(45deg, #009688, #FF5722, #3F51B5) 1`;
-            card.style.boxShadow = "0 8px 30px rgba(0,0,0,0.2)";
-          } else if (selectedTheme === "blue") {
-            document.documentElement.style.setProperty("--secondary-color", "#2196F3");
-            document.documentElement.style.setProperty("--accent-color", "#E91E63");
-            document.documentElement.style.setProperty("--card-background", "#F0F8FF");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #BBDEFB, #E3F2FD)");
-            card.style.borderImage = `linear-gradient(45deg, #2196F3, #E91E63, #3F51B5) 1`;
-            card.style.boxShadow = "0 8px 30px rgba(33,150,243,0.4)";
-          } else if (selectedTheme === "red") {
-            document.documentElement.style.setProperty("--secondary-color", "#F44336");
-            document.documentElement.style.setProperty("--accent-color", "#9C27B0");
-            document.documentElement.style.setProperty("--card-background", "#FFF0F0");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #FFCDD2, #FFEBEE)");
-            card.style.borderImage = `linear-gradient(45deg, #F44336, #9C27B0, #FF9800) 1`;
-            card.style.boxShadow = "0 8px 30px rgba(244,67,54,0.4)";
-          } else if (selectedTheme === "green") {
-            document.documentElement.style.setProperty("--secondary-color", "#4CAF50");
-            document.documentElement.style.setProperty("--accent-color", "#8BC34A");
-            document.documentElement.style.setProperty("--card-background", "#E8F5E9");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #C8E6C9, #E8F5E9)");
-            card.style.borderImage = `linear-gradient(45deg, #4CAF50, #8BC34A, #388E3C) 1`;
-            card.style.boxShadow = "0 8px 30px rgba(76,175,80,0.4)";
-          }
-          // Apply Mood
-          if (selectedMood === "night") {
-            document.documentElement.style.setProperty("--card-background", "#2b2b2b");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #1a1a1a, #333333)");
-            document.documentElement.style.setProperty("--primary-color", "#f0f0f0");
-            document.documentElement.style.setProperty("--neutral-dark", "#f0f0f0");
-            document.documentElement.style.setProperty("--business-info-bg", "#444");
-          } else {
-            document.documentElement.style.setProperty("--card-background", "#FFFFFF");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #cfd8dc, #eceff1)");
-            document.documentElement.style.setProperty("--primary-color", "#1e1e1e");
-            document.documentElement.style.setProperty("--neutral-dark", "#333333");
-            document.documentElement.style.setProperty("--business-info-bg", "#e0f7fa");
-          }
-          // Apply Icon Style Changes
-          if (selectedIconStyle === "styleA") {
-            document.querySelectorAll(".icon").forEach((el) => {
-              el.style.borderRadius = "10px";
-              el.style.backgroundColor = "rgba(0,150,136,0.2)";
-            });
-            document.querySelectorAll(".social-icon").forEach((el) => {
-              el.style.borderRadius = "10px";
-              el.style.backgroundColor = "rgba(0,150,136,0.2)";
-            });
-          } else if (selectedIconStyle === "styleB") {
-            document.querySelectorAll(".icon").forEach((el) => {
-              el.style.borderRadius = "0px";
-              el.style.backgroundColor = "rgba(233,30,99,0.2)";
-            });
-            document.querySelectorAll(".social-icon").forEach((el) => {
-              el.style.borderRadius = "0px";
-              el.style.backgroundColor = "rgba(233,30,99,0.2)";
-            });
-          } else {
-            // "none" – revert to CSS defaults
-            document.querySelectorAll(".icon").forEach((el) => {
-              el.style.borderRadius = "";
-              el.style.backgroundColor = "";
-            });
-            document.querySelectorAll(".social-icon").forEach((el) => {
-              el.style.borderRadius = "";
-              el.style.backgroundColor = "";
-            });
-          }
-        }
-        function updateCardAppearanceAndSave() {
-          updateCardAppearance();
-          const newUrl = new URL(window.location.href);
-          newUrl.searchParams.set("theme", selectedTheme);
-          newUrl.searchParams.set("mood", selectedMood);
-          newUrl.searchParams.set("iconstyle", selectedIconStyle);
-          history.replaceState(null, "", newUrl.toString());
-        }
-        
-        /* -------------------- Group Apply Handlers -------------------- */
-        document.querySelectorAll(".apply-btn").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            updateCardAppearanceAndSave();
-            btn.closest(".setting-content").style.display = "none";
-          });
-        });
-      });
-    </script>
-  </body>
+        reader.readAsDataURL(formData.profileImage);
+      } else {
+        localStorage.setItem('formData', JSON.stringify(formData));
+        window.location.href = 'card.html';
+      }
+    });
+  </script>
+</body>
 </html>
