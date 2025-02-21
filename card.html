@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Business Card</title>
     <!-- Font Awesome for icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
       :root {
         --primary-color: #1e1e1e;
@@ -16,6 +19,7 @@
         --card-background: #ffffff;
         --body-bg: linear-gradient(135deg, #cfd8dc, #eceff1);
         --business-info-bg: #e0f7fa;
+        /* For dropdown header text, use dark color */
         --dropdown-header-color: #333;
         --dropdown-btn-bg: #00796b;
         --dropdown-btn-hover: #00695c;
@@ -31,6 +35,7 @@
         min-height: 100vh;
         position: relative;
       }
+      /* Card Container with rounded corners */
       .card-container {
         position: relative;
         width: 400px;
@@ -44,7 +49,7 @@
         margin: 1rem;
         transition: background-color 0.5s ease, box-shadow 0.5s ease;
       }
-      /* Settings (Dropdown) */
+      /* Top Left Settings Icon (remains in place) */
       #styleControlsContainer {
         position: absolute;
         top: 10px;
@@ -62,6 +67,7 @@
       #styleButton:hover {
         color: var(--secondary-color);
       }
+      /* Top Right Share Icon */
       .top-icons {
         position: absolute;
         top: 10px;
@@ -79,11 +85,12 @@
       .top-share-icon:hover {
         color: var(--secondary-color);
       }
+      /* Settings Dropdown Panel (narrow and partly outside the card) */
       #styleDropdown {
         display: none;
         position: absolute;
         top: 110%;
-        left: -20px;
+        left: -20px; /* About half inside, half outside */
         background: #fff;
         border: 1px solid #ccc;
         border-radius: 4px;
@@ -92,13 +99,14 @@
         width: 100px; /* Reduced width */
         box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       }
+      /* Each Settings Group */
       .setting-group {
         border-bottom: 1px solid #ddd;
-        padding: 5px;
       }
       .setting-group:last-child {
         border-bottom: none;
       }
+      /* 3D Effect for Group Headers ("Theme", "Mood", "Style") */
       .setting-header {
         background: linear-gradient(to bottom, #f8f8f8, #dcdcdc);
         border: 1px solid #ccc;
@@ -116,6 +124,7 @@
         box-shadow: 3px 3px 7px rgba(0,0,0,0.4);
         transform: translateY(-1px);
       }
+      /* Content inside each group */
       .setting-content {
         display: none;
         padding: 5px;
@@ -134,9 +143,8 @@
       .setting-options li:hover {
         background: var(--secondary-color);
         color: #fff;
-        /* Direct preview on click */
-        /* (Each click updates the preview without saving permanently) */
       }
+      /* Buttons inside each group (stacked vertically) */
       .dropdown-btns {
         display: flex;
         flex-direction: column;
@@ -156,7 +164,7 @@
         background: var(--dropdown-btn-hover);
         box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
       }
-      /* Mini Icons */
+      /* Mini Icons (Call, Email, WhatsApp, Map) */
       .mini-icons {
         display: flex;
         justify-content: center;
@@ -285,6 +293,7 @@
       .action-btn:active {
         filter: brightness(90%);
       }
+      /* Remove transition for contact buttons */
       .contact-btn {
         transition: none !important;
       }
@@ -310,18 +319,7 @@
         transform: translateY(-2px);
         box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
       }
-      /* Extra Info Button */
-      #extraInfoButton {
-        display: none;
-        margin: 0.5rem auto;
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 6px;
-        background: var(--primary-color);
-        color: #fff;
-        cursor: pointer;
-      }
-      /* Floating Feedback Button */
+      /* Floating Feedback Button (fixed) */
       .floating-btn {
         position: fixed;
         bottom: 20px;
@@ -335,18 +333,18 @@
         cursor: pointer;
         font-size: 1.5rem;
         box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        margin-bottom: 10px;
         transition: transform 0.3s, box-shadow 0.3s;
-        z-index: 100;
       }
       .floating-btn:hover {
         background: var(--accent-color);
         transform: scale(1.1);
       }
-      /* Live Chat Icon – repositioned to float on the left overlapping by ~0.5cm */
+      /* Floating Live Chat Icon (outside card on right) */
       #floatingChatBtn {
-        position: fixed;
-        top: 40px;
-        left: 20px;
+        position: absolute;
+        top: 40px; /* Moved a bit lower than before */
+        right: -50px; /* Adjusted so that it overlaps the border slightly */
         background: var(--secondary-color);
         color: #fff;
         border: none;
@@ -356,18 +354,17 @@
         cursor: pointer;
         font-size: 1.5rem;
         box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        transform: translateX(-20px); /* Overlap by ~0.5cm */
-        z-index: 100;
+        transition: transform 0.3s, box-shadow 0.3s;
       }
       #floatingChatBtn:hover {
         background: var(--accent-color);
-        transform: translateX(-20px) scale(1.1);
+        transform: scale(1.1);
       }
-      /* Live Chat Modal */
+      /* Live Chat Modal (centered) */
       .modal {
         display: none;
         position: fixed;
-        z-index: 200;
+        z-index: 100;
         left: 0;
         top: 0;
         width: 100%;
@@ -388,6 +385,7 @@
       .modal-content h3 {
         margin-top: 0;
       }
+      /* Chat Conversation Area */
       #chatConversation {
         max-height: 150px;
         overflow-y: auto;
@@ -429,6 +427,7 @@
         background-color: #ccc;
         color: #333;
       }
+      /* Responsive adjustments */
       @media (max-width: 480px) {
         .card-container {
           width: 100%;
@@ -440,7 +439,8 @@
           align-items: center;
           text-align: center;
         }
-        .profile-image-container, .profile-info {
+        .profile-image-container,
+        .profile-info {
           width: 100%;
           padding: 0;
         }
@@ -452,10 +452,12 @@
         }
       }
     </style>
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    <!-- Card Container -->
-    <div class="card-container" id="cardContainer">
+    <!-- Card Container with added Tailwind classes for centering and max width -->
+    <div class="card-container max-w-md mx-auto" id="cardContainer">
       <!-- Top Left Settings Icon -->
       <div id="styleControlsContainer">
         <button id="styleButton" title="Settings">
@@ -474,7 +476,7 @@
                 <li data-theme="green">Green</li>
               </ul>
               <div class="dropdown-btns">
-                <button class="preview-btn" data-group="theme">Preview</button>
+                <!-- Preview button removed -->
                 <button class="apply-btn" data-group="theme">Apply</button>
               </div>
             </div>
@@ -488,7 +490,7 @@
                 <li data-mood="night">Night</li>
               </ul>
               <div class="dropdown-btns">
-                <button class="preview-btn" data-group="mood">Preview</button>
+                <!-- Preview button removed -->
                 <button class="apply-btn" data-group="mood">Apply</button>
               </div>
             </div>
@@ -503,7 +505,7 @@
                 <li data-iconstyle="styleB">Style B</li>
               </ul>
               <div class="dropdown-btns">
-                <button class="preview-btn" data-group="style">Preview</button>
+                <!-- Preview button removed -->
                 <button class="apply-btn" data-group="style">Apply</button>
               </div>
             </div>
@@ -576,83 +578,69 @@
           <i class="fab fa-youtube"></i>
         </a>
       </div>
-      <!-- Extra Info Button (Optional) -->
-      <button id="extraInfoButton">Extra Info</button>
-      <!-- Floating Live Chat Icon (shown only if live chat data provided) -->
-      <button id="floatingChatBtn" title="Chat with us">
-        <i class="fas fa-comments"></i>
+      <!-- Moved Feedback Button (replacing live chat) -->
+      <button id="feedbackBtn" title="Feedback" onclick="window.location.href='mailto:rashidncit@gmail.com?subject=Feedback on Business Card'">
+        <i class="fas fa-comment-dots"></i>
       </button>
     </div>
-    <!-- Floating Feedback Button -->
-    <button class="floating-btn feedback" title="Feedback" onclick="window.location.href='mailto:rashidncit@gmail.com?subject=Feedback on Business Card'">
-      <i class="fas fa-comment-dots"></i>
-    </button>
-    <!-- Live Chat Modal -->
-    <div id="chatModal" class="modal">
-      <div class="modal-content">
-        <h3>Live Chat</h3>
-        <div id="chatConversation"></div>
-        <textarea id="chatQuery" placeholder="Type your message here..."></textarea>
-        <div>
-          <button class="send-btn" id="sendChat">Send</button>
-          <button class="cancel-btn" id="cancelChat">Close</button>
-        </div>
-      </div>
-    </div>
-
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const storedFormData = JSON.parse(localStorage.getItem('formData'));
-        if (storedFormData) {
-          // Populate card details.
-          document.getElementById("cardName").textContent = storedFormData.name || "";
-          document.getElementById("cardBusinessName").textContent = storedFormData.businessName || "";
-          document.getElementById("cardAddress").textContent = storedFormData.address || "";
-          document.getElementById("cardPhone").textContent = storedFormData.phone || "";
-          document.getElementById("cardEmail").textContent = storedFormData.email || "";
-          document.getElementById("cardProfileImage").src = storedFormData.profileImage || localStorage.getItem('profileImage') || "";
-          
-          // Process business info paragraphs.
-          const businessInfo = storedFormData.businessInfo || "";
-          const paragraphs = businessInfo.split("\n").filter(p => p.trim() !== "");
-          const businessInfoContainer = document.getElementById("businessInfoContent");
-          businessInfoContainer.innerHTML = paragraphs
-            .map(p => `<div class="business-info-content"><p>${p}</p></div>`)
-            .join("");
-          const paragraphDivs = businessInfoContainer.querySelectorAll(".business-info-content");
-          let currentIndex = 0;
-          paragraphDivs.forEach((div, idx) => {
-            div.style.display = idx === 0 ? "block" : "none";
-          });
-          if (paragraphDivs.length > 0) {
-            setInterval(() => {
-              paragraphDivs[currentIndex].style.display = "none";
-              currentIndex = (currentIndex + 1) % paragraphDivs.length;
-              paragraphDivs[currentIndex].style.display = "block";
-            }, 8000);
-          }
-        } else {
-          console.error("No form data found in localStorage.");
+        // Variables for settings
+        let selectedTheme = "default";
+        let selectedMood = "day";
+        let selectedIconStyle = "none";
+        const params = new URLSearchParams(window.location.search);
+        console.log("Current URL:", window.location.href);
+        
+        /* -------------------- Populate Card Info -------------------- */
+        const profileImage = params.get("profileImage") || "https://i.imgur.com/048d9400ce02b71.jpeg";
+        document.getElementById("cardProfileImage").src = profileImage;
+        document.getElementById("cardName").textContent = params.get("name") || "";
+        document.getElementById("cardBusinessName").textContent = params.get("businessName") || "";
+        document.getElementById("cardAddress").textContent = params.get("address") || "";
+        document.getElementById("cardPhone").textContent = params.get("phone") || "";
+        document.getElementById("cardEmail").textContent = params.get("email") || "";
+        
+        const businessInfo = params.get("businessInfo") || "";
+        const paragraphs = businessInfo.split("\n").filter((p) => p.trim() !== "");
+        const businessInfoContainer = document.getElementById("businessInfoContent");
+        businessInfoContainer.innerHTML = paragraphs
+          .map((p) => `<div class="business-info-content"><p>${p}</p></div>`)
+          .join("");
+        const paragraphDivs = businessInfoContainer.querySelectorAll(".business-info-content");
+        let currentIndex = 0;
+        paragraphDivs.forEach((div, idx) => {
+          div.style.display = idx === 0 ? "block" : "none";
+        });
+        if (paragraphDivs.length > 0) {
+          setInterval(() => {
+            paragraphDivs[currentIndex].style.display = "none";
+            currentIndex = (currentIndex + 1) % paragraphDivs.length;
+            paragraphDivs[currentIndex].style.display = "block";
+          }, 8000);
         }
         
-        // Social Links.
-        const socialPlatforms = ['facebook', 'instagram', 'youtube'];
-        socialPlatforms.forEach(platform => {
-          const button = document.getElementById(platform + "Button");
-          const url = storedFormData ? storedFormData[platform] : "";
+        /* -------------------- Social Links -------------------- */
+        const socialLinks = {
+          facebook: document.getElementById("facebookButton"),
+          instagram: document.getElementById("instagramButton"),
+          youtube: document.getElementById("youtubeButton"),
+        };
+        Object.entries(socialLinks).forEach(([platform, element]) => {
+          const url = params.get(platform);
           if (url) {
-            button.href = url;
-            button.style.visibility = "visible";
-            button.target = "_blank";
+            element.href = url;
+            element.style.visibility = "visible";
+            element.target = "_blank";
           } else {
-            button.style.visibility = "hidden";
+            element.style.visibility = "hidden";
           }
         });
         
-        // Mini Icons.
-        const phoneParam = storedFormData ? storedFormData.phone : "";
-        const emailParam = storedFormData ? storedFormData.email : "";
-        const addressParam = storedFormData ? storedFormData.address : "";
+        /* -------------------- Mini Icons -------------------- */
+        const phoneParam = params.get("phone") || "";
+        const emailParam = params.get("email") || "";
+        const addressParam = params.get("address") || "";
         document.getElementById("miniCallButton").onclick = () => {
           if (phoneParam) window.location.href = `tel:${phoneParam}`;
         };
@@ -670,9 +658,9 @@
           }
         };
         
-        // vCard functionality.
+        /* -------------------- Connect (vCard) -------------------- */
         document.getElementById("connectButton").onclick = () => {
-          const name = storedFormData ? storedFormData.name : "Contact";
+          const name = params.get("name") || "Contact";
           const vCardContent =
             "BEGIN:VCARD\r\nVERSION:3.0\r\n" +
             `N:;${name};;;\r\nFN:${name}\r\n` +
@@ -688,7 +676,7 @@
           URL.revokeObjectURL(url);
         };
         
-        // Action Buttons.
+        /* -------------------- Action Buttons -------------------- */
         const callButton = document.getElementById("callButton");
         const whatsappButton = document.getElementById("whatsappButton");
         const emailButton = document.getElementById("emailButton");
@@ -711,12 +699,12 @@
           }, 100);
         });
         
-        // Share Icon.
+        /* -------------------- Share Icon -------------------- */
         document.getElementById("topShareIcon").onclick = async () => {
           try {
             if (navigator.share) {
               await navigator.share({
-                title: storedFormData ? storedFormData.name : "My Business Card",
+                title: params.get("name") || "My Business Card",
                 text: "Check out this business card",
                 url: window.location.href,
               });
@@ -728,19 +716,20 @@
           }
         };
         
-        // Settings Dropdown Behavior.
+        /* -------------------- Settings Dropdown Behavior -------------------- */
         const styleButton = document.getElementById("styleButton");
         const styleDropdown = document.getElementById("styleDropdown");
         styleButton.addEventListener("click", (e) => {
           e.stopPropagation();
-          styleDropdown.style.display = styleDropdown.style.display === "block" ? "none" : "block";
+          styleDropdown.style.display =
+            styleDropdown.style.display === "block" ? "none" : "block";
         });
         document.addEventListener("click", (e) => {
           if (!document.getElementById("styleControlsContainer").contains(e.target)) {
             styleDropdown.style.display = "none";
           }
         });
-        // Toggle each group’s content.
+        // Toggle each group’s content on header click
         document.querySelectorAll(".setting-header").forEach((header) => {
           header.addEventListener("click", () => {
             const content = header.nextElementSibling;
@@ -748,41 +737,42 @@
           });
         });
         
-        // Settings Option Selection with immediate preview.
-        let selectedTheme = "default";
-        let selectedMood = "day";
-        let selectedIconStyle = "none";
-        // Theme group.
+        /* -------------------- Settings Option Selection -------------------- */
+        // For Theme
         document.querySelectorAll("#themeGroup .setting-options li").forEach((li) => {
           li.addEventListener("click", () => {
             selectedTheme = li.getAttribute("data-theme");
-            document.querySelectorAll("#themeGroup .setting-options li").forEach(el => el.style.background = "");
+            document.querySelectorAll("#themeGroup .setting-options li").forEach(
+              (el) => (el.style.background = "")
+            );
             li.style.background = "#ddd";
-            updateCardAppearance(); // Immediate preview.
           });
         });
-        // Mood group.
+        // For Mood
         document.querySelectorAll("#moodGroup .setting-options li").forEach((li) => {
           li.addEventListener("click", () => {
             selectedMood = li.getAttribute("data-mood");
-            document.querySelectorAll("#moodGroup .setting-options li").forEach(el => el.style.background = "");
+            document.querySelectorAll("#moodGroup .setting-options li").forEach(
+              (el) => (el.style.background = "")
+            );
             li.style.background = "#ddd";
-            updateCardAppearance();
           });
         });
-        // Icon Style group.
+        // For Icon Style (Style)
         document.querySelectorAll("#iconStyleGroup .setting-options li").forEach((li) => {
           li.addEventListener("click", () => {
             selectedIconStyle = li.getAttribute("data-iconstyle");
-            document.querySelectorAll("#iconStyleGroup .setting-options li").forEach(el => el.style.background = "");
+            document.querySelectorAll("#iconStyleGroup .setting-options li").forEach(
+              (el) => (el.style.background = "")
+            );
             li.style.background = "#ddd";
-            updateCardAppearance();
           });
         });
         
-        // Update Card Appearance function.
+        /* -------------------- Update Card Appearance -------------------- */
         function updateCardAppearance() {
           const card = document.querySelector(".card-container");
+          // Apply Theme Colors
           if (selectedTheme === "default") {
             document.documentElement.style.setProperty("--secondary-color", "#009688");
             document.documentElement.style.setProperty("--accent-color", "#FF5722");
@@ -812,6 +802,7 @@
             card.style.borderImage = `linear-gradient(45deg, #4CAF50, #8BC34A, #388E3C) 1`;
             card.style.boxShadow = "0 8px 30px rgba(76,175,80,0.4)";
           }
+          // Apply Mood
           if (selectedMood === "night") {
             document.documentElement.style.setProperty("--card-background", "#2b2b2b");
             document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #1a1a1a, #333333)");
@@ -825,36 +816,37 @@
             document.documentElement.style.setProperty("--neutral-dark", "#333333");
             document.documentElement.style.setProperty("--business-info-bg", "#e0f7fa");
           }
+          // Apply Icon Style Changes
           if (selectedIconStyle === "styleA") {
-            document.querySelectorAll(".icon").forEach(el => {
+            document.querySelectorAll(".icon").forEach((el) => {
               el.style.borderRadius = "10px";
               el.style.backgroundColor = "rgba(0,150,136,0.2)";
             });
-            document.querySelectorAll(".social-icon").forEach(el => {
+            document.querySelectorAll(".social-icon").forEach((el) => {
               el.style.borderRadius = "10px";
               el.style.backgroundColor = "rgba(0,150,136,0.2)";
             });
           } else if (selectedIconStyle === "styleB") {
-            document.querySelectorAll(".icon").forEach(el => {
+            document.querySelectorAll(".icon").forEach((el) => {
               el.style.borderRadius = "0px";
               el.style.backgroundColor = "rgba(233,30,99,0.2)";
             });
-            document.querySelectorAll(".social-icon").forEach(el => {
+            document.querySelectorAll(".social-icon").forEach((el) => {
               el.style.borderRadius = "0px";
               el.style.backgroundColor = "rgba(233,30,99,0.2)";
             });
           } else {
-            document.querySelectorAll(".icon").forEach(el => {
+            // "none" – revert to CSS defaults
+            document.querySelectorAll(".icon").forEach((el) => {
               el.style.borderRadius = "";
               el.style.backgroundColor = "";
             });
-            document.querySelectorAll(".social-icon").forEach(el => {
+            document.querySelectorAll(".social-icon").forEach((el) => {
               el.style.borderRadius = "";
               el.style.backgroundColor = "";
             });
           }
         }
-        // Apply buttons – finalizing the preview (updates URL parameters).
         function updateCardAppearanceAndSave() {
           updateCardAppearance();
           const newUrl = new URL(window.location.href);
@@ -864,77 +856,13 @@
           history.replaceState(null, "", newUrl.toString());
         }
         
-        // Group Apply Handlers.
-        document.querySelectorAll(".preview-btn").forEach(btn => {
-          btn.addEventListener("click", () => {
-            alert("This is only a preview. Click Apply to update the card.");
-          });
-        });
-        document.querySelectorAll(".apply-btn").forEach(btn => {
+        /* -------------------- Group Apply Handlers -------------------- */
+        document.querySelectorAll(".apply-btn").forEach((btn) => {
           btn.addEventListener("click", () => {
             updateCardAppearanceAndSave();
             btn.closest(".setting-content").style.display = "none";
           });
         });
-        
-        // Live Chat Modal.
-        const chatModal = document.getElementById("chatModal");
-        const floatingChatBtn = document.getElementById("floatingChatBtn");
-        const sendChat = document.getElementById("sendChat");
-        const cancelChat = document.getElementById("cancelChat");
-        const chatQuery = document.getElementById("chatQuery");
-        const chatConversation = document.getElementById("chatConversation");
-        floatingChatBtn.addEventListener("click", () => {
-          chatModal.style.display = "block";
-          chatConversation.innerHTML = "";
-          chatQuery.value = "";
-          chatQuery.focus();
-        });
-        cancelChat.addEventListener("click", () => {
-          chatModal.style.display = "none";
-        });
-        sendChat.addEventListener("click", () => {
-          const queryText = chatQuery.value.trim();
-          if (!queryText) {
-            alert("Please enter your message.");
-            return;
-          }
-          const customerMsg = document.createElement("div");
-          customerMsg.className = "chat-message customer";
-          customerMsg.textContent = queryText;
-          chatConversation.appendChild(customerMsg);
-          const autoReply = document.createElement("div");
-          autoReply.className = "chat-message auto-reply";
-          autoReply.textContent = "Thank you for contacting us via Smart Link Visiting Card.";
-          setTimeout(() => {
-            chatConversation.appendChild(autoReply);
-            chatConversation.scrollTop = chatConversation.scrollHeight;
-          }, 1000);
-          chatQuery.value = "";
-        });
-        window.addEventListener("click", (e) => {
-          if (e.target === chatModal) {
-            chatModal.style.display = "none";
-          }
-        });
-        
-        // Show or hide live chat icon based on live chat field entries.
-        if (storedFormData && (storedFormData.liveChatFacebook || storedFormData.liveChatEmail)) {
-          floatingChatBtn.style.display = "block";
-        } else {
-          floatingChatBtn.style.display = "none";
-        }
-        
-        // Extra Info Button.
-        const extraInfoButton = document.getElementById("extraInfoButton");
-        if (storedFormData && storedFormData.extraInfo && storedFormData.extraInfo.trim() !== "") {
-          extraInfoButton.style.display = "block";
-          extraInfoButton.onclick = () => {
-            alert("Extra Info:\n" + storedFormData.extraInfo);
-          };
-        } else {
-          extraInfoButton.style.display = "none";
-        }
       });
     </script>
   </body>
