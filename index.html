@@ -40,6 +40,7 @@
       margin: 1rem;
       box-sizing: border-box;
       position: relative;
+      transition: filter 0.3s ease;
     }
     /* Gear icon moved further upward inside the container */
     .gear-icon {
@@ -145,6 +146,7 @@
     .dropdown-menu.active {
       display: block;
     }
+    /* Main dropdown headers with enhanced 3D styling */
     .dropdown-menu h4 {
       margin: 0 0 0.3rem;
       font-size: 0.9rem;
@@ -153,8 +155,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 0.3rem;
+      border: 1px solid var(--neutral-light);
+      border-radius: 4px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+      transition: transform 0.1s ease;
     }
     .dropdown-menu h4:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
       color: var(--secondary-color);
     }
     /* Arrow icon */
@@ -320,7 +329,7 @@
   </style>
 </head>
 <body>
-  <div class="form-container glassy-background">
+  <div class="form-container glassy-background" id="formContainer">
     <div class="gear-icon" onclick="toggleDropdown()">
       <i class="fas fa-cog"></i>
     </div>
@@ -664,6 +673,13 @@
         </div>
       `;
     }
+    // Global click handler to close dropdown when tapping outside
+    document.addEventListener('click', function(event) {
+      const dropdownMenu = document.getElementById('dropdownMenu');
+      if(dropdownMenu.classList.contains('active') && !event.target.closest('.dropdown-menu') && !event.target.closest('.gear-icon')) {
+        dropdownMenu.classList.remove('active');
+      }
+    });
     document.addEventListener('click', function(event) {
       const dialogBox = document.getElementById('dialogBox');
       if(dialogBox.classList.contains('active') && !dialogBox.contains(event.target) && !event.target.closest('.dropdown-menu')) {
@@ -740,7 +756,7 @@
       closeDropdown();
       alert(type.charAt(0).toUpperCase() + type.slice(1) + ' applied!');
     }
-    // Updated showImageDialog with preview callback so Apply works
+    // Updated showImageDialog with glass effect on apply
     function showImageDialog(src) {
       const dialogBox = document.getElementById('dialogBox');
       const dialogImage = document.getElementById('dialogImage');
@@ -748,18 +764,20 @@
       dialogImage.style.display = 'block';
       dialogBox.classList.add('active');
       previewApplyCallback = function() {
-        const formContainer = document.querySelector('.form-container');
+        const formContainer = document.getElementById('formContainer');
         formContainer.style.backgroundImage = `url(${src})`;
         formContainer.style.backgroundSize = 'cover';
+        // Add glass effect: dim and blur the container
+        formContainer.style.filter = "blur(2px) brightness(0.8)";
         closeDialog();
         closeDropdown();
-        alert('Image applied!');
+        alert('Image applied with glass effect!');
       };
       previewCancelCallback = function() {
         closeDialog();
       };
     }
-    // Updated showColorDialog with preview callback so Apply works
+    // Updated showColorDialog with glass effect on apply
     function showColorDialog(color) {
       const dialogBox = document.getElementById('dialogBox');
       const dialogColor = document.getElementById('dialogColor');
@@ -767,12 +785,14 @@
       dialogColor.style.display = 'block';
       dialogBox.classList.add('active');
       previewApplyCallback = function() {
-        const formContainer = document.querySelector('.form-container');
+        const formContainer = document.getElementById('formContainer');
         formContainer.style.backgroundImage = 'none';
         formContainer.style.backgroundColor = color;
+        // Add glass effect: dim and blur the container
+        formContainer.style.filter = "blur(2px) brightness(0.8)";
         closeDialog();
         closeDropdown();
-        alert('Color applied!');
+        alert('Color applied with glass effect!');
       };
       previewCancelCallback = function() {
         closeDialog();
@@ -798,12 +818,14 @@
       const startColor = document.getElementById('startColor').value;
       const endColor = document.getElementById('endColor').value;
       const gradient = `linear-gradient(45deg, ${startColor}, ${endColor})`;
-      const formContainer = document.querySelector('.form-container');
+      const formContainer = document.getElementById('formContainer');
       formContainer.style.backgroundImage = 'none';
       formContainer.style.backgroundColor = gradient;
+      // Add glass effect on gradient apply
+      formContainer.style.filter = "blur(2px) brightness(0.8)";
       closeDialog();
       closeDropdown();
-      alert('Gradient applied!');
+      alert('Gradient applied with glass effect!');
     }
     function closeDropdown() {
       const dropdownMenu = document.getElementById('dropdownMenu');
