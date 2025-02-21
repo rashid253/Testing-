@@ -137,7 +137,7 @@
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       padding: 1rem;
-      width: 180px; /* Reduced width */
+      width: 150px; /* Reduced width */
       z-index: 1000;
     }
     .dropdown-menu.active {
@@ -154,13 +154,6 @@
     }
     .dropdown-menu h4:hover {
       color: var(--secondary-color);
-    }
-    .dropdown-menu h4 .arrow {
-      font-size: 0.8rem;
-      transition: transform 0.3s ease;
-    }
-    .dropdown-menu h4 .arrow.active {
-      transform: rotate(90deg);
     }
     .dropdown-menu button {
       width: 100%;
@@ -308,21 +301,17 @@
 
   <!-- Dropdown Menu -->
   <div class="dropdown-menu" id="dropdownMenu">
-    <h4 onclick="toggleSubDropdown('mood')">
-      Mood <span class="arrow">▶</span>
-    </h4>
+    <h4 onclick="toggleSubDropdown('mood')">Mood</h4>
     <div id="moodSubDropdown" class="sub-dropdown">
       <button onclick="previewMood('day')">Day</button>
       <button onclick="previewMood('night')">Night</button>
       <button onclick="applyMood()">Apply Mood</button>
     </div>
 
-    <h4 onclick="toggleSubDropdown('theme')">
-      Theme <span class="arrow">▶</span>
-    </h4>
+    <h4 onclick="toggleSubDropdown('theme')">Theme</h4>
     <div id="themeSubDropdown" class="sub-dropdown">
       <button onclick="previewTheme('default')">Default</button>
-      <button onclick="toggleSubDropdown('image')">Image <span class="arrow">▶</span></button>
+      <button onclick="toggleSubDropdown('image')">Image</button>
       <div id="imageSubDropdown" class="sub-dropdown">
         <div class="image-thumbnails">
           <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Nature 1" onclick="showImageDialog(this.src)">
@@ -332,7 +321,7 @@
           <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Nature 5" onclick="showImageDialog(this.src)">
         </div>
       </div>
-      <button onclick="toggleSubDropdown('color')">Color <span class="arrow">▶</span></button>
+      <button onclick="toggleSubDropdown('color')">Color</button>
       <div id="colorSubDropdown" class="sub-dropdown">
         <div class="color-thumbnails">
           <div style="background-color: #3498DB;" onclick="showColorDialog('#3498DB')"></div>
@@ -347,9 +336,7 @@
       </div>
     </div>
 
-    <h4 onclick="toggleSubDropdown('style')">
-      Style <span class="arrow">▶</span>
-    </h4>
+    <h4 onclick="toggleSubDropdown('style')">Style</h4>
     <div id="styleSubDropdown" class="sub-dropdown">
       <button onclick="previewStyle('default')">Default</button>
       <button onclick="previewStyle('styleA')">Style A</button>
@@ -650,8 +637,6 @@
     function toggleSubDropdown(id) {
       const subDropdown = document.getElementById(id + 'SubDropdown');
       subDropdown.classList.toggle('active');
-      const arrow = document.querySelector(`#${id} .arrow`);
-      arrow.classList.toggle('active');
     }
 
     // Preview Mood
