@@ -1,55 +1,46 @@
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>بزنس کارڈ جنریٹر</title>
+  <title>Business Card Generator</title>
   <!-- Font Awesome for icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
-  <!-- intl-tel-input CSS for international phone input -->
+  <!-- intl-tel-input CSS for international phone input (includes all country codes and flags) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
   <style>
-    /* بنیادی رنگوں کی تعریف */
     :root {
-      --primary-color: #2C3E50;
-      --secondary-color: #3498DB;
-      --accent-color: #E74C3E;
-      --neutral-light: rgba(236, 240, 241, 0.9);
-      --neutral-dark: #34495E;
+      --primary-color: #2C3E50;    /* Professional Navy */
+      --secondary-color: #3498DB;  /* Trust Blue */
+      --accent-color: #E74C3E;     /* Alert Red */
+      --neutral-light: rgba(236, 240, 241, 0.9); /* Light Gray with transparency */
+      --neutral-dark: #34495E;     /* Dark Gray */
     }
-    /* بیرونی صفحے کا پس منظر بالکل سفید */
     body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
       margin: 0;
       padding: 1rem;
-      background: #fff; /* باہر سب سفید */
-      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #e9ecef, #f0f4f8);
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      transition: background 0.3s ease, color 0.3s ease;
-      direction: rtl; /* اردو کے لیے رائٹ ٹو لیفٹ */
     }
-    /* فارم کنٹینر کے اندر ہلکی سی شیڈو اور بارڈر ریڈیئس */
     .form-container {
-      position: relative;
       width: 100%;
       max-width: 450px;
-      background: #fff; 
+      background: white;
       border-radius: 15px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.12);
       padding: 1.5rem;
       margin: 1rem;
       box-sizing: border-box;
-      overflow: hidden;
     }
-    /* فارم کا عنوان */
     .form-header {
       color: var(--primary-color);
       margin-bottom: 1.5rem;
       text-align: center;
     }
-    /* گرڈ ترتیب */
     .form-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -76,9 +67,6 @@
       font-size: 0.9rem;
       transition: border-color 0.2s ease;
       box-sizing: border-box;
-      background: #fff;
-      text-align: left; /* ٹیکسٹ انگریزی میں بھی سیدھا نظر آئے */
-      direction: ltr;   /* فیلڈز کے اندر لکھائی لیفٹ ٹو رائٹ */
     }
     input:focus, textarea:focus, select:focus {
       border-color: var(--secondary-color);
@@ -90,33 +78,26 @@
     .error {
       border: 2px solid var(--accent-color);
     }
-    /* پروفائل امیج کے لیے گلاس ایفیکٹ */
     .image-upload-group {
       grid-column: 1 / -1;
       text-align: center;
-      border: 1px solid rgba(255,255,255,0.3);
+      border: 2px dashed var(--neutral-light);
       padding: 1rem;
       border-radius: 8px;
       cursor: pointer;
       position: relative;
-      background: rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
     #profileImage {
       display: none;
     }
     #imagePreview {
-      width: 80px;
-      height: 80px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       object-fit: cover;
       margin: 0.5rem auto;
       display: none;
-      border: 2px solid rgba(255,255,255,0.5);
-      backdrop-filter: blur(5px);
     }
-    /* بٹن */
     #generateCard {
       background: var(--secondary-color);
       color: white;
@@ -127,209 +108,98 @@
       cursor: pointer;
       font-size: 1rem;
     }
-    /* ڈراپ ڈاؤن ایک ہی باکس میں تین آپشنز کے ساتھ */
-    .settings-container {
-      position: absolute;
-      top: 10px;
-      left: 10px; /* اردو رائٹ ٹو لیفٹ میں گیئر کو الٹی طرف دکھا دیں */
-      z-index: 10;
-    }
-    .settings-container i {
-      font-size: 1.5rem;
-      color: var(--neutral-dark);
-      cursor: pointer;
-    }
-    .settings-dropdown {
-      display: none;
-      position: absolute;
-      top: 35px;
-      left: 0; /* چونکہ ہم نے گیئر کو لیفٹ پر رکھا ہے */
-      background: #fff;
-      border: 1px solid var(--neutral-light);
-      border-radius: 6px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      z-index: 10;
-      width: 150px;
-      padding: 0.5rem;
-      text-align: left;
-      direction: ltr; /* ڈراپ ڈاؤن کے اندر انگریزی ٹیکسٹ سیدھا دکھانے کے لیے */
-    }
-    .settings-dropdown ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-    .settings-dropdown li {
-      margin-bottom: 0.8rem;
-    }
-    .settings-dropdown li:last-child {
-      margin-bottom: 0;
-    }
-    .dropdown-title {
-      font-size: 0.85rem;
-      color: var(--neutral-dark);
-      margin-bottom: 0.3rem;
-      display: block;
-      font-weight: bold;
-    }
-    .settings-dropdown select {
-      width: 100%;
-      padding: 0.25rem;
-      font-size: 0.85rem;
-    }
-    .apply-btn {
-      font-size: 0.8rem;
-      padding: 0.25rem 0.4rem;
-      background: var(--secondary-color);
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 0.3rem;
-    }
-    /* موبائل کے لیے ردعملی ڈیزائن */
     @media (max-width: 480px) {
       .form-container {
-        max-width: 100%;
+        max-width: 90%;
         padding: 1rem;
-        margin: 0.5rem;
       }
     }
-    /* ہدایات کا اسٹائل */
-    .input-instructions {
-      font-size: 0.75rem;
-      color: #666;
-      direction: rtl; /* یہ اردو میں ہی نظر آئے */
-      text-align: right;
+    /* Custom styles for dropdowns */
+    .intl-tel-input {
+      width: 100%;
+    }
+    .intl-tel-input .flag-container {
+      width: 50px;
+    }
+    .intl-tel-input .selected-flag {
+      padding: 0 8px;
+    }
+    .intl-tel-input .country-list {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .intl-tel-input .country-list .country {
+      padding: 8px 12px;
     }
   </style>
 </head>
 <body>
-  <!-- فارم کنٹینر -->
+  <!-- Form Section -->
   <div class="form-container">
-    <!-- بسم اللہ -->
-    <div style="text-align: center; font-weight: bold; margin-bottom: 0.5rem;">
-      بسم اللہ الرحمن الرحیم
-    </div>
-
-    <!-- ڈراپ ڈاؤن اور گیئر آئیکون -->
-    <div class="settings-container">
-      <i class="fas fa-cog" id="settingsIcon"></i>
-      <div class="settings-dropdown" id="settingsDropdown">
-        <ul>
-          <li>
-            <span class="dropdown-title">Display Mode</span>
-            <select id="displayModeSelect">
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
-            </select>
-            <button type="button" class="apply-btn" id="applyDisplayMode">Apply</button>
-          </li>
-          <li>
-            <span class="dropdown-title">Visual Theme</span>
-            <select id="visualThemeSelect">
-              <option value="">None</option>
-              <option value="theme1">Theme 1</option>
-              <option value="theme2">Theme 2</option>
-              <option value="theme3">Theme 3</option>
-            </select>
-            <button type="button" class="apply-btn" id="applyVisualTheme">Apply</button>
-          </li>
-          <li>
-            <span class="dropdown-title">Card Design</span>
-            <select id="cardDesignSelect">
-              <option value="default">Default</option>
-              <option value="layout1">Layout 1</option>
-              <option value="layout2">Layout 2</option>
-            </select>
-            <button type="button" class="apply-btn" id="applyCardDesign">Apply</button>
-          </li>
-        </ul>
-      </div>
-    </div>
-
     <div class="form-header">
-      <h2>اپنا بزنس کارڈ تیار کریں</h2>
-      <p>ضروری معلومات درج کریں</p>
+      <h2>Create Business Card</h2>
+      <p>Fill in all required information</p>
     </div>
 
     <div class="form-grid">
-      <!-- پروفائل امیج اپ لوڈ -->
+      <!-- Profile Image Upload -->
       <div class="image-upload-group">
         <label for="profileImage">
           <i class="fas fa-camera fa-2x"></i>
-          <p>اپنی پروفائل فوٹو اپ لوڈ کریں</p>
+          <p>Upload Profile Photo</p>
         </label>
         <input type="file" id="profileImage" accept="image/*" onchange="previewImage(event)" />
         <img id="imagePreview" alt="Profile Preview" />
       </div>
 
-      <!-- نام -->
+      <!-- Text Inputs -->
       <div class="input-group">
-        <label for="name">آپ کا نام <span class="required">*</span></label>
-        <input type="text" id="name" placeholder="مثال: علی خان" required />
-        <small class="input-instructions">پورا نام لکھیں</small>
+        <label for="name">Full Name <span class="required">*</span></label>
+        <input type="text" id="name" placeholder="Full Name" required />
+      </div>
+      <div class="input-group">
+        <label for="businessName">Business Name <span class="required">*</span></label>
+        <input type="text" id="businessName" placeholder="Business Name" required />
+      </div>
+      <div class="input-group">
+        <label for="businessInfo">Business Info <span class="required">*</span></label>
+        <textarea id="businessInfo" placeholder="Enter 3 to 5 paragraphs (Max 150 words each) separated by a new line" rows="6" required></textarea>
+        <small style="color: var(--neutral-dark); font-size: 0.8rem;">
+          <strong>Instructions:</strong> Write 3 to 5 paragraphs. Each paragraph must not exceed 150 words. Separate paragraphs with a new line.
+        </small>
+      </div>
+      <div class="input-group">
+        <label for="address">Business Address <span class="required">*</span></label>
+        <input type="text" id="address" placeholder="Business Address" required />
       </div>
 
-      <!-- بزنس کا نام -->
+      <!-- International Phone Input using intl-tel-input -->
       <div class="input-group">
-        <label for="businessName">بزنس کا نام <span class="required">*</span></label>
-        <input type="text" id="businessName" placeholder="مثال: علی انٹرپرائزز" required />
-        <small class="input-instructions">آپ کے کاروبار کا نام</small>
+        <label for="phone">Phone Number <span class="required">*</span></label>
+        <input type="tel" id="phone" placeholder="Enter phone number" required />
       </div>
 
-      <!-- بزنس انفارمیشن -->
       <div class="input-group">
-        <label for="businessInfo">بزنس کی تفصیل <span class="required">*</span></label>
-        <textarea id="businessInfo" rows="6" placeholder="3 سے 5 پیراگراف لکھیں، ہر پیرا زیادہ سے زیادہ 150 الفاظ پر مشتمل ہو۔" required></textarea>
-        <small class="input-instructions">ہر پیرا الگ لائن میں لکھیں</small>
+        <label for="email">Email Address <span class="required">*</span></label>
+        <input type="email" id="email" placeholder="Email Address" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address." />
       </div>
-
-      <!-- بزنس ایڈریس -->
       <div class="input-group">
-        <label for="address">بزنس کا پتہ <span class="required">*</span></label>
-        <input type="text" id="address" placeholder="مثال: 123 مارکیٹ اسٹریٹ، شہر" required />
-        <small class="input-instructions">مکمل پتہ لکھیں</small>
+        <label for="facebook">Facebook URL</label>
+        <input type="url" id="facebook" placeholder="Facebook URL" pattern="https?://(www\.)?facebook\.com/.*" title="Please enter a valid Facebook URL." />
       </div>
-
-      <!-- فون نمبر -->
       <div class="input-group">
-        <label for="phone">فون نمبر <span class="required">*</span></label>
-        <input type="tel" id="phone" placeholder="+92 300 1234567" required />
-        <small class="input-instructions">بین الاقوامی فارمیٹ میں درج کریں</small>
+        <label for="instagram">Instagram URL</label>
+        <input type="url" id="instagram" placeholder="Instagram URL" pattern="https?://(www\.)?instagram\.com/.*" title="Please enter a valid Instagram URL." />
       </div>
-
-      <!-- ای میل ایڈریس -->
       <div class="input-group">
-        <label for="email">ای میل ایڈریس <span class="required">*</span></label>
-        <input type="email" id="email" placeholder="example@domain.com" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Format: example@domain.com" />
-        <small class="input-instructions">درست ای میل فارمیٹ میں لکھیں</small>
-      </div>
-
-      <!-- فیس بک لنک -->
-      <div class="input-group">
-        <label for="facebook">فیس بک لنک</label>
-        <input type="url" id="facebook" placeholder="https://www.facebook.com/username" pattern="https?://(www\.)?facebook\.com/.+" />
-        <small class="input-instructions">اختیاری</small>
-      </div>
-
-      <!-- انسٹاگرام لنک -->
-      <div class="input-group">
-        <label for="instagram">انسٹاگرام لنک</label>
-        <input type="url" id="instagram" placeholder="https://www.instagram.com/username" pattern="https?://(www\.)?instagram\.com/.+" />
-        <small class="input-instructions">اختیاری</small>
-      </div>
-
-      <!-- یوٹیوب لنک -->
-      <div class="input-group">
-        <label for="youtube">یوٹیوب لنک</label>
-        <input type="url" id="youtube" placeholder="https://www.youtube.com/channel/..." pattern="https?://(www\.)?youtube\.com/.+" />
-        <small class="input-instructions">اختیاری</small>
+        <label for="youtube">YouTube URL</label>
+        <input type="url" id="youtube" placeholder="YouTube URL" pattern="https?://(www\.)?youtube\.com/.*" title="Please enter a valid YouTube URL." />
       </div>
     </div>
 
-    <button id="generateCard">کارڈ تیار کریں</button>
+    <button id="generateCard">Generate Card</button>
   </div>
 
   <!-- Firebase App (the core Firebase SDK) -->
@@ -340,12 +210,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <!-- Optional utils script for number formatting/validation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
-
   <script>
-    // ===================== بسم اللہ =====================
-    // یہ کوڈ آپ کے Firebase اور فون ویلیڈیشن وغیرہ کا ہے
-
-    // 1. Firebase Initialization (اپنے پروجیکٹ کی تفصیلات ڈالیں)
+    // Firebase configuration – replace with your own Firebase project details.
     var firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_AUTH_DOMAIN",
@@ -356,7 +222,7 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    // 2. فون ان پٹ کے لیے intl-tel-input کی سیٹنگ
+    // Initialize intl-tel-input for phone field (this provides all country codes and flags)
     var phoneInput = document.querySelector("#phone");
     var iti = window.intlTelInput(phoneInput, {
       initialCountry: "auto",
@@ -370,7 +236,7 @@
       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
     });
 
-    // 3. پروفائل امیج کا پریویو
+    // Image Preview Function
     function previewImage(event) {
       const reader = new FileReader();
       const preview = document.getElementById('imagePreview');
@@ -381,7 +247,7 @@
       reader.readAsDataURL(event.target.files[0]);
     }
 
-    // 4. امیج کو اپ لوڈ سے پہلے ری سائز کرنا
+    // Resize and compress image before upload (reduces resolution while keeping a suitable quality)
     function resizeImage(file, callback) {
       const img = new Image();
       const reader = new FileReader();
@@ -393,6 +259,8 @@
           const MAX_HEIGHT = 150;
           let width = img.width;
           let height = img.height;
+
+          // Maintain aspect ratio
           if (width > height) {
             if (width > MAX_WIDTH) {
               height = height * (MAX_WIDTH / width);
@@ -416,39 +284,18 @@
       reader.readAsDataURL(file);
     }
 
-    // 5. سیٹنگز ڈراپ ڈاؤن (یہ کوئی اصل تبدیلی نہیں کرے گا تاکہ سب سفید رہے)
-    const settingsIcon = document.getElementById('settingsIcon');
-    const settingsDropdown = document.getElementById('settingsDropdown');
-    settingsIcon.addEventListener('click', function(e) {
-      e.stopPropagation();
-      settingsDropdown.style.display = (settingsDropdown.style.display === 'block') ? 'none' : 'block';
-    });
-    document.addEventListener('click', function(e) {
-      if (!settingsDropdown.contains(e.target) && e.target !== settingsIcon) {
-        settingsDropdown.style.display = 'none';
-      }
-    });
-
-    // بس ڈراپ ڈاؤن بند کر دینے کے لیے بٹن
-    document.getElementById('applyDisplayMode').addEventListener('click', function() {
-      settingsDropdown.style.display = 'none';
-    });
-    document.getElementById('applyVisualTheme').addEventListener('click', function() {
-      settingsDropdown.style.display = 'none';
-    });
-    document.getElementById('applyCardDesign').addEventListener('click', function() {
-      settingsDropdown.style.display = 'none';
-    });
-
-    // 6. فارم کی ویلیڈیشن
+    // Validate form fields and display alerts on errors
     function validateForm() {
       let valid = true;
-      const requiredFields = ['name', 'businessName', 'businessInfo', 'address', 'email'];
-      requiredFields.forEach(function(id) {
-        document.getElementById(id).classList.remove('error');
+      // Clear previous error styles
+      const fieldIds = ['name', 'businessName', 'businessInfo', 'address', 'email'];
+      fieldIds.forEach(function(id) {
+        const field = document.getElementById(id);
+        if (field) field.classList.remove('error');
       });
-      // خالی فیلڈز چیک کریں
-      requiredFields.forEach(function(id) {
+
+      // Check required fields
+      fieldIds.forEach(function(id) {
         const field = document.getElementById(id);
         if (!field.value.trim()) {
           valid = false;
@@ -456,56 +303,61 @@
         }
       });
       if (!valid) {
-        alert("تمام ضروری فیلڈز پُر کریں۔");
+        alert("Please fill all required fields.");
         return false;
       }
-      // فون نمبر
+
+      // Validate phone number using intl-tel-input
       if (!iti.isValidNumber()) {
         phoneInput.classList.add('error');
-        alert("درست فون نمبر درج کریں۔");
+        alert("Please enter a valid phone number.");
         return false;
       }
-      // ای میل چیک
+
+      // Validate email with regex
       const emailValue = document.getElementById('email').value.trim();
       if (!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(emailValue)) {
         document.getElementById('email').classList.add('error');
-        alert("درست ای میل درج کریں۔");
+        alert("Please enter a valid email address.");
         return false;
       }
-      // اختیاری سوشل لنکس
+
+      // Validate optional social media URLs if provided
       const socialMedia = [
-        { id: 'facebook', regex: /^https?:\/\/(www\.)?facebook\.com\/.+$/i, message: "درست فیس بک لنک درج کریں۔" },
-        { id: 'instagram', regex: /^https?:\/\/(www\.)?instagram\.com\/.+$/i, message: "درست انسٹاگرام لنک درج کریں۔" },
-        { id: 'youtube', regex: /^https?:\/\/(www\.)?youtube\.com\/.+$/i, message: "درست یوٹیوب لنک درج کریں۔" }
+        { id: 'facebook', regex: /^https?:\/\/(www\.)?facebook\.com\/.+$/i, message: "Please enter a valid Facebook URL." },
+        { id: 'instagram', regex: /^https?:\/\/(www\.)?instagram\.com\/.+$/i, message: "Please enter a valid Instagram URL." },
+        { id: 'youtube', regex: /^https?:\/\/(www\.)?youtube\.com\/.+$/i, message: "Please enter a valid YouTube URL." }
       ];
-      for (let sm of socialMedia) {
+      socialMedia.forEach(function(sm) {
         const value = document.getElementById(sm.id).value.trim();
         if (value && !sm.regex.test(value)) {
           document.getElementById(sm.id).classList.add('error');
           alert(sm.message);
-          return false;
+          valid = false;
         }
-      }
-      // بزنس انفارمیشن پیراگراف چیک
+      });
+      if (!valid) return false;
+
+      // Validate business info: must be 3 to 5 paragraphs and each paragraph ≤ 150 words
       const businessInfo = document.getElementById('businessInfo').value.trim();
       const paragraphs = businessInfo.split('\n').filter(p => p.trim() !== '');
       if (paragraphs.length < 3 || paragraphs.length > 5) {
         document.getElementById('businessInfo').classList.add('error');
-        alert("بزنس کی تفصیل میں کم از کم 3 اور زیادہ سے زیادہ 5 پیراگراف لکھیں۔");
+        alert("Please enter 3 to 5 paragraphs for the business info.");
         return false;
       }
-      for (let p of paragraphs) {
-        const wordCount = p.split(/\s+/).filter(w => w.length > 0).length;
+      for (let i = 0; i < paragraphs.length; i++) {
+        const wordCount = paragraphs[i].split(/\s+/).filter(word => word.length > 0).length;
         if (wordCount > 150) {
           document.getElementById('businessInfo').classList.add('error');
-          alert("ہر پیرا زیادہ سے زیادہ 150 الفاظ پر مشتمل ہونا چاہیے۔");
+          alert("Each paragraph must not exceed 150 words. Please review your business info.");
           return false;
         }
       }
       return true;
     }
 
-    // 7. امیج کو Firebase پر اپ لوڈ کرنا
+    // Upload image to Firebase Storage
     function uploadImageToFirebase(blob, formData) {
       const storageRef = firebase.storage().ref();
       const imageRef = storageRef.child('profile_images/' + Date.now() + '.jpg');
@@ -516,26 +368,28 @@
         redirectToCard(formData);
       }).catch(function(error) {
         console.error('Error uploading image:', error);
-        alert('امیج اپ لوڈ ناکام۔ دوبارہ کوشش کریں۔');
+        alert('Image upload failed. Please try again.');
       });
     }
 
-    // 8. کارڈ جنریٹ کریں
+    // Generate card after validating form and (if needed) uploading image
     document.getElementById('generateCard').onclick = function () {
       if (!validateForm()) return;
+
       const formData = {
         name: document.getElementById('name').value.trim(),
         businessName: document.getElementById('businessName').value.trim(),
         businessInfo: document.getElementById('businessInfo').value.trim(),
         address: document.getElementById('address').value.trim(),
-        phone: iti.getNumber(),
+        phone: iti.getNumber(), // Full international phone number
         email: document.getElementById('email').value.trim(),
         facebook: document.getElementById('facebook').value.trim(),
         instagram: document.getElementById('instagram').value.trim(),
         youtube: document.getElementById('youtube').value.trim(),
         profileImage: document.getElementById('profileImage').files[0]
       };
-      // اگر تصویر موجود ہے تو اسے ری سائز کر کے اپ لوڈ کریں
+
+      // If an image is selected, resize then upload to Firebase; else, redirect immediately.
       if (formData.profileImage) {
         resizeImage(formData.profileImage, function(resizedBlob) {
           uploadImageToFirebase(resizedBlob, formData);
@@ -545,7 +399,7 @@
       }
     };
 
-    // 9. اگلے صفحے (card.html) پر ڈیٹا بھیجنا
+    // Redirect to card page with form data as URL parameters
     function redirectToCard(formData) {
       const params = new URLSearchParams();
       for (let key in formData) {
