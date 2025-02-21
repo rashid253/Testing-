@@ -41,10 +41,10 @@
       box-sizing: border-box;
       position: relative;
     }
-    /* Gear icon inside container */
+    /* Gear icon moved further upward inside the container */
     .gear-icon {
       position: absolute;
-      top: 1rem;
+      top: -10px;
       right: 1rem;
       font-size: 1.5rem;
       color: var(--primary-color);
@@ -127,7 +127,7 @@
       cursor: pointer;
       font-size: 1rem;
     }
-    /* Dropdown Menu with 3D effect */
+    /* Dropdown Menu with prominent 3D effect */
     .dropdown-menu {
       display: none;
       position: absolute;
@@ -136,9 +136,9 @@
       background: #fff;
       border: 1px solid var(--neutral-light);
       border-radius: 8px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
       padding: 0.5rem;
-      width: 80px; /* Reduced width */
+      width: 80px;
       z-index: 1000;
       text-align: center;
     }
@@ -157,7 +157,7 @@
     .dropdown-menu h4:hover {
       color: var(--secondary-color);
     }
-    /* Arrow icon for dropdown items */
+    /* Arrow icon */
     .arrow-icon {
       transition: transform 0.3s ease;
       font-size: 0.7rem;
@@ -166,35 +166,38 @@
     .arrow-icon.rotated {
       transform: rotate(-180deg);
     }
-    .dropdown-menu button {
+    /* Dropdown buttons with enhanced 3D styling */
+    .dropdown-menu button,
+    .sub-dropdown button {
       width: 100%;
       padding: 0.3rem 0.2rem;
       margin: 0.2rem 0;
       background: var(--secondary-color);
       color: white;
-      border: none;
+      border: 1px solid var(--neutral-light);
       border-radius: 4px;
       cursor: pointer;
       font-size: 0.8rem;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+      transition: transform 0.1s ease;
+    }
+    .dropdown-menu button:hover,
+    .sub-dropdown button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
     /* Sub Dropdown Menu */
     .sub-dropdown {
       display: none;
-      margin-left: 0;
+      margin: 0;
     }
     .sub-dropdown.active {
       display: block;
     }
     .sub-dropdown button {
-      width: 100%;
-      padding: 0.3rem 0.2rem;
-      margin: 0.2rem 0;
       background: var(--neutral-light);
       color: var(--neutral-dark);
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.8rem;
+      border: 1px solid var(--neutral-light);
     }
     .sub-dropdown button:hover {
       background: var(--secondary-color);
@@ -219,7 +222,7 @@
     .image-thumbnails img:hover {
       border-color: var(--secondary-color);
     }
-    /* Color Thumbnails */
+    /* Color Thumbnails – same size as images and scrollable */
     .color-thumbnails {
       display: flex;
       gap: 0.3rem;
@@ -251,7 +254,7 @@
       border-radius: 4px;
       font-size: 0.8rem;
     }
-    /* Preview Dialog Box moved inside container */
+    /* Preview Dialog Box – now inside container */
     .dialog-box {
       display: none;
       position: absolute;
@@ -260,7 +263,7 @@
       background: #fff;
       border: 1px solid var(--neutral-light);
       border-radius: 8px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
       padding: 0.5rem;
       width: 150px;
       z-index: 1001;
@@ -290,10 +293,13 @@
     .dialog-box .buttons button.apply {
       background: var(--secondary-color);
       color: white;
+      border: 1px solid var(--neutral-light);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
     }
     .dialog-box .buttons button.cancel {
       background: var(--neutral-light);
       color: var(--neutral-dark);
+      border: 1px solid var(--neutral-light);
     }
     /* Glassy Background for form container */
     .glassy-background {
@@ -442,6 +448,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
   <script>
+    // Firebase configuration – replace with your own details.
     var firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_AUTH_DOMAIN",
@@ -733,19 +740,43 @@
       closeDropdown();
       alert(type.charAt(0).toUpperCase() + type.slice(1) + ' applied!');
     }
+    // Updated showImageDialog with preview callback so Apply works
     function showImageDialog(src) {
       const dialogBox = document.getElementById('dialogBox');
       const dialogImage = document.getElementById('dialogImage');
       dialogImage.src = src;
       dialogImage.style.display = 'block';
       dialogBox.classList.add('active');
+      previewApplyCallback = function() {
+        const formContainer = document.querySelector('.form-container');
+        formContainer.style.backgroundImage = `url(${src})`;
+        formContainer.style.backgroundSize = 'cover';
+        closeDialog();
+        closeDropdown();
+        alert('Image applied!');
+      };
+      previewCancelCallback = function() {
+        closeDialog();
+      };
     }
+    // Updated showColorDialog with preview callback so Apply works
     function showColorDialog(color) {
       const dialogBox = document.getElementById('dialogBox');
       const dialogColor = document.getElementById('dialogColor');
       dialogColor.style.background = color;
       dialogColor.style.display = 'block';
       dialogBox.classList.add('active');
+      previewApplyCallback = function() {
+        const formContainer = document.querySelector('.form-container');
+        formContainer.style.backgroundImage = 'none';
+        formContainer.style.backgroundColor = color;
+        closeDialog();
+        closeDropdown();
+        alert('Color applied!');
+      };
+      previewCancelCallback = function() {
+        closeDialog();
+      };
     }
     function showGradientPicker() {
       const dialogBox = document.getElementById('dialogBox');
