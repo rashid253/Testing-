@@ -130,14 +130,14 @@
     .dropdown-menu {
       display: none;
       position: absolute;
-      top: 2rem; /* Moved closer to gear icon */
+      top: 2rem; /* Closer to gear icon */
       right: 0;
       background: #fff;
       border: 1px solid var(--neutral-light);
       border-radius: 8px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.3);
       padding: 0.5rem;
-      width: 150px; /* Reduced width */
+      width: 120px; /* Reduced width */
       z-index: 1000;
       text-align: center;
     }
@@ -168,7 +168,7 @@
       margin-left: 0.2rem;
     }
     .arrow-icon.rotated { transform: rotate(-180deg); }
-    /* Dropdown buttons */
+    /* Dropdown inner buttons */
     .dropdown-menu button {
       width: 100%;
       padding: 0.3rem;
@@ -190,6 +190,8 @@
     .sub-dropdown {
       display: none;
       margin: 0.3rem 0;
+      overflow-x: auto; /* Ensure scrolling if needed */
+      white-space: nowrap;
     }
     .sub-dropdown.active { display: block; }
     /* Thumbnails */
@@ -197,6 +199,7 @@
       display: flex;
       gap: 0.3rem;
       overflow-x: auto;
+      white-space: nowrap;
       margin-bottom: 0.3rem;
     }
     .image-thumbnails img {
@@ -224,7 +227,7 @@
       margin-top: 5px;
     }
     .action-buttons button {
-      padding: 0.3rem;
+      padding: 0.3rem 0.5rem;
       margin: 0 5px;
       border: none;
       border-radius: 4px;
