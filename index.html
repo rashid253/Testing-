@@ -35,17 +35,17 @@
       max-width: 450px;
       background: white;
       border-radius: 15px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
       padding: 1.5rem;
       margin: 1rem;
       box-sizing: border-box;
       position: relative;
       transition: filter 0.3s ease;
     }
-    /* Gear icon */
+    /* Gear icon (moved slightly down) */
     .gear-icon {
       position: absolute;
-      top: -10px;
+      top: 30px;
       right: 1rem;
       font-size: 1.5rem;
       color: var(--primary-color);
@@ -56,6 +56,120 @@
       color: var(--secondary-color);
       transform: rotate(90deg);
     }
+    /* Dropdown Menu */
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 4rem;
+      right: 0;
+      background: #fff;
+      border: 1px solid var(--neutral-light);
+      border-radius: 8px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      padding: 0.5rem;
+      width: 200px;
+      z-index: 1000;
+    }
+    .dropdown-menu.active { display: block; }
+    .dropdown-menu h4 {
+      margin: 0.3rem 0;
+      font-size: 0.9rem;
+      color: var(--neutral-dark);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.3rem;
+      border: 1px solid var(--neutral-light);
+      border-radius: 4px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.1s ease;
+    }
+    .dropdown-menu h4:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      color: var(--secondary-color);
+    }
+    .arrow-icon {
+      transition: transform 0.3s ease;
+      font-size: 0.7rem;
+      margin-left: 0.2rem;
+    }
+    .arrow-icon.rotated { transform: rotate(-180deg); }
+    .dropdown-menu button {
+      width: 100%;
+      padding: 0.3rem;
+      margin: 0.2rem 0;
+      background: var(--secondary-color);
+      color: white;
+      border: 1px solid var(--neutral-light);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.1s ease;
+    }
+    .dropdown-menu button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    .sub-dropdown { display: none; margin-left: 0.5rem; }
+    .sub-dropdown.active { display: block; }
+    /* Image thumbnails (scrollable) */
+    .image-thumbnails {
+      display: flex;
+      gap: 0.3rem;
+      overflow-x: auto;
+      margin-bottom: 0.3rem;
+    }
+    .image-thumbnails img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+    .image-thumbnails img:hover { border-color: var(--secondary-color); }
+    /* Vertical thumbnails box for expanded view */
+    .vertical-thumbnails {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .vertical-thumbnails img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+    .vertical-thumbnails img:hover { border-color: var(--secondary-color); }
+    /* Preview areas and action buttons */
+    .preview-area { display: none; text-align: center; margin-top: 5px; }
+    .preview-area img, .preview-area div {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border: 2px solid var(--secondary-color);
+      border-radius: 4px;
+      margin: 0 auto;
+    }
+    .action-buttons { display: none; margin-top: 5px; text-align: center; }
+    .action-buttons button {
+      padding: 0.3rem 0.6rem;
+      margin: 0 5px;
+      border: none;
+      border-radius: 4px;
+      background: var(--secondary-color);
+      color: white;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    /* Rest of form styling remains same */
     .form-header {
       color: var(--primary-color);
       margin-bottom: 1.5rem;
@@ -67,18 +181,9 @@
       gap: 1rem;
       margin-bottom: 1.5rem;
     }
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-    }
-    .input-group label {
-      font-weight: 600;
-      color: var(--neutral-dark);
-    }
-    .input-group .required {
-      color: var(--accent-color);
-    }
+    .input-group { display: flex; flex-direction: column; gap: 0.3rem; }
+    .input-group label { font-weight: 600; color: var(--neutral-dark); }
+    .input-group .required { color: var(--accent-color); }
     input, textarea, select {
       width: 100%;
       padding: 0.7rem;
@@ -88,16 +193,9 @@
       transition: border-color 0.2s ease;
       box-sizing: border-box;
     }
-    input:focus, textarea:focus, select:focus {
-      border-color: var(--secondary-color);
-      outline: none;
-    }
-    textarea {
-      resize: vertical;
-    }
-    .error {
-      border: 2px solid var(--accent-color);
-    }
+    input:focus, textarea:focus, select:focus { border-color: var(--secondary-color); outline: none; }
+    textarea { resize: vertical; }
+    .error { border: 2px solid var(--accent-color); }
     .image-upload-group {
       grid-column: 1 / -1;
       text-align: center;
@@ -108,162 +206,14 @@
       position: relative;
     }
     #profileImage { display: none; }
-    #imagePreview {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin: 0.5rem auto;
-      display: none;
-    }
-    #generateCard {
-      background: var(--secondary-color);
-      color: white;
-      width: 100%;
-      padding: 0.8rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    /* Dropdown Menu */
-    .dropdown-menu {
-      display: none;
-      position: absolute;
-      top: 3rem;
-      right: 0;
-      background: #fff;
-      border: 1px solid var(--neutral-light);
-      border-radius: 8px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-      padding: 0.5rem;
-      width: 80px;
-      z-index: 1000;
-      text-align: center;
-    }
-    .dropdown-menu.active { display: block; }
-    .dropdown-menu h4 {
-      margin: 0 0 0.3rem;
-      font-size: 0.9rem;
-      color: var(--neutral-dark);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.3rem;
-      border: 1px solid var(--neutral-light);
-      border-radius: 4px;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-      transition: transform 0.1s ease;
-    }
-    .dropdown-menu h4:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      color: var(--secondary-color);
-    }
-    .arrow-icon {
-      transition: transform 0.3s ease;
-      font-size: 0.7rem;
-      margin-left: 0.2rem;
-    }
-    .arrow-icon.rotated { transform: rotate(-180deg); }
-    .dropdown-menu button,
-    .sub-dropdown button {
-      width: 100%;
-      padding: 0.3rem 0.2rem;
-      margin: 0.2rem 0;
-      background: var(--secondary-color);
-      color: white;
-      border: 1px solid var(--neutral-light);
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.8rem;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-      transition: transform 0.1s ease;
-    }
-    .dropdown-menu button:hover,
-    .sub-dropdown button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    }
-    .sub-dropdown { display: none; margin: 0; }
-    .sub-dropdown.active { display: block; }
-    .sub-dropdown button {\n      background: var(--neutral-light);\n      color: var(--neutral-dark);\n      border: 1px solid var(--neutral-light);\n    }\n    .sub-dropdown button:hover {\n      background: var(--secondary-color);\n      color: white;\n    }
-    /* Image thumbnails (scrollable) */
-    .image-thumbnails {
-      display: flex;
-      gap: 0.3rem;
-      overflow-x: auto;
-      margin-bottom: 0.3rem;
-    }
-    .image-thumbnails img {
-      width: 25px;
-      height: 25px;
-      object-fit: cover;
-      border-radius: 4px;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: border-color 0.2s ease;
-    }
-    .image-thumbnails img:hover { border-color: var(--secondary-color); }
-    /* Color thumbnails */
-    .color-thumbnails {
-      display: flex;
-      gap: 0.3rem;
-      overflow-x: auto;
-      margin-bottom: 0.3rem;
-    }
-    .color-thumbnails div {
-      width: 25px;
-      height: 25px;
-      border-radius: 4px;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: border-color 0.2s ease;
-    }
-    .color-thumbnails div:hover { border-color: var(--secondary-color); }
-    /* Inline preview areas and action buttons for images and colors */
-    .preview-area {
-      display: none;
-      text-align: center;
-      margin-top: 5px;
-    }
-    .preview-area img,
-    .preview-area div {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border: 2px solid var(--secondary-color);
-      border-radius: 4px;
-      margin: 0 auto;
-    }
-    .action-buttons {
-      display: none;
-      margin-top: 5px;
-    }
-    .action-buttons button {
-      padding: 0.3rem;
-      margin: 0 5px;
-      border: none;
-      border-radius: 4px;
-      background: var(--secondary-color);
-      color: white;
-      cursor: pointer;
-      font-size: 0.8rem;
-    }
-    /* Glassy Background for form container */
-    .glassy-background {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      padding: 1.5rem;
-    }
-    @media (max-width: 480px) {
-      .form-container { max-width: 90%; padding: 1rem; }
-    }
+    #imagePreview { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; margin: 0.5rem auto; display: none; }
+    #generateCard { background: var(--secondary-color); color: white; width: 100%; padding: 0.8rem; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem; }
+    .glassy-background { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 15px; padding: 1.5rem; }
+    @media (max-width: 480px) { .form-container { max-width: 90%; padding: 1rem; } }
   </style>
 </head>
 <body>
+  <!-- Main container with dropdown -->
   <div class="form-container glassy-background" id="formContainerOriginal">
     <div class="gear-icon" onclick="toggleDropdown()">
       <i class="fas fa-cog"></i>
@@ -282,6 +232,16 @@
             <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Nature 3" onclick="selectImage(this.src, this)">
             <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Nature 4" onclick="selectImage(this.src, this)">
             <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Nature 5" onclick="selectImage(this.src, this)">
+          </div>
+          <button onclick="toggleFullThumbnailBox()">Show All Thumbnails</button>
+          <div id="fullThumbnailBox" style="display:none;">
+            <div class="vertical-thumbnails">
+              <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Nature 1" onclick="selectImage(this.src, this)">
+              <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Nature 2" onclick="selectImage(this.src, this)">
+              <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Nature 3" onclick="selectImage(this.src, this)">
+              <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Nature 4" onclick="selectImage(this.src, this)">
+              <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Nature 5" onclick="selectImage(this.src, this)">
+            </div>
           </div>
           <div id="imagePreviewArea" class="preview-area">
             <img id="selectedImagePreview" src="" alt="Selected Preview">
@@ -315,6 +275,7 @@
       <!-- Style Category -->
       <h4 onclick="toggleSubDropdown('style')">Style <i class="fas fa-chevron-down arrow-icon"></i></h4>
       <div id="styleSubDropdown" class="sub-dropdown">
+        <button onclick="previewStyle('default')">Default</button>
         <button onclick="previewStyle('styleA')">Style A</button>
         <button onclick="previewStyle('styleB')">Style B</button>
         <button onclick="applyStyle()">Apply</button>
@@ -327,6 +288,7 @@
         <button onclick="applyMood()">Apply</button>
       </div>
     </div>
+
     <!-- Rest of Form (Unchanged) -->
     <div class="form-header">
       <h2>Create Business Card</h2>
@@ -383,6 +345,7 @@
     </div>
     <button id="generateCard">Generate Card</button>
   </div>
+
   <!-- Firebase and intl-tel-input Scripts -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
@@ -399,6 +362,7 @@
       appId: "YOUR_APP_ID"
     };
     firebase.initializeApp(firebaseConfig);
+
     var phoneInput = document.querySelector("#phone");
     var iti = window.intlTelInput(phoneInput, {
       initialCountry: "auto",
@@ -411,6 +375,7 @@
       },
       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
     });
+
     function previewImage(event) {
       const reader = new FileReader();
       const preview = document.getElementById('imagePreview');
@@ -420,6 +385,7 @@
       };
       reader.readAsDataURL(event.target.files[0]);
     }
+
     function resizeImage(file, callback) {
       const img = new Image();
       const reader = new FileReader();
@@ -449,6 +415,7 @@
       };
       reader.readAsDataURL(file);
     }
+
     function validateForm() {
       let valid = true;
       const fieldIds = ['name', 'businessName', 'businessInfo', 'address', 'email'];
@@ -487,6 +454,7 @@
       }
       return true;
     }
+
     function uploadImageToFirebase(blob, formData) {
       const storageRef = firebase.storage().ref();
       const imageRef = storageRef.child('profile_images/' + Date.now() + '.jpg');
@@ -500,6 +468,7 @@
         alert('Image upload failed. Please try again.');
       });
     }
+
     document.getElementById('generateCard').onclick = function () {
       if (!validateForm()) return;
       const formData = {
@@ -522,11 +491,13 @@
         redirectToCard(formData);
       }
     };
+
     function redirectToCard(formData) {
       const params = new URLSearchParams();
       for (let key in formData) { params.set(key, formData[key]); }
       window.location.href = `card.html?${params.toString()}`;
     }
+
     // Dropdown toggle functions
     function toggleDropdown() {
       document.getElementById('dropdownMenu').classList.toggle('active');
@@ -535,11 +506,12 @@
       var elem = document.getElementById(id + 'SubDropdown');
       if (elem) { elem.classList.toggle('active'); }
     }
-    // --- Inline image selection functions ---
+
+    // Theme Image Functions
     let selectedImageSrc = null;
     function selectImage(src, element) {
-      // Highlight selected thumbnail
-      const imgs = document.querySelectorAll('#imageSubDropdown .image-thumbnails img');
+      // Clear previous highlights
+      const imgs = document.querySelectorAll('#imageSubDropdown .image-thumbnails img, #fullThumbnailBox img');
       imgs.forEach(img => img.style.borderColor = 'transparent');
       if(element) { element.style.borderColor = varSecondary(); }
       selectedImageSrc = src;
@@ -547,7 +519,7 @@
       document.getElementById('imagePreviewArea').style.display = 'block';
       document.getElementById('imageActionButtons').style.display = 'block';
     }
-    function varSecondary() { return "#3498DB"; }
+    function varSecondary() { return '#3498DB'; }
     function applySelectedImage() {
       if(selectedImageSrc) {
         document.getElementById('formContainerOriginal').style.backgroundImage = `url(${selectedImageSrc})`;
@@ -557,13 +529,18 @@
     }
     function cancelSelectedImage() {
       selectedImageSrc = null;
-      document.getElementById('selectedImagePreview').src = "";
-      document.getElementById('imagePreviewArea').style.display = "none";
-      document.getElementById('imageActionButtons').style.display = "none";
-      const imgs = document.querySelectorAll('#imageSubDropdown .image-thumbnails img');
-      imgs.forEach(img => img.style.borderColor = "transparent");
+      document.getElementById('selectedImagePreview').src = '';
+      document.getElementById('imagePreviewArea').style.display = 'none';
+      document.getElementById('imageActionButtons').style.display = 'none';
+      const imgs = document.querySelectorAll('#imageSubDropdown .image-thumbnails img, #fullThumbnailBox img');
+      imgs.forEach(img => img.style.borderColor = 'transparent');
     }
-    // --- Inline color selection functions ---
+    function toggleFullThumbnailBox() {
+      var fullBox = document.getElementById('fullThumbnailBox');
+      if(fullBox.style.display === 'none' || fullBox.style.display === '') { fullBox.style.display = 'block'; } else { fullBox.style.display = 'none'; }
+    }
+
+    // Theme Color Functions
     let selectedColor = null;
     function selectColor(color, element) {
       const divs = document.querySelectorAll('#colorSubDropdown .color-thumbnails div');
@@ -571,7 +548,7 @@
       element.style.borderColor = varSecondary();
       selectedColor = color;
       const previewDiv = document.getElementById('selectedColorPreview');
-      if(color.indexOf("linear-gradient") >= 0){
+      if(color.indexOf('linear-gradient') >= 0){
         previewDiv.style.background = color;
       } else {
         previewDiv.style.backgroundColor = color;
@@ -583,9 +560,9 @@
       if(selectedColor) {
         const formContainer = document.getElementById('formContainerOriginal');
         formContainer.style.backgroundImage = 'none';
-        if(selectedColor.indexOf("linear-gradient") >= 0) {
+        if(selectedColor.indexOf('linear-gradient') >= 0){
           formContainer.style.backgroundImage = selectedColor;
-          formContainer.style.backgroundColor = "";
+          formContainer.style.backgroundColor = '';
         } else {
           formContainer.style.backgroundColor = selectedColor;
         }
@@ -594,12 +571,13 @@
     }
     function cancelSelectedColor() {
       selectedColor = null;
-      document.getElementById('selectedColorPreview').style.background = "";
-      document.getElementById('colorPreviewArea').style.display = "none";
-      document.getElementById('colorActionButtons').style.display = "none";
+      document.getElementById('selectedColorPreview').style.background = '';
+      document.getElementById('colorPreviewArea').style.display = 'none';
+      document.getElementById('colorActionButtons').style.display = 'none';
       const divs = document.querySelectorAll('#colorSubDropdown .color-thumbnails div');
-      divs.forEach(div => div.style.borderColor = "transparent");
+      divs.forEach(div => div.style.borderColor = 'transparent');
     }
+
     // Style and Mood Functions (Temporary preview until Apply)
     let tempStyle = null, appliedStyle = null;
     function previewStyle(style) {
@@ -617,6 +595,7 @@
     function applyMood() {
       if(tempMood) { appliedMood = tempMood; }
     }
+
     // Global click handler to close dropdown when clicking outside
     document.addEventListener('click', function(event) {
       const dropdownMenu = document.getElementById('dropdownMenu');
