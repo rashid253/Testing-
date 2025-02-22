@@ -238,15 +238,16 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.45);
       transition: transform 0.1s ease, box-shadow 0.2s ease;
     }
-    /* Image Preview Container (for Theme > Image option)
-       Positioned immediately to the left of the dropdown menu */
+    /* Modified Image Sub-dropdown as a flex container with two columns */
+    #imageSubDropdown {
+      display: flex;
+      gap: 5px;
+      align-items: flex-start;
+    }
+    /* Preview box on the left */
     #imagePreviewContainer {
-      position: absolute;
-      left: -110px; /* Adjusted so it's right next to the dropdown */
-      top: 2rem;
       width: 100px;
       text-align: center;
-      display: none;
     }
     #selectedImagePreview {
       width: 100px;
@@ -272,7 +273,7 @@
     <div class="gear-icon" onclick="toggleDropdown()">
       <i class="fas fa-cog"></i>
     </div>
-    <!-- Dropdown Menu and Image Preview Container -->
+    <!-- Dropdown Menu -->
     <div style="position: relative;">
       <div class="dropdown-menu" id="dropdownMenu">
         <!-- Mood Group -->
@@ -295,8 +296,18 @@
           <button onclick="toggleSubDropdown('image')">
             Image <i class="fas fa-chevron-down arrow-icon"></i>
           </button>
+          <!-- Modified Image Sub-dropdown -->
           <div id="imageSubDropdown" class="sub-dropdown">
-            <div class="image-thumbnails">
+            <!-- Preview box on the left -->
+            <div id="imagePreviewContainer">
+              <img id="selectedImagePreview" src="" alt="Preview" />
+              <div class="action-buttons">
+                <button onclick="applySelectedImage()">Apply</button>
+                <button onclick="cancelSelectedImage()">Cancel</button>
+              </div>
+            </div>
+            <!-- Scrolling thumbnails on the right -->
+            <div class="image-thumbnails" style="flex: 1;">
               <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Image 1" onclick="previewTheme('image', this.src)">
               <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Image 2" onclick="previewTheme('image', this.src)">
               <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Image 3" onclick="previewTheme('image', this.src)">
@@ -331,14 +342,6 @@
           <div id="styleActionButtons" class="action-buttons">
             <button onclick="applyStyle()">Apply</button>
           </div>
-        </div>
-      </div>
-      <!-- Image Preview Container (for Theme > Image) positioned immediately to the left of the dropdown -->
-      <div id="imagePreviewContainer">
-        <img id="selectedImagePreview" src="" alt="Preview" />
-        <div class="action-buttons">
-          <button onclick="applySelectedImage()">Apply</button>
-          <button onclick="cancelSelectedImage()">Cancel</button>
         </div>
       </div>
     </div>
