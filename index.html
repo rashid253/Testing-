@@ -142,7 +142,7 @@
       text-align: center;
     }
     .dropdown-menu.active { display: block; }
-    /* Dropdown headers (Mood, Theme, Style) - smaller font & increased 3D effect */
+    /* Dropdown headers as main buttons (smaller font) with increased 3D effects */
     .dropdown-menu h4 {
       margin: 0 0 0.3rem;
       font-size: 0.8rem;
@@ -220,7 +220,7 @@
       transition: border-color 0.2s ease;
     }
     .color-thumbnails div:hover { border-color: var(--secondary-color); }
-    /* Action buttons: Only Apply button is shown; centered */
+    /* Action buttons: Only Apply button shown; centered */
     .action-buttons {
       display: none;
       margin-top: 5px;
@@ -238,7 +238,8 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.45);
       transition: transform 0.1s ease, box-shadow 0.2s ease;
     }
-    /* Image Preview Container (for Theme > Image option) positioned with the dropdown */
+    /* Image Preview Container (for Theme > Image option)
+       Positioned to the left of the dropdown */
     #imagePreviewContainer {
       position: absolute;
       right: calc(100% + 10px);
@@ -271,7 +272,7 @@
     <div class="gear-icon" onclick="toggleDropdown()">
       <i class="fas fa-cog"></i>
     </div>
-    <!-- Dropdown Menu and Preview Container -->
+    <!-- Dropdown Menu and Image Preview Container -->
     <div style="position: relative;">
       <div class="dropdown-menu" id="dropdownMenu">
         <!-- Mood Group -->
@@ -296,11 +297,11 @@
           </button>
           <div id="imageSubDropdown" class="sub-dropdown">
             <div class="image-thumbnails">
-              <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Image 1" onclick="setImagePreview(this.src)">
-              <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Image 2" onclick="setImagePreview(this.src)">
-              <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Image 3" onclick="setImagePreview(this.src)">
-              <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Image 4" onclick="setImagePreview(this.src)">
-              <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Image 5" onclick="setImagePreview(this.src)">
+              <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Image 1" onclick="previewTheme('image', this.src)">
+              <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Image 2" onclick="previewTheme('image', this.src)">
+              <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Image 3" onclick="previewTheme('image', this.src)">
+              <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Image 4" onclick="previewTheme('image', this.src)">
+              <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Image 5" onclick="previewTheme('image', this.src)">
             </div>
           </div>
           <button onclick="toggleSubDropdown('color')">
@@ -621,7 +622,6 @@
         themePreviewValue = { option: 'default' };
         document.getElementById('themeActionButtons').style.display = 'flex';
       } else if(option === 'image'){
-        // Set global variable and show the preview container (positioned to the left)
         selectedImageSrc = value;
         document.getElementById('selectedImagePreview').src = value;
         document.getElementById('imagePreviewContainer').style.display = 'block';
