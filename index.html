@@ -137,12 +137,12 @@
       border-radius: 8px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.3);
       padding: 0.5rem;
-      width: 80px;
+      width: 200px;
       z-index: 1000;
       text-align: center;
     }
     .dropdown-menu.active { display: block; }
-    /* Dropdown headers with 3D effect */
+    /* Dropdown headers */
     .dropdown-menu h4 {
       margin: 0 0 0.3rem;
       font-size: 0.9rem;
@@ -201,7 +201,7 @@
       background: var(--secondary-color);
       color: white;
     }
-    /* Image thumbnails (scrollable) */
+    /* Image thumbnails */
     .image-thumbnails {
       display: flex;
       gap: 0.3rem;
@@ -234,20 +234,13 @@
       transition: border-color 0.2s ease;
     }
     .color-thumbnails div:hover { border-color: var(--secondary-color); }
-    /* Inline preview areas and action buttons for images and colors */
+    /* Preview areas and action buttons */
     .preview-area {
       display: none;
       text-align: center;
       margin-top: 5px;
-    }
-    .preview-area img,
-    .preview-area div {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border: 2px solid var(--secondary-color);
-      border-radius: 4px;
-      margin: 0 auto;
+      font-size: 0.8rem;
+      color: var(--neutral-dark);
     }
     .action-buttons {
       display: none;
@@ -263,7 +256,7 @@
       cursor: pointer;
       font-size: 0.8rem;
     }
-    /* Glassy Background for form container */
+    /* Glassy Background */
     .glassy-background {
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(10px);
@@ -282,18 +275,27 @@
     </div>
     <!-- Dropdown Menu -->
     <div class="dropdown-menu" id="dropdownMenu">
+      <!-- Mood Group -->
       <h4 onclick="toggleSubDropdown('mood')">
         Mood <i class="fas fa-chevron-down arrow-icon"></i>
       </h4>
       <div id="moodSubDropdown" class="sub-dropdown">
         <button onclick="previewMood('day')">Day</button>
         <button onclick="previewMood('night')">Night</button>
+        <div id="moodPreviewArea" class="preview-area">
+          <p id="moodPreviewText"></p>
+        </div>
+        <div id="moodActionButtons" class="action-buttons">
+          <button onclick="applyMood()">Apply</button>
+          <button onclick="cancelMood()">Cancel</button>
+        </div>
       </div>
+      <!-- Theme Group -->
       <h4 onclick="toggleSubDropdown('theme')">
         Theme <i class="fas fa-chevron-down arrow-icon"></i>
       </h4>
       <div id="themeSubDropdown" class="sub-dropdown">
-        <button onclick="previewTheme('default')">Default</button>
+        <button onclick="previewThemeDefault()">Default</button>
         <button onclick="toggleSubDropdown('image')">
           Image <i class="fas fa-chevron-down arrow-icon"></i>
         </button>
@@ -335,7 +337,15 @@
             <button onclick="cancelSelectedColor()">Cancel</button>
           </div>
         </div>
+        <div id="themePreviewArea" class="preview-area">
+          <p id="themePreviewText"></p>
+        </div>
+        <div id="themeActionButtons" class="action-buttons">
+          <button onclick="applyThemeDefault()">Apply</button>
+          <button onclick="cancelThemeDefault()">Cancel</button>
+        </div>
       </div>
+      <!-- Style Group -->
       <h4 onclick="toggleSubDropdown('style')">
         Style <i class="fas fa-chevron-down arrow-icon"></i>
       </h4>
@@ -343,6 +353,13 @@
         <button onclick="previewStyle('default')">Default</button>
         <button onclick="previewStyle('styleA')">Style A</button>
         <button onclick="previewStyle('styleB')">Style B</button>
+        <div id="stylePreviewArea" class="preview-area">
+          <p id="stylePreviewText"></p>
+        </div>
+        <div id="styleActionButtons" class="action-buttons">
+          <button onclick="applyStyle()">Apply</button>
+          <button onclick="cancelStyle()">Cancel</button>
+        </div>
       </div>
     </div>
     <div class="form-header">
@@ -557,10 +574,126 @@
         if (arrow) arrow.classList.toggle('rotated');
       }
     }
-    // --- Inline image selection functions ---
+    // Global variables for preview states
+    var appliedMood = null;
+    var appliedTheme = null;
+    var appliedStyle = null;
+    var moodPreviewValue = null;
+    var themePreviewValue = null;
+    var stylePreviewValue = null;
+    function updateFormContainer() {
+      var formContainer = document.getElementById('formContainer');
+      // Reset inline styles
+      formContainer.style.backgroundColor = "";
+      formContainer.style.color = "";
+      formContainer.style.backgroundImage = "";
+      formContainer.style.boxShadow = "";
+      formContainer.style.border = "";
+      // Apply mood
+      if(appliedMood === 'day'){
+        formContainer.style.backgroundColor = '#ffffff';
+        formContainer.style.color = '#000000';
+      } else if(appliedMood === 'night'){
+        formContainer.style.backgroundColor = '#34495E';
+        formContainer.style.color = '#ffffff';
+      }
+      // Apply theme (default)
+      if(appliedTheme === 'default'){
+        formContainer.style.backgroundColor = "";
+        formContainer.style.backgroundImage = "";
+      }
+      // Apply style
+      if(appliedStyle === 'styleA'){
+        formContainer.style.backgroundColor = "#f9f9f9";
+        formContainer.style.border = "2px solid var(--secondary-color)";
+      } else if(appliedStyle === 'styleB'){
+        formContainer.style.backgroundColor = "#ffffff";
+        formContainer.style.boxShadow = "0 0 15px rgba(0,0,0,0.5)";
+      }
+    }
+    // Mood functions
+    function previewMood(value) {
+      var formContainer = document.getElementById('formContainer');
+      if(value === 'day'){
+        formContainer.style.backgroundColor = '#ffffff';
+        formContainer.style.color = '#000000';
+      } else if(value === 'night'){
+        formContainer.style.backgroundColor = '#34495E';
+        formContainer.style.color = '#ffffff';
+      }
+      document.getElementById('moodPreviewArea').style.display = 'block';
+      document.getElementById('moodActionButtons').style.display = 'block';
+      document.getElementById('moodPreviewText').innerText = "Preview: " + value.charAt(0).toUpperCase() + value.slice(1);
+      moodPreviewValue = value;
+    }
+    function applyMood() {
+      appliedMood = moodPreviewValue;
+      moodPreviewValue = null;
+      document.getElementById('moodPreviewArea').style.display = 'none';
+      document.getElementById('moodActionButtons').style.display = 'none';
+    }
+    function cancelMood() {
+      moodPreviewValue = null;
+      updateFormContainer();
+      document.getElementById('moodPreviewArea').style.display = 'none';
+      document.getElementById('moodActionButtons').style.display = 'none';
+    }
+    // Theme functions
+    function previewThemeDefault() {
+      var formContainer = document.getElementById('formContainer');
+      formContainer.style.backgroundColor = "";
+      formContainer.style.backgroundImage = "";
+      document.getElementById('themePreviewArea').style.display = 'block';
+      document.getElementById('themeActionButtons').style.display = 'block';
+      document.getElementById('themePreviewText').innerText = "Preview: Default Theme";
+      themePreviewValue = 'default';
+    }
+    function applyThemeDefault() {
+      appliedTheme = themePreviewValue;
+      themePreviewValue = null;
+      document.getElementById('themePreviewArea').style.display = 'none';
+      document.getElementById('themeActionButtons').style.display = 'none';
+    }
+    function cancelThemeDefault() {
+      themePreviewValue = null;
+      updateFormContainer();
+      document.getElementById('themePreviewArea').style.display = 'none';
+      document.getElementById('themeActionButtons').style.display = 'none';
+    }
+    // Style functions
+    function previewStyle(style) {
+      var formContainer = document.getElementById('formContainer');
+      if(style === 'default'){
+        formContainer.style.backgroundColor = "";
+        formContainer.style.boxShadow = "";
+        formContainer.style.border = "";
+      } else if(style === 'styleA'){
+        formContainer.style.backgroundColor = "#f9f9f9";
+        formContainer.style.border = "2px solid var(--secondary-color)";
+      } else if(style === 'styleB'){
+        formContainer.style.backgroundColor = "#ffffff";
+        formContainer.style.boxShadow = "0 0 15px rgba(0,0,0,0.5)";
+      }
+      document.getElementById('stylePreviewArea').style.display = 'block';
+      document.getElementById('styleActionButtons').style.display = 'block';
+      document.getElementById('stylePreviewText').innerText = "Preview: " + style;
+      stylePreviewValue = style;
+    }
+    function applyStyle() {
+      appliedStyle = stylePreviewValue;
+      stylePreviewValue = null;
+      document.getElementById('stylePreviewArea').style.display = 'none';
+      document.getElementById('styleActionButtons').style.display = 'none';
+    }
+    function cancelStyle() {
+      stylePreviewValue = null;
+      updateFormContainer();
+      document.getElementById('stylePreviewArea').style.display = 'none';
+      document.getElementById('styleActionButtons').style.display = 'none';
+    }
+    // Inline image selection functions
     let selectedImageSrc = null;
     function selectImage(src, element) {
-      // Highlight selected thumbnail
       const imgs = document.querySelectorAll('#imageSubDropdown .image-thumbnails img');
       imgs.forEach(img => img.style.borderColor = 'transparent');
       element.style.borderColor = varSecondary();
@@ -570,14 +703,12 @@
       document.getElementById('imageActionButtons').style.display = 'block';
     }
     function varSecondary() {
-      // Return secondary color value
       return "#3498DB";
     }
     function applySelectedImage() {
       if(selectedImageSrc) {
         document.getElementById('formContainer').style.backgroundImage = `url(${selectedImageSrc})`;
         document.getElementById('formContainer').style.backgroundSize = 'cover';
-        // Clear preview area and reset selection
         cancelSelectedImage();
       }
     }
@@ -586,18 +717,16 @@
       document.getElementById('selectedImagePreview').src = "";
       document.getElementById('imagePreviewArea').style.display = 'none';
       document.getElementById('imageActionButtons').style.display = 'none';
-      // Reset borders in the thumbnail list
       const imgs = document.querySelectorAll('#imageSubDropdown .image-thumbnails img');
       imgs.forEach(img => img.style.borderColor = 'transparent');
     }
-    // --- Inline color selection functions ---
+    // Inline color selection functions
     let selectedColor = null;
     function selectColor(color, element) {
       const divs = document.querySelectorAll('#colorSubDropdown .color-thumbnails div');
       divs.forEach(div => div.style.borderColor = 'transparent');
       element.style.borderColor = varSecondary();
       selectedColor = color;
-      // Set preview
       const previewDiv = document.getElementById('selectedColorPreview');
       if(color.indexOf("linear-gradient") >= 0){
         previewDiv.style.background = color;
@@ -628,11 +757,14 @@
       const divs = document.querySelectorAll('#colorSubDropdown .color-thumbnails div');
       divs.forEach(div => div.style.borderColor = 'transparent');
     }
-    // Global click handlers to close dropdown when clicking outside
+    // Global click handler to close dropdown and cancel previews when clicking outside
     document.addEventListener('click', function(event) {
       const dropdownMenu = document.getElementById('dropdownMenu');
       if(dropdownMenu.classList.contains('active') && !event.target.closest('.dropdown-menu') && !event.target.closest('.gear-icon')) {
         dropdownMenu.classList.remove('active');
+        cancelMood();
+        cancelThemeDefault();
+        cancelStyle();
       }
     });
   </script>
