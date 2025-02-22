@@ -6,14 +6,14 @@
   <title>Business Card Generator</title>
   <!-- Font Awesome for icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
-  <!-- intl-tel-input CSS -->
+  <!-- intl-tel-input CSS for international phone input -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
   <style>
     :root {
       --primary-color: #2C3E50;
       --secondary-color: #3498DB;
       --accent-color: #E74C3E;
-      --neutral-light: rgba(236,240,241,0.9);
+      --neutral-light: rgba(236, 240, 241, 0.9);
       --neutral-dark: #34495E;
       --background-color: #ffffff;
       --text-color: #000000;
@@ -27,6 +27,7 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      position: relative;
       transition: background 0.3s ease, color 0.3s ease;
     }
     .form-container {
@@ -75,7 +76,9 @@
       font-weight: 600;
       color: var(--neutral-dark);
     }
-    .input-group .required { color: var(--accent-color); }
+    .input-group .required {
+      color: var(--accent-color);
+    }
     input, textarea, select {
       width: 100%;
       padding: 0.7rem;
@@ -89,8 +92,12 @@
       border-color: var(--secondary-color);
       outline: none;
     }
-    textarea { resize: vertical; }
-    .error { border: 2px solid var(--accent-color); }
+    textarea {
+      resize: vertical;
+    }
+    .error {
+      border: 2px solid var(--accent-color);
+    }
     .image-upload-group {
       grid-column: 1 / -1;
       text-align: center;
@@ -119,7 +126,7 @@
       cursor: pointer;
       font-size: 1rem;
     }
-    /* Dropdown menu & headers */
+    /* Dropdown Menu */
     .dropdown-menu {
       display: none;
       position: absolute;
@@ -135,6 +142,7 @@
       text-align: center;
     }
     .dropdown-menu.active { display: block; }
+    /* Dropdown headers with 3D effect */
     .dropdown-menu h4 {
       margin: 0 0 0.3rem;
       font-size: 0.9rem;
@@ -154,12 +162,14 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
       color: var(--secondary-color);
     }
+    /* Arrow icon */
     .arrow-icon {
       transition: transform 0.3s ease;
       font-size: 0.7rem;
       margin-left: 0.2rem;
     }
     .arrow-icon.rotated { transform: rotate(-180deg); }
+    /* Dropdown buttons */
     .dropdown-menu button,
     .sub-dropdown button {
       width: 100%;
@@ -179,6 +189,7 @@
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
+    /* Sub-dropdown menus */
     .sub-dropdown { display: none; margin: 0; }
     .sub-dropdown.active { display: block; }
     .sub-dropdown button {
@@ -190,8 +201,8 @@
       background: var(--secondary-color);
       color: white;
     }
-    /* Scrollable thumbnail bars (for theme image and color) */
-    .image-thumbnails, .color-thumbnails {
+    /* Image thumbnails (scrollable) */
+    .image-thumbnails {
       display: flex;
       gap: 0.3rem;
       overflow-x: auto;
@@ -207,6 +218,13 @@
       transition: border-color 0.2s ease;
     }
     .image-thumbnails img:hover { border-color: var(--secondary-color); }
+    /* Color thumbnails */
+    .color-thumbnails {
+      display: flex;
+      gap: 0.3rem;
+      overflow-x: auto;
+      margin-bottom: 0.3rem;
+    }
     .color-thumbnails div {
       width: 25px;
       height: 25px;
@@ -216,18 +234,20 @@
       transition: border-color 0.2s ease;
     }
     .color-thumbnails div:hover { border-color: var(--secondary-color); }
-    /* Inline preview areas and action buttons – these appear to the left of the dropdown */
+    /* Inline preview areas and action buttons for images and colors */
     .preview-area {
       display: none;
+      text-align: center;
+      margin-top: 5px;
+    }
+    .preview-area img,
+    .preview-area div {
       width: 100px;
       height: 100px;
+      object-fit: cover;
       border: 2px solid var(--secondary-color);
       border-radius: 4px;
-      margin: 0;
-      text-align: center;
-      line-height: 100px;
-      font-weight: bold;
-      background: #fff;
+      margin: 0 auto;
     }
     .action-buttons {
       display: none;
@@ -243,31 +263,9 @@
       cursor: pointer;
       font-size: 0.8rem;
     }
-    /* Positioning preview boxes for Mood and Style (for theme image/color, separate areas are used) */
-    #moodPreviewArea, #stylePreviewArea {
-      position: absolute;
-      left: -120px;
-      top: 0;
-    }
-    #moodActionButtons, #styleActionButtons {
-      position: absolute;
-      left: -120px;
-      top: 110px;
-    }
-    /* For theme image and color, place the preview box to the left of the dropdown without overlapping */
-    #themeImagePreviewArea, #themeColorPreviewArea {
-      position: absolute;
-      left: -120px;
-      top: 0;
-    }
-    #themeImageActionButtons, #themeColorActionButtons {
-      position: absolute;
-      left: -120px;
-      top: 110px;
-    }
-    /* Glassy background for form container */
+    /* Glassy Background for form container */
     .glassy-background {
-      background: rgba(255,255,255,0.1);
+      background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(10px);
       border-radius: 15px;
       padding: 1.5rem;
@@ -279,71 +277,72 @@
 </head>
 <body>
   <div class="form-container glassy-background" id="formContainer">
-    <div class="gear-icon" onclick="toggleDropdown()"><i class="fas fa-cog"></i></div>
+    <div class="gear-icon" onclick="toggleDropdown()">
+      <i class="fas fa-cog"></i>
+    </div>
     <!-- Dropdown Menu -->
     <div class="dropdown-menu" id="dropdownMenu">
-      <!-- Mood Section -->
-      <h4 onclick="toggleSubDropdown('mood')">Mood <i class="fas fa-chevron-down arrow-icon"></i></h4>
+      <h4 onclick="toggleSubDropdown('mood')">
+        Mood <i class="fas fa-chevron-down arrow-icon"></i>
+      </h4>
       <div id="moodSubDropdown" class="sub-dropdown">
-        <button onclick="selectMood('day', this)">Day</button>
-        <button onclick="selectMood('night', this)">Night</button>
-        <!-- Preview and Apply for Mood -->
-        <div id="moodPreviewArea" class="preview-area"></div>
-        <div id="moodActionButtons" class="action-buttons">
-          <button onclick="applySelectedMood()">Apply</button>
-        </div>
+        <button onclick="previewMood('day')">Day</button>
+        <button onclick="previewMood('night')">Night</button>
       </div>
-      <!-- Theme Section -->
-      <h4 onclick="toggleSubDropdown('theme')">Theme <i class="fas fa-chevron-down arrow-icon"></i></h4>
+      <h4 onclick="toggleSubDropdown('theme')">
+        Theme <i class="fas fa-chevron-down arrow-icon"></i>
+      </h4>
       <div id="themeSubDropdown" class="sub-dropdown">
-        <button onclick="previewThemeDefault()">Default</button>
+        <button onclick="previewTheme('default')">Default</button>
         <button onclick="toggleSubDropdown('image')">
           Image <i class="fas fa-chevron-down arrow-icon"></i>
         </button>
-        <div id="imageSubDropdown" class="sub-dropdown" style="position:relative;">
+        <div id="imageSubDropdown" class="sub-dropdown">
           <div class="image-thumbnails">
-            <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Nature 1" onclick="selectThemeImage(this.src, this)">
-            <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Nature 2" onclick="selectThemeImage(this.src, this)">
-            <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Nature 3" onclick="selectThemeImage(this.src, this)">
-            <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Nature 4" onclick="selectThemeImage(this.src, this)">
-            <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Nature 5" onclick="selectThemeImage(this.src, this)">
+            <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Nature 1" onclick="selectImage(this.src, this)">
+            <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Nature 2" onclick="selectImage(this.src, this)">
+            <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Nature 3" onclick="selectImage(this.src, this)">
+            <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Nature 4" onclick="selectImage(this.src, this)">
+            <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Nature 5" onclick="selectImage(this.src, this)">
           </div>
-          <!-- The thumbnails remain scrollable; when one is clicked, a preview box appears on the left -->
-          <div id="themeImagePreviewArea" class="preview-area"></div>
-          <div id="themeImageActionButtons" class="action-buttons">
-            <button onclick="applySelectedThemeImage()">Apply</button>
+          <div id="imagePreviewArea" class="preview-area">
+            <img id="selectedImagePreview" src="" alt="Selected Preview">
+          </div>
+          <div id="imageActionButtons" class="action-buttons">
+            <button onclick="applySelectedImage()">Apply</button>
+            <button onclick="cancelSelectedImage()">Cancel</button>
           </div>
         </div>
         <button onclick="toggleSubDropdown('color')">
           Color <i class="fas fa-chevron-down arrow-icon"></i>
         </button>
-        <div id="colorSubDropdown" class="sub-dropdown" style="position:relative;">
+        <div id="colorSubDropdown" class="sub-dropdown">
           <div class="color-thumbnails">
-            <div style="background-color: #3498DB;" onclick="selectThemeColor('#3498DB', this)"></div>
-            <div style="background-color: #E74C3E;" onclick="selectThemeColor('#E74C3E', this)"></div>
-            <div style="background-color: #2ECC71;" onclick="selectThemeColor('#2ECC71', this)"></div>
-            <div style="background-color: #9B59B6;" onclick="selectThemeColor('#9B59B6', this)"></div>
-            <div style="background-color: #F1C40F;" onclick="selectThemeColor('#F1C40F', this)"></div>
-            <div style="background: linear-gradient(45deg, #FF9A9E, #FAD0C4);" onclick="selectThemeColor('linear-gradient(45deg, #FF9A9E, #FAD0C4)', this)"></div>
-            <div style="background: linear-gradient(45deg, #A18CD1, #FBC2EB);" onclick="selectThemeColor('linear-gradient(45deg, #A18CD1, #FBC2EB)', this)"></div>
-            <div style="background: linear-gradient(45deg, #96E6A1, #D4FC79);" onclick="selectThemeColor('linear-gradient(45deg, #96E6A1, #D4FC79)', this)"></div>
+            <div style="background-color: #3498DB;" onclick="selectColor('#3498DB', this)"></div>
+            <div style="background-color: #E74C3E;" onclick="selectColor('#E74C3E', this)"></div>
+            <div style="background-color: #2ECC71;" onclick="selectColor('#2ECC71', this)"></div>
+            <div style="background-color: #9B59B6;" onclick="selectColor('#9B59B6', this)"></div>
+            <div style="background-color: #F1C40F;" onclick="selectColor('#F1C40F', this)"></div>
+            <div style="background: linear-gradient(45deg, #FF9A9E, #FAD0C4);" onclick="selectColor('linear-gradient(45deg, #FF9A9E, #FAD0C4)', this)"></div>
+            <div style="background: linear-gradient(45deg, #A18CD1, #FBC2EB);" onclick="selectColor('linear-gradient(45deg, #A18CD1, #FBC2EB)', this)"></div>
+            <div style="background: linear-gradient(45deg, #96E6A1, #D4FC79);" onclick="selectColor('linear-gradient(45deg, #96E6A1, #D4FC79)', this)"></div>
           </div>
-          <div id="themeColorPreviewArea" class="preview-area"></div>
-          <div id="themeColorActionButtons" class="action-buttons">
-            <button onclick="applySelectedThemeColor()">Apply</button>
+          <div id="colorPreviewArea" class="preview-area">
+            <div id="selectedColorPreview" style=""></div>
+          </div>
+          <div id="colorActionButtons" class="action-buttons">
+            <button onclick="applySelectedColor()">Apply</button>
+            <button onclick="cancelSelectedColor()">Cancel</button>
           </div>
         </div>
       </div>
-      <!-- Style Section -->
-      <h4 onclick="toggleSubDropdown('style')">Style <i class="fas fa-chevron-down arrow-icon"></i></h4>
+      <h4 onclick="toggleSubDropdown('style')">
+        Style <i class="fas fa-chevron-down arrow-icon"></i>
+      </h4>
       <div id="styleSubDropdown" class="sub-dropdown">
-        <button onclick="selectStyle('default', this)">Default</button>
-        <button onclick="selectStyle('styleA', this)">Style A</button>
-        <button onclick="selectStyle('styleB', this)">Style B</button>
-        <div id="stylePreviewArea" class="preview-area"></div>
-        <div id="styleActionButtons" class="action-buttons">
-          <button onclick="applySelectedStyle()">Apply</button>
-        </div>
+        <button onclick="previewStyle('default')">Default</button>
+        <button onclick="previewStyle('styleA')">Style A</button>
+        <button onclick="previewStyle('styleB')">Style B</button>
       </div>
     </div>
     <div class="form-header">
@@ -351,7 +350,6 @@
       <p>Fill in all required information</p>
     </div>
     <div class="form-grid">
-      <!-- Profile image group and other input groups … (omitted for brevity) -->
       <div class="image-upload-group">
         <label for="profileImage">
           <i class="fas fa-camera fa-2x"></i>
@@ -372,7 +370,7 @@
         <label for="businessInfo">Business Info <span class="required">*</span></label>
         <textarea id="businessInfo" placeholder="Enter 3 to 5 paragraphs (Max 150 words each) separated by a new line" rows="6" required></textarea>
         <small style="color: var(--neutral-dark); font-size: 0.8rem;">
-          <strong>Instructions:</strong> Write 3 to 5 paragraphs. Each paragraph must not exceed 150 words.
+          <strong>Instructions:</strong> Write 3 to 5 paragraphs. Each paragraph must not exceed 150 words. Separate paragraphs with a new line.
         </small>
       </div>
       <div class="input-group">
@@ -387,17 +385,28 @@
         <label for="email">Email Address <span class="required">*</span></label>
         <input type="email" id="email" placeholder="Email Address" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address." />
       </div>
-      <!-- Additional social inputs… -->
+      <div class="input-group">
+        <label for="facebook">Facebook URL</label>
+        <input type="url" id="facebook" placeholder="Facebook URL" pattern="https?://(www\.)?facebook\.com/.*" title="Please enter a valid Facebook URL." />
+      </div>
+      <div class="input-group">
+        <label for="instagram">Instagram URL</label>
+        <input type="url" id="instagram" placeholder="Instagram URL" pattern="https?://(www\.)?instagram\.com/.*" title="Please enter a valid Instagram URL." />
+      </div>
+      <div class="input-group">
+        <label for="youtube">YouTube URL</label>
+        <input type="url" id="youtube" placeholder="YouTube URL" pattern="https?://(www\.)?youtube\.com/.*" title="Please enter a valid YouTube URL." />
+      </div>
     </div>
     <button id="generateCard">Generate Card</button>
   </div>
-  <!-- Scripts -->
+  <!-- Firebase and intl-tel-input Scripts -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
   <script>
-    // Firebase config (replace with your own)
+    // Firebase configuration – replace with your own details.
     var firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_AUTH_DOMAIN",
@@ -411,7 +420,7 @@
     var iti = window.intlTelInput(phoneInput, {
       initialCountry: "auto",
       separateDialCode: true,
-      geoIpLookup: function(success) {
+      geoIpLookup: function(success, failure) {
         fetch('https://ipinfo.io/json?token=YOUR_TOKEN')
           .then(resp => resp.json())
           .then(data => success(data.country))
@@ -422,7 +431,10 @@
     function previewImage(event) {
       const reader = new FileReader();
       const preview = document.getElementById('imagePreview');
-      reader.onload = function(e) { preview.src = e.target.result; preview.style.display = 'block'; };
+      reader.onload = function(e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      };
       reader.readAsDataURL(event.target.files[0]);
     }
     function resizeImage(file, callback) {
@@ -434,9 +446,19 @@
           const canvas = document.createElement('canvas');
           const MAX_WIDTH = 150, MAX_HEIGHT = 150;
           let width = img.width, height = img.height;
-          if (width > height) { if (width > MAX_WIDTH) { height = height * (MAX_WIDTH/width); width = MAX_WIDTH; } }
-          else { if (height > MAX_HEIGHT) { width = width * (MAX_HEIGHT/height); height = MAX_HEIGHT; } }
-          canvas.width = width; canvas.height = height;
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height = height * (MAX_WIDTH / width);
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width = width * (MAX_HEIGHT / height);
+              height = MAX_HEIGHT;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
           canvas.toBlob(function(blob) { callback(blob); }, 'image/jpeg', 0.4);
@@ -446,30 +468,57 @@
     }
     function validateForm() {
       let valid = true;
-      const fields = ['name','businessName','businessInfo','address','email'];
-      fields.forEach(id => { const field = document.getElementById(id); if(field) field.classList.remove('error'); });
-      fields.forEach(id => { const field = document.getElementById(id); if(!field.value.trim()){ valid = false; field.classList.add('error'); } });
-      if(!valid){ alert("Please fill all required fields."); return false; }
-      if(!iti.isValidNumber()){ phoneInput.classList.add('error'); alert("Please enter a valid phone number."); return false; }
-      const email = document.getElementById('email').value.trim();
-      if(!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(email)){
-        document.getElementById('email').classList.add('error'); alert("Please enter a valid email address."); return false;
+      const fieldIds = ['name', 'businessName', 'businessInfo', 'address', 'email'];
+      fieldIds.forEach(function(id) {
+        const field = document.getElementById(id);
+        if (field) field.classList.remove('error');
+      });
+      fieldIds.forEach(function(id) {
+        const field = document.getElementById(id);
+        if (!field.value.trim()) { valid = false; field.classList.add('error'); }
+      });
+      if (!valid) { alert("Please fill all required fields."); return false; }
+      if (!iti.isValidNumber()) { phoneInput.classList.add('error'); alert("Please enter a valid phone number."); return false; }
+      const emailValue = document.getElementById('email').value.trim();
+      if (!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(emailValue)) {
+        document.getElementById('email').classList.add('error');
+        alert("Please enter a valid email address.");
+        return false;
       }
+      const socialMedia = [
+        { id: 'facebook', regex: /^https?:\/\/(www\.)?facebook\.com\/.+$/i, message: "Please enter a valid Facebook URL." },
+        { id: 'instagram', regex: /^https?:\/\/(www\.)?instagram\.com\/.+$/i, message: "Please enter a valid Instagram URL." },
+        { id: 'youtube', regex: /^https?:\/\/(www\.)?youtube\.com\/.+$/i, message: "Please enter a valid YouTube URL." }
+      ];
+      socialMedia.forEach(function(sm) {
+        const value = document.getElementById(sm.id).value.trim();
+        if (value && !sm.regex.test(value)) { document.getElementById(sm.id).classList.add('error'); alert(sm.message); valid = false; }
+      });
+      if (!valid) return false;
       const businessInfo = document.getElementById('businessInfo').value.trim();
-      const paras = businessInfo.split('\n').filter(p => p.trim() !== '');
-      if(paras.length < 3 || paras.length > 5){ document.getElementById('businessInfo').classList.add('error'); alert("Please enter 3 to 5 paragraphs."); return false; }
-      for(let p of paras){ if(p.split(/\s+/).filter(w => w.length>0).length > 150){ document.getElementById('businessInfo').classList.add('error'); alert("Each paragraph must not exceed 150 words."); return false; } }
+      const paragraphs = businessInfo.split('\n').filter(p => p.trim() !== '');
+      if (paragraphs.length < 3 || paragraphs.length > 5) { document.getElementById('businessInfo').classList.add('error'); alert("Please enter 3 to 5 paragraphs for the business info."); return false; }
+      for (let i = 0; i < paragraphs.length; i++) {
+        const wordCount = paragraphs[i].split(/\s+/).filter(word => word.length > 0).length;
+        if (wordCount > 150) { document.getElementById('businessInfo').classList.add('error'); alert("Each paragraph must not exceed 150 words. Please review your business info."); return false; }
+      }
       return true;
     }
     function uploadImageToFirebase(blob, formData) {
       const storageRef = firebase.storage().ref();
       const imageRef = storageRef.child('profile_images/' + Date.now() + '.jpg');
-      imageRef.put(blob).then(snapshot => snapshot.ref.getDownloadURL())
-      .then(url => { formData.profileImage = url; redirectToCard(formData); })
-      .catch(error => { console.error('Error uploading image:', error); alert('Image upload failed.'); });
+      imageRef.put(blob).then(function(snapshot) {
+        return snapshot.ref.getDownloadURL();
+      }).then(function(url) {
+        formData.profileImage = url;
+        redirectToCard(formData);
+      }).catch(function(error) {
+        console.error('Error uploading image:', error);
+        alert('Image upload failed. Please try again.');
+      });
     }
-    document.getElementById('generateCard').onclick = function() {
-      if(!validateForm()) return;
+    document.getElementById('generateCard').onclick = function () {
+      if (!validateForm()) return;
       const formData = {
         name: document.getElementById('name').value.trim(),
         businessName: document.getElementById('businessName').value.trim(),
@@ -482,186 +531,108 @@
         youtube: document.getElementById('youtube').value.trim(),
         profileImage: document.getElementById('profileImage').files[0]
       };
-      if(formData.profileImage) {
-        resizeImage(formData.profileImage, function(resizedBlob){ uploadImageToFirebase(resizedBlob, formData); });
-      } else { redirectToCard(formData); }
+      if (formData.profileImage) {
+        resizeImage(formData.profileImage, function(resizedBlob) {
+          uploadImageToFirebase(resizedBlob, formData);
+        });
+      } else {
+        redirectToCard(formData);
+      }
     };
     function redirectToCard(formData) {
       const params = new URLSearchParams();
-      for(let key in formData){ params.set(key, formData[key]); }
+      for (let key in formData) { params.set(key, formData[key]); }
       window.location.href = `card.html?${params.toString()}`;
     }
-    function toggleDropdown() { document.getElementById('dropdownMenu').classList.toggle('active'); }
+    function toggleDropdown() {
+      const dropdownMenu = document.getElementById('dropdownMenu');
+      dropdownMenu.classList.toggle('active');
+    }
     function toggleSubDropdown(id) {
       const header = document.querySelector('h4[onclick*="' + id + '"]');
-      const sub = document.getElementById(id + 'SubDropdown');
-      sub.classList.toggle('active');
+      const subDropdown = document.getElementById(id + 'SubDropdown');
+      subDropdown.classList.toggle('active');
       if(header) {
         const arrow = header.querySelector('.arrow-icon');
-        if(arrow) arrow.classList.toggle('rotated');
+        if (arrow) arrow.classList.toggle('rotated');
       }
     }
-    // ---- Mood functions ----
-    let selectedMood = null;
-    function selectMood(mood, element) {
-      const btns = document.querySelectorAll('#moodSubDropdown button');
-      btns.forEach(btn => btn.style.borderColor = 'transparent');
-      element.style.borderColor = "#3498DB";
-      selectedMood = mood;
-      document.getElementById('moodPreviewArea').innerHTML = mood.toUpperCase();
-      document.getElementById('moodPreviewArea').style.display = 'block';
-      document.getElementById('moodActionButtons').style.display = 'block';
-    }
-    function applySelectedMood() {
-      if(selectedMood === 'day'){
-        document.body.style.backgroundColor = '#ffffff';
-        document.body.style.color = '#000000';
-      } else if(selectedMood === 'night'){
-        document.body.style.backgroundColor = '#000000';
-        document.body.style.color = '#ffffff';
-      }
-      cancelSelectedMood();
-    }
-    function cancelSelectedMood() {
-      selectedMood = null;
-      document.getElementById('moodPreviewArea').style.display = 'none';
-      document.getElementById('moodActionButtons').style.display = 'none';
-      const btns = document.querySelectorAll('#moodSubDropdown button');
-      btns.forEach(btn => btn.style.borderColor = 'transparent');
-    }
-    // ---- Style functions ----
-    let selectedStyle = null;
-    function selectStyle(style, element) {
-      const btns = document.querySelectorAll('#styleSubDropdown button');
-      btns.forEach(btn => btn.style.borderColor = 'transparent');
-      element.style.borderColor = "#3498DB";
-      selectedStyle = style;
-      document.getElementById('stylePreviewArea').innerHTML = style.toUpperCase();
-      document.getElementById('stylePreviewArea').style.display = 'block';
-      document.getElementById('styleActionButtons').style.display = 'block';
-    }
-    function applySelectedStyle() {
-      const form = document.getElementById('formContainer');
-      if(selectedStyle === 'default'){
-        form.style.borderRadius = '15px';
-        form.style.boxShadow = '0 8px 30px rgba(0,0,0,0.12)';
-      } else if(selectedStyle === 'styleA'){
-        form.style.borderRadius = '0';
-        form.style.boxShadow = 'none';
-      } else if(selectedStyle === 'styleB'){
-        form.style.borderRadius = '30px';
-        form.style.boxShadow = '0 12px 40px rgba(0,0,0,0.2)';
-      }
-      cancelSelectedStyle();
-    }
-    function cancelSelectedStyle() {
-      selectedStyle = null;
-      document.getElementById('stylePreviewArea').style.display = 'none';
-      document.getElementById('styleActionButtons').style.display = 'none';
-      const btns = document.querySelectorAll('#styleSubDropdown button');
-      btns.forEach(btn => btn.style.borderColor = 'transparent');
-    }
-    // ---- Theme: Default ----
-    function previewThemeDefault() {
-      const form = document.getElementById('formContainer');
-      // Show preview (in a preview area to the left)
-      document.getElementById('themeImagePreviewArea').innerHTML = '<span style="line-height:100px;">DEFAULT</span>';
-      document.getElementById('themeImagePreviewArea').style.display = 'block';
-      // Apply button for default theme:
-      document.getElementById('themeImageActionButtons').innerHTML = '<button onclick="applyThemeDefault()">Apply</button>';
-      document.getElementById('themeImageActionButtons').style.display = 'block';
-    }
-    function applyThemeDefault() {
-      const form = document.getElementById('formContainer');
-      form.style.backgroundImage = 'none';
-      form.style.backgroundColor = 'white';
-      document.getElementById('themeImagePreviewArea').style.display = 'none';
-      document.getElementById('themeImageActionButtons').style.display = 'none';
-    }
-    // ---- Theme: Image Selection ----
-    let selectedThemeImage = null;
-    function selectThemeImage(src, element) {
+    // --- Inline image selection functions ---
+    let selectedImageSrc = null;
+    function selectImage(src, element) {
+      // Highlight selected thumbnail
       const imgs = document.querySelectorAll('#imageSubDropdown .image-thumbnails img');
       imgs.forEach(img => img.style.borderColor = 'transparent');
-      element.style.borderColor = "#3498DB";
-      selectedThemeImage = src;
-      document.getElementById('themeImagePreviewArea').innerHTML = `<img src="${src}" style="width:100%; height:100%; object-fit:cover;">`;
-      document.getElementById('themeImagePreviewArea').style.display = 'block';
-      document.getElementById('themeImageActionButtons').innerHTML = '<button onclick="applySelectedThemeImage()">Apply</button>';
-      document.getElementById('themeImageActionButtons').style.display = 'block';
+      element.style.borderColor = varSecondary();
+      selectedImageSrc = src;
+      document.getElementById('selectedImagePreview').src = src;
+      document.getElementById('imagePreviewArea').style.display = 'block';
+      document.getElementById('imageActionButtons').style.display = 'block';
     }
-    function applySelectedThemeImage() {
-      if(selectedThemeImage){
-        const form = document.getElementById('formContainer');
-        form.style.backgroundImage = `url(${selectedThemeImage})`;
-        form.style.backgroundSize = 'cover';
-        cancelSelectedThemeImage();
+    function varSecondary() {
+      // Return secondary color value
+      return "#3498DB";
+    }
+    function applySelectedImage() {
+      if(selectedImageSrc) {
+        document.getElementById('formContainer').style.backgroundImage = `url(${selectedImageSrc})`;
+        document.getElementById('formContainer').style.backgroundSize = 'cover';
+        // Clear preview area and reset selection
+        cancelSelectedImage();
       }
     }
-    function cancelSelectedThemeImage() {
-      selectedThemeImage = null;
-      document.getElementById('themeImagePreviewArea').style.display = 'none';
-      document.getElementById('themeImageActionButtons').style.display = 'none';
+    function cancelSelectedImage() {
+      selectedImageSrc = null;
+      document.getElementById('selectedImagePreview').src = "";
+      document.getElementById('imagePreviewArea').style.display = 'none';
+      document.getElementById('imageActionButtons').style.display = 'none';
+      // Reset borders in the thumbnail list
       const imgs = document.querySelectorAll('#imageSubDropdown .image-thumbnails img');
       imgs.forEach(img => img.style.borderColor = 'transparent');
     }
-    // ---- Theme: Color Selection ----
-    let selectedThemeColor = null;
-    function selectThemeColor(color, element) {
+    // --- Inline color selection functions ---
+    let selectedColor = null;
+    function selectColor(color, element) {
       const divs = document.querySelectorAll('#colorSubDropdown .color-thumbnails div');
       divs.forEach(div => div.style.borderColor = 'transparent');
-      element.style.borderColor = "#3498DB";
-      selectedThemeColor = color;
-      const previewDiv = document.getElementById('themeColorPreviewArea');
-      if(color.indexOf("linear-gradient")>=0){
+      element.style.borderColor = varSecondary();
+      selectedColor = color;
+      // Set preview
+      const previewDiv = document.getElementById('selectedColorPreview');
+      if(color.indexOf("linear-gradient") >= 0){
         previewDiv.style.background = color;
       } else {
         previewDiv.style.backgroundColor = color;
       }
-      previewDiv.style.display = 'block';
-      document.getElementById('themeColorActionButtons').innerHTML = '<button onclick="applySelectedThemeColor()">Apply</button>';
-      document.getElementById('themeColorActionButtons').style.display = 'block';
+      document.getElementById('colorPreviewArea').style.display = 'block';
+      document.getElementById('colorActionButtons').style.display = 'block';
     }
-    function applySelectedThemeColor() {
-      if(selectedThemeColor){
-        const form = document.getElementById('formContainer');
-        form.style.backgroundImage = 'none';
-        if(selectedThemeColor.indexOf("linear-gradient")>=0){
-          form.style.backgroundImage = selectedThemeColor;
-          form.style.backgroundColor = "";
+    function applySelectedColor() {
+      if(selectedColor) {
+        const formContainer = document.getElementById('formContainer');
+        formContainer.style.backgroundImage = 'none';
+        if(selectedColor.indexOf("linear-gradient") >= 0) {
+          formContainer.style.backgroundImage = selectedColor;
+          formContainer.style.backgroundColor = "";
         } else {
-          form.style.backgroundColor = selectedThemeColor;
+          formContainer.style.backgroundColor = selectedColor;
         }
-        cancelSelectedThemeColor();
+        cancelSelectedColor();
       }
     }
-    function cancelSelectedThemeColor() {
-      selectedThemeColor = null;
-      document.getElementById('themeColorPreviewArea').style.display = 'none';
-      document.getElementById('themeColorActionButtons').style.display = 'none';
+    function cancelSelectedColor() {
+      selectedColor = null;
+      document.getElementById('selectedColorPreview').style.background = "";
+      document.getElementById('colorPreviewArea').style.display = 'none';
+      document.getElementById('colorActionButtons').style.display = 'none';
       const divs = document.querySelectorAll('#colorSubDropdown .color-thumbnails div');
       divs.forEach(div => div.style.borderColor = 'transparent');
     }
-    // ---- Global click to close dropdown if clicking outside ----
+    // Global click handlers to close dropdown when clicking outside
     document.addEventListener('click', function(event) {
-      const dd = document.getElementById('dropdownMenu');
-      if(dd.classList.contains('active') && !event.target.closest('.dropdown-menu') && !event.target.closest('.gear-icon')){
-        dd.classList.remove('active');
-      }
-      // Also, if click outside preview areas for mood/style/theme, hide them:
-      if(!event.target.closest('#moodPreviewArea') && !event.target.closest('#moodActionButtons')){
-        document.getElementById('moodPreviewArea').style.display = 'none';
-        document.getElementById('moodActionButtons').style.display = 'none';
-      }
-      if(!event.target.closest('#stylePreviewArea') && !event.target.closest('#styleActionButtons')){
-        document.getElementById('stylePreviewArea').style.display = 'none';
-        document.getElementById('styleActionButtons').style.display = 'none';
-      }
-      if(!event.target.closest('#themeImagePreviewArea') && !event.target.closest('#themeImageActionButtons')){
-        // Do not auto-hide if user is scrolling thumbnails (optional)
-      }
-      if(!event.target.closest('#themeColorPreviewArea') && !event.target.closest('#themeColorActionButtons')){
-        // Likewise for color
+      const dropdownMenu = document.getElementById('dropdownMenu');
+      if(dropdownMenu.classList.contains('active') && !event.target.closest('.dropdown-menu') && !event.target.closest('.gear-icon')) {
+        dropdownMenu.classList.remove('active');
       }
     });
   </script>
