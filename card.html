@@ -37,7 +37,7 @@
         min-height: 100vh;
         position: relative;
       }
-      /* Card Container – now responsive to stretch on mobile */
+      /* Card Container */
       .card-container {
         position: relative;
         width: 90%;
@@ -46,13 +46,13 @@
         border-radius: 20px;
         border: 2px solid transparent;
         border-image: linear-gradient(45deg, var(--secondary-color), var(--accent-color), #3f51b5) 1;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-        padding: 1.5rem;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        padding: 1rem 1.5rem;
         margin: 1rem auto;
         transition: background-color 0.5s ease, box-shadow 0.5s ease;
-        overflow: hidden;  /* Ensures the border image respects rounded corners */
+        overflow: hidden;
       }
-      /* Settings Icon (Top Left) */
+      /* Settings & Share Icons */
       #styleControlsContainer {
         position: absolute;
         top: 10px;
@@ -70,7 +70,6 @@
       #styleButton:hover {
         color: var(--secondary-color);
       }
-      /* Top Right Share Icon */
       .top-icons {
         position: absolute;
         top: 10px;
@@ -93,14 +92,14 @@
         display: none;
         position: absolute;
         top: 110%;
-        left: -20px; /* Partly outside the card */
+        left: -20px;
         background: #fff;
         border: 1px solid #ccc;
         border-radius: 4px;
         z-index: 10;
         font-size: 0.75rem;
         width: 100px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
       }
       .setting-group {
         border-bottom: 1px solid #ddd;
@@ -108,22 +107,21 @@
       .setting-group:last-child {
         border-bottom: none;
       }
-      /* 3D Effect for Group Headers */
       .setting-header {
         background: linear-gradient(to bottom, #f8f8f8, #dcdcdc);
         border: 1px solid #ccc;
         border-radius: 5px;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
         color: var(--dropdown-header-color);
         padding: 5px 8px;
         cursor: pointer;
         font-size: 0.8rem;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         transition: all 0.3s ease;
         margin: 3px 0;
       }
       .setting-header:hover {
-        box-shadow: 3px 3px 7px rgba(0,0,0,0.4);
+        box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.4);
         transform: translateY(-1px);
       }
       .setting-content {
@@ -145,7 +143,6 @@
         background: var(--secondary-color);
         color: #fff;
       }
-      /* Only Apply button remains */
       .dropdown-btns {
         display: flex;
         flex-direction: column;
@@ -163,7 +160,7 @@
       }
       .dropdown-btns button:hover {
         background: var(--dropdown-btn-hover);
-        box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
       }
       /* Mini Icons */
       .mini-icons {
@@ -179,58 +176,44 @@
         cursor: pointer;
         border-radius: 50%;
         padding: 0.5rem;
-        background: rgba(255,255,255,0.1);
+        background: rgba(255, 255, 255, 0.1);
         transition: transform 0.3s, box-shadow 0.3s;
       }
       .mini-icons .icon:hover {
         color: var(--secondary-color);
         transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
       }
-      /* Profile Section */
+      /* Revised Profile Section */
       .profile-section {
         display: flex;
-        padding: 1rem;
-        margin: 0.5rem;
+        align-items: center;
+        padding: 0.5rem 0;
+        margin: 0.5rem 0;
         border-bottom: 2px solid var(--secondary-color);
       }
       .profile-image-container {
-        width: 40%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-right: 1rem;
+        flex: 0 0 80px;
+        margin-right: 1rem;
       }
       .profile-image {
-        width: 90px;
-        height: 90px;
+        width: 80px;
+        height: 80px;
         border-radius: 50%;
         border: 2px solid var(--neutral-light);
         object-fit: cover;
-        transition: box-shadow 0.3s ease;
-      }
-      .profile-image:hover {
-        box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
-      }
-      .profile-name {
-        color: var(--primary-color);
-        margin: 0.5rem 0 0;
-        font-size: 1.1rem;
-        text-align: center;
       }
       .profile-info {
-        width: 60%;
-        padding-left: 1rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        flex: 1;
       }
-      .contact-info {
-        color: var(--neutral-dark);
-        margin: 0.3rem 0;
-        font-size: 0.85rem;
-        line-height: 1.4;
-        white-space: nowrap;
+      .profile-info h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        color: var(--primary-color);
+      }
+      .profile-info p {
+        margin: 0.2rem 0;
+        font-size: 0.9rem;
       }
       .connect-btn {
         align-self: flex-end;
@@ -243,32 +226,56 @@
         transform: scale(1.1);
         color: var(--accent-color);
       }
-      /* Business Info Section */
+      /* Offers Section (Under Profile) */
+      .offers-section {
+        margin: 0.5rem 0;
+        padding: 0.5rem;
+        background: #f9f9f9;
+        border-radius: 10px;
+      }
+      .offer-card {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 0.5rem;
+      }
+      .offer-card button.accordion {
+        width: 100%;
+        text-align: left;
+        background: #e0e0e0;
+        border: none;
+        padding: 0.5rem;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .offer-card .panel {
+        display: none;
+        padding: 0.5rem;
+      }
+      /* Business Info Section with Slide Animation */
       .business-info-section {
+        position: relative;
+        overflow: hidden;
         padding: 1rem;
-        margin: 0.5rem;
+        margin: 0.5rem 0;
         font-size: 0.9rem;
         line-height: 1.5;
         height: 150px;
-        overflow: hidden;
         background: var(--business-info-bg);
         border-bottom: 2px solid var(--secondary-color);
-        font-family: "Georgia", serif;
         border-radius: 20px;
-        position: relative;
       }
       .business-info-content {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        display: none;
-        text-align: center;
-        font-weight: bold;
-        color: var(--neutral-dark);
-        padding: 0.5rem;
-        overflow-y: auto;
+        animation: slideUp 1s ease;
+      }
+      @keyframes slideUp {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
       }
       /* Action Buttons Section */
       .action-buttons {
@@ -517,26 +524,29 @@
           <i class="fas fa-map-marker-alt"></i>
         </a>
       </div>
-      <!-- Profile Section -->
+      <!-- Revised Profile Section -->
       <div class="profile-section">
         <div class="profile-image-container">
           <img id="cardProfileImage" class="profile-image" alt="Profile" />
-          <h3 class="profile-name" id="cardName"></h3>
         </div>
         <div class="profile-info">
-          <p class="contact-info" id="cardBusinessName"></p>
-          <p class="contact-info" id="cardAddress"></p>
-          <p class="contact-info" id="cardPhone"></p>
-          <p class="contact-info" id="cardEmail"></p>
+          <h3 id="cardName"></h3>
+          <p id="cardBusinessName"></p>
+          <p id="cardAddress"></p>
+          <p id="cardPhone"></p>
+          <p id="cardEmail"></p>
         </div>
-        <!-- Connect (vCard) Button -->
         <div class="connect-btn" id="connectButton" title="Save Contact">
           <i class="fas fa-save"></i>
         </div>
       </div>
-      <!-- Business Info Section -->
+      <!-- Offers Section (Placed Under Profile Section) -->
+      <div id="offersContainer" class="offers-section">
+        <!-- Offers will be dynamically loaded here -->
+      </div>
+      <!-- Business Info Section with Slide Animation -->
       <div class="business-info-section">
-        <div id="businessInfoContent"></div>
+        <div id="businessInfoContent" class="business-info-content"></div>
       </div>
       <!-- Action Buttons Section -->
       <div class="action-buttons">
@@ -563,11 +573,11 @@
         </a>
       </div>
     </div>
-    <!-- Floating Feedback Button (fixed) -->
+    <!-- Floating Feedback Button -->
     <button class="floating-btn feedback" title="Feedback" onclick="window.location.href='mailto:socialneeds@outlook.com?subject=Feedback on Business Card'">
       <i class="fas fa-comment-dots"></i>
     </button>
-    <!-- Live Chat Modal (centered) -->
+    <!-- Live Chat Modal -->
     <div id="chatModal" class="modal">
       <div class="modal-content">
         <h3>Live Chat</h3>
@@ -590,16 +600,16 @@
         const emailjs_service = params.get("emailjs_service") || "";
         const emailjs_template = params.get("emailjs_template") || "";
         if (!emailjs_user) {
-          // If EmailJS credentials are missing, you can disable the live chat modal.
+          // Disable live chat if credentials are missing
           document.getElementById("chatModal").style.display = "none";
         } else {
           emailjs.init(emailjs_user);
         }
         
         /* -------------------- Populate Card Info -------------------- */
-        const storedData = localStorage.getItem('formData');
+        const storedData = localStorage.getItem("formData");
         const formData = storedData ? JSON.parse(storedData) : {};
-        document.getElementById("cardProfileImage").src = localStorage.getItem('profileImage') || "";
+        document.getElementById("cardProfileImage").src = localStorage.getItem("profileImage") || "";
         document.getElementById("cardName").textContent = formData.name || "";
         document.getElementById("cardBusinessName").textContent = formData.businessName || "";
         document.getElementById("cardAddress").textContent = formData.address || "";
@@ -610,18 +620,32 @@
         const businessInfo = formData.businessInfo || "";
         const paragraphs = businessInfo.split("\n").filter(p => p.trim() !== "");
         const businessInfoContainer = document.getElementById("businessInfoContent");
-        businessInfoContainer.innerHTML = paragraphs.map(p => `<div class="business-info-content"><p>${p}</p></div>`).join("");
-        const paragraphDivs = businessInfoContainer.querySelectorAll(".business-info-content");
-        let currentIndex = 0;
-        paragraphDivs.forEach((div, idx) => {
-          div.style.display = idx === 0 ? "block" : "none";
-        });
-        if (paragraphDivs.length > 0) {
-          setInterval(() => {
-            paragraphDivs[currentIndex].style.display = "none";
-            currentIndex = (currentIndex + 1) % paragraphDivs.length;
-            paragraphDivs[currentIndex].style.display = "block";
-          }, 8000);
+        businessInfoContainer.innerHTML = paragraphs.map(p => `<p>${p}</p>`).join("");
+        
+        /* -------------------- Load Offers Data -------------------- */
+        const offersData = JSON.parse(localStorage.getItem("offersData")) || [];
+        const offersContainer = document.getElementById("offersContainer");
+        if (offersData.length === 0) {
+          offersContainer.innerHTML = "<p>No offers available.</p>";
+        } else {
+          offersData.forEach((offer, index) => {
+            let offerCard = document.createElement("div");
+            offerCard.className = "offer-card";
+            offerCard.innerHTML = `
+              <button class="accordion">${offer.title || "Offer " + (index + 1)}</button>
+              <div class="panel" style="display: none;">
+                <p>${offer.detail || ""}</p>
+                ${offer.image ? `<img src="${offer.image}" alt="Offer Image" style="max-width:100px; display:block;">` : ""}
+              </div>
+            `;
+            offersContainer.appendChild(offerCard);
+          });
+          document.querySelectorAll(".accordion").forEach((acc) => {
+            acc.addEventListener("click", function () {
+              let panel = this.nextElementSibling;
+              panel.style.display = panel.style.display === "block" ? "none" : "block";
+            });
+          });
         }
         
         /* -------------------- Social Links -------------------- */
