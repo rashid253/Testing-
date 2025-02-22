@@ -1,920 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Business Card</title>
-    <!-- Font Awesome for icons -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-      rel="stylesheet"
-    />
-    <!-- EmailJS Library -->
-    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-    <style>
-      :root {
-        --primary-color: #1e1e1e;
-        --secondary-color: #1e90ff;
-        --accent-color: #ff5722;
-        --neutral-light: rgba(245,245,245,0.9);
-        --neutral-dark: #333333;
-        --card-background: #ffffff;
-        --body-bg: linear-gradient(135deg, #cfd8dc, #eceff1);
-        --business-info-bg: #e0f7fa;
-        --offer-bg-color: #e0f7fa;
-        --offer-border-color: #009688;
-        --offer-border-radius: 8px;
-        --offer-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        /* Dropdown header and button colors */
-        --dropdown-header-color: #333;
-        --dropdown-btn-bg: #00796b;
-        --dropdown-btn-hover: #00695c;
-      }
-      body {
-        font-family: 'Segoe UI', sans-serif;
-        margin: 0;
-        padding: 1rem;
-        background: var(--body-bg);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        position: relative;
-      }
-      /* Card Container */
-      .card-container {
-        position: relative;
-        width: 90%;
-        max-width: 600px;
-        background: var(--card-background);
-        border-radius: 20px;
-        border: 2px solid transparent;
-        border-image: linear-gradient(45deg, var(--secondary-color), var(--accent-color), #3f51b5) 1;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-        padding: 1rem 1.5rem;
-        margin: 1rem auto;
-        transition: background-color 0.5s ease, box-shadow 0.5s ease;
-        overflow: hidden;
-      }
-      /* Settings & Share Icons */
-      #styleControlsContainer {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        z-index: 10;
-      }
-      #styleButton {
-        padding: 0.5rem;
-        font-size: 1.2rem;
-        border: none;
-        background: none;
-        cursor: pointer;
-        color: blue;
-      }
-      #styleButton:hover {
-        color: var(--secondary-color);
-      }
-      .top-icons {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        z-index: 10;
-      }
-      .top-share-icon {
-        padding: 0.5rem;
-        font-size: 1.2rem;
-        border: none;
-        background: none;
-        cursor: pointer;
-        color: blue;
-      }
-      .top-share-icon:hover {
-        color: var(--secondary-color);
-      }
-      /* Settings Dropdown Panel */
-      #styleDropdown {
-        display: none;
-        position: absolute;
-        top: 110%;
-        left: -20px;
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        z-index: 10;
-        font-size: 0.75rem;
-        width: 100px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-      }
-      .setting-group {
-        border-bottom: 1px solid #ddd;
-      }
-      .setting-group:last-child {
-        border-bottom: none;
-      }
-      .setting-header {
-        background: linear-gradient(to bottom, #f8f8f8, #dcdcdc);
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-        color: var(--dropdown-header-color);
-        padding: 5px 8px;
-        cursor: pointer;
-        font-size: 0.8rem;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-        margin: 3px 0;
-      }
-      .setting-header:hover {
-        box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.4);
-        transform: translateY(-1px);
-      }
-      .setting-content {
-        display: none;
-        padding: 5px;
-      }
-      .setting-options {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-      .setting-options li {
-        padding: 0.3rem 0.5rem;
-        cursor: pointer;
-        transition: background 0.3s;
-        color: #333;
-      }
-      .setting-options li:hover {
-        background: var(--secondary-color);
-        color: #fff;
-      }
-      .dropdown-btns {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        margin-top: 5px;
-      }
-      .dropdown-btns button {
-        padding: 0.3rem;
-        border: none;
-        background: var(--dropdown-btn-bg);
-        color: #fff;
-        cursor: pointer;
-        font-size: 0.75rem;
-        transition: box-shadow 0.3s ease;
-      }
-      .dropdown-btns button:hover {
-        background: var(--dropdown-btn-hover);
-        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-      }
-      /* Mini Icons */
-      .mini-icons {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        padding: 1rem;
-        border-bottom: 2px solid var(--secondary-color);
-      }
-      .mini-icons .icon {
-        font-size: 1.5rem;
-        color: var(--neutral-dark);
-        cursor: pointer;
-        border-radius: 50%;
-        padding: 0.5rem;
-        background: rgba(255, 255, 255, 0.1);
-        transition: transform 0.3s, box-shadow 0.3s;
-      }
-      .mini-icons .icon:hover {
-        color: var(--secondary-color);
-        transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-      }
-      /* Revised Profile Section */
-      .profile-section {
-        display: flex;
-        align-items: center;
-        padding: 0.5rem 0;
-        margin: 0.5rem 0;
-        border-bottom: 2px solid var(--secondary-color);
-      }
-      .profile-image-container {
-        flex: 0 0 80px;
-        margin-right: 1rem;
-      }
-      .profile-image {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        border: 2px solid var(--neutral-light);
-        object-fit: cover;
-      }
-      .profile-info {
-        flex: 1;
-      }
-      .profile-info h3 {
-        margin: 0;
-        font-size: 1.2rem;
-        color: var(--primary-color);
-      }
-      .profile-info p {
-        margin: 0.2rem 0;
-        font-size: 0.9rem;
-      }
-      .connect-btn {
-        align-self: flex-end;
-        font-size: 1.2rem;
-        color: var(--secondary-color);
-        cursor: pointer;
-        transition: transform 0.3s;
-      }
-      .connect-btn:hover {
-        transform: scale(1.1);
-        color: var(--accent-color);
-      }
-      /* Offers Section (Under Profile) */
-      .offers-section {
-        margin: 0.5rem 0;
-        padding: 0.5rem;
-        background: var(--offer-bg-color);
-        border: 2px solid var(--offer-border-color);
-        border-radius: var(--offer-border-radius);
-        box-shadow: var(--offer-box-shadow);
-      }
-      .offer-card {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-bottom: 0.5rem;
-      }
-      .offer-card button.accordion {
-        width: 100%;
-        text-align: left;
-        background: #e0e0e0;
-        border: none;
-        padding: 0.5rem;
-        font-weight: bold;
-        cursor: pointer;
-      }
-      .offer-card .panel {
-        display: none;
-        padding: 0.5rem;
-      }
-      /* Business Info Section with Slide Animation */
-      .business-info-section {
-        position: relative;
-        overflow: hidden;
-        padding: 1rem;
-        margin: 0.5rem 0;
-        font-size: 0.9rem;
-        line-height: 1.5;
-        height: 150px;
-        background: var(--business-info-bg);
-        border-bottom: 2px solid var(--secondary-color);
-        border-radius: 20px;
-      }
-      .business-info-content {
-        animation: slideUp 1s ease;
-      }
-      @keyframes slideUp {
-        from {
-          transform: translateY(20px);
-          opacity: 0;
-        }
-        to {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-      /* Action Buttons Section */
-      .action-buttons {
-        display: grid;
-        gap: 0.5rem;
-        padding: 0.8rem;
-      }
-      .action-btn {
-        text-align: center;
-        text-decoration: none;
-        padding: 0.6rem;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        color: #fff;
-        box-shadow: 4px 4px 6px rgba(0,0,0,0.3),
-          inset -2px -2px 4px rgba(255,255,255,0.2);
-        transition: transform 0.3s, box-shadow 0.3s;
-      }
-      .action-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-      }
-      .action-btn:active {
-        filter: brightness(90%);
-      }
-      .contact-btn {
-        transition: none !important;
-      }
-      /* Social Links Section */
-      .social-links {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        padding: 1rem;
-      }
-      .social-icon {
-        font-size: 1.5rem;
-        color: var(--neutral-dark);
-        visibility: hidden;
-        border-radius: 50%;
-        text-decoration: none;
-        padding: 0.5rem;
-        background: rgba(255,255,255,0.1);
-        transition: transform 0.3s, box-shadow 0.3s;
-      }
-      .social-icon:hover {
-        color: var(--secondary-color);
-        transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-      }
-      /* Floating Feedback Button (fixed) */
-      .floating-btn {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: var(--secondary-color);
-        color: #fff;
-        border: none;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        cursor: pointer;
-        font-size: 1.5rem;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        margin-bottom: 10px;
-        transition: transform 0.3s, box-shadow 0.3s;
-      }
-      .floating-btn:hover {
-        background: var(--accent-color);
-        transform: scale(1.1);
-      }
-      /* Live Chat Modal (centered) */
-      .modal {
-        display: none;
-        position: fixed;
-        z-index: 100;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.3);
-      }
-      .modal-content {
-        position: fixed;
-        width: 300px;
-        background-color: rgba(255,255,255,0.9);
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-      .modal-content h3 {
-        margin-top: 0;
-      }
-      /* Chat Conversation Area */
-      #chatConversation {
-        max-height: 150px;
-        overflow-y: auto;
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin-bottom: 10px;
-      }
-      .chat-message {
-        padding: 5px;
-        margin: 5px 0;
-        border-radius: 5px;
-      }
-      .chat-message.customer {
-        background-color: #e0f7fa;
-      }
-      .chat-message.auto-reply {
-        background-color: #f0f0f0;
-      }
-      .modal textarea {
-        width: 100%;
-        height: 60px;
-        margin-bottom: 10px;
-        resize: none;
-        padding: 10px;
-        font-size: 1rem;
-      }
-      .modal button {
-        padding: 10px 20px;
-        margin-right: 10px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      .modal .send-btn {
-        background-color: var(--secondary-color);
-        color: #fff;
-      }
-      .modal .cancel-btn {
-        background-color: #ccc;
-        color: #333;
-      }
-      /* Responsive Adjustments for Mobile */
-      @media (max-width: 480px) {
-        .card-container {
-          width: 95%;
-          padding: 1rem;
-        }
-        .profile-section {
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-        }
-        .profile-image-container,
-        .profile-info {
-          width: 100%;
-          padding: 0;
-        }
-        .profile-info {
-          margin-top: 1rem;
-        }
-        .profile-info p {
-          white-space: normal;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Card Container -->
-    <div class="card-container" id="cardContainer">
-      <!-- Top Left Settings Icon -->
-      <div id="styleControlsContainer">
-        <button id="styleButton" title="Settings">
-          <i class="fas fa-cog"></i>
-        </button>
-        <!-- Settings Dropdown Panel -->
-        <div id="styleDropdown">
-          <!-- Group: Theme -->
-          <div class="setting-group" id="themeGroup">
-            <div class="setting-header">Theme</div>
-            <div class="setting-content">
-              <ul class="setting-options">
-                <li data-theme="default">Default</li>
-                <li data-theme="blue">Blue</li>
-                <li data-theme="red">Red</li>
-                <li data-theme="green">Green</li>
-              </ul>
-              <div class="dropdown-btns">
-                <button class="apply-btn" data-group="theme">Apply</button>
-              </div>
-            </div>
-          </div>
-          <!-- Group: Mood -->
-          <div class="setting-group" id="moodGroup">
-            <div class="setting-header">Mood</div>
-            <div class="setting-content">
-              <ul class="setting-options">
-                <li data-mood="day">Day</li>
-                <li data-mood="night">Night</li>
-              </ul>
-              <div class="dropdown-btns">
-                <button class="apply-btn" data-group="mood">Apply</button>
-              </div>
-            </div>
-          </div>
-          <!-- Group: Style -->
-          <div class="setting-group" id="iconStyleGroup">
-            <div class="setting-header">Style</div>
-            <div class="setting-content">
-              <ul class="setting-options">
-                <li data-iconstyle="none">None</li>
-                <li data-iconstyle="styleA">Style A</li>
-                <li data-iconstyle="styleB">Style B</li>
-              </ul>
-              <div class="dropdown-btns">
-                <button class="apply-btn" data-group="style">Apply</button>
-              </div>
-            </div>
-          </div>
-          <!-- Group: Sounds -->
-          <div class="setting-group" id="soundGroup">
-            <div class="setting-header">Sounds</div>
-            <div class="setting-content">
-              <label style="font-size:0.8rem; display: flex; align-items: center; padding: 5px;">
-                <input type="checkbox" id="soundToggle" checked style="margin-right: 5px;"> Enable Touch Sounds
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Top Right Share Icon -->
-      <div class="top-icons">
-        <button class="top-share-icon" id="topShareIcon" title="Share">
-          <i class="fas fa-share-alt"></i>
-        </button>
-      </div>
-      <!-- Mini Icons -->
-      <div class="mini-icons">
-        <a id="miniCallButton" class="icon" title="Call">
-          <i class="fas fa-phone"></i>
-        </a>
-        <a id="miniEmailButton" class="icon" title="Email">
-          <i class="fas fa-envelope"></i>
-        </a>
-        <a id="miniWhatsappButton" class="icon" title="WhatsApp">
-          <i class="fab fa-whatsapp"></i>
-        </a>
-        <a id="miniMapButton" class="icon" title="Open in Google Maps">
-          <i class="fas fa-map-marker-alt"></i>
-        </a>
-      </div>
-      <!-- Revised Profile Section -->
-      <div class="profile-section">
-        <div class="profile-image-container">
-          <img id="cardProfileImage" class="profile-image" alt="Profile" />
-        </div>
-        <div class="profile-info">
-          <h3 id="cardName"></h3>
-          <p id="cardBusinessName"></p>
-          <p id="cardAddress"></p>
-          <p id="cardPhone"></p>
-          <p id="cardEmail"></p>
-        </div>
-        <div class="connect-btn" id="connectButton" title="Save Contact">
-          <i class="fas fa-save"></i>
-        </div>
-      </div>
-      <!-- Offers Section (Placed Under Profile Section) -->
-      <div id="offersContainer" class="offers-section">
-        <!-- Offers will be dynamically loaded here -->
-      </div>
-      <!-- Business Info Section with Slide Animation -->
-      <div class="business-info-section">
-        <div id="businessInfoContent" class="business-info-content"></div>
-      </div>
-      <!-- Action Buttons Section -->
-      <div class="action-buttons">
-        <a id="callButton" class="action-btn contact-btn" style="background: var(--secondary-color);">
-          Call
-        </a>
-        <a id="whatsappButton" class="action-btn contact-btn" style="background: #25d366;">
-          WhatsApp
-        </a>
-        <a id="emailButton" class="action-btn contact-btn" style="background: var(--accent-color);">
-          Email
-        </a>
-      </div>
-      <!-- Social Links Section -->
-      <div class="social-links">
-        <a id="facebookButton" class="social-icon">
-          <i class="fab fa-facebook-f"></i>
-        </a>
-        <a id="instagramButton" class="social-icon">
-          <i class="fab fa-instagram"></i>
-        </a>
-        <a id="youtubeButton" class="social-icon">
-          <i class="fab fa-youtube"></i>
-        </a>
-      </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Card</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #1e1e1e;
+      --secondary-color: #1e90ff;
+      --accent-color: #ff5722;
+      --neutral-light: rgba(245,245,245,0.9);
+      --neutral-dark: #333333;
+      --card-background: #ffffff;
+      --body-bg: linear-gradient(135deg, #cfd8dc, #eceff1);
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 1rem;
+      background: var(--body-bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .card-container {
+      width: 90%;
+      max-width: 600px;
+      background: var(--card-background);
+      border-radius: 20px;
+      border: 2px solid var(--secondary-color);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      padding: 1rem;
+    }
+    /* Business Info Section */
+    .business-info-section {
+      position: relative;
+      overflow: hidden;
+      padding: 1rem;
+      max-height: 200px; /* Fix for overflow */
+      overflow-y: auto;
+      background: #e0f7fa;
+      border-bottom: 2px solid var(--secondary-color);
+      border-radius: 10px;
+    }
+    /* Offer Styles */
+    .offer-card { border: 1px solid var(--secondary-color); padding: 0.5rem; border-radius: 5px; }
+    .offer-card.horizontal { display: inline-block; margin-right: 10px; }
+    .offer-card.modal { border: 1px solid var(--primary-color); cursor: pointer; }
+    .offer-card.tab { display: none; }
+    .offer-card.accordion { border: 1px solid var(--secondary-color); }
+    .accordion { background: #e0e0e0; padding: 0.5rem; border: none; font-weight: bold; cursor: pointer; }
+    .panel { display: none; padding: 0.5rem; }
+    /* Tab Navigation */
+    .tab-container { display: flex; border-bottom: 2px solid var(--secondary-color); }
+    .tab-btn { padding: 0.5rem 1rem; cursor: pointer; border: none; background: #ccc; }
+    .tab-btn.active { background: var(--secondary-color); color: white; }
+    /* Modal */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+    .modal-content {
+      background: white; width: 80%; max-width: 400px; margin: 20% auto; padding: 20px;
+      border-radius: 10px; text-align: center; position: relative;
+    }
+    .close-modal { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="card-container">
+    <!-- Business Info -->
+    <div class="business-info-section">
+      <h3>Business Info</h3>
+      <div id="businessInfoContent"></div>
     </div>
-    <!-- Floating Feedback Button -->
-    <button class="floating-btn feedback" title="Feedback" onclick="window.location.href='mailto:socialneeds@outlook.com?subject=Feedback on Business Card'">
-      <i class="fas fa-comment-dots"></i>
-    </button>
-    <!-- Live Chat Modal -->
-    <div id="chatModal" class="modal">
-      <div class="modal-content">
-        <h3>Live Chat</h3>
-        <div id="chatConversation"></div>
-        <textarea id="chatQuery" placeholder="Type your message here..."></textarea>
-        <div>
-          <button class="send-btn" id="sendChat">Send</button>
-          <button class="cancel-btn" id="cancelChat">Close</button>
-        </div>
-      </div>
+    <!-- Offers Section -->
+    <div id="offersContainer"></div>
+  </div>
+  
+  <!-- Modal Popup -->
+  <div id="offerModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeOfferModal()">&times;</span>
+      <h3 id="modalOfferTitle"></h3>
+      <p id="modalOfferDetails"></p>
+      <img id="modalOfferImage" style="max-width: 100px; display: none;">
     </div>
-    <!-- Audio element for button sound -->
-    <audio id="buttonSound" src="sounds/button.mp3" preload="auto"></audio>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        "use strict";
-        // Initialize EmailJS credentials from URL parameters if provided
-        const params = new URLSearchParams(window.location.search);
-        const emailjs_user = params.get("emailjs_user") || "";
-        const emailjs_service = params.get("emailjs_service") || "";
-        const emailjs_template = params.get("emailjs_template") || "";
-        if (!emailjs_user) {
-          // Disable live chat if credentials are missing
-          document.getElementById("chatModal").style.display = "none";
-        } else {
-          emailjs.init(emailjs_user);
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const storedData = localStorage.getItem("formData");
+      const formData = storedData ? JSON.parse(storedData) : {};
+      document.getElementById("businessInfoContent").innerHTML = formData.businessInfo || "";
+
+      const offersData = JSON.parse(localStorage.getItem("offersData")) || [];
+      const offersContainer = document.getElementById("offersContainer");
+      const offerStyle = localStorage.getItem("offerStyle") || "accordion";
+
+      if (offersData.length === 0) {
+        offersContainer.innerHTML = "<p>No offers available.</p>";
+        return;
+      }
+
+      if (offerStyle === "tab") {
+        let tabNav = document.createElement("div");
+        tabNav.classList.add("tab-container");
+        offersContainer.appendChild(tabNav);
+      }
+
+      offersData.forEach((offer, index) => {
+        let offerCard = document.createElement("div");
+        offerCard.className = "offer-card " + offerStyle;
+        offerCard.innerHTML = `<h4>${offer.title}</h4><p>${offer.detail}</p>`;
+        
+        if (offer.image) {
+          let img = document.createElement("img");
+          img.src = offer.image;
+          img.style.maxWidth = "100px";
+          offerCard.appendChild(img);
         }
-        
-        /* -------------------- Populate Card Info -------------------- */
-        const storedData = localStorage.getItem("formData");
-        const formData = storedData ? JSON.parse(storedData) : {};
-        document.getElementById("cardProfileImage").src = localStorage.getItem("profileImage") || "";
-        document.getElementById("cardName").textContent = formData.name || "";
-        document.getElementById("cardBusinessName").textContent = formData.businessName || "";
-        document.getElementById("cardAddress").textContent = formData.address || "";
-        const phoneText = (formData.countryCode ? formData.countryCode + " " : "") + (formData.phone || "");
-        document.getElementById("cardPhone").textContent = phoneText;
-        document.getElementById("cardEmail").textContent = formData.email || "";
-        
-        const businessInfo = formData.businessInfo || "";
-        const paragraphs = businessInfo.split("\n").filter(p => p.trim() !== "");
-        const businessInfoContainer = document.getElementById("businessInfoContent");
-        businessInfoContainer.innerHTML = paragraphs.map(p => `<p>${p}</p>`).join("");
-        
-        /* -------------------- Load Offers Data -------------------- */
-        const offersData = JSON.parse(localStorage.getItem("offersData")) || [];
-        const offersContainer = document.getElementById("offersContainer");
-        if (offersData.length === 0) {
-          offersContainer.innerHTML = "<p>No offers available.</p>";
-        } else {
-          offersData.forEach((offer, index) => {
-            let offerCard = document.createElement("div");
-            offerCard.className = "offer-card";
-            offerCard.innerHTML = `
-              <button class="accordion">${offer.title || "Offer " + (index + 1)}</button>
-              <div class="panel" style="display: none;">
-                <p>${offer.detail || ""}</p>
-                ${offer.image ? `<img src="${offer.image}" alt="Offer Image" style="max-width:100px; display:block;">` : ""}
-              </div>
-            `;
-            offersContainer.appendChild(offerCard);
-          });
-          document.querySelectorAll(".accordion").forEach((acc) => {
-            acc.addEventListener("click", function () {
-              let panel = this.nextElementSibling;
-              panel.style.display = panel.style.display === "block" ? "none" : "block";
-            });
-          });
-        }
-        
-        /* -------------------- Social Links -------------------- */
-        const socialLinks = {
-          facebook: document.getElementById("facebookButton"),
-          instagram: document.getElementById("instagramButton"),
-          youtube: document.getElementById("youtubeButton")
-        };
-        Object.entries(socialLinks).forEach(([platform, element]) => {
-          const url = formData[platform];
-          if (url) {
-            element.href = url;
-            element.style.visibility = "visible";
-            element.target = "_blank";
-          } else {
-            element.style.visibility = "hidden";
-          }
-        });
-        
-        /* -------------------- Settings Dropdown Behavior -------------------- */
-        const styleButton = document.getElementById("styleButton");
-        const styleDropdown = document.getElementById("styleDropdown");
-        styleButton.addEventListener("click", (e) => {
-          e.stopPropagation();
-          styleDropdown.style.display = styleDropdown.style.display === "block" ? "none" : "block";
-        });
-        document.addEventListener("click", (e) => {
-          if (!document.getElementById("styleControlsContainer").contains(e.target)) {
-            styleDropdown.style.display = "none";
-          }
-        });
-        document.querySelectorAll(".setting-header").forEach(header => {
-          header.addEventListener("click", () => {
-            const content = header.nextElementSibling;
-            content.style.display = content.style.display === "block" ? "none" : "block";
-          });
-        });
-        
-        /* -------------------- Settings Option Selection & Live Preview -------------------- */
-        let selectedTheme = params.get("theme") || "default";
-        let selectedMood = params.get("mood") || "day";
-        let selectedIconStyle = params.get("iconstyle") || "none";
-        
-        document.querySelectorAll("#themeGroup .setting-options li").forEach(li => {
-          li.addEventListener("click", () => {
-            selectedTheme = li.getAttribute("data-theme");
-            document.querySelectorAll("#themeGroup .setting-options li").forEach(el => el.style.background = "");
-            li.style.background = "#ddd";
-            updateCardAppearance();
-          });
-        });
-        document.querySelectorAll("#moodGroup .setting-options li").forEach(li => {
-          li.addEventListener("click", () => {
-            selectedMood = li.getAttribute("data-mood");
-            document.querySelectorAll("#moodGroup .setting-options li").forEach(el => el.style.background = "");
-            li.style.background = "#ddd";
-            updateCardAppearance();
-          });
-        });
-        document.querySelectorAll("#iconStyleGroup .setting-options li").forEach(li => {
-          li.addEventListener("click", () => {
-            selectedIconStyle = li.getAttribute("data-iconstyle");
-            document.querySelectorAll("#iconStyleGroup .setting-options li").forEach(el => el.style.background = "");
-            li.style.background = "#ddd";
-            updateCardAppearance();
-          });
-        });
-        
-        function updateCardAppearance() {
-          const card = document.querySelector(".card-container");
-          if (selectedTheme === "default") {
-            document.documentElement.style.setProperty("--secondary-color", "#009688");
-            document.documentElement.style.setProperty("--accent-color", "#FF5722");
-            document.documentElement.style.setProperty("--card-background", "#FFFFFF");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #CFD8DC, #ECEFF1)");
-            card.style.borderImage = `linear-gradient(45deg, #009688, #FF5722, #3F51B5) 1`;
-            card.style.boxShadow = "0 8px 30px rgba(0,0,0,0.2)";
-          } else if (selectedTheme === "blue") {
-            document.documentElement.style.setProperty("--secondary-color", "#2196F3");
-            document.documentElement.style.setProperty("--accent-color", "#E91E63");
-            document.documentElement.style.setProperty("--card-background", "#F0F8FF");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #BBDEFB, #E3F2FD)");
-            card.style.borderImage = `linear-gradient(45deg, #2196F3, #E91E63, #3F51B5) 1`;
-            card.style.boxShadow = "0 8px 30px rgba(33,150,243,0.4)";
-          } else if (selectedTheme === "red") {
-            document.documentElement.style.setProperty("--secondary-color", "#F44336");
-            document.documentElement.style.setProperty("--accent-color", "#9C27B0");
-            document.documentElement.style.setProperty("--card-background", "#FFF0F0");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #FFCDD2, #FFEBEE)");
-            card.style.borderImage = `linear-gradient(45deg, #F44336, #9C27B0, #FF9800) 1`;
-            card.style.boxShadow = "0 8px 30px rgba(244,67,54,0.4)";
-          } else if (selectedTheme === "green") {
-            document.documentElement.style.setProperty("--secondary-color", "#4CAF50");
-            document.documentElement.style.setProperty("--accent-color", "#8BC34A");
-            document.documentElement.style.setProperty("--card-background", "#E8F5E9");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #C8E6C9, #E8F5E9)");
-            card.style.borderImage = `linear-gradient(45deg, #4CAF50, #8BC34A, #388E3C) 1`;
-            card.style.boxShadow = "0 8px 30px rgba(76,175,80,0.4)";
-          }
-          if (selectedMood === "night") {
-            document.documentElement.style.setProperty("--card-background", "#2b2b2b");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #1a1a1a, #333333)");
-            document.documentElement.style.setProperty("--primary-color", "#f0f0f0");
-            document.documentElement.style.setProperty("--neutral-dark", "#f0f0f0");
-            document.documentElement.style.setProperty("--business-info-bg", "#444");
-          } else {
-            document.documentElement.style.setProperty("--card-background", "#FFFFFF");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #cfd8dc, #eceff1)");
-            document.documentElement.style.setProperty("--primary-color", "#1e1e1e");
-            document.documentElement.style.setProperty("--neutral-dark", "#333333");
-            document.documentElement.style.setProperty("--business-info-bg", "#e0f7fa");
-          }
-          if (selectedIconStyle === "styleA") {
-            document.querySelectorAll(".icon").forEach(el => {
-              el.style.borderRadius = "10px";
-              el.style.backgroundColor = "rgba(0,150,136,0.2)";
-            });
-            document.querySelectorAll(".social-icon").forEach(el => {
-              el.style.borderRadius = "10px";
-              el.style.backgroundColor = "rgba(0,150,136,0.2)";
-            });
-          } else if (selectedIconStyle === "styleB") {
-            document.querySelectorAll(".icon").forEach(el => {
-              el.style.borderRadius = "0px";
-              el.style.backgroundColor = "rgba(233,30,99,0.2)";
-            });
-            document.querySelectorAll(".social-icon").forEach(el => {
-              el.style.borderRadius = "0px";
-              el.style.backgroundColor = "rgba(233,30,99,0.2)";
-            });
-          } else {
-            document.querySelectorAll(".icon").forEach(el => {
-              el.style.borderRadius = "";
-              el.style.backgroundColor = "";
-            });
-            document.querySelectorAll(".social-icon").forEach(el => {
-              el.style.borderRadius = "";
-              el.style.backgroundColor = "";
-            });
-          }
-        }
-        function updateCardAppearanceAndSave() {
-          updateCardAppearance();
-          const newUrl = new URL(window.location.href);
-          newUrl.searchParams.set("theme", selectedTheme);
-          newUrl.searchParams.set("mood", selectedMood);
-          newUrl.searchParams.set("iconstyle", selectedIconStyle);
-          if(document.getElementById("emailjs_user")) {
-            const user = document.getElementById("emailjs_user").value.trim();
-            const service = document.getElementById("emailjs_service").value.trim();
-            const template = document.getElementById("emailjs_template").value.trim();
-            if(user) newUrl.searchParams.set("emailjs_user", user);
-            if(service) newUrl.searchParams.set("emailjs_service", service);
-            if(template) newUrl.searchParams.set("emailjs_template", template);
-          }
-          history.replaceState(null, "", newUrl.toString());
-        }
-        
-        document.querySelectorAll(".apply-btn").forEach(btn => {
+
+        if (offerStyle === "accordion") {
+          let btn = document.createElement("button");
+          btn.className = "accordion";
+          btn.textContent = offer.title;
+          let panel = document.createElement("div");
+          panel.className = "panel";
+          panel.innerHTML = `<p>${offer.detail}</p>`;
           btn.addEventListener("click", () => {
-            updateCardAppearanceAndSave();
-            btn.closest(".setting-content").style.display = "none";
+            panel.style.display = panel.style.display === "block" ? "none" : "block";
           });
-        });
-        
-        /* -------------------- Live Chat Modal -------------------- */
-        const chatModal = document.getElementById("chatModal");
-        const sendChat = document.getElementById("sendChat");
-        const cancelChat = document.getElementById("cancelChat");
-        const chatQuery = document.getElementById("chatQuery");
-        const chatConversation = document.getElementById("chatConversation");
-        
-        cancelChat.addEventListener("click", () => {
-          chatModal.style.display = "none";
-        });
-        
-        sendChat.addEventListener("click", () => {
-          const queryText = chatQuery.value.trim();
-          if (!queryText) {
-            alert("Please enter your message.");
-            return;
-          }
-          console.log("Customer Query:", queryText);
-          const customerMsg = document.createElement("div");
-          customerMsg.className = "chat-message customer";
-          customerMsg.textContent = queryText;
-          chatConversation.appendChild(customerMsg);
-          
-          const lastReplyTime = localStorage.getItem("autoReplyTime");
-          const now = Date.now();
-          const twentyFourHours = 24 * 60 * 60 * 1000;
-          if (!lastReplyTime || now - lastReplyTime > twentyFourHours) {
-            const autoReply = document.createElement("div");
-            autoReply.className = "chat-message auto-reply";
-            autoReply.textContent = "Thank you for contacting us via your Smart Link Visiting Card. We will get back to you within 24 hours.";
-            setTimeout(() => {
-              chatConversation.appendChild(autoReply);
-              chatConversation.scrollTop = chatConversation.scrollHeight;
-            }, 1000);
-            localStorage.setItem("autoReplyTime", now);
-          }
-          
-          if (emailjs_user && emailjs_service && emailjs_template) {
-            emailjs.send(emailjs_service, emailjs_template, {
-              message: queryText,
-              from_name: formData.name || "Visitor",
-              from_email: formData.email || "visitor@example.com"
-            })
-            .then(function(response) {
-              console.log("Email sent successfully!", response.status, response.text);
-            }, function(error) {
-              console.error("Failed to send email.", error);
-            });
-          }
-          chatQuery.value = "";
-        });
-        
-        window.addEventListener("click", (e) => {
-          if (e.target === chatModal) {
-            chatModal.style.display = "none";
-          }
-        });
-        
-        /* -------------------- Share URL Shortening -------------------- */
-        document.getElementById("topShareIcon").addEventListener("click", function (e) {
-          e.preventDefault();
-          const longUrl = window.location.href;
-          shortenUrl(longUrl)
-            .then(shortUrl => {
-              prompt("Share this short URL", shortUrl);
-            })
-            .catch(err => {
-              alert("Error shortening URL, please try again.");
-              console.error(err);
-            });
-        });
-        
-        async function shortenUrl(longUrl) {
-          const response = await fetch("https://your-region-your-project-id.cloudfunctions.net/shortenUrl", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ longUrl })
-          });
-          if (!response.ok) throw new Error("Failed to shorten URL");
-          const data = await response.json();
-          return data.shortUrl;
-        }
-        
-        /* -------------------- Button Touch Sounds -------------------- */
-        function playButtonSound() {
-          const soundToggle = document.getElementById("soundToggle");
-          if (soundToggle && soundToggle.checked) {
-            const sound = document.getElementById("buttonSound");
-            if (sound) {
-              sound.currentTime = 0;
-              sound.play();
+          offersContainer.appendChild(btn);
+          offersContainer.appendChild(panel);
+        } 
+        else if (offerStyle === "horizontal") {
+          offerCard.style.display = "inline-block";
+          offerCard.style.marginRight = "10px";
+          offersContainer.appendChild(offerCard);
+        } 
+        else if (offerStyle === "modal") {
+          offerCard.addEventListener("click", () => {
+            document.getElementById("modalOfferTitle").textContent = offer.title;
+            document.getElementById("modalOfferDetails").textContent = offer.detail;
+            let modalImg = document.getElementById("modalOfferImage");
+            if (offer.image) {
+              modalImg.src = offer.image;
+              modalImg.style.display = "block";
+            } else {
+              modalImg.style.display = "none";
             }
-          }
+            document.getElementById("offerModal").style.display = "block";
+          });
+          offersContainer.appendChild(offerCard);
+        } 
+        else if (offerStyle === "tab") {
+          let tabBtn = document.createElement("button");
+          tabBtn.className = "tab-btn";
+          tabBtn.textContent = offer.title;
+          let tabContent = document.createElement("div");
+          tabContent.className = "offer-card tab";
+          tabContent.innerHTML = `<h4>${offer.title}</h4><p>${offer.detail}</p>`;
+          tabBtn.addEventListener("click", () => {
+            document.querySelectorAll(".offer-card.tab").forEach(t => t.style.display = "none");
+            tabContent.style.display = "block";
+          });
+          if (index === 0) { tabBtn.classList.add("active"); tabContent.style.display = "block"; }
+          offersContainer.querySelector(".tab-container").appendChild(tabBtn);
+          offersContainer.appendChild(tabContent);
         }
-        document.querySelectorAll("button").forEach(btn => {
-          btn.addEventListener("click", playButtonSound);
-        });
       });
-    </script>
-  </body>
+    });
+
+    function closeOfferModal() { document.getElementById("offerModal").style.display = "none"; }
+  </script>
+</body>
 </html>
