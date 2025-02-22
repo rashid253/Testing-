@@ -107,11 +107,11 @@
       cursor: pointer;
       position: relative;
     }
-    #profileImage { display: none; }
+    /* Profile Image Preview (small square) */
     #imagePreview {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      border-radius: 4px;
       object-fit: cover;
       margin: 0.5rem auto;
       display: none;
@@ -168,7 +168,7 @@
       margin-left: 0.2rem;
     }
     .arrow-icon.rotated { transform: rotate(-180deg); }
-    /* Buttons inside dropdown */
+    /* Dropdown buttons */
     .dropdown-menu button {
       width: 100%;
       padding: 0.3rem;
@@ -217,14 +217,7 @@
       transition: border-color 0.2s ease;
     }
     .color-thumbnails div:hover { border-color: var(--secondary-color); }
-    /* Preview area and action buttons */
-    .preview-area {
-      display: none;
-      text-align: center;
-      margin-top: 5px;
-      font-size: 0.8rem;
-      color: var(--neutral-dark);
-    }
+    /* Action buttons (for Apply/Cancel) */
     .action-buttons {
       display: none;
       margin-top: 5px;
@@ -265,9 +258,6 @@
       <div id="moodSubDropdown" class="sub-dropdown">
         <button onclick="previewMood('day')">Day</button>
         <button onclick="previewMood('night')">Night</button>
-        <div id="moodPreviewArea" class="preview-area">
-          <p id="moodPreviewText"></p>
-        </div>
         <div id="moodActionButtons" class="action-buttons">
           <button onclick="applyMood()">Apply</button>
           <button onclick="cancelMood()">Cancel</button>
@@ -303,9 +293,6 @@
             <div style="background-color: #F1C40F;" onclick="previewTheme('color', '#F1C40F')"></div>
           </div>
         </div>
-        <div id="themePreviewArea" class="preview-area">
-          <p id="themePreviewText"></p>
-        </div>
         <div id="themeActionButtons" class="action-buttons">
           <button onclick="applyTheme()">Apply</button>
           <button onclick="cancelTheme()">Cancel</button>
@@ -319,9 +306,6 @@
         <button onclick="previewStyle('default')">Default</button>
         <button onclick="previewStyle('styleA')">Style A</button>
         <button onclick="previewStyle('styleB')">Style B</button>
-        <div id="stylePreviewArea" class="preview-area">
-          <p id="stylePreviewText"></p>
-        </div>
         <div id="styleActionButtons" class="action-buttons">
           <button onclick="applyStyle()">Apply</button>
           <button onclick="cancelStyle()">Cancel</button>
@@ -591,21 +575,17 @@
         formContainer.style.backgroundColor = '#34495E';
         formContainer.style.color = '#ffffff';
       }
-      document.getElementById('moodPreviewText').innerText = "Preview: " + value.charAt(0).toUpperCase() + value.slice(1);
-      document.getElementById('moodPreviewArea').style.display = 'block';
-      document.getElementById('moodActionButtons').style.display = 'block';
       moodPreviewValue = value;
+      document.getElementById('moodActionButtons').style.display = 'block';
     }
     function applyMood() {
       appliedMood = moodPreviewValue;
       moodPreviewValue = null;
-      document.getElementById('moodPreviewArea').style.display = 'none';
       document.getElementById('moodActionButtons').style.display = 'none';
     }
     function cancelMood() {
       moodPreviewValue = null;
       updateFormContainer();
-      document.getElementById('moodPreviewArea').style.display = 'none';
       document.getElementById('moodActionButtons').style.display = 'none';
     }
     // Theme functions – unified for default, image, and color
@@ -615,32 +595,25 @@
         formContainer.style.backgroundColor = "";
         formContainer.style.backgroundImage = "";
         themePreviewValue = { option: 'default' };
-        document.getElementById('themePreviewText').innerText = "Preview: Default";
       } else if(option === 'image'){
-        // value holds the image URL
         formContainer.style.backgroundImage = `url(${value})`;
         formContainer.style.backgroundSize = 'cover';
         themePreviewValue = { option: 'image', src: value };
-        document.getElementById('themePreviewText').innerText = "Preview: Image";
       } else if(option === 'color'){
         formContainer.style.backgroundImage = 'none';
         formContainer.style.backgroundColor = value;
         themePreviewValue = { option: 'color', value: value };
-        document.getElementById('themePreviewText').innerText = "Preview: Color";
       }
-      document.getElementById('themePreviewArea').style.display = 'block';
       document.getElementById('themeActionButtons').style.display = 'block';
     }
     function applyTheme() {
       appliedTheme = themePreviewValue;
       themePreviewValue = null;
-      document.getElementById('themePreviewArea').style.display = 'none';
       document.getElementById('themeActionButtons').style.display = 'none';
     }
     function cancelTheme() {
       themePreviewValue = null;
       updateFormContainer();
-      document.getElementById('themePreviewArea').style.display = 'none';
       document.getElementById('themeActionButtons').style.display = 'none';
     }
     // Style functions
@@ -657,21 +630,17 @@
         formContainer.style.backgroundColor = "#ffffff";
         formContainer.style.boxShadow = "0 0 15px rgba(0,0,0,0.5)";
       }
-      document.getElementById('stylePreviewText').innerText = "Preview: " + style;
-      document.getElementById('stylePreviewArea').style.display = 'block';
-      document.getElementById('styleActionButtons').style.display = 'block';
       stylePreviewValue = style;
+      document.getElementById('styleActionButtons').style.display = 'block';
     }
     function applyStyle() {
       appliedStyle = stylePreviewValue;
       stylePreviewValue = null;
-      document.getElementById('stylePreviewArea').style.display = 'none';
       document.getElementById('styleActionButtons').style.display = 'none';
     }
     function cancelStyle() {
       stylePreviewValue = null;
       updateFormContainer();
-      document.getElementById('stylePreviewArea').style.display = 'none';
       document.getElementById('styleActionButtons').style.display = 'none';
     }
     // Global click handler to cancel preview when clicking outside dropdown
