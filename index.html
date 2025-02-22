@@ -8,8 +8,8 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
   <!-- intl-tel-input CSS for international phone input -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
-  <!-- TinyMCE Script with provided API key -->
-  <script src="https://cdn.tiny.cloud/1/4w5honbkv0mvt3fk93amgq7d19slitxw0ve63slj91skk6f5/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+  <!-- Quill CSS for rich text editor -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
   <style>
     :root {
       --primary-color: #2C3E50;
@@ -240,39 +240,19 @@
       border-radius: 15px;
       padding: 1.5rem;
     }
+    /* Quill editor container styling */
+    #editor-container {
+      height: 200px;
+      background: #ffffff;
+      border: 1px solid var(--neutral-light);
+      border-radius: 6px;
+    }
     @media (max-width: 480px) {
       .form-container { max-width: 90%; padding: 1rem; }
     }
   </style>
-  <script>
-    // Initialize TinyMCE on the textarea for Business Info.
-    tinymce.init({
-      selector: '#businessInfo',
-      height: 200,
-      menubar: false,
-      plugins: [
-        'advlist autolink lists link image charmap print preview anchor',
-        'searchreplace visualblocks code fullscreen',
-        'insertdatetime media table paste code help wordcount'
-      ],
-      toolbar: 'undo redo | formatselect | ' +
-               'bold italic underline | fontsizeselect fontselect | ' +
-               'alignleft aligncenter alignright alignjustify | ' +
-               'bullist numlist outdent indent | removeformat | help',
-      font_formats: 
-        "Arial=arial,helvetica,sans-serif;" +
-        "Verdana=verdana,geneva,sans-serif;" +
-        "Times New Roman=times new roman,times;" +
-        "Georgia=georgia,palatino;" +
-        "Courier New=courier new,courier;" +
-        "Comic Sans MS=comic sans ms,sans-serif;" +
-        "Impact=impact,chicago;",
-      fontsize_formats: "8pt 9pt 10pt 11pt 12pt 14pt 16pt 18pt 20pt 22pt 24pt 26pt 28pt 36pt 48pt 72pt",
-      branding: false,
-      skin: 'oxide',
-      content_css: 'default'
-    });
-  </script>
+  <!-- Include Quill JS -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 </head>
 <body>
   <div class="form-container glassy-background" id="formContainer">
@@ -359,10 +339,13 @@
         <label for="businessName">Business Name <span class="required">*</span></label>
         <input type="text" id="businessName" placeholder="Business Name" required />
       </div>
-      <!-- Business Info with TinyMCE -->
+      <!-- Business Info using Quill Editor -->
       <div class="input-group">
         <label for="businessInfo">Business Info <span class="required">*</span></label>
-        <textarea id="businessInfo" name="businessInfo" required></textarea>
+        <!-- Quill editor container -->
+        <div id="editor-container"></div>
+        <!-- Hidden textarea to store HTML content -->
+        <textarea id="businessInfo" name="businessInfo" style="display:none;" required></textarea>
         <small style="color: var(--neutral-dark); font-size: 0.8rem;">
           <strong>Instructions:</strong> Write 3 to 5 paragraphs. Each paragraph must not exceed 150 words. Separate paragraphs with a new line.
         </small>
@@ -394,12 +377,26 @@
     </div>
     <button id="generateCard">Generate Card</button>
   </div>
-  <!-- Scripts -->
+  <!-- Firebase and intl-tel-input Scripts -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
   <script>
+    // Initialize Quill Editor
+    var quill = new Quill('#editor-container', {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          [{ 'font': [] }, { 'size': [] }],
+          ['bold', 'italic', 'underline'],
+          [{ 'color': [] }, { 'background': [] }],
+          [{ 'align': [] }],
+          ['clean']
+        ]
+      }
+    });
+    
     // Firebase configuration – replace with your own details.
     var firebaseConfig = {
       apiKey: "YOUR_API_KEY",
@@ -501,8 +498,8 @@
         }
       });
       if (!valid) return false;
-      
-      // TinyMCE will ensure the content is available in the textarea.
+      // Before submission, copy the Quill editor content into the hidden textarea.
+      document.getElementById('businessInfo').value = quill.root.innerHTML;
       return true;
     }
     
@@ -525,7 +522,7 @@
       const formData = {
         name: document.getElementById('name').value.trim(),
         businessName: document.getElementById('businessName').value.trim(),
-        businessInfo: tinymce.get('businessInfo').getContent(),
+        businessInfo: document.getElementById('businessInfo').value.trim(),
         address: document.getElementById('address').value.trim(),
         phone: iti.getNumber(),
         email: document.getElementById('email').value.trim(),
