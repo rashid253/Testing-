@@ -40,6 +40,7 @@
       margin: 1rem;
       box-sizing: border-box;
       position: relative;
+      /* Removed any filter/blur effect */
       transition: filter 0.3s ease;
     }
     /* Gear icon moved further upward inside the container */
@@ -107,9 +108,7 @@
       cursor: pointer;
       position: relative;
     }
-    #profileImage {
-      display: none;
-    }
+    #profileImage { display: none; }
     #imagePreview {
       width: 90px;
       height: 90px;
@@ -143,9 +142,7 @@
       z-index: 1000;
       text-align: center;
     }
-    .dropdown-menu.active {
-      display: block;
-    }
+    .dropdown-menu.active { display: block; }
     /* Main dropdown headers with enhanced 3D styling */
     .dropdown-menu h4 {
       margin: 0 0 0.3rem;
@@ -172,9 +169,7 @@
       font-size: 0.7rem;
       margin-left: 0.2rem;
     }
-    .arrow-icon.rotated {
-      transform: rotate(-180deg);
-    }
+    .arrow-icon.rotated { transform: rotate(-180deg); }
     /* Dropdown buttons with enhanced 3D styling */
     .dropdown-menu button,
     .sub-dropdown button {
@@ -196,13 +191,8 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
     /* Sub Dropdown Menu */
-    .sub-dropdown {
-      display: none;
-      margin: 0;
-    }
-    .sub-dropdown.active {
-      display: block;
-    }
+    .sub-dropdown { display: none; margin: 0; }
+    .sub-dropdown.active { display: block; }
     .sub-dropdown button {
       background: var(--neutral-light);
       color: var(--neutral-dark);
@@ -212,7 +202,7 @@
       background: var(--secondary-color);
       color: white;
     }
-    /* Image Thumbnails */
+    /* Image Thumbnails – clicking any thumbnail will open the selection dialog */
     .image-thumbnails {
       display: flex;
       gap: 0.3rem;
@@ -228,9 +218,7 @@
       border: 1px solid transparent;
       transition: border-color 0.2s ease;
     }
-    .image-thumbnails img:hover {
-      border-color: var(--secondary-color);
-    }
+    .image-thumbnails img:hover { border-color: var(--secondary-color); }
     /* Color Thumbnails – same size as images and scrollable */
     .color-thumbnails {
       display: flex;
@@ -246,9 +234,7 @@
       border: 1px solid transparent;
       transition: border-color 0.2s ease;
     }
-    .color-thumbnails div:hover {
-      border-color: var(--secondary-color);
-    }
+    .color-thumbnails div:hover { border-color: var(--secondary-color); }
     /* Gradient Picker styling */
     .gradient-picker {
       display: flex;
@@ -263,7 +249,7 @@
       border-radius: 4px;
       font-size: 0.8rem;
     }
-    /* Preview Dialog Box – now inside container with modern glass effect */
+    /* Preview Dialog Box – used for both image and color selection */
     .dialog-box {
       display: none;
       position: absolute;
@@ -279,9 +265,7 @@
       text-align: center;
       backdrop-filter: blur(5px);
     }
-    .dialog-box.active {
-      display: block;
-    }
+    .dialog-box.active { display: block; }
     .dialog-box img {
       width: 100%;
       max-width: 140px;
@@ -314,13 +298,8 @@
       padding: 1.5rem;
     }
     @media (max-width: 480px) {
-      .form-container {
-        max-width: 90%;
-        padding: 1rem;
-      }
-      .dialog-box {
-        right: 10px;
-      }
+      .form-container { max-width: 90%; padding: 1rem; }
+      .dialog-box { right: 10px; }
     }
   </style>
 </head>
@@ -343,34 +322,14 @@
       </h4>
       <div id="themeSubDropdown" class="sub-dropdown">
         <button onclick="previewTheme('default')">Default</button>
-        <button onclick="toggleSubDropdown('image')">
+        <!-- For image selection, clicking any thumbnail now opens the selection dialog -->
+        <button onclick="showImageSelectionDialog()">
           Image <i class="fas fa-chevron-down arrow-icon"></i>
         </button>
-        <div id="imageSubDropdown" class="sub-dropdown">
-          <div class="image-thumbnails">
-            <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Nature 1" onclick="showImageDialog(this.src)">
-            <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Nature 2" onclick="showImageDialog(this.src)">
-            <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Nature 3" onclick="showImageDialog(this.src)">
-            <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Nature 4" onclick="showImageDialog(this.src)">
-            <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Nature 5" onclick="showImageDialog(this.src)">
-          </div>
-        </div>
-        <button onclick="toggleSubDropdown('color')">
+        <!-- For colors, clicking opens color selection dialog -->
+        <button onclick="showColorSelectionDialog()">
           Color <i class="fas fa-chevron-down arrow-icon"></i>
         </button>
-        <div id="colorSubDropdown" class="sub-dropdown">
-          <div class="color-thumbnails">
-            <div style="background-color: #3498DB;" onclick="showColorDialog('#3498DB')"></div>
-            <div style="background-color: #E74C3E;" onclick="showColorDialog('#E74C3E')"></div>
-            <div style="background-color: #2ECC71;" onclick="showColorDialog('#2ECC71')"></div>
-            <div style="background-color: #9B59B6;" onclick="showColorDialog('#9B59B6')"></div>
-            <div style="background-color: #F1C40F;" onclick="showColorDialog('#F1C40F')"></div>
-            <div style="background: linear-gradient(45deg, #FF9A9E, #FAD0C4);" onclick="showColorDialog('linear-gradient(45deg, #FF9A9E, #FAD0C4)')"></div>
-            <div style="background: linear-gradient(45deg, #A18CD1, #FBC2EB);" onclick="showColorDialog('linear-gradient(45deg, #A18CD1, #FBC2EB)')"></div>
-            <div style="background: linear-gradient(45deg, #96E6A1, #D4FC79);" onclick="showColorDialog('linear-gradient(45deg, #96E6A1, #D4FC79)')"></div>
-          </div>
-          <button onclick="showGradientPicker()">Custom</button>
-        </div>
       </div>
       <h4 onclick="toggleSubDropdown('style')">
         Style <i class="fas fa-chevron-down arrow-icon"></i>
@@ -381,14 +340,9 @@
         <button onclick="previewStyle('styleB')">Style B</button>
       </div>
     </div>
-    <!-- Preview Dialog Box -->
+    <!-- Preview Dialog Box – used for both image and color selection -->
     <div class="dialog-box" id="dialogBox">
-      <img id="dialogImage" alt="Selected Image" style="display: none;">
-      <div id="dialogColor" style="width: 100%; height: 80px; border-radius: 8px; display: none;"></div>
-      <div class="buttons">
-        <button class="apply" onclick="applySelection()">Apply</button>
-        <button class="cancel" onclick="cancelSelection()">Cancel</button>
-      </div>
+      <!-- Content is dynamically populated -->
     </div>
     <div class="form-header">
       <h2>Create Business Card</h2>
@@ -628,60 +582,123 @@
         if (arrow) arrow.classList.toggle('rotated');
       }
     }
-    let previewApplyCallback = null;
-    let previewCancelCallback = null;
-    let originalMood = { background: '', color: '' };
-    let originalTheme = { backgroundImage: '', backgroundColor: '' };
-    let originalStyle = { borderRadius: '', boxShadow: '' };
-    function showPreviewDialog(applyCb, cancelCb) {
-      previewApplyCallback = applyCb;
-      previewCancelCallback = cancelCb;
-      document.getElementById('dialogImage').style.display = 'none';
-      document.getElementById('dialogColor').style.display = 'none';
-      document.getElementById('dialogBox').classList.add('active');
+    // Global variables to hold selected values
+    let selectedImageSrc = null;
+    let selectedColor = null;
+    // Functions for the image selection dialog
+    function showImageSelectionDialog() {
+      const images = [
+        "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
+        "https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg",
+        "https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg",
+        "https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg",
+        "https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg"
+      ];
+      let modalContent = `<div style="display:flex; flex-wrap:wrap; gap:5px; justify-content:center;">`;
+      images.forEach(src => {
+        modalContent += `<img src="${src}" style="width:50px; height:50px; object-fit:cover; cursor:pointer; border:2px solid transparent;" onclick="selectImage('${src}', this)" />`;
+      });
+      modalContent += `</div>
+      <div id="imagePreviewArea" style="margin-top:10px;"></div>
+      <div style="margin-top:10px;" class="buttons">
+        <button class="apply" onclick="applySelectedImage()">Apply</button>
+        <button class="cancel" onclick="closeDialog()">Cancel</button>
+      </div>`;
+      const dialogBox = document.getElementById('dialogBox');
+      dialogBox.innerHTML = modalContent;
+      dialogBox.classList.add('active');
+      selectedImageSrc = null;
     }
-    function applySelection() {
-      if (previewApplyCallback) {
-        previewApplyCallback();
-        previewApplyCallback = null;
-        previewCancelCallback = null;
+    function selectImage(src, imgElement) {
+      // Remove selection border from all images in the dialog
+      const imgs = document.querySelectorAll('#dialogBox img');
+      imgs.forEach(img => img.style.borderColor = 'transparent');
+      imgElement.style.borderColor = "#3498DB";
+      selectedImageSrc = src;
+      document.getElementById('imagePreviewArea').innerHTML = `<img src="${src}" style="width:100%; max-height:100px; object-fit:cover;" />`;
+    }
+    function applySelectedImage() {
+      if(selectedImageSrc) {
+        const formContainer = document.getElementById('formContainer');
+        formContainer.style.backgroundImage = `url(${selectedImageSrc})`;
+        formContainer.style.backgroundSize = 'cover';
+        // Removed blur glass effect; background is applied as-is.
+        closeDialog();
+        closeDropdown();
+        alert('Image applied!');
+      } else {
+        alert('Please select an image.');
       }
     }
-    function cancelSelection() {
-      if (previewCancelCallback) {
-        previewCancelCallback();
-        previewApplyCallback = null;
-        previewCancelCallback = null;
+    // Functions for the color selection dialog
+    function showColorSelectionDialog() {
+      const colors = [
+        "#3498DB", "#E74C3E", "#2ECC71", "#9B59B6", "#F1C40F",
+        "linear-gradient(45deg, #FF9A9E, #FAD0C4)",
+        "linear-gradient(45deg, #A18CD1, #FBC2EB)",
+        "linear-gradient(45deg, #96E6A1, #D4FC79)"
+      ];
+      let modalContent = `<div style="display:flex; flex-wrap:wrap; gap:5px; justify-content:center;">`;
+      colors.forEach(color => {
+        modalContent += `<div onclick="selectColor('${color}', this)" style="width:50px; height:50px; cursor:pointer; border:2px solid transparent; ${color.indexOf("linear-gradient")>=0 ? 'background: '+color : 'background-color: '+color};"></div>`;
+      });
+      modalContent += `</div>
+      <div id="colorPreviewArea" style="margin-top:10px;"></div>
+      <div style="margin-top:10px;" class="buttons">
+        <button class="apply" onclick="applySelectedColor()">Apply</button>
+        <button class="cancel" onclick="closeDialog()">Cancel</button>
+      </div>`;
+      const dialogBox = document.getElementById('dialogBox');
+      dialogBox.innerHTML = modalContent;
+      dialogBox.classList.add('active');
+      selectedColor = null;
+    }
+    function selectColor(color, element) {
+      const divs = document.querySelectorAll('#dialogBox div[onclick^="selectColor"]');
+      divs.forEach(div => div.style.borderColor = 'transparent');
+      element.style.borderColor = "#3498DB";
+      selectedColor = color;
+      document.getElementById('colorPreviewArea').innerHTML = `<div style="width:100%; height:50px; border-radius:4px; ${color.indexOf("linear-gradient")>=0 ? 'background: '+color : 'background-color: '+color};"></div>`;
+    }
+    function applySelectedColor() {
+      if(selectedColor) {
+        const formContainer = document.getElementById('formContainer');
+        formContainer.style.backgroundImage = 'none';
+        if(selectedColor.indexOf("linear-gradient") >= 0) {
+          formContainer.style.backgroundImage = selectedColor;
+          formContainer.style.backgroundColor = "";
+        } else {
+          formContainer.style.backgroundColor = selectedColor;
+        }
+        closeDialog();
+        closeDropdown();
+        alert('Color applied!');
+      } else {
+        alert('Please select a color.');
       }
-      closeDialog();
     }
     function closeDialog() {
       const dialogBox = document.getElementById('dialogBox');
       dialogBox.classList.remove('active');
-      dialogBox.innerHTML = `
-        <img id="dialogImage" alt="Selected Image" style="display: none;">
-        <div id="dialogColor" style="width: 100%; height: 80px; border-radius: 8px; display: none;"></div>
-        <div class="buttons">
-          <button class="apply" onclick="applySelection()">Apply</button>
-          <button class="cancel" onclick="cancelSelection()">Cancel</button>
-        </div>
-      `;
+      dialogBox.innerHTML = '';
     }
-    // Global click handler to close dropdown when tapping outside
+    // Global click handler to close dropdown if clicking outside
     document.addEventListener('click', function(event) {
       const dropdownMenu = document.getElementById('dropdownMenu');
       if(dropdownMenu.classList.contains('active') && !event.target.closest('.dropdown-menu') && !event.target.closest('.gear-icon')) {
         dropdownMenu.classList.remove('active');
       }
     });
+    // Global click handler to close dialog if clicking outside it (but not the dropdown)
     document.addEventListener('click', function(event) {
       const dialogBox = document.getElementById('dialogBox');
       if(dialogBox.classList.contains('active') && !dialogBox.contains(event.target) && !event.target.closest('.dropdown-menu')) {
-        cancelSelection();
+        closeDialog();
       }
     });
+    // Existing preview functions for Mood, Theme, and Style (unchanged except that no blur effect is applied)
     function previewMood(mood) {
-      originalMood = {
+      const originalMood = {
         background: document.body.style.backgroundColor,
         color: document.body.style.color
       };
@@ -692,18 +709,12 @@
         document.body.style.backgroundColor = '#000000';
         document.body.style.color = '#ffffff';
       }
-      showPreviewDialog(function() {
-        closeDialog();
-        closeDropdown();
-        alert('Mood applied!');
-      }, function() {
-        document.body.style.backgroundColor = originalMood.background;
-        document.body.style.color = originalMood.color;
-      });
+      // Immediately apply (via preview dialog) – you can add a separate dialog if needed.
+      alert('Mood preview shown. Click Generate Card to continue.');
     }
     function previewTheme(theme) {
       const formContainer = document.getElementById('formContainer');
-      originalTheme = {
+      const originalTheme = {
         backgroundImage: formContainer.style.backgroundImage,
         backgroundColor: formContainer.style.backgroundColor
       };
@@ -711,18 +722,11 @@
         formContainer.style.backgroundImage = 'none';
         formContainer.style.backgroundColor = 'white';
       }
-      showPreviewDialog(function() {
-        closeDialog();
-        closeDropdown();
-        alert('Theme applied!');
-      }, function() {
-        formContainer.style.backgroundImage = originalTheme.backgroundImage;
-        formContainer.style.backgroundColor = originalTheme.backgroundColor;
-      });
+      alert('Theme preview shown. Click Generate Card to continue.');
     }
     function previewStyle(style) {
       const formContainer = document.getElementById('formContainer');
-      originalStyle = {
+      const originalStyle = {
         borderRadius: formContainer.style.borderRadius,
         boxShadow: formContainer.style.boxShadow
       };
@@ -736,89 +740,7 @@
         formContainer.style.borderRadius = '30px';
         formContainer.style.boxShadow = '0 12px 40px rgba(0,0,0,0.2)';
       }
-      showPreviewDialog(function() {
-        closeDialog();
-        closeDropdown();
-        alert('Style applied!');
-      }, function() {
-        formContainer.style.borderRadius = originalStyle.borderRadius;
-        formContainer.style.boxShadow = originalStyle.boxShadow;
-      });
-    }
-    // Updated showImageDialog with glass effect on apply
-    function showImageDialog(src) {
-      const dialogBox = document.getElementById('dialogBox');
-      const dialogImage = document.getElementById('dialogImage');
-      dialogImage.src = src;
-      dialogImage.style.display = 'block';
-      dialogBox.classList.add('active');
-      previewApplyCallback = function() {
-        const formContainer = document.getElementById('formContainer');
-        formContainer.style.backgroundImage = `url(${src})`;
-        formContainer.style.backgroundSize = 'cover';
-        // Add glass effect: dim and blur the container
-        formContainer.style.filter = "blur(2px) brightness(0.8)";
-        closeDialog();
-        closeDropdown();
-        alert('Image applied with glass effect!');
-      };
-      previewCancelCallback = function() {
-        closeDialog();
-      };
-    }
-    // Updated showColorDialog with glass effect on apply
-    function showColorDialog(color) {
-      const dialogBox = document.getElementById('dialogBox');
-      const dialogColor = document.getElementById('dialogColor');
-      dialogColor.style.background = color;
-      dialogColor.style.display = 'block';
-      dialogBox.classList.add('active');
-      previewApplyCallback = function() {
-        const formContainer = document.getElementById('formContainer');
-        formContainer.style.backgroundImage = 'none';
-        formContainer.style.backgroundColor = color;
-        // Add glass effect: dim and blur the container
-        formContainer.style.filter = "blur(2px) brightness(0.8)";
-        closeDialog();
-        closeDropdown();
-        alert('Color applied with glass effect!');
-      };
-      previewCancelCallback = function() {
-        closeDialog();
-      };
-    }
-    function showGradientPicker() {
-      const dialogBox = document.getElementById('dialogBox');
-      dialogBox.innerHTML = `
-        <div class="gradient-picker">
-          <label>Start:</label>
-          <input type="color" id="startColor" value="#FF0000">
-          <label>End:</label>
-          <input type="color" id="endColor" value="#0000FF">
-        </div>
-        <div class="buttons">
-          <button class="apply" onclick="applyGradient()">Apply</button>
-          <button class="cancel" onclick="closeDialog()">Cancel</button>
-        </div>
-      `;
-      dialogBox.classList.add('active');
-    }
-    function applyGradient() {
-      const startColor = document.getElementById('startColor').value;
-      const endColor = document.getElementById('endColor').value;
-      const gradient = `linear-gradient(45deg, ${startColor}, ${endColor})`;
-      const formContainer = document.getElementById('formContainer');
-      formContainer.style.backgroundImage = 'none';
-      formContainer.style.backgroundColor = gradient;
-      // Add glass effect on gradient apply
-      formContainer.style.filter = "blur(2px) brightness(0.8)";
-      closeDialog();
-      closeDropdown();
-      alert('Gradient applied with glass effect!');
-    }
-    function closeDropdown() {
-      const dropdownMenu = document.getElementById('dropdownMenu');
-      dropdownMenu.classList.remove('active');
+      alert('Style preview shown. Click Generate Card to continue.');
     }
   </script>
 </body>
