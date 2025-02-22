@@ -6,172 +6,208 @@
   <title>Business Card</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <style>
-    :root {
-      --primary-color: #1e1e1e;
-      --secondary-color: #1e90ff;
-      --accent-color: #ff5722;
-      --neutral-light: rgba(245,245,245,0.9);
-      --neutral-dark: #333333;
-      --card-background: #ffffff;
-      --body-bg: linear-gradient(135deg, #cfd8dc, #eceff1);
-    }
     body {
       font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
       margin: 0;
-      padding: 1rem;
-      background: var(--body-bg);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      padding: 20px;
     }
     .card-container {
-      width: 90%;
-      max-width: 600px;
-      background: var(--card-background);
-      border-radius: 20px;
-      border: 2px solid var(--secondary-color);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-      padding: 1rem;
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      padding: 20px;
     }
-    /* Business Info Section */
     .business-info-section {
-      position: relative;
-      overflow: hidden;
-      padding: 1rem;
-      max-height: 200px; /* Fix for overflow */
-      overflow-y: auto;
       background: #e0f7fa;
-      border-bottom: 2px solid var(--secondary-color);
-      border-radius: 10px;
+      padding: 15px;
+      border-radius: 8px;
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 20px;
     }
-    /* Offer Styles */
-    .offer-card { border: 1px solid var(--secondary-color); padding: 0.5rem; border-radius: 5px; }
-    .offer-card.horizontal { display: inline-block; margin-right: 10px; }
-    .offer-card.modal { border: 1px solid var(--primary-color); cursor: pointer; }
-    .offer-card.tab { display: none; }
-    .offer-card.accordion { border: 1px solid var(--secondary-color); }
-    .accordion { background: #e0e0e0; padding: 0.5rem; border: none; font-weight: bold; cursor: pointer; }
-    .panel { display: none; padding: 0.5rem; }
-    /* Tab Navigation */
-    .tab-container { display: flex; border-bottom: 2px solid var(--secondary-color); }
-    .tab-btn { padding: 0.5rem 1rem; cursor: pointer; border: none; background: #ccc; }
-    .tab-btn.active { background: var(--secondary-color); color: white; }
-    /* Modal */
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
-    .modal-content {
-      background: white; width: 80%; max-width: 400px; margin: 20% auto; padding: 20px;
-      border-radius: 10px; text-align: center; position: relative;
+    .offers-section {
+      margin-top: 20px;
     }
-    .close-modal { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; }
+    /* Use the same offer style CSS as in index.html */
+    .flip-card {
+      background-color: transparent;
+      width: 200px;
+      height: 250px;
+      perspective: 1000px;
+      display: inline-block;
+      margin: 10px;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      box-sizing: border-box;
+      color: #fff;
+      font-size: 18px;
+      text-align: center;
+    }
+    .flip-card-front { background-color: #27ae60; }
+    .flip-card-back { background-color: #d35400; transform: rotateY(180deg); }
+    .card-stack {
+      position: relative;
+      width: 220px;
+      height: 250px;
+      display: inline-block;
+      margin: 10px;
+    }
+    .card-stack .card {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: #007bff;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.4s ease, top 0.4s ease;
+    }
+    .card-stack .card:nth-child(1) { top: 0; z-index: 3; transform: rotate(-5deg); }
+    .card-stack .card:nth-child(2) { top: 10px; z-index: 2; transform: rotate(-3deg); }
+    .card-stack .card:nth-child(3) { top: 20px; z-index: 1; transform: rotate(-2deg); }
+    .accordion {
+      width: 100%;
+      margin: 10px 0;
+    }
+    .accordion-item {
+      border-bottom: 1px solid #ddd;
+    }
+    .accordion-header {
+      background: #007bff;
+      color: #fff;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      background: #f9f9f9;
+      transition: max-height 0.3s ease-out, padding 0.3s ease;
+      padding: 0 10px;
+    }
+    .accordion-item.active .accordion-content {
+      max-height: 100px;
+      padding: 10px;
+    }
   </style>
 </head>
 <body>
   <div class="card-container">
-    <!-- Business Info -->
-    <div class="business-info-section">
+    <h2>My Business Card</h2>
+    <!-- Business Info Section -->
+    <div class="business-info-section" id="businessInfoSection">
       <h3>Business Info</h3>
       <div id="businessInfoContent"></div>
     </div>
     <!-- Offers Section -->
-    <div id="offersContainer"></div>
-  </div>
-  
-  <!-- Modal Popup -->
-  <div id="offerModal" class="modal">
-    <div class="modal-content">
-      <span class="close-modal" onclick="closeOfferModal()">&times;</span>
-      <h3 id="modalOfferTitle"></h3>
-      <p id="modalOfferDetails"></p>
-      <img id="modalOfferImage" style="max-width: 100px; display: none;">
+    <div class="offers-section" id="offersSection">
+      <h3>Hot Offers</h3>
+      <!-- Offers will be rendered here -->
     </div>
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const storedData = localStorage.getItem("formData");
-      const formData = storedData ? JSON.parse(storedData) : {};
-      document.getElementById("businessInfoContent").innerHTML = formData.businessInfo || "";
-
-      const offersData = JSON.parse(localStorage.getItem("offersData")) || [];
-      const offersContainer = document.getElementById("offersContainer");
-      const offerStyle = localStorage.getItem("offerStyle") || "accordion";
-
-      if (offersData.length === 0) {
-        offersContainer.innerHTML = "<p>No offers available.</p>";
-        return;
+    document.addEventListener("DOMContentLoaded", function(){
+      var formData = JSON.parse(localStorage.getItem("formData")) || {};
+      // Display Business Info
+      document.getElementById("businessInfoContent").innerHTML = formData.businessInfo || "<p>No business info provided.</p>";
+      
+      // Render Offers based on saved style and offers
+      var offers = formData.offers || [];
+      var offerStyle = formData.offerStyle || "flip";
+      var offersSection = document.getElementById("offersSection");
+      // Clear any existing content (except the heading)
+      offersSection.innerHTML = "<h3>Hot Offers</h3>";
+      
+      if (offers.length === 0) {
+         offersSection.innerHTML += "<p>No offers available.</p>";
+         return;
       }
-
-      if (offerStyle === "tab") {
-        let tabNav = document.createElement("div");
-        tabNav.classList.add("tab-container");
-        offersContainer.appendChild(tabNav);
-      }
-
-      offersData.forEach((offer, index) => {
-        let offerCard = document.createElement("div");
-        offerCard.className = "offer-card " + offerStyle;
-        offerCard.innerHTML = `<h4>${offer.title}</h4><p>${offer.detail}</p>`;
-        
-        if (offer.image) {
-          let img = document.createElement("img");
-          img.src = offer.image;
-          img.style.maxWidth = "100px";
-          offerCard.appendChild(img);
-        }
-
-        if (offerStyle === "accordion") {
-          let btn = document.createElement("button");
-          btn.className = "accordion";
-          btn.textContent = offer.title;
-          let panel = document.createElement("div");
-          panel.className = "panel";
-          panel.innerHTML = `<p>${offer.detail}</p>`;
-          btn.addEventListener("click", () => {
-            panel.style.display = panel.style.display === "block" ? "none" : "block";
-          });
-          offersContainer.appendChild(btn);
-          offersContainer.appendChild(panel);
-        } 
-        else if (offerStyle === "horizontal") {
-          offerCard.style.display = "inline-block";
-          offerCard.style.marginRight = "10px";
-          offersContainer.appendChild(offerCard);
-        } 
-        else if (offerStyle === "modal") {
-          offerCard.addEventListener("click", () => {
-            document.getElementById("modalOfferTitle").textContent = offer.title;
-            document.getElementById("modalOfferDetails").textContent = offer.detail;
-            let modalImg = document.getElementById("modalOfferImage");
-            if (offer.image) {
-              modalImg.src = offer.image;
-              modalImg.style.display = "block";
+      
+      if (offerStyle === "flip") {
+         offers.forEach(function(offer) {
+            var card = document.createElement("div");
+            card.className = "flip-card";
+            card.innerHTML = `
+              <div class="flip-card-inner">
+                <div class="flip-card-front">${offer}</div>
+                <div class="flip-card-back">${offer} Details</div>
+              </div>
+            `;
+            offersSection.appendChild(card);
+         });
+      } else if (offerStyle === "stacked") {
+         var deck = document.createElement("div");
+         deck.className = "card-stack";
+         offers.slice(0,3).forEach(function(offer, index){
+            var card = document.createElement("div");
+            card.className = "card";
+            card.innerText = offer;
+            if(index===0) {
+              card.style.top = "0";
+              card.style.zIndex = "3";
+              card.style.transform = "rotate(-5deg)";
+            } else if(index===1) {
+              card.style.top = "10px";
+              card.style.zIndex = "2";
+              card.style.transform = "rotate(-3deg)";
             } else {
-              modalImg.style.display = "none";
+              card.style.top = "20px";
+              card.style.zIndex = "1";
+              card.style.transform = "rotate(-2deg)";
             }
-            document.getElementById("offerModal").style.display = "block";
-          });
-          offersContainer.appendChild(offerCard);
-        } 
-        else if (offerStyle === "tab") {
-          let tabBtn = document.createElement("button");
-          tabBtn.className = "tab-btn";
-          tabBtn.textContent = offer.title;
-          let tabContent = document.createElement("div");
-          tabContent.className = "offer-card tab";
-          tabContent.innerHTML = `<h4>${offer.title}</h4><p>${offer.detail}</p>`;
-          tabBtn.addEventListener("click", () => {
-            document.querySelectorAll(".offer-card.tab").forEach(t => t.style.display = "none");
-            tabContent.style.display = "block";
-          });
-          if (index === 0) { tabBtn.classList.add("active"); tabContent.style.display = "block"; }
-          offersContainer.querySelector(".tab-container").appendChild(tabBtn);
-          offersContainer.appendChild(tabContent);
-        }
-      });
+            deck.appendChild(card);
+         });
+         offersSection.appendChild(deck);
+      } else if (offerStyle === "accordion") {
+         var accordion = document.createElement("div");
+         accordion.className = "accordion";
+         offers.forEach(function(offer, index) {
+            var item = document.createElement("div");
+            item.className = "accordion-item";
+            item.innerHTML = `
+              <div class="accordion-header">Offer ${index+1}: ${offer}</div>
+              <div class="accordion-content">${offer} – additional details...</div>
+            `;
+            accordion.appendChild(item);
+         });
+         offersSection.appendChild(accordion);
+         var headers = accordion.querySelectorAll(".accordion-header");
+         headers.forEach(function(header) {
+            header.addEventListener("click", function(){
+               this.parentElement.classList.toggle("active");
+            });
+         });
+      }
     });
-
-    function closeOfferModal() { document.getElementById("offerModal").style.display = "none"; }
   </script>
 </body>
 </html>
