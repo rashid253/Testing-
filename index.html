@@ -108,6 +108,7 @@
       border-radius: 8px;
       cursor: pointer;
       position: relative;
+      background: #fff; /* always white background */
     }
     /* Profile Image Preview */
     #imagePreview {
@@ -247,6 +248,70 @@
       border: 1px solid var(--neutral-light);
       border-radius: 6px;
     }
+    /* Hot Offers Section */
+    .hot-offers-section {
+      background: #fff;
+      padding: 1rem;
+      margin-top: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .hot-offers-section h3 {
+      margin-top: 0;
+      text-align: center;
+    }
+    .offer-field {
+      margin-bottom: 1rem;
+    }
+    .offer-field label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .offer-field input[type="text"] {
+      margin-bottom: 0.3rem;
+    }
+    .offer-style-section {
+      margin-top: 1rem;
+    }
+    .offer-style-preview {
+      margin-top: 0.5rem;
+    }
+    /* Modal styles */
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 10000; 
+      left: 0;
+      top: 0;
+      width: 100%; 
+      height: 100%; 
+      overflow: auto; 
+      background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto; 
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%; 
+      max-width: 500px;
+      border-radius: 8px;
+      position: relative;
+    }
+    .modal .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .modal .close:hover,
+    .modal .close:focus {
+      color: black;
+    }
     @media (max-width: 480px) {
       .form-container { max-width: 90%; padding: 1rem; }
     }
@@ -282,8 +347,8 @@
         </button>
         <div id="imageSubDropdown" class="sub-dropdown">
           <div class="image-thumbnails">
-            <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Image 1" onclick="previewTheme('image', this.src)">
-            <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Image 2" onclick="previewTheme('image', this.src)">
+            <img src="https://cdn.pixabay.com/photo/2018/01/15/07/51/landscape-3082836_1280.jpg" alt="Image 1" onclick="previewTheme('image', this.src)">
+            <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Image 2" onclick="previewTheme('image', this.src)">
             <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Image 3" onclick="previewTheme('image', this.src)">
             <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Image 4" onclick="previewTheme('image', this.src)">
             <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Image 5" onclick="previewTheme('image', this.src)">
@@ -375,15 +440,70 @@
         <input type="url" id="youtube" placeholder="YouTube URL" pattern="https?://(www\.)?youtube\.com/.*" title="Please enter a valid YouTube URL." />
       </div>
     </div>
+    <!-- Hot Offers Section -->
+    <div class="hot-offers-section">
+      <h3>Hot Offers</h3>
+      <div class="offer-field" id="offer1">
+        <label>Offer 1 Title</label>
+        <input type="text" placeholder="Offer 1 Title" id="offer1-title">
+        <button type="button" onclick="toggleOfferDetail('offer1')">Details</button>
+        <textarea id="offer1-detail-data" style="display:none;"></textarea>
+      </div>
+      <div class="offer-field" id="offer2">
+        <label>Offer 2 Title</label>
+        <input type="text" placeholder="Offer 2 Title" id="offer2-title">
+        <button type="button" onclick="toggleOfferDetail('offer2')">Details</button>
+        <textarea id="offer2-detail-data" style="display:none;"></textarea>
+      </div>
+      <div class="offer-field" id="offer3">
+        <label>Offer 3 Title</label>
+        <input type="text" placeholder="Offer 3 Title" id="offer3-title">
+        <button type="button" onclick="toggleOfferDetail('offer3')">Details</button>
+        <textarea id="offer3-detail-data" style="display:none;"></textarea>
+      </div>
+      <div class="offer-field" id="offer4">
+        <label>Offer 4 Title</label>
+        <input type="text" placeholder="Offer 4 Title" id="offer4-title">
+        <button type="button" onclick="toggleOfferDetail('offer4')">Details</button>
+        <textarea id="offer4-detail-data" style="display:none;"></textarea>
+      </div>
+      <!-- Offer Style Selection -->
+      <div class="offer-style-section">
+        <label for="offerStyleSelect">Select Offer Style</label>
+        <select id="offerStyleSelect">
+          <option value="accordion">Accordion offers</option>
+          <option value="horizontal">Horizontal scroll with flipcard offer card</option>
+          <option value="modal">Modal popup offer</option>
+          <option value="tab">Tab based offer</option>
+        </select>
+        <div class="offer-style-preview">
+          <small>Preview:</small>
+          <div id="offerStylePreviewFrame" style="width: 100px; height: 100px; border: 1px solid #ccc; margin-top: 5px;"></div>
+        </div>
+        <button type="button" onclick="applyOfferStyle()">Apply Offer Design</button>
+      </div>
+    </div>
     <button id="generateCard">Generate Card</button>
   </div>
+  
+  <!-- Offer Detail Modal -->
+  <div id="offerDetailModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeOfferModal()">&times;</span>
+      <div id="offerEditorContainer" style="height:200px;"></div>
+      <input type="file" id="offerImageUpload" accept="image/*" onchange="handleOfferImageUpload(event)">
+      <img id="offerImagePreview" style="width:60px; height:60px; object-fit:cover; display:none;">
+      <button onclick="saveOfferDetail()">Save Offer Detail</button>
+    </div>
+  </div>
+  
   <!-- Firebase and intl-tel-input Scripts -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
   <script>
-    // Initialize Quill Editor
+    // Initialize Quill Editor for Business Info
     var quill = new Quill('#editor-container', {
       theme: 'snow',
       modules: {
@@ -498,7 +618,7 @@
         }
       });
       if (!valid) return false;
-      // Before submission, copy the Quill editor content into the hidden textarea.
+      // Copy the Quill editor content into the hidden textarea.
       document.getElementById('businessInfo').value = quill.root.innerHTML;
       return true;
     }
@@ -529,7 +649,8 @@
         facebook: document.getElementById('facebook').value.trim(),
         instagram: document.getElementById('instagram').value.trim(),
         youtube: document.getElementById('youtube').value.trim(),
-        profileImage: document.getElementById('profileImage').files[0]
+        profileImage: document.getElementById('profileImage').files[0],
+        // Offer details can be gathered from the hot offers section as needed.
       };
       if (formData.profileImage) {
         resizeImage(formData.profileImage, function(resizedBlob) {
@@ -617,6 +738,7 @@
       document.getElementById('moodActionButtons').style.display = 'none';
     }
     
+    // Updated previewTheme function with image fallback support
     function previewTheme(option, value) {
       var formContainer = document.getElementById('formContainer');
       if(option === 'default'){
@@ -624,9 +746,17 @@
         formContainer.style.backgroundImage = "";
         themePreviewValue = { option: 'default' };
       } else if(option === 'image'){
-        formContainer.style.backgroundImage = `url(${value})`;
-        formContainer.style.backgroundSize = 'cover';
-        themePreviewValue = { option: 'image', src: value };
+        loadBackgroundImage(value, function(url) {
+          setBackgroundImage(url);
+          themePreviewValue = { option: 'image', src: url };
+        }, function() {
+          // Fallback: choose a random image from backgroundImages not equal to value
+          var fallbackUrl = backgroundImages.find(x => x !== value) || backgroundImages[0];
+          loadBackgroundImage(fallbackUrl, function(url) {
+            setBackgroundImage(url);
+            themePreviewValue = { option: 'image', src: url };
+          }, function(){});
+        });
       } else if(option === 'color'){
         formContainer.style.backgroundImage = 'none';
         formContainer.style.backgroundColor = value;
@@ -679,6 +809,122 @@
         document.getElementById('styleActionButtons').style.display = 'none';
       }
     });
+    
+    // --- New Code for Hot Offers ---
+    var currentOfferId = null;
+    var offerQuill = new Quill('#offerEditorContainer', {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          [{ 'font': [] }, { 'size': [] }],
+          ['bold', 'italic', 'underline'],
+          [{ 'color': [] }, { 'background': [] }],
+          [{ 'align': [] }],
+          ['clean']
+        ]
+      }
+    });
+    
+    function toggleOfferDetail(offerId) {
+      currentOfferId = offerId;
+      // Load existing detail if any
+      var detailData = document.getElementById(offerId + '-detail-data').value;
+      offerQuill.root.innerHTML = detailData;
+      document.getElementById('offerDetailModal').style.display = 'block';
+    }
+    
+    function closeOfferModal() {
+      document.getElementById('offerDetailModal').style.display = 'none';
+      currentOfferId = null;
+    }
+    
+    function saveOfferDetail() {
+      if (currentOfferId) {
+        var detailContent = offerQuill.root.innerHTML;
+        document.getElementById(currentOfferId + '-detail-data').value = detailContent;
+        closeOfferModal();
+      }
+    }
+    
+    function handleOfferImageUpload(event) {
+      var file = event.target.files[0];
+      if (file) {
+        resizeOfferImage(file, function(resizedBlob) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            document.getElementById('offerImagePreview').src = e.target.result;
+            document.getElementById('offerImagePreview').style.display = 'block';
+          };
+          reader.readAsDataURL(resizedBlob);
+        });
+      }
+    }
+    
+    function resizeOfferImage(file, callback) {
+      var img = new Image();
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        img.src = e.target.result;
+        img.onload = function() {
+          var canvas = document.createElement('canvas');
+          var size = 60; // approximately 1.5cm in pixels
+          canvas.width = size;
+          canvas.height = size;
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, size, size);
+          canvas.toBlob(function(blob) { callback(blob); }, 'image/jpeg', 0.4);
+        };
+      };
+      reader.readAsDataURL(file);
+    }
+    
+    function applyOfferStyle() {
+      var styleSelect = document.getElementById('offerStyleSelect');
+      var selectedStyle = styleSelect.value;
+      var previewFrame = document.getElementById('offerStylePreviewFrame');
+      // For preview purposes, change preview content based on the selected style.
+      if(selectedStyle === 'accordion'){
+        previewFrame.innerHTML = '<p>Accordion</p>';
+        previewFrame.style.background = '#e0f7fa';
+      } else if(selectedStyle === 'horizontal'){
+        previewFrame.innerHTML = '<p>Horizontal</p>';
+        previewFrame.style.background = '#ffe0b2';
+      } else if(selectedStyle === 'modal'){
+        previewFrame.innerHTML = '<p>Modal</p>';
+        previewFrame.style.background = '#f3e5f5';
+      } else if(selectedStyle === 'tab'){
+        previewFrame.innerHTML = '<p>Tab</p>';
+        previewFrame.style.background = '#e8f5e9';
+      }
+      // Save the selected offer design for use in card.html/offers.html
+      alert('Offer style ' + selectedStyle + ' applied.');
+    }
+    
+    // Background image loader with fallback
+    var backgroundImages = [
+      "https://cdn.pixabay.com/photo/2018/01/15/07/51/landscape-3082836_1280.jpg",
+      "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
+      "https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg",
+      "https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg",
+      "https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg"
+    ];
+    
+    function loadBackgroundImage(url, onSuccess, onError) {
+      var img = new Image();
+      img.onload = function() {
+        onSuccess(url);
+      };
+      img.onerror = function() {
+        onError();
+      };
+      img.src = url;
+    }
+    
+    function setBackgroundImage(url) {
+      var formContainer = document.getElementById('formContainer');
+      formContainer.style.backgroundImage = 'url(' + url + ')';
+      formContainer.style.backgroundSize = 'cover';
+    }
   </script>
 </body>
 </html>
