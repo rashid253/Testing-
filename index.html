@@ -137,7 +137,7 @@
       border-radius: 8px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.3);
       padding: 0.5rem;
-      width: 200px;
+      width: 220px;
       z-index: 1000;
       text-align: center;
     }
@@ -162,18 +162,16 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
       color: var(--secondary-color);
     }
-    /* Arrow icon */
     .arrow-icon {
       transition: transform 0.3s ease;
       font-size: 0.7rem;
       margin-left: 0.2rem;
     }
     .arrow-icon.rotated { transform: rotate(-180deg); }
-    /* Dropdown buttons */
-    .dropdown-menu button,
-    .sub-dropdown button {
+    /* Buttons inside dropdown */
+    .dropdown-menu button {
       width: 100%;
-      padding: 0.3rem 0.2rem;
+      padding: 0.3rem;
       margin: 0.2rem 0;
       background: var(--secondary-color);
       color: white;
@@ -184,25 +182,17 @@
       box-shadow: 0 3px 6px rgba(0,0,0,0.2);
       transition: transform 0.1s ease;
     }
-    .dropdown-menu button:hover,
-    .sub-dropdown button:hover {
+    .dropdown-menu button:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
-    /* Sub-dropdown menus */
-    .sub-dropdown { display: none; margin: 0; }
+    .sub-dropdown {
+      display: none;
+      margin: 0.3rem 0;
+    }
     .sub-dropdown.active { display: block; }
-    .sub-dropdown button {
-      background: var(--neutral-light);
-      color: var(--neutral-dark);
-      border: 1px solid var(--neutral-light);
-    }
-    .sub-dropdown button:hover {
-      background: var(--secondary-color);
-      color: white;
-    }
-    /* Image thumbnails */
-    .image-thumbnails {
+    /* Thumbnails */
+    .image-thumbnails, .color-thumbnails {
       display: flex;
       gap: 0.3rem;
       overflow-x: auto;
@@ -218,13 +208,6 @@
       transition: border-color 0.2s ease;
     }
     .image-thumbnails img:hover { border-color: var(--secondary-color); }
-    /* Color thumbnails */
-    .color-thumbnails {
-      display: flex;
-      gap: 0.3rem;
-      overflow-x: auto;
-      margin-bottom: 0.3rem;
-    }
     .color-thumbnails div {
       width: 25px;
       height: 25px;
@@ -234,7 +217,7 @@
       transition: border-color 0.2s ease;
     }
     .color-thumbnails div:hover { border-color: var(--secondary-color); }
-    /* Preview areas and action buttons */
+    /* Preview area and action buttons */
     .preview-area {
       display: none;
       text-align: center;
@@ -295,24 +278,17 @@
         Theme <i class="fas fa-chevron-down arrow-icon"></i>
       </h4>
       <div id="themeSubDropdown" class="sub-dropdown">
-        <button onclick="previewThemeDefault()">Default</button>
+        <button onclick="previewTheme('default')">Default</button>
         <button onclick="toggleSubDropdown('image')">
           Image <i class="fas fa-chevron-down arrow-icon"></i>
         </button>
         <div id="imageSubDropdown" class="sub-dropdown">
           <div class="image-thumbnails">
-            <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Nature 1" onclick="selectImage(this.src, this)">
-            <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Nature 2" onclick="selectImage(this.src, this)">
-            <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Nature 3" onclick="selectImage(this.src, this)">
-            <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Nature 4" onclick="selectImage(this.src, this)">
-            <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Nature 5" onclick="selectImage(this.src, this)">
-          </div>
-          <div id="imagePreviewArea" class="preview-area">
-            <img id="selectedImagePreview" src="" alt="Selected Preview">
-          </div>
-          <div id="imageActionButtons" class="action-buttons">
-            <button onclick="applySelectedImage()">Apply</button>
-            <button onclick="cancelSelectedImage()">Cancel</button>
+            <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Image 1" onclick="previewTheme('image', this.src)">
+            <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Image 2" onclick="previewTheme('image', this.src)">
+            <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Image 3" onclick="previewTheme('image', this.src)">
+            <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Image 4" onclick="previewTheme('image', this.src)">
+            <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Image 5" onclick="previewTheme('image', this.src)">
           </div>
         </div>
         <button onclick="toggleSubDropdown('color')">
@@ -320,29 +296,19 @@
         </button>
         <div id="colorSubDropdown" class="sub-dropdown">
           <div class="color-thumbnails">
-            <div style="background-color: #3498DB;" onclick="selectColor('#3498DB', this)"></div>
-            <div style="background-color: #E74C3E;" onclick="selectColor('#E74C3E', this)"></div>
-            <div style="background-color: #2ECC71;" onclick="selectColor('#2ECC71', this)"></div>
-            <div style="background-color: #9B59B6;" onclick="selectColor('#9B59B6', this)"></div>
-            <div style="background-color: #F1C40F;" onclick="selectColor('#F1C40F', this)"></div>
-            <div style="background: linear-gradient(45deg, #FF9A9E, #FAD0C4);" onclick="selectColor('linear-gradient(45deg, #FF9A9E, #FAD0C4)', this)"></div>
-            <div style="background: linear-gradient(45deg, #A18CD1, #FBC2EB);" onclick="selectColor('linear-gradient(45deg, #A18CD1, #FBC2EB)', this)"></div>
-            <div style="background: linear-gradient(45deg, #96E6A1, #D4FC79);" onclick="selectColor('linear-gradient(45deg, #96E6A1, #D4FC79)', this)"></div>
-          </div>
-          <div id="colorPreviewArea" class="preview-area">
-            <div id="selectedColorPreview" style=""></div>
-          </div>
-          <div id="colorActionButtons" class="action-buttons">
-            <button onclick="applySelectedColor()">Apply</button>
-            <button onclick="cancelSelectedColor()">Cancel</button>
+            <div style="background-color: #3498DB;" onclick="previewTheme('color', '#3498DB')"></div>
+            <div style="background-color: #E74C3E;" onclick="previewTheme('color', '#E74C3E')"></div>
+            <div style="background-color: #2ECC71;" onclick="previewTheme('color', '#2ECC71')"></div>
+            <div style="background-color: #9B59B6;" onclick="previewTheme('color', '#9B59B6')"></div>
+            <div style="background-color: #F1C40F;" onclick="previewTheme('color', '#F1C40F')"></div>
           </div>
         </div>
         <div id="themePreviewArea" class="preview-area">
           <p id="themePreviewText"></p>
         </div>
         <div id="themeActionButtons" class="action-buttons">
-          <button onclick="applyThemeDefault()">Apply</button>
-          <button onclick="cancelThemeDefault()">Cancel</button>
+          <button onclick="applyTheme()">Apply</button>
+          <button onclick="cancelTheme()">Cancel</button>
         </div>
       </div>
       <!-- Style Group -->
@@ -362,6 +328,7 @@
         </div>
       </div>
     </div>
+    <!-- Main Form -->
     <div class="form-header">
       <h2>Create Business Card</h2>
       <p>Fill in all required information</p>
@@ -417,7 +384,7 @@
     </div>
     <button id="generateCard">Generate Card</button>
   </div>
-  <!-- Firebase and intl-tel-input Scripts -->
+  <!-- Scripts -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
@@ -574,39 +541,42 @@
         if (arrow) arrow.classList.toggle('rotated');
       }
     }
-    // Global variables for preview states
-    var appliedMood = null;
-    var appliedTheme = null;
-    var appliedStyle = null;
-    var moodPreviewValue = null;
-    var themePreviewValue = null;
-    var stylePreviewValue = null;
+    // Global preview variables
+    var appliedMood = null, appliedTheme = null, appliedStyle = null;
+    var moodPreviewValue = null, themePreviewValue = null, stylePreviewValue = null;
     function updateFormContainer() {
       var formContainer = document.getElementById('formContainer');
-      // Reset inline styles
+      // Reset styles
       formContainer.style.backgroundColor = "";
       formContainer.style.color = "";
       formContainer.style.backgroundImage = "";
       formContainer.style.boxShadow = "";
       formContainer.style.border = "";
-      // Apply mood
-      if(appliedMood === 'day'){
+      // Apply Mood if set
+      if (appliedMood === 'day') {
         formContainer.style.backgroundColor = '#ffffff';
         formContainer.style.color = '#000000';
-      } else if(appliedMood === 'night'){
+      } else if (appliedMood === 'night') {
         formContainer.style.backgroundColor = '#34495E';
         formContainer.style.color = '#ffffff';
       }
-      // Apply theme (default)
-      if(appliedTheme === 'default'){
-        formContainer.style.backgroundColor = "";
-        formContainer.style.backgroundImage = "";
+      // Apply Theme if set
+      if (appliedTheme) {
+        if (appliedTheme.option === 'default') {
+          formContainer.style.backgroundColor = "";
+          formContainer.style.backgroundImage = "";
+        } else if (appliedTheme.option === 'image') {
+          formContainer.style.backgroundImage = `url(${appliedTheme.src})`;
+          formContainer.style.backgroundSize = 'cover';
+        } else if (appliedTheme.option === 'color') {
+          formContainer.style.backgroundColor = appliedTheme.value;
+        }
       }
-      // Apply style
-      if(appliedStyle === 'styleA'){
+      // Apply Style if set
+      if (appliedStyle === 'styleA') {
         formContainer.style.backgroundColor = "#f9f9f9";
         formContainer.style.border = "2px solid var(--secondary-color)";
-      } else if(appliedStyle === 'styleB'){
+      } else if (appliedStyle === 'styleB') {
         formContainer.style.backgroundColor = "#ffffff";
         formContainer.style.boxShadow = "0 0 15px rgba(0,0,0,0.5)";
       }
@@ -621,9 +591,9 @@
         formContainer.style.backgroundColor = '#34495E';
         formContainer.style.color = '#ffffff';
       }
+      document.getElementById('moodPreviewText').innerText = "Preview: " + value.charAt(0).toUpperCase() + value.slice(1);
       document.getElementById('moodPreviewArea').style.display = 'block';
       document.getElementById('moodActionButtons').style.display = 'block';
-      document.getElementById('moodPreviewText').innerText = "Preview: " + value.charAt(0).toUpperCase() + value.slice(1);
       moodPreviewValue = value;
     }
     function applyMood() {
@@ -638,23 +608,36 @@
       document.getElementById('moodPreviewArea').style.display = 'none';
       document.getElementById('moodActionButtons').style.display = 'none';
     }
-    // Theme functions
-    function previewThemeDefault() {
+    // Theme functions – unified for default, image, and color
+    function previewTheme(option, value) {
       var formContainer = document.getElementById('formContainer');
-      formContainer.style.backgroundColor = "";
-      formContainer.style.backgroundImage = "";
+      if(option === 'default'){
+        formContainer.style.backgroundColor = "";
+        formContainer.style.backgroundImage = "";
+        themePreviewValue = { option: 'default' };
+        document.getElementById('themePreviewText').innerText = "Preview: Default";
+      } else if(option === 'image'){
+        // value holds the image URL
+        formContainer.style.backgroundImage = `url(${value})`;
+        formContainer.style.backgroundSize = 'cover';
+        themePreviewValue = { option: 'image', src: value };
+        document.getElementById('themePreviewText').innerText = "Preview: Image";
+      } else if(option === 'color'){
+        formContainer.style.backgroundImage = 'none';
+        formContainer.style.backgroundColor = value;
+        themePreviewValue = { option: 'color', value: value };
+        document.getElementById('themePreviewText').innerText = "Preview: Color";
+      }
       document.getElementById('themePreviewArea').style.display = 'block';
       document.getElementById('themeActionButtons').style.display = 'block';
-      document.getElementById('themePreviewText').innerText = "Preview: Default Theme";
-      themePreviewValue = 'default';
     }
-    function applyThemeDefault() {
+    function applyTheme() {
       appliedTheme = themePreviewValue;
       themePreviewValue = null;
       document.getElementById('themePreviewArea').style.display = 'none';
       document.getElementById('themeActionButtons').style.display = 'none';
     }
-    function cancelThemeDefault() {
+    function cancelTheme() {
       themePreviewValue = null;
       updateFormContainer();
       document.getElementById('themePreviewArea').style.display = 'none';
@@ -674,9 +657,9 @@
         formContainer.style.backgroundColor = "#ffffff";
         formContainer.style.boxShadow = "0 0 15px rgba(0,0,0,0.5)";
       }
+      document.getElementById('stylePreviewText').innerText = "Preview: " + style;
       document.getElementById('stylePreviewArea').style.display = 'block';
       document.getElementById('styleActionButtons').style.display = 'block';
-      document.getElementById('stylePreviewText').innerText = "Preview: " + style;
       stylePreviewValue = style;
     }
     function applyStyle() {
@@ -691,79 +674,15 @@
       document.getElementById('stylePreviewArea').style.display = 'none';
       document.getElementById('styleActionButtons').style.display = 'none';
     }
-    // Inline image selection functions
-    let selectedImageSrc = null;
-    function selectImage(src, element) {
-      const imgs = document.querySelectorAll('#imageSubDropdown .image-thumbnails img');
-      imgs.forEach(img => img.style.borderColor = 'transparent');
-      element.style.borderColor = varSecondary();
-      selectedImageSrc = src;
-      document.getElementById('selectedImagePreview').src = src;
-      document.getElementById('imagePreviewArea').style.display = 'block';
-      document.getElementById('imageActionButtons').style.display = 'block';
-    }
-    function varSecondary() {
-      return "#3498DB";
-    }
-    function applySelectedImage() {
-      if(selectedImageSrc) {
-        document.getElementById('formContainer').style.backgroundImage = `url(${selectedImageSrc})`;
-        document.getElementById('formContainer').style.backgroundSize = 'cover';
-        cancelSelectedImage();
-      }
-    }
-    function cancelSelectedImage() {
-      selectedImageSrc = null;
-      document.getElementById('selectedImagePreview').src = "";
-      document.getElementById('imagePreviewArea').style.display = 'none';
-      document.getElementById('imageActionButtons').style.display = 'none';
-      const imgs = document.querySelectorAll('#imageSubDropdown .image-thumbnails img');
-      imgs.forEach(img => img.style.borderColor = 'transparent');
-    }
-    // Inline color selection functions
-    let selectedColor = null;
-    function selectColor(color, element) {
-      const divs = document.querySelectorAll('#colorSubDropdown .color-thumbnails div');
-      divs.forEach(div => div.style.borderColor = 'transparent');
-      element.style.borderColor = varSecondary();
-      selectedColor = color;
-      const previewDiv = document.getElementById('selectedColorPreview');
-      if(color.indexOf("linear-gradient") >= 0){
-        previewDiv.style.background = color;
-      } else {
-        previewDiv.style.backgroundColor = color;
-      }
-      document.getElementById('colorPreviewArea').style.display = 'block';
-      document.getElementById('colorActionButtons').style.display = 'block';
-    }
-    function applySelectedColor() {
-      if(selectedColor) {
-        const formContainer = document.getElementById('formContainer');
-        formContainer.style.backgroundImage = 'none';
-        if(selectedColor.indexOf("linear-gradient") >= 0) {
-          formContainer.style.backgroundImage = selectedColor;
-          formContainer.style.backgroundColor = "";
-        } else {
-          formContainer.style.backgroundColor = selectedColor;
-        }
-        cancelSelectedColor();
-      }
-    }
-    function cancelSelectedColor() {
-      selectedColor = null;
-      document.getElementById('selectedColorPreview').style.background = "";
-      document.getElementById('colorPreviewArea').style.display = 'none';
-      document.getElementById('colorActionButtons').style.display = 'none';
-      const divs = document.querySelectorAll('#colorSubDropdown .color-thumbnails div');
-      divs.forEach(div => div.style.borderColor = 'transparent');
-    }
-    // Global click handler to close dropdown and cancel previews when clicking outside
+    // Global click handler to cancel preview when clicking outside dropdown
     document.addEventListener('click', function(event) {
       const dropdownMenu = document.getElementById('dropdownMenu');
-      if(dropdownMenu.classList.contains('active') && !event.target.closest('.dropdown-menu') && !event.target.closest('.gear-icon')) {
+      if(dropdownMenu.classList.contains('active') && 
+         !event.target.closest('.dropdown-menu') && 
+         !event.target.closest('.gear-icon')) {
         dropdownMenu.classList.remove('active');
         cancelMood();
-        cancelThemeDefault();
+        cancelTheme();
         cancelStyle();
       }
     });
