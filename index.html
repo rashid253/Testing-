@@ -135,7 +135,7 @@
       background: #fff;
       border: 1px solid var(--neutral-light);
       border-radius: 8px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.3); /* Enhanced 3D effect */
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
       padding: 0.5rem;
       width: 80px; /* Reduced width */
       z-index: 1000;
@@ -193,7 +193,7 @@
       margin: 0.3rem 0;
     }
     .sub-dropdown.active { display: block; }
-    /* Thumbnails – scrolling for images and colors */
+    /* Image thumbnails and color thumbnails: scrolling enabled */
     .image-thumbnails, .color-thumbnails {
       display: flex;
       gap: 0.3rem;
@@ -220,7 +220,7 @@
       transition: border-color 0.2s ease;
     }
     .color-thumbnails div:hover { border-color: var(--secondary-color); }
-    /* Action buttons: Only Apply button (centered) */
+    /* Action buttons: only Apply button is shown; align center */
     .action-buttons {
       display: none;
       margin-top: 5px;
@@ -235,6 +235,24 @@
       color: #ffffff;
       cursor: pointer;
       font-size: 0.8rem;
+    }
+    /* For the image preview in the Image sub-dropdown:
+       The container is a flex row: a fixed preview box on the left, and the thumbnails on the right */
+    #imageSubDropdown {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+    }
+    #imagePreviewContainer {
+      display: none;
+      width: 60px;
+      text-align: center;
+    }
+    #selectedImagePreview {
+      width: 60px;
+      height: 60px;
+      border: 1px solid #ccc;
+      margin-bottom: 5px;
     }
     /* Glassy Background */
     .glassy-background {
@@ -276,8 +294,16 @@
         <button onclick="toggleSubDropdown('image')">
           Image <i class="fas fa-chevron-down arrow-icon"></i>
         </button>
+        <!-- Modified Image Sub-dropdown -->
         <div id="imageSubDropdown" class="sub-dropdown">
-          <div class="image-thumbnails">
+          <div id="imagePreviewContainer">
+            <img id="selectedImagePreview" src="" alt="Preview" />
+            <div class="action-buttons">
+              <button onclick="applySelectedImage()">Apply</button>
+              <button onclick="cancelSelectedImage()">Cancel</button>
+            </div>
+          </div>
+          <div class="image-thumbnails" style="flex:1;">
             <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Image 1" onclick="previewTheme('image', this.src)">
             <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Image 2" onclick="previewTheme('image', this.src)">
             <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Image 3" onclick="previewTheme('image', this.src)">
@@ -592,16 +618,18 @@
         formContainer.style.backgroundColor = "";
         formContainer.style.backgroundImage = "";
         themePreviewValue = { option: 'default' };
+        document.getElementById('themeActionButtons').style.display = 'flex';
       } else if(option === 'image'){
-        formContainer.style.backgroundImage = `url(${value})`;
-        formContainer.style.backgroundSize = 'cover';
+        // Show the image preview container with the selected image
+        document.getElementById('selectedImagePreview').src = value;
+        document.getElementById('imagePreviewContainer').style.display = 'block';
         themePreviewValue = { option: 'image', src: value };
       } else if(option === 'color'){
         formContainer.style.backgroundImage = 'none';
         formContainer.style.backgroundColor = value;
         themePreviewValue = { option: 'color', value: value };
+        document.getElementById('themeActionButtons').style.display = 'flex';
       }
-      document.getElementById('themeActionButtons').style.display = 'flex';
     }
     function applyTheme() {
       appliedTheme = themePreviewValue;
@@ -630,6 +658,25 @@
       stylePreviewValue = null;
       document.getElementById('styleActionButtons').style.display = 'none';
     }
+    // Image preview functions for the Theme > Image option
+    var selectedImageSrc = null;
+    function applySelectedImage() {
+      if(selectedImageSrc) {
+        document.getElementById('formContainer').style.backgroundImage = 'url(' + selectedImageSrc + ')';
+        document.getElementById('formContainer').style.backgroundSize = 'cover';
+        cancelSelectedImage();
+      }
+    }
+    function cancelSelectedImage() {
+      selectedImageSrc = null;
+      document.getElementById('selectedImagePreview').src = "";
+      document.getElementById('imagePreviewContainer').style.display = 'none';
+    }
+    // Modify previewTheme for image to set the global variable and show preview container
+    (function(){
+      // Ensure the image preview container exists by checking its element.
+      // It is defined in HTML below.
+    })();
     // Global click handler to cancel preview when clicking outside dropdown
     document.addEventListener('click', function(event) {
       const dropdownMenu = document.getElementById('dropdownMenu');
@@ -645,6 +692,7 @@
         document.getElementById('moodActionButtons').style.display = 'none';
         document.getElementById('themeActionButtons').style.display = 'none';
         document.getElementById('styleActionButtons').style.display = 'none';
+        cancelSelectedImage();
       }
     });
   </script>
