@@ -129,7 +129,7 @@
       cursor: pointer;
       font-size: 1rem;
     }
-    /* Dropdown Menu */
+    /* Dropdown Menu for Background Themes */
     .dropdown-menu {
       display: none;
       position: absolute;
@@ -271,6 +271,10 @@
     .offer-field input[type="text"] {
       margin-bottom: 0.3rem;
     }
+    /* New: hidden field to store offer image */
+    .offer-field input[type="hidden"] {
+      display: none;
+    }
     .offer-style-section {
       margin-top: 1rem;
     }
@@ -351,7 +355,8 @@
             <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Image 2" onclick="previewTheme('image', this.src)">
             <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Image 3" onclick="previewTheme('image', this.src)">
             <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Image 4" onclick="previewTheme('image', this.src)">
-            <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Image 5" onclick="previewTheme('image', this.src)">
+            <!-- Replaced broken URL with a new natural light image -->
+            <img src="https://cdn.pixabay.com/photo/2020/04/07/15/12/landscape-5016750_1280.jpg" alt="Image 5" onclick="previewTheme('image', this.src)">
           </div>
         </div>
         <button onclick="toggleSubDropdown('color')">
@@ -448,24 +453,28 @@
         <input type="text" placeholder="Offer 1 Title" id="offer1-title">
         <button type="button" onclick="toggleOfferDetail('offer1')">Details</button>
         <textarea id="offer1-detail-data" style="display:none;"></textarea>
+        <input type="hidden" id="offer1-detail-image">
       </div>
       <div class="offer-field" id="offer2">
         <label>Offer 2 Title</label>
         <input type="text" placeholder="Offer 2 Title" id="offer2-title">
         <button type="button" onclick="toggleOfferDetail('offer2')">Details</button>
         <textarea id="offer2-detail-data" style="display:none;"></textarea>
+        <input type="hidden" id="offer2-detail-image">
       </div>
       <div class="offer-field" id="offer3">
         <label>Offer 3 Title</label>
         <input type="text" placeholder="Offer 3 Title" id="offer3-title">
         <button type="button" onclick="toggleOfferDetail('offer3')">Details</button>
         <textarea id="offer3-detail-data" style="display:none;"></textarea>
+        <input type="hidden" id="offer3-detail-image">
       </div>
       <div class="offer-field" id="offer4">
         <label>Offer 4 Title</label>
         <input type="text" placeholder="Offer 4 Title" id="offer4-title">
         <button type="button" onclick="toggleOfferDetail('offer4')">Details</button>
         <textarea id="offer4-detail-data" style="display:none;"></textarea>
+        <input type="hidden" id="offer4-detail-image">
       </div>
       <!-- Offer Style Selection -->
       <div class="offer-style-section">
@@ -623,18 +632,22 @@
       return true;
     }
     
-    function uploadImageToFirebase(blob, formData) {
-      const storageRef = firebase.storage().ref();
-      const imageRef = storageRef.child('profile_images/' + Date.now() + '.jpg');
-      imageRef.put(blob).then(function(snapshot) {
-        return snapshot.ref.getDownloadURL();
-      }).then(function(url) {
-        formData.profileImage = url;
-        redirectToCard(formData);
-      }).catch(function(error) {
-        console.error('Error uploading image:', error);
-        alert('Image upload failed. Please try again.');
-      });
+    // Updated to store form data and offers data into localStorage
+    function redirectToCard(formData) {
+      localStorage.setItem('formData', JSON.stringify(formData));
+      let offers = [];
+      for (let i = 1; i <= 4; i++) {
+        let title = document.getElementById('offer' + i + '-title').value;
+        let detail = document.getElementById('offer' + i + '-detail-data').value;
+        let image = document.getElementById('offer' + i + '-detail-image') ? document.getElementById('offer' + i + '-detail-image').value : "";
+        if (title || detail || image) {
+          offers.push({title: title, detail: detail, image: image});
+        }
+      }
+      localStorage.setItem('offersData', JSON.stringify(offers));
+      const params = new URLSearchParams();
+      for (let key in formData) { params.set(key, formData[key]); }
+      window.location.href = `card.html?${params.toString()}`;
     }
     
     document.getElementById('generateCard').onclick = function () {
@@ -649,8 +662,7 @@
         facebook: document.getElementById('facebook').value.trim(),
         instagram: document.getElementById('instagram').value.trim(),
         youtube: document.getElementById('youtube').value.trim(),
-        profileImage: document.getElementById('profileImage').files[0],
-        // Offer details can be gathered from the hot offers section as needed.
+        profileImage: document.getElementById('profileImage').files[0]
       };
       if (formData.profileImage) {
         resizeImage(formData.profileImage, function(resizedBlob) {
@@ -661,10 +673,18 @@
       }
     };
     
-    function redirectToCard(formData) {
-      const params = new URLSearchParams();
-      for (let key in formData) { params.set(key, formData[key]); }
-      window.location.href = `card.html?${params.toString()}`;
+    function uploadImageToFirebase(blob, formData) {
+      const storageRef = firebase.storage().ref();
+      const imageRef = storageRef.child('profile_images/' + Date.now() + '.jpg');
+      imageRef.put(blob).then(function(snapshot) {
+        return snapshot.ref.getDownloadURL();
+      }).then(function(url) {
+        formData.profileImage = url;
+        redirectToCard(formData);
+      }).catch(function(error) {
+        console.error('Error uploading image:', error);
+        alert('Image upload failed. Please try again.');
+      });
     }
     
     function toggleDropdown() {
@@ -836,12 +856,18 @@
     function closeOfferModal() {
       document.getElementById('offerDetailModal').style.display = 'none';
       currentOfferId = null;
+      // Clear modal fields after closing
+      offerQuill.root.innerHTML = "";
+      document.getElementById('offerImagePreview').src = "";
+      document.getElementById('offerImagePreview').style.display = 'none';
     }
     
     function saveOfferDetail() {
       if (currentOfferId) {
         var detailContent = offerQuill.root.innerHTML;
+        var imageSrc = document.getElementById('offerImagePreview').src;
         document.getElementById(currentOfferId + '-detail-data').value = detailContent;
+        document.getElementById(currentOfferId + '-detail-image').value = imageSrc;
         closeOfferModal();
       }
     }
@@ -896,7 +922,6 @@
         previewFrame.innerHTML = '<p>Tab</p>';
         previewFrame.style.background = '#e8f5e9';
       }
-      // Save the selected offer design for use in card.html/offers.html
       alert('Offer style ' + selectedStyle + ' applied.');
     }
     
@@ -906,7 +931,7 @@
       "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
       "https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg",
       "https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg",
-      "https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg"
+      "https://cdn.pixabay.com/photo/2020/04/07/15/12/landscape-5016750_1280.jpg"
     ];
     
     function loadBackgroundImage(url, onSuccess, onError) {
