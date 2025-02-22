@@ -19,6 +19,10 @@
       --neutral-dark: #34495E;
       --background-color: #ffffff;
       --text-color: #000000;
+      --offer-bg-color: #e0f7fa;
+      --offer-border-color: #009688;
+      --offer-border-radius: 8px;
+      --offer-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
     body {
       font-family: 'Segoe UI', system-ui, sans-serif;
@@ -108,7 +112,7 @@
       border-radius: 8px;
       cursor: pointer;
       position: relative;
-      background: #fff;
+      background: #fff; /* always white background */
     }
     /* Profile Image Preview */
     #imagePreview {
@@ -250,11 +254,12 @@
     }
     /* Hot Offers Section */
     .hot-offers-section {
-      background: #fff;
+      background: var(--offer-bg-color);
+      border: 2px solid var(--offer-border-color);
+      border-radius: var(--offer-border-radius);
+      box-shadow: var(--offer-box-shadow);
       padding: 1rem;
       margin-top: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
     }
     .hot-offers-section h3 {
       margin-top: 0;
@@ -280,12 +285,6 @@
     }
     .offer-style-preview {
       margin-top: 0.5rem;
-    }
-    /* Removed border from preview box */
-    #offerStylePreviewFrame {
-      width: 100px; 
-      height: 100px; 
-      margin-top: 5px;
     }
     /* Modal styles */
     .modal {
@@ -361,6 +360,7 @@
             <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Image 2" onclick="previewTheme('image', this.src)">
             <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Image 3" onclick="previewTheme('image', this.src)">
             <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Image 4" onclick="previewTheme('image', this.src)">
+            <!-- Replaced broken URL with a new natural light image -->
             <img src="https://cdn.pixabay.com/photo/2020/04/07/15/12/landscape-5016750_1280.jpg" alt="Image 5" onclick="previewTheme('image', this.src)">
           </div>
         </div>
@@ -484,7 +484,7 @@
       <!-- Offer Style Selection -->
       <div class="offer-style-section">
         <label for="offerStyleSelect">Select Offer Style</label>
-        <select id="offerStyleSelect">
+        <select id="offerStyleSelect" onchange="applyOfferStyle()">
           <option value="accordion">Accordion offers</option>
           <option value="horizontal">Horizontal scroll with flipcard offer card</option>
           <option value="modal">Modal popup offer</option>
@@ -492,7 +492,7 @@
         </select>
         <div class="offer-style-preview">
           <small>Preview:</small>
-          <div id="offerStylePreviewFrame"></div>
+          <div id="offerStylePreviewFrame" style="width: 100px; height: 100px; border: 1px solid #ccc; margin-top: 5px;"></div>
         </div>
         <button type="button" onclick="applyOfferStyle()">Apply Offer Design</button>
       </div>
@@ -732,7 +732,6 @@
           formContainer.style.backgroundImage = `url(${appliedTheme.src})`;
           formContainer.style.backgroundSize = 'cover';
         } else if (appliedTheme.option === 'color'){
-          formContainer.style.backgroundImage = 'none';
           formContainer.style.backgroundColor = appliedTheme.value;
         }
       }
@@ -772,9 +771,17 @@
         formContainer.style.backgroundImage = "";
         themePreviewValue = { option: 'default' };
       } else if(option === 'image'){
-        formContainer.style.backgroundImage = `url(${value})`;
-        formContainer.style.backgroundSize = 'cover';
-        themePreviewValue = { option: 'image', src: value };
+        loadBackgroundImage(value, function(url) {
+          setBackgroundImage(url);
+          themePreviewValue = { option: 'image', src: url };
+        }, function() {
+          // Fallback: choose a random image from backgroundImages not equal to value
+          var fallbackUrl = backgroundImages.find(x => x !== value) || backgroundImages[0];
+          loadBackgroundImage(fallbackUrl, function(url) {
+            setBackgroundImage(url);
+            themePreviewValue = { option: 'image', src: url };
+          }, function(){});
+        });
       } else if(option === 'color'){
         formContainer.style.backgroundImage = 'none';
         formContainer.style.backgroundColor = value;
@@ -891,7 +898,7 @@
         img.src = e.target.result;
         img.onload = function() {
           var canvas = document.createElement('canvas');
-          var size = 60;
+          var size = 60; // approximately 1.5cm in pixels
           canvas.width = size;
           canvas.height = size;
           var ctx = canvas.getContext('2d');
@@ -902,21 +909,61 @@
       reader.readAsDataURL(file);
     }
     
-    // New function to apply offer style and preview it
     function applyOfferStyle() {
-      var offerStyle = document.getElementById('offerStyleSelect').value;
-      localStorage.setItem('offerStyle', offerStyle);
-      var previewFrame = document.getElementById('offerStylePreviewFrame');
-      previewFrame.innerHTML = "";
-      if(offerStyle === "accordion") {
-        previewFrame.innerHTML = "<p style='color: var(--secondary-color);'>Accordion Style</p>";
-      } else if(offerStyle === "horizontal") {
-        previewFrame.innerHTML = "<p style='color: var(--accent-color);'>Horizontal Style</p>";
-      } else if(offerStyle === "modal") {
-        previewFrame.innerHTML = "<p style='color: var(--primary-color);'>Modal Popup Style</p>";
-      } else if(offerStyle === "tab") {
-        previewFrame.innerHTML = "<p style='color: var(--secondary-color);'>Tab Based Style</p>";
+      const styleSelect = document.getElementById('offerStyleSelect');
+      const selectedStyle = styleSelect.value;
+      const previewFrame = document.getElementById('offerStylePreviewFrame');
+
+      // Clear previous styles
+      previewFrame.style.backgroundColor = '';
+      previewFrame.style.border = '';
+      previewFrame.style.borderRadius = '';
+      previewFrame.style.boxShadow = '';
+
+      // Apply selected style
+      if (selectedStyle === 'accordion') {
+        document.documentElement.style.setProperty('--offer-bg-color', '#e0f7fa');
+        document.documentElement.style.setProperty('--offer-border-color', '#009688');
+      } else if (selectedStyle === 'horizontal') {
+        document.documentElement.style.setProperty('--offer-bg-color', '#ffe0b2');
+        document.documentElement.style.setProperty('--offer-border-color', '#FF9800');
+      } else if (selectedStyle === 'modal') {
+        document.documentElement.style.setProperty('--offer-bg-color', '#f3e5f5');
+        document.documentElement.style.setProperty('--offer-border-color', '#9C27B0');
+      } else if (selectedStyle === 'tab') {
+        document.documentElement.style.setProperty('--offer-bg-color', '#e8f5e9');
+        document.documentElement.style.setProperty('--offer-border-color', '#4CAF50');
       }
+
+      // Save the selected style to localStorage
+      localStorage.setItem('offerStyle', selectedStyle);
+      alert('Offer style ' + selectedStyle + ' applied.');
+    }
+    
+    // Background image loader with fallback
+    var backgroundImages = [
+      "https://cdn.pixabay.com/photo/2018/01/15/07/51/landscape-3082836_1280.jpg",
+      "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
+      "https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg",
+      "https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg",
+      "https://cdn.pixabay.com/photo/2020/04/07/15/12/landscape-5016750_1280.jpg"
+    ];
+    
+    function loadBackgroundImage(url, onSuccess, onError) {
+      var img = new Image();
+      img.onload = function() {
+        onSuccess(url);
+      };
+      img.onerror = function() {
+        onError();
+      };
+      img.src = url;
+    }
+    
+    function setBackgroundImage(url) {
+      var formContainer = document.getElementById('formContainer');
+      formContainer.style.backgroundImage = 'url(' + url + ')';
+      formContainer.style.backgroundSize = 'cover';
     }
   </script>
 </body>
