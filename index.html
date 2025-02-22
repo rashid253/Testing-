@@ -79,7 +79,7 @@
     .input-group .required {
       color: var(--accent-color);
     }
-    input, textarea, select {
+    input, select {
       width: 100%;
       padding: 0.7rem;
       border: 1px solid var(--neutral-light);
@@ -88,11 +88,18 @@
       transition: border-color 0.2s ease;
       box-sizing: border-box;
     }
-    input:focus, textarea:focus, select:focus {
+    input:focus, select:focus {
       border-color: var(--secondary-color);
       outline: none;
     }
     textarea {
+      width: 100%;
+      padding: 0.7rem;
+      border: 1px solid var(--neutral-light);
+      border-radius: 6px;
+      font-size: 0.9rem;
+      transition: border-color 0.2s ease;
+      box-sizing: border-box;
       resize: vertical;
     }
     .error {
@@ -135,17 +142,17 @@
       background: #fff;
       border: 1px solid var(--neutral-light);
       border-radius: 8px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.3); /* Enhanced 3D effect */
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
       padding: 0.5rem;
       width: 80px; /* Reduced width */
       z-index: 1000;
       text-align: center;
     }
     .dropdown-menu.active { display: block; }
-    /* Dropdown headers as main buttons with new font style/size and 3D effects */
+    /* Dropdown headers with smaller size and 3D effects */
     .dropdown-menu h4 {
       margin: 0 0 0.3rem;
-      font-size: 1rem;
+      font-size: 0.8rem; /* Smaller font size */
       font-family: 'Roboto', sans-serif;
       font-weight: bold;
       background: var(--secondary-color);
@@ -156,12 +163,13 @@
       justify-content: center;
       padding: 0.4rem;
       border-radius: 4px;
-      box-shadow: 0 5px 10px rgba(0,0,0,0.25);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.35);
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
       transition: transform 0.1s ease, box-shadow 0.2s ease;
     }
     .dropdown-menu h4:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.35);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.45);
     }
     .arrow-icon {
       transition: transform 0.3s ease;
@@ -235,6 +243,31 @@
       color: #ffffff;
       cursor: pointer;
       font-size: 0.8rem;
+    }
+    /* Editor Toolbar for Business Info */
+    .editor-toolbar {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .editor-toolbar button {
+      background: var(--secondary-color);
+      color: white;
+      border: none;
+      padding: 0.3rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .editor-toolbar button:hover {
+      background: var(--accent-color);
+    }
+    .editor-toolbar select {
+      padding: 0.3rem;
+      border: 1px solid var(--neutral-light);
+      border-radius: 4px;
+      background: white;
+      cursor: pointer;
     }
     /* Glassy Background */
     .glassy-background {
@@ -336,12 +369,40 @@
         <label for="businessName">Business Name <span class="required">*</span></label>
         <input type="text" id="businessName" placeholder="Business Name" required />
       </div>
+      <!-- Business Info with Rich Text Editor -->
       <div class="input-group">
-        <label for="businessInfo">Business Info <span class="required">*</span></label>
-        <textarea id="businessInfo" placeholder="Enter 3 to 5 paragraphs (Max 150 words each) separated by a new line" rows="6" required></textarea>
+        <label for="businessInfoEditor">Business Info <span class="required">*</span></label>
+        <!-- Contenteditable div styled like a textarea -->
+        <div id="businessInfoEditor" contenteditable="true" style="min-height: 100px; border: 1px solid var(--neutral-light); border-radius: 6px; padding: 0.7rem; font-size: 0.9rem;"></div>
+        <!-- Editor Toolbar -->
+        <div class="editor-toolbar">
+          <button type="button" onclick="execCmd('bold')"><i class="fas fa-bold"></i></button>
+          <button type="button" onclick="execCmd('italic')"><i class="fas fa-italic"></i></button>
+          <button type="button" onclick="execCmd('underline')"><i class="fas fa-underline"></i></button>
+          <select onchange="execCmdArg('fontName', this.value)">
+            <option value="">Font</option>
+            <option value="Arial">Arial</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Courier New">Courier New</option>
+          </select>
+          <select onchange="execCmdArg('fontSize', this.value)">
+            <option value="">Size</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+          </select>
+        </div>
         <small style="color: var(--neutral-dark); font-size: 0.8rem;">
           <strong>Instructions:</strong> Write 3 to 5 paragraphs. Each paragraph must not exceed 150 words. Separate paragraphs with a new line.
         </small>
+        <!-- Hidden textarea to store the HTML content for submission -->
+        <textarea id="businessInfo" name="businessInfo" style="display:none;" required></textarea>
       </div>
       <div class="input-group">
         <label for="address">Business Address <span class="required">*</span></label>
@@ -386,6 +447,7 @@
       appId: "YOUR_APP_ID"
     };
     firebase.initializeApp(firebaseConfig);
+    
     var phoneInput = document.querySelector("#phone");
     var iti = window.intlTelInput(phoneInput, {
       initialCountry: "auto",
@@ -398,6 +460,7 @@
       },
       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
     });
+    
     function previewImage(event) {
       const reader = new FileReader();
       const preview = document.getElementById('imagePreview');
@@ -407,6 +470,7 @@
       };
       reader.readAsDataURL(event.target.files[0]);
     }
+    
     function resizeImage(file, callback) {
       const img = new Image();
       const reader = new FileReader();
@@ -436,9 +500,18 @@
       };
       reader.readAsDataURL(file);
     }
+    
+    function execCmd(command) {
+      document.execCommand(command, false, null);
+    }
+    
+    function execCmdArg(command, arg) {
+      document.execCommand(command, false, arg);
+    }
+    
     function validateForm() {
       let valid = true;
-      const fieldIds = ['name', 'businessName', 'businessInfo', 'address', 'email'];
+      const fieldIds = ['name', 'businessName', 'address', 'email'];
       fieldIds.forEach(function(id) {
         const field = document.getElementById(id);
         if (field) field.classList.remove('error');
@@ -448,7 +521,11 @@
         if (!field.value.trim()) { valid = false; field.classList.add('error'); }
       });
       if (!valid) { alert("Please fill all required fields."); return false; }
-      if (!iti.isValidNumber()) { phoneInput.classList.add('error'); alert("Please enter a valid phone number."); return false; }
+      if (!iti.isValidNumber()) { 
+        phoneInput.classList.add('error'); 
+        alert("Please enter a valid phone number."); 
+        return false; 
+      }
       const emailValue = document.getElementById('email').value.trim();
       if (!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(emailValue)) {
         document.getElementById('email').classList.add('error');
@@ -462,18 +539,37 @@
       ];
       socialMedia.forEach(function(sm) {
         const value = document.getElementById(sm.id).value.trim();
-        if (value && !sm.regex.test(value)) { document.getElementById(sm.id).classList.add('error'); alert(sm.message); valid = false; }
+        if (value && !sm.regex.test(value)) { 
+          document.getElementById(sm.id).classList.add('error'); 
+          alert(sm.message); 
+          valid = false; 
+        }
       });
       if (!valid) return false;
-      const businessInfo = document.getElementById('businessInfo').value.trim();
-      const paragraphs = businessInfo.split('\n').filter(p => p.trim() !== '');
-      if (paragraphs.length < 3 || paragraphs.length > 5) { document.getElementById('businessInfo').classList.add('error'); alert("Please enter 3 to 5 paragraphs for the business info."); return false; }
+      
+      // Get content from the rich text editor
+      const editor = document.getElementById('businessInfoEditor');
+      const editorText = editor.innerText.trim();
+      // Update hidden textarea with HTML content for submission
+      document.getElementById('businessInfo').value = editor.innerHTML;
+      
+      const paragraphs = editorText.split('\n').filter(p => p.trim() !== '');
+      if (paragraphs.length < 3 || paragraphs.length > 5) { 
+        editor.classList.add('error'); 
+        alert("Please enter 3 to 5 paragraphs for the business info."); 
+        return false; 
+      }
       for (let i = 0; i < paragraphs.length; i++) {
         const wordCount = paragraphs[i].split(/\s+/).filter(word => word.length > 0).length;
-        if (wordCount > 150) { document.getElementById('businessInfo').classList.add('error'); alert("Each paragraph must not exceed 150 words. Please review your business info."); return false; }
+        if (wordCount > 150) { 
+          editor.classList.add('error'); 
+          alert("Each paragraph must not exceed 150 words. Please review your business info."); 
+          return false; 
+        }
       }
       return true;
     }
+    
     function uploadImageToFirebase(blob, formData) {
       const storageRef = firebase.storage().ref();
       const imageRef = storageRef.child('profile_images/' + Date.now() + '.jpg');
@@ -487,6 +583,7 @@
         alert('Image upload failed. Please try again.');
       });
     }
+    
     document.getElementById('generateCard').onclick = function () {
       if (!validateForm()) return;
       const formData = {
@@ -509,15 +606,18 @@
         redirectToCard(formData);
       }
     };
+    
     function redirectToCard(formData) {
       const params = new URLSearchParams();
       for (let key in formData) { params.set(key, formData[key]); }
       window.location.href = `card.html?${params.toString()}`;
     }
+    
     function toggleDropdown() {
       const dropdownMenu = document.getElementById('dropdownMenu');
       dropdownMenu.classList.toggle('active');
     }
+    
     function toggleSubDropdown(id) {
       const header = document.querySelector('h4[onclick*="' + id + '"]');
       const subDropdown = document.getElementById(id + 'SubDropdown');
@@ -527,47 +627,45 @@
         if (arrow) arrow.classList.toggle('rotated');
       }
     }
-    // Global preview variables
+    
+    // Global preview variables and style functions (mood, theme, style) remain unchanged...
     var appliedMood = null, appliedTheme = null, appliedStyle = null;
     var moodPreviewValue = null, themePreviewValue = null, stylePreviewValue = null;
+    
     function updateFormContainer() {
       var formContainer = document.getElementById('formContainer');
-      // Reset styles
       formContainer.style.backgroundColor = "";
       formContainer.style.color = "";
       formContainer.style.backgroundImage = "";
       formContainer.style.boxShadow = "";
       formContainer.style.border = "";
-      // Apply Mood if set
-      if (appliedMood === 'day') {
+      if (appliedMood === 'day'){
         formContainer.style.backgroundColor = '#ffffff';
         formContainer.style.color = '#000000';
-      } else if (appliedMood === 'night') {
+      } else if (appliedMood === 'night'){
         formContainer.style.backgroundColor = '#34495E';
         formContainer.style.color = '#ffffff';
       }
-      // Apply Theme if set
       if (appliedTheme) {
-        if (appliedTheme.option === 'default') {
+        if (appliedTheme.option === 'default'){
           formContainer.style.backgroundColor = "";
           formContainer.style.backgroundImage = "";
-        } else if (appliedTheme.option === 'image') {
+        } else if (appliedTheme.option === 'image'){
           formContainer.style.backgroundImage = `url(${appliedTheme.src})`;
           formContainer.style.backgroundSize = 'cover';
-        } else if (appliedTheme.option === 'color') {
+        } else if (appliedTheme.option === 'color'){
           formContainer.style.backgroundColor = appliedTheme.value;
         }
       }
-      // Apply Style if set
-      if (appliedStyle === 'styleA') {
+      if (appliedStyle === 'styleA'){
         formContainer.style.backgroundColor = "#f9f9f9";
         formContainer.style.border = "2px solid var(--secondary-color)";
-      } else if (appliedStyle === 'styleB') {
+      } else if (appliedStyle === 'styleB'){
         formContainer.style.backgroundColor = "#ffffff";
         formContainer.style.boxShadow = "0 0 15px rgba(0,0,0,0.5)";
       }
     }
-    // Mood functions
+    
     function previewMood(value) {
       var formContainer = document.getElementById('formContainer');
       if(value === 'day'){
@@ -580,12 +678,13 @@
       moodPreviewValue = value;
       document.getElementById('moodActionButtons').style.display = 'flex';
     }
+    
     function applyMood() {
       appliedMood = moodPreviewValue;
       moodPreviewValue = null;
       document.getElementById('moodActionButtons').style.display = 'none';
     }
-    // Theme functions – unified for default, image, and color
+    
     function previewTheme(option, value) {
       var formContainer = document.getElementById('formContainer');
       if(option === 'default'){
@@ -603,12 +702,13 @@
       }
       document.getElementById('themeActionButtons').style.display = 'flex';
     }
+    
     function applyTheme() {
       appliedTheme = themePreviewValue;
       themePreviewValue = null;
       document.getElementById('themeActionButtons').style.display = 'none';
     }
-    // Style functions
+    
     function previewStyle(style) {
       var formContainer = document.getElementById('formContainer');
       if(style === 'default'){
@@ -625,19 +725,19 @@
       stylePreviewValue = style;
       document.getElementById('styleActionButtons').style.display = 'flex';
     }
+    
     function applyStyle() {
       appliedStyle = stylePreviewValue;
       stylePreviewValue = null;
       document.getElementById('styleActionButtons').style.display = 'none';
     }
-    // Global click handler to cancel preview when clicking outside dropdown
+    
     document.addEventListener('click', function(event) {
       const dropdownMenu = document.getElementById('dropdownMenu');
       if(dropdownMenu.classList.contains('active') &&
          !event.target.closest('.dropdown-menu') &&
-         !event.target.closest('.gear-icon')) {
+         !event.target.closest('.gear-icon')){
         dropdownMenu.classList.remove('active');
-        // Auto cancel preview if user touches outside before applying
         moodPreviewValue = null;
         themePreviewValue = null;
         stylePreviewValue = null;
