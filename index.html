@@ -239,17 +239,17 @@
       transition: transform 0.1s ease, box-shadow 0.2s ease;
     }
     /* Image Preview Container (for Theme > Image option)
-       Positioned to the left of the dropdown menu */
+       Positioned immediately to the left of the dropdown menu */
     #imagePreviewContainer {
       position: absolute;
-      right: calc(100% + 10px);
+      left: -110px; /* Adjusted so it's right next to the dropdown */
       top: 2rem;
-      width: 100px; /* Increased width for clarity */
+      width: 100px;
       text-align: center;
       display: none;
     }
     #selectedImagePreview {
-      width: 100px; /* Enlarged preview box */
+      width: 100px;
       height: 100px;
       border: 1px solid #ccc;
       margin-bottom: 5px;
@@ -333,7 +333,7 @@
           </div>
         </div>
       </div>
-      <!-- Image Preview Container (for Theme > Image) positioned to the left of the dropdown -->
+      <!-- Image Preview Container (for Theme > Image) positioned immediately to the left of the dropdown -->
       <div id="imagePreviewContainer">
         <img id="selectedImagePreview" src="" alt="Preview" />
         <div class="action-buttons">
