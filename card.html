@@ -234,11 +234,27 @@
         border-radius: 10px;
       }
       .offer-card {
-        border: 1px solid #ccc;
+        border: 1px solid var(--secondary-color);
         border-radius: 5px;
         margin-bottom: 0.5rem;
+        padding: 0.5rem;
       }
-      .offer-card button.accordion {
+      /* Additional styles for different offer styles */
+      .offer-card.horizontal {
+        display: inline-block;
+        margin-right: 10px;
+        vertical-align: top;
+      }
+      .offer-card.modal {
+        border: 1px solid var(--primary-color);
+      }
+      .offer-card.tab {
+        border: 1px solid var(--secondary-color);
+      }
+      .offer-card.accordion {
+        border: 1px solid var(--secondary-color);
+      }
+      .accordion {
         width: 100%;
         text-align: left;
         background: #e0e0e0;
@@ -247,7 +263,7 @@
         font-weight: bold;
         cursor: pointer;
       }
-      .offer-card .panel {
+      .panel {
         display: none;
         padding: 0.5rem;
       }
@@ -259,7 +275,7 @@
         margin: 0.5rem 0;
         font-size: 0.9rem;
         line-height: 1.5;
-        height: 150px;
+        min-height: 150px;
         background: var(--business-info-bg);
         border-bottom: 2px solid var(--secondary-color);
         border-radius: 20px;
@@ -625,12 +641,14 @@
         /* -------------------- Load Offers Data -------------------- */
         const offersData = JSON.parse(localStorage.getItem("offersData")) || [];
         const offersContainer = document.getElementById("offersContainer");
+        // Get the applied offer style from localStorage, default to 'accordion'
+        const offerStyle = localStorage.getItem("offerStyle") || "accordion";
         if (offersData.length === 0) {
           offersContainer.innerHTML = "<p>No offers available.</p>";
         } else {
           offersData.forEach((offer, index) => {
             let offerCard = document.createElement("div");
-            offerCard.className = "offer-card";
+            offerCard.className = "offer-card " + offerStyle;
             offerCard.innerHTML = `
               <button class="accordion">${offer.title || "Offer " + (index + 1)}</button>
               <div class="panel" style="display: none;">
@@ -853,60 +871,11 @@
               message: queryText,
               from_name: formData.name || "Visitor",
               from_email: formData.email || "visitor@example.com"
-            })
-            .then(function(response) {
-              console.log("Email sent successfully!", response.status, response.text);
-            }, function(error) {
-              console.error("Failed to send email.", error);
             });
           }
+          
           chatQuery.value = "";
-        });
-        
-        window.addEventListener("click", (e) => {
-          if (e.target === chatModal) {
-            chatModal.style.display = "none";
-          }
-        });
-        
-        /* -------------------- Share URL Shortening -------------------- */
-        document.getElementById("topShareIcon").addEventListener("click", function (e) {
-          e.preventDefault();
-          const longUrl = window.location.href;
-          shortenUrl(longUrl)
-            .then(shortUrl => {
-              prompt("Share this short URL", shortUrl);
-            })
-            .catch(err => {
-              alert("Error shortening URL, please try again.");
-              console.error(err);
-            });
-        });
-        
-        async function shortenUrl(longUrl) {
-          const response = await fetch("https://your-region-your-project-id.cloudfunctions.net/shortenUrl", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ longUrl })
-          });
-          if (!response.ok) throw new Error("Failed to shorten URL");
-          const data = await response.json();
-          return data.shortUrl;
-        }
-        
-        /* -------------------- Button Touch Sounds -------------------- */
-        function playButtonSound() {
-          const soundToggle = document.getElementById("soundToggle");
-          if (soundToggle && soundToggle.checked) {
-            const sound = document.getElementById("buttonSound");
-            if (sound) {
-              sound.currentTime = 0;
-              sound.play();
-            }
-          }
-        }
-        document.querySelectorAll("button").forEach(btn => {
-          btn.addEventListener("click", playButtonSound);
+          chatConversation.scrollTop = chatConversation.scrollHeight;
         });
       });
     </script>
