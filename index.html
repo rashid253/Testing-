@@ -8,7 +8,8 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
   <!-- intl-tel-input CSS for international phone input -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
-  <!-- TinyMCE (rich text editor) will be loaded via script below -->
+  <!-- TinyMCE Script with provided API key -->
+  <script src="https://cdn.tiny.cloud/1/4w5honbkv0mvt3fk93amgq7d19slitxw0ve63slj91skk6f5/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
   <style>
     :root {
       --primary-color: #2C3E50;
@@ -243,8 +244,6 @@
       .form-container { max-width: 90%; padding: 1rem; }
     }
   </style>
-  <!-- TinyMCE Script -->
-  <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
   <script>
     // Initialize TinyMCE on the textarea for Business Info.
     tinymce.init({
@@ -504,8 +503,6 @@
       if (!valid) return false;
       
       // TinyMCE will ensure the content is available in the textarea.
-      // Additional paragraph and word count validations can be added here if required.
-      
       return true;
     }
     
@@ -567,7 +564,6 @@
       }
     }
     
-    // Preview functions for mood, theme and style remain unchanged.
     var appliedMood = null, appliedTheme = null, appliedStyle = null;
     var moodPreviewValue = null, themePreviewValue = null, stylePreviewValue = null;
     
