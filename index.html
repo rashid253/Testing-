@@ -142,10 +142,10 @@
       text-align: center;
     }
     .dropdown-menu.active { display: block; }
-    /* Dropdown headers as main buttons with new font style/size and 3D effects */
+    /* Dropdown headers (Mood, Theme, Style) - smaller font & increased 3D effect */
     .dropdown-menu h4 {
       margin: 0 0 0.3rem;
-      font-size: 1rem;
+      font-size: 0.8rem;
       font-family: 'Roboto', sans-serif;
       font-weight: bold;
       background: var(--secondary-color);
@@ -154,18 +154,18 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0.4rem;
+      padding: 0.3rem;
       border-radius: 4px;
-      box-shadow: 0 5px 10px rgba(0,0,0,0.25);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.35);
       transition: transform 0.1s ease, box-shadow 0.2s ease;
     }
     .dropdown-menu h4:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.35);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.45);
     }
     .arrow-icon {
       transition: transform 0.3s ease;
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       margin-left: 0.2rem;
     }
     .arrow-icon.rotated { transform: rotate(-180deg); }
@@ -180,12 +180,12 @@
       border-radius: 4px;
       cursor: pointer;
       font-size: 0.8rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
       transition: transform 0.1s ease, box-shadow 0.2s ease;
     }
     .dropdown-menu button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.45);
     }
     /* Sub-dropdown containers – scrolling enabled only for thumbnails */
     .sub-dropdown {
@@ -193,7 +193,7 @@
       margin: 0.3rem 0;
     }
     .sub-dropdown.active { display: block; }
-    /* Image thumbnails and color thumbnails: scrolling enabled */
+    /* Thumbnails (scrolling enabled only for these sections) */
     .image-thumbnails, .color-thumbnails {
       display: flex;
       gap: 0.3rem;
@@ -220,7 +220,7 @@
       transition: border-color 0.2s ease;
     }
     .color-thumbnails div:hover { border-color: var(--secondary-color); }
-    /* Action buttons: only Apply button is shown; align center */
+    /* Action buttons: Only Apply button is shown; centered */
     .action-buttons {
       display: none;
       margin-top: 5px;
@@ -235,18 +235,17 @@
       color: #ffffff;
       cursor: pointer;
       font-size: 0.8rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.45);
+      transition: transform 0.1s ease, box-shadow 0.2s ease;
     }
-    /* For the image preview in the Image sub-dropdown:
-       The container is a flex row: a fixed preview box on the left, and the thumbnails on the right */
-    #imageSubDropdown {
-      display: flex;
-      flex-direction: row;
-      gap: 5px;
-    }
+    /* Image Preview Container (for Theme > Image option) positioned with the dropdown */
     #imagePreviewContainer {
-      display: none;
+      position: absolute;
+      right: calc(100% + 10px);
+      top: 2rem;
       width: 60px;
       text-align: center;
+      display: none;
     }
     #selectedImagePreview {
       width: 60px;
@@ -272,71 +271,73 @@
     <div class="gear-icon" onclick="toggleDropdown()">
       <i class="fas fa-cog"></i>
     </div>
-    <!-- Dropdown Menu -->
-    <div class="dropdown-menu" id="dropdownMenu">
-      <!-- Mood Group -->
-      <h4 onclick="toggleSubDropdown('mood')">
-        Mood <i class="fas fa-chevron-down arrow-icon"></i>
-      </h4>
-      <div id="moodSubDropdown" class="sub-dropdown">
-        <button onclick="previewMood('day')">Day</button>
-        <button onclick="previewMood('night')">Night</button>
-        <div id="moodActionButtons" class="action-buttons">
-          <button onclick="applyMood()">Apply</button>
+    <!-- Dropdown Menu and Preview Container -->
+    <div style="position: relative;">
+      <div class="dropdown-menu" id="dropdownMenu">
+        <!-- Mood Group -->
+        <h4 onclick="toggleSubDropdown('mood')">
+          Mood <i class="fas fa-chevron-down arrow-icon"></i>
+        </h4>
+        <div id="moodSubDropdown" class="sub-dropdown">
+          <button onclick="previewMood('day')">Day</button>
+          <button onclick="previewMood('night')">Night</button>
+          <div id="moodActionButtons" class="action-buttons">
+            <button onclick="applyMood()">Apply</button>
+          </div>
         </div>
-      </div>
-      <!-- Theme Group -->
-      <h4 onclick="toggleSubDropdown('theme')">
-        Theme <i class="fas fa-chevron-down arrow-icon"></i>
-      </h4>
-      <div id="themeSubDropdown" class="sub-dropdown">
-        <button onclick="previewTheme('default')">Default</button>
-        <button onclick="toggleSubDropdown('image')">
-          Image <i class="fas fa-chevron-down arrow-icon"></i>
-        </button>
-        <!-- Modified Image Sub-dropdown -->
-        <div id="imageSubDropdown" class="sub-dropdown">
-          <div id="imagePreviewContainer">
-            <img id="selectedImagePreview" src="" alt="Preview" />
-            <div class="action-buttons">
-              <button onclick="applySelectedImage()">Apply</button>
-              <button onclick="cancelSelectedImage()">Cancel</button>
+        <!-- Theme Group -->
+        <h4 onclick="toggleSubDropdown('theme')">
+          Theme <i class="fas fa-chevron-down arrow-icon"></i>
+        </h4>
+        <div id="themeSubDropdown" class="sub-dropdown">
+          <button onclick="previewTheme('default')">Default</button>
+          <button onclick="toggleSubDropdown('image')">
+            Image <i class="fas fa-chevron-down arrow-icon"></i>
+          </button>
+          <div id="imageSubDropdown" class="sub-dropdown">
+            <div class="image-thumbnails">
+              <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Image 1" onclick="setImagePreview(this.src)">
+              <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Image 2" onclick="setImagePreview(this.src)">
+              <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Image 3" onclick="setImagePreview(this.src)">
+              <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Image 4" onclick="setImagePreview(this.src)">
+              <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Image 5" onclick="setImagePreview(this.src)">
             </div>
           </div>
-          <div class="image-thumbnails" style="flex:1;">
-            <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Image 1" onclick="previewTheme('image', this.src)">
-            <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Image 2" onclick="previewTheme('image', this.src)">
-            <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Image 3" onclick="previewTheme('image', this.src)">
-            <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Image 4" onclick="previewTheme('image', this.src)">
-            <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Image 5" onclick="previewTheme('image', this.src)">
+          <button onclick="toggleSubDropdown('color')">
+            Color <i class="fas fa-chevron-down arrow-icon"></i>
+          </button>
+          <div id="colorSubDropdown" class="sub-dropdown">
+            <div class="color-thumbnails">
+              <div style="background-color: #3498DB;" onclick="previewTheme('color', '#3498DB')"></div>
+              <div style="background-color: #E74C3E;" onclick="previewTheme('color', '#E74C3E')"></div>
+              <div style="background-color: #2ECC71;" onclick="previewTheme('color', '#2ECC71')"></div>
+              <div style="background-color: #9B59B6;" onclick="previewTheme('color', '#9B59B6')"></div>
+              <div style="background-color: #F1C40F;" onclick="previewTheme('color', '#F1C40F')"></div>
+            </div>
+          </div>
+          <div id="themeActionButtons" class="action-buttons">
+            <button onclick="applyTheme()">Apply</button>
           </div>
         </div>
-        <button onclick="toggleSubDropdown('color')">
-          Color <i class="fas fa-chevron-down arrow-icon"></i>
-        </button>
-        <div id="colorSubDropdown" class="sub-dropdown">
-          <div class="color-thumbnails">
-            <div style="background-color: #3498DB;" onclick="previewTheme('color', '#3498DB')"></div>
-            <div style="background-color: #E74C3E;" onclick="previewTheme('color', '#E74C3E')"></div>
-            <div style="background-color: #2ECC71;" onclick="previewTheme('color', '#2ECC71')"></div>
-            <div style="background-color: #9B59B6;" onclick="previewTheme('color', '#9B59B6')"></div>
-            <div style="background-color: #F1C40F;" onclick="previewTheme('color', '#F1C40F')"></div>
+        <!-- Style Group -->
+        <h4 onclick="toggleSubDropdown('style')">
+          Style <i class="fas fa-chevron-down arrow-icon"></i>
+        </h4>
+        <div id="styleSubDropdown" class="sub-dropdown">
+          <button onclick="previewStyle('default')">Default</button>
+          <button onclick="previewStyle('styleA')">Style A</button>
+          <button onclick="previewStyle('styleB')">Style B</button>
+          <div id="styleActionButtons" class="action-buttons">
+            <button onclick="applyStyle()">Apply</button>
           </div>
-        </div>
-        <div id="themeActionButtons" class="action-buttons">
-          <button onclick="applyTheme()">Apply</button>
         </div>
       </div>
-      <!-- Style Group -->
-      <h4 onclick="toggleSubDropdown('style')">
-        Style <i class="fas fa-chevron-down arrow-icon"></i>
-      </h4>
-      <div id="styleSubDropdown" class="sub-dropdown">
-        <button onclick="previewStyle('default')">Default</button>
-        <button onclick="previewStyle('styleA')">Style A</button>
-        <button onclick="previewStyle('styleB')">Style B</button>
-        <div id="styleActionButtons" class="action-buttons">
-          <button onclick="applyStyle()">Apply</button>
+      <!-- Image Preview Container (for Theme > Image) positioned to the left of dropdown -->
+      <div id="imagePreviewContainer">
+        <img id="selectedImagePreview" src="" alt="Preview" />
+        <div class="action-buttons">
+          <button onclick="applySelectedImage()">Apply</button>
+          <button onclick="cancelSelectedImage()">Cancel</button>
         </div>
       </div>
     </div>
@@ -620,7 +621,8 @@
         themePreviewValue = { option: 'default' };
         document.getElementById('themeActionButtons').style.display = 'flex';
       } else if(option === 'image'){
-        // Show the image preview container with the selected image
+        // Set global variable and show the preview container (positioned to the left)
+        selectedImageSrc = value;
         document.getElementById('selectedImagePreview').src = value;
         document.getElementById('imagePreviewContainer').style.display = 'block';
         themePreviewValue = { option: 'image', src: value };
@@ -658,7 +660,7 @@
       stylePreviewValue = null;
       document.getElementById('styleActionButtons').style.display = 'none';
     }
-    // Image preview functions for the Theme > Image option
+    // Image preview functions for Theme > Image option
     var selectedImageSrc = null;
     function applySelectedImage() {
       if(selectedImageSrc) {
@@ -672,11 +674,6 @@
       document.getElementById('selectedImagePreview').src = "";
       document.getElementById('imagePreviewContainer').style.display = 'none';
     }
-    // Modify previewTheme for image to set the global variable and show preview container
-    (function(){
-      // Ensure the image preview container exists by checking its element.
-      // It is defined in HTML below.
-    })();
     // Global click handler to cancel preview when clicking outside dropdown
     document.addEventListener('click', function(event) {
       const dropdownMenu = document.getElementById('dropdownMenu');
