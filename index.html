@@ -130,7 +130,7 @@
     .dropdown-menu {
       display: none;
       position: absolute;
-      top: 2rem; /* Slightly closer to gear icon */
+      top: 2rem; /* Closer to gear icon */
       right: 0;
       background: #fff;
       border: 1px solid var(--neutral-light);
@@ -154,7 +154,6 @@
       justify-content: center;
       padding: 0.3rem;
       border-radius: 4px;
-      /* 3D effect */
       box-shadow: 0 3px 6px rgba(0,0,0,0.2);
       transition: transform 0.1s ease, box-shadow 0.2s ease;
     }
@@ -179,7 +178,6 @@
       border-radius: 4px;
       cursor: pointer;
       font-size: 0.8rem;
-      /* Subtle 3D effect */
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       transition: transform 0.1s ease, box-shadow 0.2s ease;
     }
@@ -187,13 +185,13 @@
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
-    /* Sub-dropdown containers – no overflow on entire container */
+    /* Sub-dropdown containers – scrolling only for thumbnails */
     .sub-dropdown {
       display: none;
       margin: 0.3rem 0;
     }
     .sub-dropdown.active { display: block; }
-    /* Thumbnails – apply scrolling only here */
+    /* Thumbnails (scrolling enabled only for these sections) */
     .image-thumbnails, .color-thumbnails {
       display: flex;
       gap: 0.3rem;
@@ -220,14 +218,17 @@
       transition: border-color 0.2s ease;
     }
     .color-thumbnails div:hover { border-color: var(--secondary-color); }
-    /* Action buttons (Apply/Cancel) */
+    /* Action buttons (Apply/Cancel) with proper spacing */
     .action-buttons {
       display: none;
       margin-top: 5px;
+      display: flex;
+      justify-content: space-between;
+      gap: 5px;
     }
     .action-buttons button {
-      padding: 0.3rem 0.5rem;
-      margin: 0 5px;
+      flex: 1;
+      padding: 0.3rem;
       border: none;
       border-radius: 4px;
       background: var(--secondary-color);
@@ -249,6 +250,7 @@
 </head>
 <body>
   <div class="form-container glassy-background" id="formContainer">
+    <!-- Gear icon to toggle dropdown -->
     <div class="gear-icon" onclick="toggleDropdown()">
       <i class="fas fa-cog"></i>
     </div>
@@ -579,7 +581,7 @@
         formContainer.style.color = '#ffffff';
       }
       moodPreviewValue = value;
-      document.getElementById('moodActionButtons').style.display = 'block';
+      document.getElementById('moodActionButtons').style.display = 'flex';
     }
     function applyMood() {
       appliedMood = moodPreviewValue;
@@ -607,7 +609,7 @@
         formContainer.style.backgroundColor = value;
         themePreviewValue = { option: 'color', value: value };
       }
-      document.getElementById('themeActionButtons').style.display = 'block';
+      document.getElementById('themeActionButtons').style.display = 'flex';
     }
     function applyTheme() {
       appliedTheme = themePreviewValue;
@@ -634,7 +636,7 @@
         formContainer.style.boxShadow = "0 0 15px rgba(0,0,0,0.5)";
       }
       stylePreviewValue = style;
-      document.getElementById('styleActionButtons').style.display = 'block';
+      document.getElementById('styleActionButtons').style.display = 'flex';
     }
     function applyStyle() {
       appliedStyle = stylePreviewValue;
@@ -649,8 +651,8 @@
     // Global click handler to cancel preview when clicking outside dropdown
     document.addEventListener('click', function(event) {
       const dropdownMenu = document.getElementById('dropdownMenu');
-      if(dropdownMenu.classList.contains('active') && 
-         !event.target.closest('.dropdown-menu') && 
+      if(dropdownMenu.classList.contains('active') &&
+         !event.target.closest('.dropdown-menu') &&
          !event.target.closest('.gear-icon')) {
         dropdownMenu.classList.remove('active');
         cancelMood();
