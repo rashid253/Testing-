@@ -130,14 +130,14 @@
     .dropdown-menu {
       display: none;
       position: absolute;
-      top: 2rem; /* Closer to gear icon */
+      top: 2rem; /* Slightly closer to gear icon */
       right: 0;
       background: #fff;
       border: 1px solid var(--neutral-light);
       border-radius: 8px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.3);
       padding: 0.5rem;
-      width: 120px; /* Reduced width */
+      width: 80px; /* Reduced width */
       z-index: 1000;
       text-align: center;
     }
@@ -187,14 +187,13 @@
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
+    /* Sub-dropdown containers – no overflow on entire container */
     .sub-dropdown {
       display: none;
       margin: 0.3rem 0;
-      overflow-x: auto; /* Ensure scrolling if needed */
-      white-space: nowrap;
     }
     .sub-dropdown.active { display: block; }
-    /* Thumbnails */
+    /* Thumbnails – apply scrolling only here */
     .image-thumbnails, .color-thumbnails {
       display: flex;
       gap: 0.3rem;
