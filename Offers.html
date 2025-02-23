@@ -11,114 +11,189 @@
     />
     <style>
       :root {
-        --primary-color: #2c3e50;
-        --secondary-color: #3498db;
-        --accent-color: #e74c3c;
-        --background-color: #ffffff;
+        --primary-color: #1e1e1e;
+        --secondary-color: #1e90ff;
+        --accent-color: #ff5722;
+        --neutral-light: rgba(245, 245, 245, 0.9);
+        --neutral-dark: #333333;
+        --card-background: #ffffff;
+        --body-bg: linear-gradient(135deg, #cfd8dc, #eceff1);
       }
       body {
         font-family: 'Segoe UI', sans-serif;
         margin: 0;
         padding: 1rem;
-        background: var(--background-color);
+        background: var(--body-bg);
         display: flex;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
       }
       .offer-container {
+        width: 90%;
         max-width: 600px;
-        width: 100%;
-        background: #f9f9f9;
-        border-radius: 15px;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        background: var(--card-background);
+        border-radius: 20px;
+        border: 2px solid transparent;
+        border-image: linear-gradient(45deg, var(--secondary-color), var(--accent-color)) 1;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.2);
         padding: 1.5rem;
-        box-sizing: border-box;
+        margin: 1rem auto;
         position: relative;
-        text-align: center;
       }
-      .offer-header h1 {
-        margin: 0 0 1rem;
-        color: var(--primary-color);
-      }
-      .offer-details p {
-        font-size: 1rem;
-        color: var(--primary-color);
-        margin-bottom: 1rem;
-      }
-      .offer-image-upload {
-        border: 2px dashed var(--secondary-color);
-        border-radius: 8px;
-        padding: 1rem;
+      .offer-header {
         text-align: center;
         margin-bottom: 1rem;
-        cursor: pointer;
       }
-      .offer-image-upload input {
-        display: none;
+      .offer-details {
+        margin-bottom: 1rem;
       }
-      #offerImagePreview {
+      .offer-image {
+        width: 100%;
         max-width: 100%;
         height: auto;
-        display: none;
+        border-radius: 10px;
         margin-top: 1rem;
       }
-      /* Live Chat Box */
-      .live-chat-box {
+      .upload-group {
+        text-align: center;
+        border: 2px dashed var(--neutral-light);
+        padding: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 1rem;
+      }
+      #uploadedImagePreview {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 4px;
+        display: none;
+        margin: 0.5rem auto;
+      }
+      .live-chat {
         position: fixed;
         bottom: 20px;
         right: 20px;
         background: var(--secondary-color);
         color: #fff;
-        padding: 0.8rem 1rem;
-        border-radius: 50px;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+        cursor: pointer;
         box-shadow: 0 4px 8px rgba(0,0,0,0.3);
       }
-      .live-chat-box:hover {
-        background: var(--accent-color);
+      .back-button {
+        margin-top: 1rem;
+        display: inline-block;
+        background: var(--secondary-color);
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        text-decoration: none;
       }
     </style>
   </head>
   <body>
     <div class="offer-container">
       <div class="offer-header">
-        <h1 id="offerTitle">Special Offer!</h1>
+        <h2 id="offerTitle">Offer Title</h2>
       </div>
-      <div class="offer-details">
-        <p id="offerDetails">
-          Enjoy an exclusive discount on our premium products. This offer is valid for a limited time only!
-        </p>
+      <div class="offer-details" id="offerDetails">
+        <p>Offer details will appear here.</p>
       </div>
-      <div class="offer-image-upload" onclick="document.getElementById('offerImageInput').click();">
-        <i class="fas fa-upload fa-2x"></i>
-        <p>Upload Offer Image</p>
-        <input type="file" id="offerImageInput" accept="image/*" onchange="previewOfferImage(event)" />
-        <img id="offerImagePreview" alt="Offer Image Preview" />
+      <!-- Display offer image if exists -->
+      <div id="offerImageContainer"></div>
+      <!-- Image Upload Option -->
+      <div class="upload-group">
+        <label for="offerImageUpload">
+          <i class="fas fa-camera fa-2x"></i><br>
+          Upload Offer Image
+        </label>
+        <input type="file" id="offerImageUpload" accept="image/*" style="display: none;" onchange="handleImageUpload(event)" />
+        <img id="uploadedImagePreview" alt="Uploaded Offer Image">
       </div>
+      <a href="card.html" class="back-button">Back to Card</a>
     </div>
-
-    <!-- Live Chat Button -->
-    <a class="live-chat-box" href="https://wa.me/1234567890" target="_blank">
+    
+    <!-- Live Chat Button (e.g., WhatsApp) -->
+    <a href="https://wa.me/1234567890" target="_blank" class="live-chat" title="Contact for more details">
       <i class="fas fa-comment-dots"></i>
-      <span>Contact for More Details</span>
     </a>
-
+    
     <script>
-      function previewOfferImage(event) {
+      // Helper to get URL parameter
+      function getQueryParam(param) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(param);
+      }
+      
+      // Retrieve offer data from localStorage (assuming stored as "formData")
+      const formData = JSON.parse(localStorage.getItem("formData") || "{}");
+      const offers = formData.offers || [];
+      
+      // Get offer index from URL parameter (default to 0)
+      const offerIndex = parseInt(getQueryParam("offerIndex")) || 0;
+      const offer = offers[offerIndex] || {};
+      
+      // Populate offer details
+      document.getElementById("offerTitle").textContent = offer.title || "Offer Title";
+      document.getElementById("offerDetails").innerHTML = offer.details || "<p>No details available.</p>";
+      if (offer.file) {
+        const imgElem = document.createElement("img");
+        imgElem.src = offer.file;
+        imgElem.className = "offer-image";
+        document.getElementById("offerImageContainer").appendChild(imgElem);
+      }
+      
+      // Handle image upload with resizing
+      function handleImageUpload(event) {
         const file = event.target.files[0];
-        if(file) {
+        if (!file) return;
+        resizeImage(file, function(resizedBlob) {
           const reader = new FileReader();
           reader.onload = function(e) {
-            const preview = document.getElementById('offerImagePreview');
+            const preview = document.getElementById("uploadedImagePreview");
             preview.src = e.target.result;
-            preview.style.display = 'block';
-          }
-          reader.readAsDataURL(file);
-        }
+            preview.style.display = "block";
+          };
+          reader.readAsDataURL(resizedBlob);
+        });
+      }
+      
+      // Resize image to fixed dimensions (e.g., 300x300) for optimized display and bandwidth
+      function resizeImage(file, callback) {
+        const img = new Image();
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          img.src = e.target.result;
+          img.onload = function() {
+            const canvas = document.createElement("canvas");
+            const MAX_WIDTH = 300, MAX_HEIGHT = 300;
+            let width = img.width, height = img.height;
+            if (width > height) {
+              if (width > MAX_WIDTH) {
+                height = Math.round(height * (MAX_WIDTH / width));
+                width = MAX_WIDTH;
+              }
+            } else {
+              if (height > MAX_HEIGHT) {
+                width = Math.round(width * (MAX_HEIGHT / height));
+                height = MAX_HEIGHT;
+              }
+            }
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+            canvas.toBlob(function(blob) {
+              callback(blob);
+            }, "image/jpeg", 0.7);
+          };
+        };
+        reader.readAsDataURL(file);
       }
     </script>
   </body>
