@@ -239,6 +239,7 @@
         transform: scale(1.1);
         color: var(--accent-color);
       }
+
       /* Blinking Box for Banner Text */
       .blinking-banner-box {
         position: absolute;
@@ -259,6 +260,7 @@
         0%, 100% { opacity: 1; }
         50% { opacity: 0.4; }
       }
+
       /* Exclusive Offers Flip Card Section */
       #offersFlipCardSection {
         margin: 1rem 0;
@@ -683,20 +685,24 @@
           let tabButtons = '<div class="tab-offer"><div class="tab-buttons">';
           let tabContents = "";
           offers.forEach((offer, index) => {
-            tabButtons += `<button data-tab="tab${index}" ${index===0 ? 'class="active"' : ''}>${offer.title || "Offer " + (index+1)}</button>`;
-            tabContents += `<div class="tab-content ${index===0 ? 'active' : ''}" id="tab${index}">
+            tabButtons += `<button data-tab="tab${index}">${offer.title || "Offer " + (index+1)}</button>`;
+            tabContents += `<div class="tab-content" id="tab${index}">
                               ${offer.details || ""}
                               ${offer.file ? `<br/><img src="${offer.file}" style="max-width:100%; margin-top:5px;"/>` : ""}
                               <br/><button onclick="openWhatsAppChat()">Contact for more details</button>
+                              <br/><button class="close-detail" onclick="this.parentElement.style.display='none';">Close</button>
                             </div>`;
           });
           tabButtons += "</div>";
-          container.innerHTML += tabButtons + tabContents + "</div>";
+          html = tabButtons + tabContents + "</div>";
+          container.innerHTML += html;
         } else if(style === "modal") {
-          let html = '<div class="modal-offer-card" onclick="openOfferModal()">';
+          // Modal style already handled by the modal popup in the HTML.
+          // You can attach click events on offer items to open the modal with offer details.
+          let html = '<div class="modal-offer-card">';
           offers.forEach((offer, index) => {
-            html += `<div>
-                      <strong>${offer.title || "Offer " + (index+1)}</strong>
+            html += `<div class="offer-card" onclick="openOfferModal(${index})">
+                      ${offer.title || "Offer " + (index+1)}
                     </div>`;
           });
           html += "</div>";
@@ -704,15 +710,27 @@
         }
       }
 
-      // Dummy function for WhatsApp chat (should be replaced with actual implementation)
-      function openWhatsAppChat() {
+      function openWhatsAppChat(){
+        // Replace with your WhatsApp number or live chat link
         window.open("https://wa.me/1234567890", "_blank");
       }
-      // Dummy function to open and close modal offer
-      function openOfferModal() {
-        document.getElementById("offerModal").style.display = "block";
+
+      // Dummy functions for toggling accordion and modal (implement as needed)
+      function toggleAccordionContent(element) {
+        const content = element.nextElementSibling;
+        content.style.display = (content.style.display === "block") ? "none" : "block";
       }
-      function closeOfferModal() {
+      function toggleScrollOfferDetail(index){
+        // Implement detail display for horizontal style
+      }
+      function openOfferModal(index){
+        const modal = document.getElementById("offerModal");
+        const modalContent = document.getElementById("offerModalContent");
+        // For demo, just showing the offer index; ideally retrieve the offer details
+        modalContent.innerHTML = "Details for Offer " + (index+1);
+        modal.style.display = "block";
+      }
+      function closeOfferModal(){
         document.getElementById("offerModal").style.display = "none";
       }
     </script>
