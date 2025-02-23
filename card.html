@@ -10,22 +10,20 @@
       rel="stylesheet"
     />
     <!-- EmailJS Library -->
-    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <style>
       :root {
         --primary-color: #1e1e1e;
         --secondary-color: #1e90ff;
         --accent-color: #ff5722;
-        --transparent-green: rgba(0, 128, 0, 0.4);
         --golden: rgba(218, 165, 32, 0.8);
-        --neutral-light: rgba(245, 245, 245, 0.9);
-        --neutral-dark: #333333;
-        --card-background: #ffffff;
+        --neutral-light: rgba(245,245,245,0.9);
+        --neutral-dark: #333;
+        --card-background: #fff;
         --body-bg: linear-gradient(135deg, #cfd8dc, #eceff1);
         --business-info-bg: #e0f7fa;
-        --dropdown-header-color: #333;
-        --dropdown-btn-bg: #00796b;
-        --dropdown-btn-hover: #00695c;
+        /* 2mm ~ 0.08in */
+        --side-padding: 0.08in;
       }
       body {
         font-family: 'Segoe UI', sans-serif;
@@ -49,16 +47,15 @@
         box-shadow: 0 8px 30px rgba(0,0,0,0.2);
         padding: 1.5rem;
         margin: 1rem auto;
-        transition: background-color 0.5s ease, box-shadow 0.5s ease;
         overflow: hidden;
       }
-      /* Top Left Settings Icon */
-      #styleControlsContainer {
+      /* Settings and Share Icons */
+      #styleControlsContainer,
+      .top-icons {
         position: absolute;
-        top: 10px;
-        left: 10px;
         z-index: 10;
       }
+      #styleControlsContainer { top: 10px; left: 10px; }
       #styleButton {
         padding: 0.5rem;
         font-size: 1.2rem;
@@ -67,16 +64,8 @@
         cursor: pointer;
         color: blue;
       }
-      #styleButton:hover {
-        color: var(--secondary-color);
-      }
-      /* Top Right Share Icon */
-      .top-icons {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        z-index: 10;
-      }
+      #styleButton:hover { color: var(--secondary-color); }
+      .top-icons { top: 10px; right: 10px; }
       .top-share-icon {
         padding: 0.5rem;
         font-size: 1.2rem;
@@ -85,10 +74,8 @@
         cursor: pointer;
         color: blue;
       }
-      .top-share-icon:hover {
-        color: var(--secondary-color);
-      }
-      /* Settings Dropdown Panel */
+      .top-share-icon:hover { color: var(--secondary-color); }
+      /* Dropdown */
       #styleDropdown {
         display: none;
         position: absolute;
@@ -97,53 +84,37 @@
         background: #fff;
         border: 1px solid #ccc;
         border-radius: 4px;
-        z-index: 10;
         font-size: 0.75rem;
         width: 100px;
         box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        z-index: 10;
       }
-      .setting-group {
-        border-bottom: 1px solid #ddd;
-      }
-      .setting-group:last-child {
-        border-bottom: none;
-      }
+      .setting-group { border-bottom: 1px solid #ddd; }
+      .setting-group:last-child { border-bottom: none; }
       .setting-header {
         background: linear-gradient(to bottom, #f8f8f8, #dcdcdc);
         border: 1px solid #ccc;
         border-radius: 5px;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-        color: var(--dropdown-header-color);
         padding: 5px 8px;
         cursor: pointer;
         font-size: 0.8rem;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-        transition: all 0.3s ease;
+        color: var(--neutral-dark);
         margin: 3px 0;
+        transition: all 0.3s;
       }
       .setting-header:hover {
-        box-shadow: 3px 3px 7px rgba(0,0,0,0.4);
         transform: translateY(-1px);
+        box-shadow: 3px 3px 7px rgba(0,0,0,0.4);
       }
-      .setting-content {
-        display: none;
-        padding: 5px;
-      }
-      .setting-options {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
+      .setting-content { display: none; padding: 5px; }
+      .setting-options { list-style: none; margin: 0; padding: 0; }
       .setting-options li {
         padding: 0.3rem 0.5rem;
         cursor: pointer;
+        color: var(--neutral-dark);
         transition: background 0.3s;
-        color: #333;
       }
-      .setting-options li:hover {
-        background: var(--secondary-color);
-        color: #fff;
-      }
+      .setting-options li:hover { background: var(--secondary-color); color: #fff; }
       .dropdown-btns {
         display: flex;
         flex-direction: column;
@@ -157,12 +128,9 @@
         color: #fff;
         cursor: pointer;
         font-size: 0.75rem;
-        transition: box-shadow 0.3s ease;
+        transition: box-shadow 0.3s;
       }
-      .dropdown-btns button:hover {
-        background: var(--dropdown-btn-hover);
-        box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-      }
+      .dropdown-btns button:hover { background: var(--dropdown-btn-hover); }
       /* Mini Icons */
       .mini-icons {
         display: flex;
@@ -181,8 +149,8 @@
         transition: transform 0.3s, box-shadow 0.3s;
       }
       .mini-icons .icon:hover {
-        color: var(--secondary-color);
         transform: translateY(-2px);
+        color: var(--secondary-color);
         box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
       }
       /* Profile Section */
@@ -205,15 +173,13 @@
         border-radius: 50%;
         border: 2px solid var(--neutral-light);
         object-fit: cover;
-        transition: box-shadow 0.3s ease;
+        transition: box-shadow 0.3s;
       }
-      .profile-image:hover {
-        box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
-      }
+      .profile-image:hover { box-shadow: 2px 2px 6px rgba(0,0,0,0.3); }
       .profile-name {
-        color: var(--primary-color);
         margin: 0.5rem 0 0;
         font-size: 1.1rem;
+        color: var(--primary-color);
         text-align: center;
       }
       .profile-info {
@@ -224,9 +190,9 @@
         justify-content: center;
       }
       .contact-info {
-        color: var(--neutral-dark);
-        margin: 0.3rem 0;
         font-size: 0.85rem;
+        margin: 0.3rem 0;
+        color: var(--neutral-dark);
         line-height: 1.4;
         white-space: nowrap;
       }
@@ -237,60 +203,53 @@
         cursor: pointer;
         transition: transform 0.3s;
       }
-      .connect-btn:hover {
-        transform: scale(1.1);
-        color: var(--accent-color);
+      .connect-btn:hover { transform: scale(1.1); color: var(--accent-color); }
+      /* Offers Section */
+      .offers-section {
+        margin: 1rem 0;
+        padding: 1rem var(--side-padding); /* horizontal padding of 2mm */
+        border: 1px dashed var(--neutral-light);
+        border-radius: 10px;
+        position: relative;
       }
-      /* Blinking Banner (Exclusive Offer) */
+      /* Blinking Banner (Exclusive Offer) – placed at top–right of the Offers container */
       .exclusive-offer-banner {
         position: absolute;
-        top: -1.2rem;
-        right: 1.2rem;
+        top: -1rem;
+        right: 1rem;
         padding: 0.2rem 0.5rem;
         border: 2px solid var(--golden);
         border-radius: 8px;
-        background: rgba(218,165,32,0.5);
+        background: var(--golden);
         color: var(--neutral-dark);
         font-weight: bold;
         font-size: 0.8rem;
         z-index: 10;
       }
-      @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
-      }
-      /* Exclusive Offers Flip Card Section */
-      #offersFlipCardSection {
-        margin: 1rem 0;
-        padding: 1rem;
-        border: 1px dashed var(--neutral-light);
-        border-radius: 10px;
-        position: relative;
-      }
-      /* Container for horizontal scrolling with auto-scroll animation */
+      /* Auto–scroll container */
       .flip-cards-container {
         overflow: hidden;
         position: relative;
+        margin-top: 1.2rem; /* leave space for banner */
       }
       .flip-cards-track {
         display: inline-flex;
-        /* Set gap between cards to 2mm (approximately 0.08in) */
-        gap: 0.08in;
+        gap: 0.08in; /* 2mm gap */
         animation: scrollCards 20s linear infinite;
       }
-      /* To create a seamless scroll, duplicate the content in the track */
+      /* Duplicate content for seamless scrolling */
       @keyframes scrollCards {
         0% { transform: translateX(0); }
         100% { transform: translateX(-50%); }
       }
       /* Flip Card Styles */
       .flip-card {
-        background-color: transparent;
         width: 1.5in;
         height: 2in;
         perspective: 1000px;
         flex-shrink: 0;
         cursor: pointer;
+        background: transparent;
       }
       .flip-card-inner {
         position: relative;
@@ -299,12 +258,8 @@
         transition: transform 0.6s;
         transform-style: preserve-3d;
       }
-      .flip-card:hover {
-        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      }
-      .flip-card.flipped .flip-card-inner {
-        transform: rotateY(180deg);
-      }
+      .flip-card:hover { box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+      .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
       .flip-card-face {
         position: absolute;
         width: 100%;
@@ -321,8 +276,8 @@
         overflow: hidden;
       }
       .flip-card-front {
-        color: #fff;
         font-size: 0.25in;
+        color: #fff;
       }
       .flip-card-front img {
         max-width: 100%;
@@ -334,8 +289,8 @@
         color: #fff;
         transform: rotateY(180deg);
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
       }
       .more-details-btn {
         background: #fff;
@@ -346,7 +301,6 @@
         font-size: 0.2in;
         cursor: pointer;
       }
-      /* Button to remove image background */
       .remove-bg-btn {
         background: #fff;
         color: var(--secondary-color);
@@ -367,9 +321,9 @@
         overflow: hidden;
         background: var(--business-info-bg);
         border-bottom: 2px solid var(--secondary-color);
-        font-family: "Georgia", serif;
         border-radius: 20px;
         position: relative;
+        font-family: "Georgia", serif;
       }
       .business-info-content {
         position: absolute;
@@ -402,16 +356,9 @@
           inset -2px -2px 4px rgba(255,255,255,0.2);
         transition: transform 0.3s, box-shadow 0.3s;
       }
-      .action-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-      }
-      .action-btn:active {
-        filter: brightness(90%);
-      }
-      .contact-btn {
-        transition: none !important;
-      }
+      .action-btn:hover { transform: translateY(-2px); box-shadow: 2px 2px 5px rgba(0,0,0,0.3); }
+      .action-btn:active { filter: brightness(90%); }
+      .contact-btn { transition: none !important; }
       /* Social Links Section */
       .social-links {
         display: flex;
@@ -430,11 +377,11 @@
         transition: transform 0.3s, box-shadow 0.3s;
       }
       .social-icon:hover {
-        color: var(--secondary-color);
         transform: translateY(-2px);
+        color: var(--secondary-color);
         box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
       }
-      /* Floating Chat Button INSIDE card */
+      /* Floating Chat Button */
       .floating-chat-btn {
         position: absolute;
         bottom: 20px;
@@ -458,11 +405,9 @@
   </head>
   <body>
     <div class="card-container" id="cardContainer">
-      <!-- Top Left Settings Icon -->
+      <!-- Settings and Share -->
       <div id="styleControlsContainer">
-        <button id="styleButton" title="Settings">
-          <i class="fas fa-cog"></i>
-        </button>
+        <button id="styleButton" title="Settings"><i class="fas fa-cog"></i></button>
         <div id="styleDropdown">
           <div class="setting-group" id="themeGroup">
             <div class="setting-header">Theme</div>
@@ -506,37 +451,23 @@
           <div class="setting-group" id="soundGroup">
             <div class="setting-header">Sounds</div>
             <div class="setting-content">
-              <label style="font-size:0.8rem; display: flex; align-items: center; padding: 5px;">
-                <input type="checkbox" id="soundToggle" checked style="margin-right: 5px;"> Enable Touch Sounds
+              <label style="font-size:0.8rem; display:flex; align-items:center; padding:5px;">
+                <input type="checkbox" id="soundToggle" checked style="margin-right:5px;">Enable Touch Sounds
               </label>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Top Right Share Icon -->
       <div class="top-icons">
-        <button class="top-share-icon" id="topShareIcon" title="Share">
-          <i class="fas fa-share-alt"></i>
-        </button>
+        <button class="top-share-icon" id="topShareIcon" title="Share"><i class="fas fa-share-alt"></i></button>
       </div>
-
       <!-- Mini Icons -->
       <div class="mini-icons">
-        <a id="miniCallButton" class="icon" title="Call">
-          <i class="fas fa-phone"></i>
-        </a>
-        <a id="miniEmailButton" class="icon" title="Email">
-          <i class="fas fa-envelope"></i>
-        </a>
-        <a id="miniWhatsappButton" class="icon" title="WhatsApp">
-          <i class="fab fa-whatsapp"></i>
-        </a>
-        <a id="miniMapButton" class="icon" title="Open in Google Maps">
-          <i class="fas fa-map-marker-alt"></i>
-        </a>
+        <a id="miniCallButton" class="icon" title="Call"><i class="fas fa-phone"></i></a>
+        <a id="miniEmailButton" class="icon" title="Email"><i class="fas fa-envelope"></i></a>
+        <a id="miniWhatsappButton" class="icon" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a id="miniMapButton" class="icon" title="Open in Google Maps"><i class="fas fa-map-marker-alt"></i></a>
       </div>
-
       <!-- Profile Section -->
       <div class="profile-section">
         <div class="profile-image-container">
@@ -553,69 +484,47 @@
           <i class="fas fa-save"></i>
         </div>
       </div>
-
-      <!-- Exclusive Offers Flip Card Section -->
-      <div id="offersFlipCardSection">
-        <!-- Blinking Banner repositioned above the cards -->
+      <!-- Offers Section -->
+      <div class="offers-section" id="offersFlipCardSection">
         <div class="exclusive-offer-banner">Grab Your Exclusive Offer</div>
         <div class="flip-cards-container">
           <div class="flip-cards-track" id="flipCardsTrack">
-            <!-- Flip cards will be rendered here; content will be duplicated for seamless scrolling -->
+            <!-- Flip cards will be rendered here (duplicated for seamless scrolling) -->
           </div>
         </div>
       </div>
-
       <!-- Business Info Section -->
       <div class="business-info-section">
         <div id="businessInfoContent"></div>
       </div>
-
       <!-- Action Buttons Section -->
       <div class="action-buttons">
-        <a id="callButton" class="action-btn contact-btn" style="background: var(--secondary-color);">
-          Call
-        </a>
-        <a id="whatsappButton" class="action-btn contact-btn" style="background: #25d366;">
-          WhatsApp
-        </a>
-        <a id="emailButton" class="action-btn contact-btn" style="background: var(--accent-color);">
-          Email
-        </a>
+        <a id="callButton" class="action-btn contact-btn" style="background: var(--secondary-color);">Call</a>
+        <a id="whatsappButton" class="action-btn contact-btn" style="background: #25d366;">WhatsApp</a>
+        <a id="emailButton" class="action-btn contact-btn" style="background: var(--accent-color);">Email</a>
       </div>
-
       <!-- Social Links Section -->
       <div class="social-links">
-        <a id="facebookButton" class="social-icon">
-          <i class="fab fa-facebook-f"></i>
-        </a>
-        <a id="instagramButton" class="social-icon">
-          <i class="fab fa-instagram"></i>
-        </a>
-        <a id="youtubeButton" class="social-icon">
-          <i class="fab fa-youtube"></i>
-        </a>
+        <a id="facebookButton" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        <a id="instagramButton" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a id="youtubeButton" class="social-icon"><i class="fab fa-youtube"></i></a>
       </div>
-
-      <!-- Floating Chat Button INSIDE card -->
+      <!-- Floating Chat Button -->
       <button class="floating-chat-btn" title="Contact for more details" onclick="openWhatsAppChat()">
         <i class="fas fa-comment-dots"></i>
       </button>
     </div>
-
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        "use strict";
         const storedData = localStorage.getItem("formData");
         const formData = storedData ? JSON.parse(storedData) : {};
-
-        // Populate card fields
+        // Populate profile details
         document.getElementById("cardProfileImage").src = formData.profileImage || "";
         document.getElementById("cardName").textContent = formData.name || "";
         document.getElementById("cardBusinessName").textContent = formData.businessName || "";
         document.getElementById("cardAddress").textContent = formData.address || "";
         document.getElementById("cardPhone").textContent = formData.phone || "";
         document.getElementById("cardEmail").textContent = formData.email || "";
-
         // Business Info
         const businessInfo = formData.businessInfo || "";
         const paragraphs = businessInfo.split("\n").filter(p => p.trim() !== "");
@@ -623,9 +532,7 @@
         businessInfoContainer.innerHTML = paragraphs.map(p => `<div class="business-info-content"><p>${p}</p></div>`).join("");
         const paragraphDivs = businessInfoContainer.querySelectorAll(".business-info-content");
         let currentIndex = 0;
-        paragraphDivs.forEach((div, idx) => {
-          div.style.display = (idx === 0) ? "block" : "none";
-        });
+        paragraphDivs.forEach((div, idx) => { div.style.display = idx === 0 ? "block" : "none"; });
         if (paragraphDivs.length > 0) {
           setInterval(() => {
             paragraphDivs[currentIndex].style.display = "none";
@@ -633,58 +540,35 @@
             paragraphDivs[currentIndex].style.display = "block";
           }, 8000);
         }
-
         // Social Links
-        const socialLinks = {
-          facebook: document.getElementById("facebookButton"),
-          instagram: document.getElementById("instagramButton"),
-          youtube: document.getElementById("youtubeButton")
-        };
+        const socialLinks = { facebook: document.getElementById("facebookButton"), instagram: document.getElementById("instagramButton"), youtube: document.getElementById("youtubeButton") };
         Object.entries(socialLinks).forEach(([platform, element]) => {
           const url = formData[platform];
-          if(url){
-            element.href = url;
-            element.style.visibility = "visible";
-            element.target = "_blank";
-          } else {
-            element.style.visibility = "hidden";
-          }
+          if(url) { element.href = url; element.style.visibility = "visible"; element.target = "_blank"; }
+          else { element.style.visibility = "hidden"; }
         });
-
-        // Render Offers using horizontal flip cards (offerStyle "horizontal")
-        if(formData.offers && formData.offerStyle === "horizontal"){
+        // Render Offers (if offerStyle is "horizontal")
+        if(formData.offers && formData.offerStyle === "horizontal") {
           renderFlipCards(formData.offers);
         }
       });
-
-      // Array of preset background colors for the front faces
-      const cardColors = [
-        "#1abc9c", "#3498db", "#9b59b6",
-        "#e67e22", "#e74c3c", "#2ecc71",
-        "#f1c40f", "#34495e"
-      ];
-
-      // Function to render flip cards horizontally with duplicated content for seamless scrolling
+      // Array of preset background colors for card fronts
+      const cardColors = ["#1abc9c", "#3498db", "#9b59b6", "#e67e22", "#e74c3c", "#2ecc71", "#f1c40f", "#34495e"];
+      // Render flip cards with duplication for seamless scrolling
       function renderFlipCards(offers) {
         const track = document.getElementById("flipCardsTrack");
         let cardsHTML = "";
         offers.forEach((offer, index) => {
-          let snippet = "";
-          if (offer.details) {
-            snippet = offer.details.substring(0, 50) + "...";
-          }
-          // Use inline styles to contain the text within the card (prevent overlapping)
+          const snippet = offer.details ? offer.details.substring(0,50) + "..." : "";
           const cardHTML = `
             <div class="flip-card" onclick="this.classList.toggle('flipped')">
               <div class="flip-card-inner">
                 <div class="flip-card-face flip-card-front" style="background: ${cardColors[index % cardColors.length]};">
                   <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:100%;">
-                    <strong>${offer.title || "Offer " + (index + 1)}</strong>
+                    <strong>${offer.title || "Offer " + (index+1)}</strong>
                   </div>
-                  <div style="font-size:0.18in; margin-top:0.05in;">
-                    ${snippet}
-                  </div>
-                  ${offer.file ? `<img src="${offer.file}" alt="Offer Image" /> 
+                  <div style="font-size:0.18in; margin-top:0.05in;">${snippet}</div>
+                  ${offer.file ? `<img src="${offer.file}" alt="Offer Image" />
                   <button class="remove-bg-btn" onclick="event.stopPropagation(); this.previousElementSibling.style.background='none';">Remove BG</button>` : ""}
                 </div>
                 <div class="flip-card-face flip-card-back">
@@ -695,30 +579,24 @@
           `;
           cardsHTML += cardHTML;
         });
-        // Duplicate the cardsHTML for seamless scroll
+        // Duplicate for seamless scroll
         track.innerHTML = cardsHTML + cardsHTML;
       }
-
-      // Navigate to offer details page
       function openOfferDetails(index) {
         window.location.href = "offerDetails.html?offer=" + index;
       }
-
       function openWhatsAppChat() {
         window.open("https://wa.me/1234567890", "_blank");
       }
-
-      // Settings panel toggle
-      document.addEventListener("click", (e) => {
-        if (!document.getElementById("styleControlsContainer").contains(e.target)) {
+      // Dropdown toggle
+      document.addEventListener("click", function(e) {
+        if (!document.getElementById("styleControlsContainer").contains(e.target))
           document.getElementById("styleDropdown").style.display = "none";
-        }
       });
-      const styleButton = document.getElementById("styleButton");
-      styleButton.addEventListener("click", (e) => {
+      document.getElementById("styleButton").addEventListener("click", function(e) {
         e.stopPropagation();
-        const styleDropdown = document.getElementById("styleDropdown");
-        styleDropdown.style.display = (styleDropdown.style.display === "block") ? "none" : "block";
+        const dd = document.getElementById("styleDropdown");
+        dd.style.display = dd.style.display === "block" ? "none" : "block";
       });
     </script>
   </body>
