@@ -4,324 +4,680 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Business Card Generator</title>
-  <!-- Font Awesome, Quill, and intl-tel-input CSS -->
+  <!-- Font Awesome for icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
-  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+  <!-- intl-tel-input CSS for international phone input -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+  <!-- Quill CSS for rich text editor -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
   <style>
+    :root {
+      --primary-color: #2C3E50;
+      --secondary-color: #3498DB;
+      --accent-color: #E74C3E;
+      --neutral-light: rgba(236, 240, 241, 0.9);
+      --neutral-dark: #34495E;
+      --background-color: #ffffff;
+      --text-color: #000000;
+    }
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f4f4;
+      font-family: 'Segoe UI', system-ui, sans-serif;
       margin: 0;
-      padding: 20px;
+      padding: 1rem;
+      background: var(--background-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      position: relative;
+      transition: background 0.3s ease, color 0.3s ease;
     }
     .form-container {
-      max-width: 600px;
-      margin: auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 450px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      padding: 1.5rem;
+      margin: 1rem;
+      box-sizing: border-box;
+      position: relative;
+      transition: filter 0.3s ease;
     }
-    h2, h3 {
+    /* Gear icon */
+    .gear-icon {
+      position: absolute;
+      top: -10px;
+      right: 1rem;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      cursor: pointer;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    .gear-icon:hover {
+      color: var(--secondary-color);
+      transform: rotate(90deg);
+    }
+    .form-header {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
       text-align: center;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
     }
     .input-group {
-      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
     }
     .input-group label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
+      font-weight: 600;
+      color: var(--neutral-dark);
     }
-    .input-group input, .input-group textarea, .input-group select {
+    .input-group .required {
+      color: var(--accent-color);
+    }
+    input, select, textarea {
       width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    /* Preview container for offer style */
-    #offerPreview {
-      margin-top: 15px;
-      padding: 10px;
-      border: 1px dashed #ccc;
-      text-align: center;
-      min-height: 120px;
-    }
-    /* ---------- Flip Card Style ---------- */
-    .flip-card {
-      background-color: transparent;
-      width: 200px;
-      height: 250px;
-      perspective: 1000px;
-      display: inline-block;
-      margin: 10px;
-    }
-    .flip-card-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transition: transform 0.6s;
-      transform-style: preserve-3d;
-    }
-    .flip-card:hover .flip-card-inner {
-      transform: rotateY(180deg);
-    }
-    .flip-card-front, .flip-card-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
+      padding: 0.7rem;
+      border: 1px solid var(--neutral-light);
+      border-radius: 6px;
+      font-size: 0.9rem;
+      transition: border-color 0.2s ease;
       box-sizing: border-box;
-      color: #fff;
-      font-size: 18px;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--secondary-color);
+      outline: none;
+    }
+    textarea {
+      resize: vertical;
+    }
+    .error {
+      border: 2px solid var(--accent-color);
+    }
+    .image-upload-group {
+      grid-column: 1 / -1;
+      text-align: center;
+      border: 2px dashed var(--neutral-light);
+      padding: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      position: relative;
+    }
+    /* Profile Image Preview */
+    #imagePreview {
+      width: 50px;
+      height: 50px;
+      border-radius: 4px;
+      object-fit: cover;
+      margin: 0.5rem auto;
+      display: none;
+    }
+    #generateCard {
+      background: var(--secondary-color);
+      color: white;
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    /* Dropdown Menu */
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 2rem;
+      right: -20px;
+      background: #fff;
+      border: 1px solid var(--neutral-light);
+      border-radius: 8px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      padding: 0.5rem;
+      width: 80px;
+      z-index: 1000;
       text-align: center;
     }
-    .flip-card-front { background-color: #27ae60; }
-    .flip-card-back { background-color: #d35400; transform: rotateY(180deg); }
-    /* ---------- Stacked Cards Style ---------- */
-    .card-stack {
-      position: relative;
-      width: 220px;
-      height: 250px;
-      display: inline-block;
-      margin: 10px;
-    }
-    .card-stack .card {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: #007bff;
-      color: #fff;
+    .dropdown-menu.active { display: block; }
+    .dropdown-menu h4 {
+      margin: 0 0 0.3rem;
+      font-size: 0.8rem;
+      font-family: 'Roboto', sans-serif;
+      font-weight: bold;
+      background: var(--secondary-color);
+      color: #ffffff;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      font-weight: bold;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      transition: transform 0.4s ease, top 0.4s ease;
+      padding: 0.4rem;
+      border-radius: 4px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.35);
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
+      transition: transform 0.1s ease, box-shadow 0.2s ease;
     }
-    .card-stack .card:nth-child(1) {
-      top: 0; z-index: 3; transform: rotate(-5deg);
+    .dropdown-menu h4:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.45);
     }
-    .card-stack .card:nth-child(2) {
-      top: 10px; z-index: 2; transform: rotate(-3deg);
+    .arrow-icon {
+      transition: transform 0.3s ease;
+      font-size: 0.8rem;
+      margin-left: 0.2rem;
     }
-    .card-stack .card:nth-child(3) {
-      top: 20px; z-index: 1; transform: rotate(-2deg);
-    }
-    /* ---------- Accordion Style ---------- */
-    .accordion {
+    .arrow-icon.rotated { transform: rotate(-180deg); }
+    .dropdown-menu button {
       width: 100%;
-      margin: 10px 0;
-    }
-    .accordion-item {
-      border-bottom: 1px solid #ddd;
-    }
-    .accordion-header {
-      background: #007bff;
-      color: #fff;
-      padding: 10px;
+      padding: 0.3rem;
+      margin: 0.2rem 0;
+      background: #ffffff;
+      color: var(--secondary-color);
+      border: 1px solid var(--neutral-light);
+      border-radius: 4px;
       cursor: pointer;
-      font-size: 18px;
+      font-size: 0.8rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.1s ease, box-shadow 0.2s ease;
     }
-    .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      background: #f9f9f9;
-      transition: max-height 0.3s ease-out, padding 0.3s ease;
-      padding: 0 10px;
+    .dropdown-menu button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
-    .accordion-item.active .accordion-content {
-      max-height: 100px;
-      padding: 10px;
+    .sub-dropdown {
+      display: none;
+      margin: 0.3rem 0;
+    }
+    .sub-dropdown.active { display: block; }
+    .image-thumbnails, .color-thumbnails {
+      display: flex;
+      gap: 0.3rem;
+      overflow-x: auto;
+      white-space: nowrap;
+      margin-bottom: 0.3rem;
+    }
+    .image-thumbnails img {
+      width: 25px;
+      height: 25px;
+      object-fit: cover;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+    .image-thumbnails img:hover { border-color: var(--secondary-color); }
+    .color-thumbnails div {
+      width: 25px;
+      height: 25px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+    .color-thumbnails div:hover { border-color: var(--secondary-color); }
+    .action-buttons {
+      display: none;
+      margin-top: 5px;
+      display: flex;
+      justify-content: center;
+    }
+    .action-buttons button {
+      padding: 0.3rem 0.5rem;
+      border: none;
+      border-radius: 4px;
+      background: var(--secondary-color);
+      color: #ffffff;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .glassy-background {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 1.5rem;
+    }
+    /* Quill editor container styling */
+    #editor-container {
+      height: 200px;
+      background: #ffffff;
+      border: 1px solid var(--neutral-light);
+      border-radius: 6px;
+    }
+    @media (max-width: 480px) {
+      .form-container { max-width: 90%; padding: 1rem; }
     }
   </style>
+  <!-- Include Quill JS -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 </head>
 <body>
-  <div class="form-container">
-    <h2>Business Card Generator</h2>
-    <!-- General Information -->
-    <div class="input-group">
-      <label for="name">Full Name *</label>
-      <input type="text" id="name" placeholder="Enter full name" required>
+  <div class="form-container glassy-background" id="formContainer">
+    <!-- Gear Icon -->
+    <div class="gear-icon" onclick="toggleDropdown()">
+      <i class="fas fa-cog"></i>
     </div>
-    <div class="input-group">
-      <label for="businessName">Business Name *</label>
-      <input type="text" id="businessName" placeholder="Enter business name" required>
+    <!-- Dropdown Menu -->
+    <div class="dropdown-menu" id="dropdownMenu">
+      <h4 onclick="toggleSubDropdown('mood')">
+        Mood <i class="fas fa-chevron-down arrow-icon"></i>
+      </h4>
+      <div id="moodSubDropdown" class="sub-dropdown">
+        <button onclick="previewMood('day')">Day</button>
+        <button onclick="previewMood('night')">Night</button>
+        <div id="moodActionButtons" class="action-buttons">
+          <button onclick="applyMood()">Apply</button>
+        </div>
+      </div>
+      <h4 onclick="toggleSubDropdown('theme')">
+        Theme <i class="fas fa-chevron-down arrow-icon"></i>
+      </h4>
+      <div id="themeSubDropdown" class="sub-dropdown">
+        <button onclick="previewTheme('default')">Default</button>
+        <button onclick="toggleSubDropdown('image')">
+          Image <i class="fas fa-chevron-down arrow-icon"></i>
+        </button>
+        <div id="imageSubDropdown" class="sub-dropdown">
+          <div class="image-thumbnails">
+            <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Image 1" onclick="previewTheme('image', this.src)">
+            <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Image 2" onclick="previewTheme('image', this.src)">
+            <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Image 3" onclick="previewTheme('image', this.src)">
+            <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Image 4" onclick="previewTheme('image', this.src)">
+            <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Image 5" onclick="previewTheme('image', this.src)">
+          </div>
+        </div>
+        <button onclick="toggleSubDropdown('color')">
+          Color <i class="fas fa-chevron-down arrow-icon"></i>
+        </button>
+        <div id="colorSubDropdown" class="sub-dropdown">
+          <div class="color-thumbnails">
+            <div style="background-color: #3498DB;" onclick="previewTheme('color', '#3498DB')"></div>
+            <div style="background-color: #E74C3E;" onclick="previewTheme('color', '#E74C3E')"></div>
+            <div style="background-color: #2ECC71;" onclick="previewTheme('color', '#2ECC71')"></div>
+            <div style="background-color: #9B59B6;" onclick="previewTheme('color', '#9B59B6')"></div>
+            <div style="background-color: #F1C40F;" onclick="previewTheme('color', '#F1C40F')"></div>
+          </div>
+        </div>
+        <div id="themeActionButtons" class="action-buttons">
+          <button onclick="applyTheme()">Apply</button>
+        </div>
+      </div>
+      <h4 onclick="toggleSubDropdown('style')">
+        Style <i class="fas fa-chevron-down arrow-icon"></i>
+      </h4>
+      <div id="styleSubDropdown" class="sub-dropdown">
+        <button onclick="previewStyle('default')">Default</button>
+        <button onclick="previewStyle('styleA')">Style A</button>
+        <button onclick="previewStyle('styleB')">Style B</button>
+        <div id="styleActionButtons" class="action-buttons">
+          <button onclick="applyStyle()">Apply</button>
+        </div>
+      </div>
     </div>
-    <div class="input-group">
-      <label for="businessInfo">Business Info *</label>
-      <div id="editor-container" style="height:150px; border: 1px solid #ccc; border-radius:4px;"></div>
-      <textarea id="businessInfo" style="display:none;"></textarea>
+    <!-- Form Header -->
+    <div class="form-header">
+      <h2>Create Business Card</h2>
+      <p>Fill in all required information</p>
     </div>
-    <div class="input-group">
-      <label for="address">Business Address *</label>
-      <input type="text" id="address" placeholder="Enter business address" required>
+    <div class="form-grid">
+      <div class="image-upload-group">
+        <label for="profileImage">
+          <i class="fas fa-camera fa-2x"></i>
+          <p>Upload Profile Photo</p>
+        </label>
+        <input type="file" id="profileImage" accept="image/*" onchange="previewImage(event)" />
+        <img id="imagePreview" alt="Profile Preview" />
+      </div>
+      <div class="input-group">
+        <label for="name">Full Name <span class="required">*</span></label>
+        <input type="text" id="name" placeholder="Full Name" required />
+      </div>
+      <div class="input-group">
+        <label for="businessName">Business Name <span class="required">*</span></label>
+        <input type="text" id="businessName" placeholder="Business Name" required />
+      </div>
+      <!-- Business Info using Quill Editor -->
+      <div class="input-group">
+        <label for="businessInfo">Business Info <span class="required">*</span></label>
+        <!-- Quill editor container -->
+        <div id="editor-container"></div>
+        <!-- Hidden textarea to store HTML content -->
+        <textarea id="businessInfo" name="businessInfo" style="display:none;" required></textarea>
+        <small style="color: var(--neutral-dark); font-size: 0.8rem;">
+          <strong>Instructions:</strong> Write 3 to 5 paragraphs. Each paragraph must not exceed 150 words. Separate paragraphs with a new line.
+        </small>
+      </div>
+      <div class="input-group">
+        <label for="address">Business Address <span class="required">*</span></label>
+        <input type="text" id="address" placeholder="Business Address" required />
+      </div>
+      <div class="input-group">
+        <label for="phone">Phone Number <span class="required">*</span></label>
+        <input type="tel" id="phone" placeholder="Enter phone number" required />
+      </div>
+      <div class="input-group">
+        <label for="email">Email Address <span class="required">*</span></label>
+        <input type="email" id="email" placeholder="Email Address" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address." />
+      </div>
+      <div class="input-group">
+        <label for="facebook">Facebook URL</label>
+        <input type="url" id="facebook" placeholder="Facebook URL" pattern="https?://(www\.)?facebook\.com/.*" title="Please enter a valid Facebook URL." />
+      </div>
+      <div class="input-group">
+        <label for="instagram">Instagram URL</label>
+        <input type="url" id="instagram" placeholder="Instagram URL" pattern="https?://(www\.)?instagram\.com/.*" title="Please enter a valid Instagram URL." />
+      </div>
+      <div class="input-group">
+        <label for="youtube">YouTube URL</label>
+        <input type="url" id="youtube" placeholder="YouTube URL" pattern="https?://(www\.)?youtube\.com/.*" title="Please enter a valid YouTube URL." />
+      </div>
     </div>
-    <div class="input-group">
-      <label for="phone">Phone Number *</label>
-      <input type="tel" id="phone" placeholder="Enter phone number" required>
-    </div>
-    <div class="input-group">
-      <label for="email">Email Address *</label>
-      <input type="email" id="email" placeholder="Enter email" required>
-    </div>
-    <!-- Hot Offers Section -->
-    <h3>Hot Offers</h3>
-    <div class="input-group">
-      <label for="offer1">Offer 1</label>
-      <input type="text" id="offer1" placeholder="Enter offer 1">
-    </div>
-    <div class="input-group">
-      <label for="offer2">Offer 2</label>
-      <input type="text" id="offer2" placeholder="Enter offer 2">
-    </div>
-    <div class="input-group">
-      <label for="offer3">Offer 3</label>
-      <input type="text" id="offer3" placeholder="Enter offer 3">
-    </div>
-    <div class="input-group">
-      <label for="offer4">Offer 4</label>
-      <input type="text" id="offer4" placeholder="Enter offer 4">
-    </div>
-    <div class="input-group">
-      <label for="offerStyleSelect">Select Offer Style</label>
-      <select id="offerStyleSelect">
-         <option value="flip">Flip Card on Hover</option>
-         <option value="stacked">Stacked Cards (Deck Style)</option>
-         <option value="accordion">Accordion Offers</option>
-      </select>
-      <button type="button" id="applyOfferStyle">Apply Offer Design</button>
-    </div>
-    <div id="offerPreview">
-      <p>Offer preview will appear here.</p>
-    </div>
-    <br>
-    <button type="button" id="generateCardBtn">Generate Card</button>
+    <button id="generateCard">Generate Card</button>
   </div>
-
-  <!-- External Scripts -->
-  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <!-- Firebase and intl-tel-input Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
   <script>
-    // Initialize Quill editor for Business Info
-    var quill = new Quill('#editor-container', { theme: 'snow' });
-    // Copy Quill content to hidden textarea before generating card
-    function updateBusinessInfo() {
-      document.getElementById('businessInfo').value = quill.root.innerHTML;
-    }
-    // Initialize phone input
-    var phoneInput = document.getElementById("phone");
+    // Initialize Quill Editor
+    var quill = new Quill('#editor-container', {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          [{ 'font': [] }, { 'size': [] }],
+          ['bold', 'italic', 'underline'],
+          [{ 'color': [] }, { 'background': [] }],
+          [{ 'align': [] }],
+          ['clean']
+        ]
+      }
+    });
+    
+    // Firebase configuration – replace with your own details.
+    var firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    
+    var phoneInput = document.querySelector("#phone");
     var iti = window.intlTelInput(phoneInput, {
       initialCountry: "auto",
-      geoIpLookup: function(success) {
-         fetch('https://ipinfo.io/json?token=YOUR_TOKEN')
-         .then(resp => resp.json())
-         .then(data => success(data.country))
-         .catch(() => success("us"));
+      separateDialCode: true,
+      geoIpLookup: function(success, failure) {
+        fetch('https://ipinfo.io/json?token=YOUR_TOKEN')
+          .then(resp => resp.json())
+          .then(data => success(data.country))
+          .catch(() => success("us"));
       },
       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
     });
-    // Render offer preview based on selected style
-    function renderOfferPreview() {
-      var style = document.getElementById("offerStyleSelect").value;
-      var offers = [];
-      for (var i = 1; i <= 4; i++) {
-         var text = document.getElementById("offer" + i).value.trim();
-         if (text !== "") { offers.push(text); }
-      }
-      var preview = document.getElementById("offerPreview");
-      preview.innerHTML = "";
-      if (offers.length === 0) {
-         preview.innerHTML = "<p>No offers entered.</p>";
-         return;
-      }
-      if (style === "flip") {
-         offers.forEach(function(offer) {
-            var card = document.createElement("div");
-            card.className = "flip-card";
-            card.innerHTML = `
-              <div class="flip-card-inner">
-                <div class="flip-card-front">${offer}</div>
-                <div class="flip-card-back">${offer} Details</div>
-              </div>
-            `;
-            preview.appendChild(card);
-         });
-      } else if (style === "stacked") {
-         var deck = document.createElement("div");
-         deck.className = "card-stack";
-         offers.slice(0, 3).forEach(function(offer, index) {
-            var card = document.createElement("div");
-            card.className = "card";
-            card.innerText = offer;
-            if (index === 0) {
-              card.style.top = "0";
-              card.style.zIndex = "3";
-              card.style.transform = "rotate(-5deg)";
-            } else if (index === 1) {
-              card.style.top = "10px";
-              card.style.zIndex = "2";
-              card.style.transform = "rotate(-3deg)";
-            } else {
-              card.style.top = "20px";
-              card.style.zIndex = "1";
-              card.style.transform = "rotate(-2deg)";
+    
+    function previewImage(event) {
+      const reader = new FileReader();
+      const preview = document.getElementById('imagePreview');
+      reader.onload = function(e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+    
+    function resizeImage(file, callback) {
+      const img = new Image();
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        img.src = e.target.result;
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 150, MAX_HEIGHT = 150;
+          let width = img.width, height = img.height;
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height = height * (MAX_WIDTH / width);
+              width = MAX_WIDTH;
             }
-            deck.appendChild(card);
-         });
-         preview.appendChild(deck);
-      } else if (style === "accordion") {
-         var accordion = document.createElement("div");
-         accordion.className = "accordion";
-         offers.forEach(function(offer, index) {
-            var item = document.createElement("div");
-            item.className = "accordion-item";
-            item.innerHTML = `
-              <div class="accordion-header">Offer ${index+1}: ${offer}</div>
-              <div class="accordion-content">${offer} – more details...</div>
-            `;
-            accordion.appendChild(item);
-         });
-         preview.appendChild(accordion);
-         // Attach click events for accordion headers
-         var headers = preview.querySelectorAll(".accordion-header");
-         headers.forEach(function(header) {
-            header.addEventListener("click", function() {
-               this.parentElement.classList.toggle("active");
-            });
-         });
+          } else {
+            if (height > MAX_HEIGHT) {
+              width = width * (MAX_HEIGHT / height);
+              height = MAX_HEIGHT;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          canvas.toBlob(function(blob) { callback(blob); }, 'image/jpeg', 0.4);
+        };
+      };
+      reader.readAsDataURL(file);
+    }
+    
+    function validateForm() {
+      let valid = true;
+      const fieldIds = ['name', 'businessName', 'address', 'email'];
+      fieldIds.forEach(function(id) {
+        const field = document.getElementById(id);
+        if (field) field.classList.remove('error');
+      });
+      fieldIds.forEach(function(id) {
+        const field = document.getElementById(id);
+        if (!field.value.trim()) { valid = false; field.classList.add('error'); }
+      });
+      if (!valid) { alert("Please fill all required fields."); return false; }
+      if (!iti.isValidNumber()) { 
+        phoneInput.classList.add('error'); 
+        alert("Please enter a valid phone number."); 
+        return false; 
+      }
+      const emailValue = document.getElementById('email').value.trim();
+      if (!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(emailValue)) {
+        document.getElementById('email').classList.add('error');
+        alert("Please enter a valid email address.");
+        return false;
+      }
+      const socialMedia = [
+        { id: 'facebook', regex: /^https?:\/\/(www\.)?facebook\.com\/.+$/i, message: "Please enter a valid Facebook URL." },
+        { id: 'instagram', regex: /^https?:\/\/(www\.)?instagram\.com\/.+$/i, message: "Please enter a valid Instagram URL." },
+        { id: 'youtube', regex: /^https?:\/\/(www\.)?youtube\.com\/.+$/i, message: "Please enter a valid YouTube URL." }
+      ];
+      socialMedia.forEach(function(sm) {
+        const value = document.getElementById(sm.id).value.trim();
+        if (value && !sm.regex.test(value)) { 
+          document.getElementById(sm.id).classList.add('error'); 
+          alert(sm.message); 
+          valid = false; 
+        }
+      });
+      if (!valid) return false;
+      // Before submission, copy the Quill editor content into the hidden textarea.
+      document.getElementById('businessInfo').value = quill.root.innerHTML;
+      return true;
+    }
+    
+    function uploadImageToFirebase(blob, formData) {
+      const storageRef = firebase.storage().ref();
+      const imageRef = storageRef.child('profile_images/' + Date.now() + '.jpg');
+      imageRef.put(blob).then(function(snapshot) {
+        return snapshot.ref.getDownloadURL();
+      }).then(function(url) {
+        formData.profileImage = url;
+        redirectToCard(formData);
+      }).catch(function(error) {
+        console.error('Error uploading image:', error);
+        alert('Image upload failed. Please try again.');
+      });
+    }
+    
+    document.getElementById('generateCard').onclick = function () {
+      if (!validateForm()) return;
+      const formData = {
+        name: document.getElementById('name').value.trim(),
+        businessName: document.getElementById('businessName').value.trim(),
+        businessInfo: document.getElementById('businessInfo').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        phone: iti.getNumber(),
+        email: document.getElementById('email').value.trim(),
+        facebook: document.getElementById('facebook').value.trim(),
+        instagram: document.getElementById('instagram').value.trim(),
+        youtube: document.getElementById('youtube').value.trim(),
+        profileImage: document.getElementById('profileImage').files[0]
+      };
+      if (formData.profileImage) {
+        resizeImage(formData.profileImage, function(resizedBlob) {
+          uploadImageToFirebase(resizedBlob, formData);
+        });
+      } else {
+        redirectToCard(formData);
+      }
+    };
+    
+    function redirectToCard(formData) {
+      const params = new URLSearchParams();
+      for (let key in formData) { params.set(key, formData[key]); }
+      window.location.href = `card.html?${params.toString()}`;
+    }
+    
+    function toggleDropdown() {
+      const dropdownMenu = document.getElementById('dropdownMenu');
+      dropdownMenu.classList.toggle('active');
+    }
+    
+    function toggleSubDropdown(id) {
+      const header = document.querySelector('h4[onclick*="' + id + '"]');
+      const subDropdown = document.getElementById(id + 'SubDropdown');
+      subDropdown.classList.toggle('active');
+      if(header) {
+        const arrow = header.querySelector('.arrow-icon');
+        if (arrow) arrow.classList.toggle('rotated');
       }
     }
-    // Attach event listener to "Apply Offer Design" button
-    document.getElementById("applyOfferStyle").addEventListener("click", renderOfferPreview);
-    // When "Generate Card" is clicked, collect form data and save to localStorage
-    document.getElementById("generateCardBtn").addEventListener("click", function() {
-      updateBusinessInfo();
-      var formData = {
-         name: document.getElementById("name").value.trim(),
-         businessName: document.getElementById("businessName").value.trim(),
-         businessInfo: document.getElementById("businessInfo").value,
-         address: document.getElementById("address").value.trim(),
-         phone: iti.getNumber(),
-         email: document.getElementById("email").value.trim()
-      };
-      var offers = [];
-      for (var i = 1; i <= 4; i++) {
-         var text = document.getElementById("offer" + i).value.trim();
-         if (text !== "") { offers.push(text); }
+    
+    var appliedMood = null, appliedTheme = null, appliedStyle = null;
+    var moodPreviewValue = null, themePreviewValue = null, stylePreviewValue = null;
+    
+    function updateFormContainer() {
+      var formContainer = document.getElementById('formContainer');
+      formContainer.style.backgroundColor = "";
+      formContainer.style.color = "";
+      formContainer.style.backgroundImage = "";
+      formContainer.style.boxShadow = "";
+      formContainer.style.border = "";
+      if (appliedMood === 'day'){
+        formContainer.style.backgroundColor = '#ffffff';
+        formContainer.style.color = '#000000';
+      } else if (appliedMood === 'night'){
+        formContainer.style.backgroundColor = '#34495E';
+        formContainer.style.color = '#ffffff';
       }
-      formData.offers = offers;
-      formData.offerStyle = document.getElementById("offerStyleSelect").value;
-      localStorage.setItem("formData", JSON.stringify(formData));
-      window.location.href = "card.html";
+      if (appliedTheme) {
+        if (appliedTheme.option === 'default'){
+          formContainer.style.backgroundColor = "";
+          formContainer.style.backgroundImage = "";
+        } else if (appliedTheme.option === 'image'){
+          formContainer.style.backgroundImage = `url(${appliedTheme.src})`;
+          formContainer.style.backgroundSize = 'cover';
+        } else if (appliedTheme.option === 'color'){
+          formContainer.style.backgroundColor = appliedTheme.value;
+        }
+      }
+      if (appliedStyle === 'styleA'){
+        formContainer.style.backgroundColor = "#f9f9f9";
+        formContainer.style.border = "2px solid var(--secondary-color)";
+      } else if (appliedStyle === 'styleB'){
+        formContainer.style.backgroundColor = "#ffffff";
+        formContainer.style.boxShadow = "0 0 15px rgba(0,0,0,0.5)";
+      }
+    }
+    
+    function previewMood(value) {
+      var formContainer = document.getElementById('formContainer');
+      if(value === 'day'){
+        formContainer.style.backgroundColor = '#ffffff';
+        formContainer.style.color = '#000000';
+      } else if(value === 'night'){
+        formContainer.style.backgroundColor = '#34495E';
+        formContainer.style.color = '#ffffff';
+      }
+      moodPreviewValue = value;
+      document.getElementById('moodActionButtons').style.display = 'flex';
+    }
+    
+    function applyMood() {
+      appliedMood = moodPreviewValue;
+      moodPreviewValue = null;
+      document.getElementById('moodActionButtons').style.display = 'none';
+    }
+    
+    function previewTheme(option, value) {
+      var formContainer = document.getElementById('formContainer');
+      if(option === 'default'){
+        formContainer.style.backgroundColor = "";
+        formContainer.style.backgroundImage = "";
+        themePreviewValue = { option: 'default' };
+      } else if(option === 'image'){
+        formContainer.style.backgroundImage = `url(${value})`;
+        formContainer.style.backgroundSize = 'cover';
+        themePreviewValue = { option: 'image', src: value };
+      } else if(option === 'color'){
+        formContainer.style.backgroundImage = 'none';
+        formContainer.style.backgroundColor = value;
+        themePreviewValue = { option: 'color', value: value };
+      }
+      document.getElementById('themeActionButtons').style.display = 'flex';
+    }
+    
+    function applyTheme() {
+      appliedTheme = themePreviewValue;
+      themePreviewValue = null;
+      document.getElementById('themeActionButtons').style.display = 'none';
+    }
+    
+    function previewStyle(style) {
+      var formContainer = document.getElementById('formContainer');
+      if(style === 'default'){
+        formContainer.style.backgroundColor = "";
+        formContainer.style.boxShadow = "";
+        formContainer.style.border = "";
+      } else if(style === 'styleA'){
+        formContainer.style.backgroundColor = "#f9f9f9";
+        formContainer.style.border = "2px solid var(--secondary-color)";
+      } else if(style === 'styleB'){
+        formContainer.style.backgroundColor = "#ffffff";
+        formContainer.style.boxShadow = "0 0 15px rgba(0,0,0,0.5)";
+      }
+      stylePreviewValue = style;
+      document.getElementById('styleActionButtons').style.display = 'flex';
+    }
+    
+    function applyStyle() {
+      appliedStyle = stylePreviewValue;
+      stylePreviewValue = null;
+      document.getElementById('styleActionButtons').style.display = 'none';
+    }
+    
+    document.addEventListener('click', function(event) {
+      const dropdownMenu = document.getElementById('dropdownMenu');
+      if(dropdownMenu.classList.contains('active') &&
+         !event.target.closest('.dropdown-menu') &&
+         !event.target.closest('.gear-icon')){
+        dropdownMenu.classList.remove('active');
+        moodPreviewValue = null;
+        themePreviewValue = null;
+        stylePreviewValue = null;
+        updateFormContainer();
+        document.getElementById('moodActionButtons').style.display = 'none';
+        document.getElementById('themeActionButtons').style.display = 'none';
+        document.getElementById('styleActionButtons').style.display = 'none';
+      }
     });
   </script>
 </body>
