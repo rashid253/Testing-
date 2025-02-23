@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Business Card</title>
     <!-- Font Awesome for icons -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-      rel="stylesheet"
-    />
-    <!-- EmailJS Library (if used) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <!-- EmailJS Library (if needed) -->
     <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <style>
       :root {
@@ -53,6 +50,7 @@
         padding: 1rem;
         margin: 0.5rem;
         border-bottom: 2px solid var(--secondary-color);
+        position: relative;
       }
       .profile-image-container {
         width: 40%;
@@ -93,7 +91,9 @@
         white-space: nowrap;
       }
       .connect-btn {
-        align-self: flex-end;
+        position: absolute;
+        top: 10px;
+        right: 10px;
         font-size: 1.2rem;
         color: var(--secondary-color);
         cursor: pointer;
@@ -265,8 +265,19 @@
           <p class="contact-info" id="cardPhone"></p>
           <p class="contact-info" id="cardEmail"></p>
         </div>
+        <!-- Share and Settings Icons -->
         <div class="connect-btn" id="connectButton" title="Save Contact">
           <i class="fas fa-save"></i>
+        </div>
+        <div id="styleControlsContainer" style="position:absolute; top:10px; left:10px;">
+          <button id="styleButton" title="Settings">
+            <i class="fas fa-cog"></i>
+          </button>
+        </div>
+        <div class="top-icons" style="position:absolute; top:10px; right:10px;">
+          <button class="top-share-icon" id="topShareIcon" title="Share">
+            <i class="fas fa-share-alt"></i>
+          </button>
         </div>
       </div>
       <!-- Exclusive Offers Section -->
@@ -314,7 +325,7 @@
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         "use strict";
-        // Parse formData from URL parameters (or localStorage if you saved it there)
+        // Parse formData from URL parameters (or localStorage)
         const params = new URLSearchParams(window.location.search);
         let formData = {};
         params.forEach((value, key) => {
@@ -324,7 +335,6 @@
             formData[key] = value;
           }
         });
-        
         // Populate Profile Section
         document.getElementById("cardProfileImage").src = formData.profileImage || "";
         document.getElementById("cardName").textContent = formData.name || "";
@@ -369,7 +379,7 @@
           }
         });
         
-        // Process Exclusive Offers (if provided)
+        // Process Exclusive Offers: Render each offer as a flip–card
         if (formData.exclusiveOffers && Array.isArray(formData.exclusiveOffers)) {
           const offersContainer = document.getElementById("offersContainer");
           formData.exclusiveOffers.forEach((offer) => {
@@ -384,7 +394,7 @@
                 </div>
               </div>
             `;
-            // Toggle flip on click
+            // Toggle flip effect on click
             flipCard.addEventListener("click", () => {
               const inner = flipCard.querySelector(".offer-flip-card-inner");
               inner.classList.toggle("flipped");
@@ -392,6 +402,8 @@
             offersContainer.appendChild(flipCard);
           });
         }
+        
+        // (Optional) Additional processing for share URL shortening, settings dropdown, etc.
       });
     </script>
   </body>
