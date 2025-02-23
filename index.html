@@ -16,7 +16,6 @@
     />
     <!-- Quill CSS for rich text editor -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
-
     <style>
       :root {
         --primary-color: #2c3e50;
@@ -36,7 +35,6 @@
         justify-content: center;
         align-items: center;
         min-height: 100vh;
-        position: relative;
         transition: background 0.3s ease, color 0.3s ease;
       }
       .form-container {
@@ -44,12 +42,11 @@
         max-width: 450px;
         background: white;
         border-radius: 15px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
         padding: 1.5rem;
         margin: 1rem;
-        box-sizing: border-box;
         position: relative;
-        transition: filter 0.3s ease;
+        box-sizing: border-box;
       }
       /* Gear icon */
       .gear-icon {
@@ -66,13 +63,12 @@
         transform: rotate(90deg);
       }
       .form-header {
+        text-align: center;
         color: var(--primary-color);
         margin-bottom: 1.5rem;
-        text-align: center;
       }
       .form-grid {
         display: grid;
-        grid-template-columns: 1fr;
         gap: 1rem;
         margin-bottom: 1.5rem;
       }
@@ -96,8 +92,8 @@
         border: 1px solid var(--neutral-light);
         border-radius: 6px;
         font-size: 0.9rem;
-        transition: border-color 0.2s ease;
         box-sizing: border-box;
+        transition: border-color 0.2s ease;
       }
       input:focus,
       select:focus,
@@ -112,13 +108,11 @@
         border: 2px solid var(--accent-color);
       }
       .image-upload-group {
-        grid-column: 1 / -1;
         text-align: center;
         border: 2px dashed var(--neutral-light);
         padding: 1rem;
         border-radius: 8px;
         cursor: pointer;
-        position: relative;
       }
       /* Profile Image Preview */
       #imagePreview {
@@ -148,7 +142,7 @@
         background: #fff;
         border: 1px solid var(--neutral-light);
         border-radius: 8px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.3);
         padding: 0.5rem;
         width: 80px;
         z-index: 1000;
@@ -163,45 +157,30 @@
         font-family: 'Roboto', sans-serif;
         font-weight: bold;
         background: var(--secondary-color);
-        color: #ffffff;
+        color: #fff;
         cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         padding: 0.4rem;
         border-radius: 4px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
-        transition: transform 0.1s ease, box-shadow 0.2s ease;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.35);
+        transition: transform 0.1s ease;
       }
       .dropdown-menu h4:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.45);
-      }
-      .arrow-icon {
-        transition: transform 0.3s ease;
-        font-size: 0.8rem;
-        margin-left: 0.2rem;
-      }
-      .arrow-icon.rotated {
-        transform: rotate(-180deg);
       }
       .dropdown-menu button {
         width: 100%;
         padding: 0.3rem;
         margin: 0.2rem 0;
-        background: #ffffff;
+        background: #fff;
         color: var(--secondary-color);
         border: 1px solid var(--neutral-light);
         border-radius: 4px;
         cursor: pointer;
         font-size: 0.8rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: transform 0.1s ease, box-shadow 0.2s ease;
+        transition: transform 0.1s ease;
       }
       .dropdown-menu button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       }
       .sub-dropdown {
         display: none;
@@ -224,7 +203,6 @@
         object-fit: cover;
         border-radius: 4px;
         cursor: pointer;
-        border: 1px solid transparent;
         transition: border-color 0.2s ease;
       }
       .image-thumbnails img:hover {
@@ -235,7 +213,6 @@
         height: 25px;
         border-radius: 4px;
         cursor: pointer;
-        border: 1px solid transparent;
         transition: border-color 0.2s ease;
       }
       .color-thumbnails div:hover {
@@ -251,39 +228,42 @@
         border: none;
         border-radius: 4px;
         background: var(--secondary-color);
-        color: #ffffff;
+        color: #fff;
         cursor: pointer;
         font-size: 0.8rem;
       }
       .glassy-background {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255,255,255,0.1);
         backdrop-filter: blur(10px);
         border-radius: 15px;
         padding: 1.5rem;
       }
-      /* Quill editor container styling */
+      /* Quill Editor */
       #editor-container {
         height: 200px;
-        background: #ffffff;
+        background: #fff;
         border: 1px solid var(--neutral-light);
         border-radius: 6px;
       }
-      /* Exclusive Offers Section Styles */
+      /* Exclusive Offers Section */
       .exclusive-offers-section {
         border-top: 1px solid var(--neutral-light);
         margin-top: 1rem;
         padding-top: 1rem;
+        position: relative;
       }
       .exclusive-offers-section h3 {
+        text-align: center;
         margin-bottom: 0.5rem;
         color: var(--primary-color);
-        text-align: center;
       }
+      /* Banner Field Group */
       .banner-field-group {
         display: flex;
         flex-direction: column;
         gap: 0.3rem;
         margin-bottom: 1rem;
+        position: relative;
       }
       .banner-field {
         display: flex;
@@ -292,16 +272,29 @@
       }
       .banner-field input {
         flex: 1;
+        padding: 0.5rem;
+        border: 1px solid var(--neutral-light);
+        border-radius: 4px;
+      }
+      .banner-field button {
+        background: var(--secondary-color);
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 0.5rem;
+        cursor: pointer;
       }
       .banner-dropdown {
         position: absolute;
+        top: -2.2rem;
+        left: 0;
         background: #fff;
         border: 1px solid var(--neutral-light);
-        border-radius: 6px;
+        border-radius: 4px;
         box-shadow: 0 8px 30px rgba(0,0,0,0.3);
         padding: 0.5rem;
-        display: none;
         width: 250px;
+        display: none;
         z-index: 999;
       }
       .banner-dropdown button {
@@ -314,6 +307,7 @@
         cursor: pointer;
         font-size: 0.8rem;
       }
+      /* Offer Fields */
       .offer-field {
         border: 1px solid var(--neutral-light);
         border-radius: 6px;
@@ -330,7 +324,7 @@
       }
       .offer-field-row button {
         background: var(--secondary-color);
-        color: white;
+        color: #fff;
         border: none;
         border-radius: 4px;
         padding: 0.4rem 0.7rem;
@@ -344,18 +338,9 @@
       }
       .offer-editor {
         height: 120px;
-        background: #ffffff;
+        background: #fff;
         border: 1px solid var(--neutral-light);
         border-radius: 4px;
-      }
-      .offer-details .close-offer-details {
-        margin-top: 0.5rem;
-        background: var(--accent-color);
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        padding: 0.4rem 0.7rem;
-        cursor: pointer;
       }
       /* Offer Style Selection */
       .offer-style-selection {
@@ -365,22 +350,33 @@
       }
       #offerStyleBtn {
         background: var(--secondary-color);
-        color: white;
+        color: #fff;
         border: none;
         padding: 0.5rem 1rem;
         border-radius: 4px;
         cursor: pointer;
+        position: relative;
+      }
+      /* Add an arrow indicator to show dropdown */
+      #offerStyleBtn::after {
+        content: "\f0d7";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
       }
       .offer-style-dropdown {
         display: none;
         position: absolute;
-        top: 2.2rem;
+        top: calc(100% + 0.5rem);
         left: 50%;
         transform: translateX(-50%);
         background: #fff;
         border: 1px solid var(--neutral-light);
-        border-radius: 8px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.3);
         padding: 0.5rem;
         width: 150px;
         z-index: 1000;
@@ -396,11 +392,10 @@
         border-radius: 4px;
         cursor: pointer;
         font-size: 0.8rem;
-        transition: transform 0.1s ease, box-shadow 0.2s ease;
+        transition: transform 0.1s ease;
       }
       .offer-style-dropdown button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       }
       #offerPreview {
         margin-top: 0.8rem;
@@ -411,7 +406,7 @@
       #applyOfferStyleBtn {
         margin-top: 0.5rem;
         background: var(--secondary-color);
-        color: white;
+        color: #fff;
         border: none;
         padding: 0.4rem 0.8rem;
         border-radius: 4px;
@@ -419,579 +414,333 @@
         display: none;
       }
       @media (max-width: 480px) {
-        .form-container {
-          max-width: 90%;
+        .card-container {
+          width: 95%;
           padding: 1rem;
+        }
+        .profile-section {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+        .profile-image-container,
+        .profile-info {
+          width: 100%;
+          padding: 0;
+        }
+        .profile-info {
+          margin-top: 1rem;
         }
       }
     </style>
-
-    <!-- Include Quill JS -->
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <!-- Firebase and intl-tel-input Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
   </head>
-
   <body>
-    <div class="form-container glassy-background" id="formContainer">
-      <!-- Gear Icon -->
-      <div class="gear-icon" onclick="toggleDropdown()">
-        <i class="fas fa-cog"></i>
-      </div>
-      <!-- Dropdown Menu -->
-      <div class="dropdown-menu" id="dropdownMenu">
-        <h4 onclick="toggleSubDropdown('mood')">
-          Mood <i class="fas fa-chevron-down arrow-icon"></i>
-        </h4>
-        <div id="moodSubDropdown" class="sub-dropdown">
-          <button onclick="previewMood('day')">Day</button>
-          <button onclick="previewMood('night')">Night</button>
-          <div id="moodActionButtons" class="action-buttons">
-            <button onclick="applyMood()">Apply</button>
-          </div>
-        </div>
-        <h4 onclick="toggleSubDropdown('theme')">
-          Theme <i class="fas fa-chevron-down arrow-icon"></i>
-        </h4>
-        <div id="themeSubDropdown" class="sub-dropdown">
-          <button onclick="previewTheme('default')">Default</button>
-          <button onclick="toggleSubDropdown('image')">
-            Image <i class="fas fa-chevron-down arrow-icon"></i>
-          </button>
-          <div id="imageSubDropdown" class="sub-dropdown">
-            <div class="image-thumbnails">
-              <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Image 1" onclick="previewTheme('image', this.src)">
-              <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Image 2" onclick="previewTheme('image', this.src)">
-              <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Image 3" onclick="previewTheme('image', this.src)">
-              <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Image 4" onclick="previewTheme('image', this.src)">
-              <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Image 5" onclick="previewTheme('image', this.src)">
+    <div class="card-container" id="cardContainer">
+      <!-- Top Left Settings Icon -->
+      <div id="styleControlsContainer">
+        <button id="styleButton" title="Settings">
+          <i class="fas fa-cog"></i>
+        </button>
+        <div id="styleDropdown">
+          <div class="setting-group" id="themeGroup">
+            <div class="setting-header">Theme</div>
+            <div class="setting-content">
+              <ul class="setting-options">
+                <li data-theme="default">Default</li>
+                <li data-theme="blue">Blue</li>
+                <li data-theme="red">Red</li>
+                <li data-theme="green">Green</li>
+              </ul>
+              <div class="dropdown-btns">
+                <button class="apply-btn" data-group="theme">Apply</button>
+              </div>
             </div>
           </div>
-          <button onclick="toggleSubDropdown('color')">
-            Color <i class="fas fa-chevron-down arrow-icon"></i>
-          </button>
-          <div id="colorSubDropdown" class="sub-dropdown">
-            <div class="color-thumbnails">
-              <div style="background-color: #3498db;" onclick="previewTheme('color', '#3498db')"></div>
-              <div style="background-color: #e74c3c;" onclick="previewTheme('color', '#e74c3c')"></div>
-              <div style="background-color: #2ecc71;" onclick="previewTheme('color', '#2ecc71')"></div>
-              <div style="background-color: #9b59b6;" onclick="previewTheme('color', '#9b59b6')"></div>
-              <div style="background-color: #f1c40f;" onclick="previewTheme('color', '#f1c40f')"></div>
+          <div class="setting-group" id="moodGroup">
+            <div class="setting-header">Mood</div>
+            <div class="setting-content">
+              <ul class="setting-options">
+                <li data-mood="day">Day</li>
+                <li data-mood="night">Night</li>
+              </ul>
+              <div class="dropdown-btns">
+                <button class="apply-btn" data-group="mood">Apply</button>
+              </div>
             </div>
           </div>
-          <div id="themeActionButtons" class="action-buttons">
-            <button onclick="applyTheme()">Apply</button>
+          <div class="setting-group" id="iconStyleGroup">
+            <div class="setting-header">Style</div>
+            <div class="setting-content">
+              <ul class="setting-options">
+                <li data-iconstyle="none">None</li>
+                <li data-iconstyle="styleA">Style A</li>
+                <li data-iconstyle="styleB">Style B</li>
+              </ul>
+              <div class="dropdown-btns">
+                <button class="apply-btn" data-group="style">Apply</button>
+              </div>
+            </div>
           </div>
-        </div>
-        <h4 onclick="toggleSubDropdown('style')">
-          Style <i class="fas fa-chevron-down arrow-icon"></i>
-        </h4>
-        <div id="styleSubDropdown" class="sub-dropdown">
-          <button onclick="previewStyle('accordion')">Accordion</button>
-          <button onclick="previewStyle('horizontal')">Horizontal</button>
-          <button onclick="previewStyle('tab')">Tab-based</button>
-          <button onclick="previewStyle('modal')">Modal Popup</button>
-          <div id="styleActionButtons" class="action-buttons">
-            <button onclick="applyStyle()">Apply</button>
+          <div class="setting-group" id="soundGroup">
+            <div class="setting-header">Sounds</div>
+            <div class="setting-content">
+              <label style="font-size:0.8rem; display: flex; align-items: center; padding: 5px;">
+                <input type="checkbox" id="soundToggle" checked style="margin-right: 5px;"> Enable Touch Sounds
+              </label>
+            </div>
           </div>
         </div>
       </div>
-
-      <!-- Form Header -->
-      <div class="form-header">
-        <h2>Create Business Card</h2>
-        <p>Fill in all required information</p>
+      <!-- Top Right Share Icon -->
+      <div class="top-icons">
+        <button class="top-share-icon" id="topShareIcon" title="Share">
+          <i class="fas fa-share-alt"></i>
+        </button>
       </div>
-
-      <div class="form-grid">
-        <div class="image-upload-group">
-          <label for="profileImage">
-            <i class="fas fa-camera fa-2x"></i>
-            <p>Upload Profile Photo</p>
-          </label>
-          <input type="file" id="profileImage" accept="image/*" onchange="previewImage(event)" />
-          <img id="imagePreview" alt="Profile Preview" />
+      <!-- Mini Icons -->
+      <div class="mini-icons">
+        <a id="miniCallButton" class="icon" title="Call">
+          <i class="fas fa-phone"></i>
+        </a>
+        <a id="miniEmailButton" class="icon" title="Email">
+          <i class="fas fa-envelope"></i>
+        </a>
+        <a id="miniWhatsappButton" class="icon" title="WhatsApp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+        <a id="miniMapButton" class="icon" title="Open in Google Maps">
+          <i class="fas fa-map-marker-alt"></i>
+        </a>
+      </div>
+      <!-- Profile Section -->
+      <div class="profile-section">
+        <div class="profile-image-container">
+          <img id="cardProfileImage" class="profile-image" alt="Profile" />
+          <h3 class="profile-name" id="cardName"></h3>
         </div>
-
-        <div class="input-group">
-          <label for="name">Full Name <span class="required">*</span></label>
-          <input type="text" id="name" placeholder="Full Name" required />
+        <div class="profile-info">
+          <p class="contact-info" id="cardBusinessName"></p>
+          <p class="contact-info" id="cardAddress"></p>
+          <p class="contact-info" id="cardPhone"></p>
+          <p class="contact-info" id="cardEmail"></p>
         </div>
-
-        <div class="input-group">
-          <label for="businessName">Business Name <span class="required">*</span></label>
-          <input type="text" id="businessName" placeholder="Business Name" required />
-        </div>
-
-        <!-- Business Info using Quill Editor -->
-        <div class="input-group">
-          <label for="businessInfo">Business Info <span class="required">*</span></label>
-          <div id="editor-container"></div>
-          <textarea id="businessInfo" name="businessInfo" style="display:none;" required></textarea>
-          <small style="color: var(--neutral-dark); font-size: 0.8rem;">
-            <strong>Instructions:</strong> Write 3 to 5 paragraphs. Each paragraph must not exceed 150 words. Separate paragraphs with a new line.
-          </small>
-        </div>
-
-        <div class="input-group">
-          <label for="address">Business Address <span class="required">*</span></label>
-          <input type="text" id="address" placeholder="Business Address" required />
-        </div>
-
-        <div class="input-group">
-          <label for="phone">Phone Number <span class="required">*</span></label>
-          <input type="tel" id="phone" placeholder="Enter phone number" required />
-        </div>
-
-        <div class="input-group">
-          <label for="email">Email Address <span class="required">*</span></label>
-          <input type="email" id="email" placeholder="Email Address" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address." />
-        </div>
-
-        <div class="input-group">
-          <label for="facebook">Facebook URL</label>
-          <input type="url" id="facebook" placeholder="Facebook URL" pattern="https?://(www\.)?facebook\.com/.*" title="Please enter a valid Facebook URL." />
-        </div>
-
-        <div class="input-group">
-          <label for="instagram">Instagram URL</label>
-          <input type="url" id="instagram" placeholder="Instagram URL" pattern="https?://(www\.)?instagram\.com/.*" title="Please enter a valid Instagram URL." />
-        </div>
-
-        <div class="input-group">
-          <label for="youtube">YouTube URL</label>
-          <input type="url" id="youtube" placeholder="YouTube URL" pattern="https?://(www\.)?youtube\.com/.*" title="Please enter a valid YouTube URL." />
+        <div class="connect-btn" id="connectButton" title="Save Contact">
+          <i class="fas fa-save"></i>
         </div>
       </div>
-
-      <!-- Exclusive Offers Section -->
-      <div class="exclusive-offers-section">
-        <h3>Exclusive Offers</h3>
-
-        <!-- Banner field group: 2 lines, each can be typed or chosen from dropdown -->
-        <div class="banner-field-group">
-          <label for="offerBanner">Blinking Text (initial):</label>
-          <div class="banner-field" style="position:relative;">
-            <input type="text" id="offerBanner" value="Grab your offer today!" />
-            <button type="button" onclick="toggleBannerDropdown('banner1Dropdown')">Options</button>
-            <div class="banner-dropdown" id="banner1Dropdown">
-              <button type="button" onclick="setBannerText('banner1', 'Get amazing deals now!')">Get amazing deals now!</button>
-              <button type="button" onclick="setBannerText('banner1', 'Unlock exclusive discounts here!')">Unlock exclusive discounts here!</button>
-              <button type="button" onclick="setBannerText('banner1', 'Save big on your next purchase!')">Save big on your next purchase!</button>
-            </div>
-          </div>
-
-          <label for="offerBannerClicked">On‐click Text:</label>
-          <div class="banner-field" style="position:relative;">
-            <input type="text" id="offerBannerClicked" value="Visit our store now!" />
-            <button type="button" onclick="toggleBannerDropdown('banner2Dropdown')">Options</button>
-            <div class="banner-dropdown" id="banner2Dropdown">
-              <button type="button" onclick="setBannerText('banner2', 'Limited time offer – don’t miss out!')">Limited time offer – don’t miss out!</button>
-              <button type="button" onclick="setBannerText('banner2', 'Visit our store for premium deals!')">Visit our store for premium deals!</button>
-              <button type="button" onclick="setBannerText('banner2', 'Grab exclusive offers while they last!')">Grab exclusive offers while they last!</button>
-            </div>
-          </div>
-        </div>
-
-        <div id="offersContainer">
-          <!-- Offer 1 -->
-          <div class="offer-field" id="offerField1">
-            <div class="offer-field-row">
-              <input type="text" id="offerTitle1" placeholder="Offer 1 Title" />
-              <button type="button" onclick="toggleOfferDetails(1)">Details</button>
-            </div>
-            <div class="offer-details" id="offerDetailsContainer1">
-              <div id="offerEditor1" class="offer-editor"></div>
-              <textarea id="offerText1" name="offerText1" style="display:none;"></textarea>
-              <input type="file" id="offerFile1" accept="image/*" onchange="previewOfferFile(event,1)" />
-              <img id="offerFilePreview1" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
-              <br />
-              <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(1)">Save &amp; Close</button>
-            </div>
-          </div>
-          <!-- Offer 2 -->
-          <div class="offer-field" id="offerField2">
-            <div class="offer-field-row">
-              <input type="text" id="offerTitle2" placeholder="Offer 2 Title" />
-              <button type="button" onclick="toggleOfferDetails(2)">Details</button>
-            </div>
-            <div class="offer-details" id="offerDetailsContainer2">
-              <div id="offerEditor2" class="offer-editor"></div>
-              <textarea id="offerText2" name="offerText2" style="display:none;"></textarea>
-              <input type="file" id="offerFile2" accept="image/*" onchange="previewOfferFile(event,2)" />
-              <img id="offerFilePreview2" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
-              <br />
-              <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(2)">Save &amp; Close</button>
-            </div>
-          </div>
-          <!-- Offer 3 -->
-          <div class="offer-field" id="offerField3">
-            <div class="offer-field-row">
-              <input type="text" id="offerTitle3" placeholder="Offer 3 Title" />
-              <button type="button" onclick="toggleOfferDetails(3)">Details</button>
-            </div>
-            <div class="offer-details" id="offerDetailsContainer3">
-              <div id="offerEditor3" class="offer-editor"></div>
-              <textarea id="offerText3" name="offerText3" style="display:none;"></textarea>
-              <input type="file" id="offerFile3" accept="image/*" onchange="previewOfferFile(event,3)" />
-              <img id="offerFilePreview3" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
-              <br />
-              <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(3)">Save &amp; Close</button>
-            </div>
-          </div>
-          <!-- Offer 4 -->
-          <div class="offer-field" id="offerField4">
-            <div class="offer-field-row">
-              <input type="text" id="offerTitle4" placeholder="Offer 4 Title" />
-              <button type="button" onclick="toggleOfferDetails(4)">Details</button>
-            </div>
-            <div class="offer-details" id="offerDetailsContainer4">
-              <div id="offerEditor4" class="offer-editor"></div>
-              <textarea id="offerText4" name="offerText4" style="display:none;"></textarea>
-              <input type="file" id="offerFile4" accept="image/*" onchange="previewOfferFile(event,4)" />
-              <img id="offerFilePreview4" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
-              <br />
-              <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(4)">Save &amp; Close</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Offer Style Dropdown & Preview -->
-        <div class="offer-style-selection">
-          <button type="button" id="offerStyleBtn" onclick="toggleOfferStyleDropdown()">
-            Select Offer Style
-          </button>
-          <div class="offer-style-dropdown" id="offerStyleDropdown">
-            <button type="button" onclick="selectOfferStyle('accordion');">Accordion</button>
-            <button type="button" onclick="selectOfferStyle('horizontal');">Horizontal</button>
-            <button type="button" onclick="selectOfferStyle('tab');">Tab-based</button>
-            <button type="button" onclick="selectOfferStyle('modal');">Modal Popup</button>
-          </div>
-          <div id="offerPreview"></div>
-          <button type="button" id="applyOfferStyleBtn" onclick="applyStyle()">
-            Apply Offer Style
-          </button>
-        </div>
+      <!-- Offers Flip Card Section -->
+      <div id="offersFlipCardSection"></div>
+      <!-- Blinking Banner Box (Golden/Green) inside offers section -->
+      <div id="blinkingBannerBox" class="blinking-banner-box"></div>
+      <!-- Business Info Section -->
+      <div class="business-info-section">
+        <div id="businessInfoContent"></div>
       </div>
+      <!-- Action Buttons Section -->
+      <div class="action-buttons">
+        <a id="callButton" class="action-btn contact-btn" style="background: var(--secondary-color);">
+          Call
+        </a>
+        <a id="whatsappButton" class="action-btn contact-btn" style="background: #25d366;">
+          WhatsApp
+        </a>
+        <a id="emailButton" class="action-btn contact-btn" style="background: var(--accent-color);">
+          Email
+        </a>
+      </div>
+      <!-- Social Links Section -->
+      <div class="social-links">
+        <a id="facebookButton" class="social-icon">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a id="instagramButton" class="social-icon">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a id="youtubeButton" class="social-icon">
+          <i class="fab fa-youtube"></i>
+        </a>
+      </div>
+      <!-- Floating Chat Button INSIDE card -->
+      <button class="floating-chat-btn" title="Contact for more details" onclick="openWhatsAppChat()">
+        <i class="fas fa-comment-dots"></i>
+      </button>
+    </div>
 
-      <button id="generateCard">Generate Card</button>
+    <!-- Offer Modal for Modal Offer Style -->
+    <div id="offerModal" class="offer-modal">
+      <div class="offer-modal-content">
+        <span style="float:right; cursor:pointer; font-size:1.2rem;" onclick="closeOfferModal()">&times;</span>
+        <div id="offerModalContent"></div>
+      </div>
     </div>
 
     <script>
-      // Initialize main Quill Editor for Business Info
-      var quill = new Quill('#editor-container', {
-        theme: 'snow',
-        modules: {
-          toolbar: [
-            [{ font: [] }, { size: [] }],
-            ['bold', 'italic', 'underline'],
-            [{ color: [] }, { background: [] }],
-            [{ align: [] }],
-            ['clean']
-          ]
+      document.addEventListener("DOMContentLoaded", function () {
+        "use strict";
+        const storedData = localStorage.getItem("formData");
+        const formData = storedData ? JSON.parse(storedData) : {};
+        // Populate card fields
+        document.getElementById("cardProfileImage").src = formData.profileImage || "";
+        document.getElementById("cardName").textContent = formData.name || "";
+        document.getElementById("cardBusinessName").textContent = formData.businessName || "";
+        document.getElementById("cardAddress").textContent = formData.address || "";
+        document.getElementById("cardPhone").textContent = formData.phone || "";
+        document.getElementById("cardEmail").textContent = formData.email || "";
+        // Business Info (rotating paragraphs)
+        const businessInfo = formData.businessInfo || "";
+        const paragraphs = businessInfo.split("\n").filter(p => p.trim() !== "");
+        const businessInfoContainer = document.getElementById("businessInfoContent");
+        businessInfoContainer.innerHTML = paragraphs.map(p => `<div class="business-info-content"><p>${p}</p></div>`).join("");
+        const paragraphDivs = businessInfoContainer.querySelectorAll(".business-info-content");
+        let currentIndex = 0;
+        paragraphDivs.forEach((div, idx) => { div.style.display = idx === 0 ? "block" : "none"; });
+        if (paragraphDivs.length > 0) {
+          setInterval(() => {
+            paragraphDivs[currentIndex].style.display = "none";
+            currentIndex = (currentIndex + 1) % paragraphDivs.length;
+            paragraphDivs[currentIndex].style.display = "block";
+          }, 8000);
         }
+        // Social Links
+        const socialLinks = {
+          facebook: document.getElementById("facebookButton"),
+          instagram: document.getElementById("instagramButton"),
+          youtube: document.getElementById("youtubeButton")
+        };
+        Object.entries(socialLinks).forEach(([platform, element]) => {
+          const url = formData[platform];
+          if(url){
+            element.href = url;
+            element.style.visibility = "visible";
+            element.target = "_blank";
+          } else {
+            element.style.visibility = "hidden";
+          }
+        });
+        // Render Offers if available
+        if(formData.offers && formData.offerStyle){
+          renderOffers(formData.offers, formData.offerStyle);
+        }
+        // Setup blinking banner box using banner text from formData
+        const bannerBox = document.getElementById("blinkingBannerBox");
+        let bannerInitial = formData.offerBanner || "Grab your offer today!";
+        let bannerClicked = formData.offerBannerClicked || "Visit our store now!";
+        bannerBox.textContent = bannerInitial;
+        // Set style to golden-green
+        bannerBox.style.borderColor = "goldenrod";
+        bannerBox.style.color = "green";
+        bannerBox.addEventListener("click", function(){
+          bannerBox.textContent = bannerClicked;
+        });
       });
 
-      // Firebase configuration – replace with your own details.
-      var firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_AUTH_DOMAIN",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_STORAGE_BUCKET",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
-      };
-      firebase.initializeApp(firebaseConfig);
-
-      var phoneInput = document.querySelector("#phone");
-      var iti = window.intlTelInput(phoneInput, {
-        initialCountry: "auto",
-        separateDialCode: true,
-        geoIpLookup: function(success, failure) {
-          fetch("https://ipinfo.io/json?token=YOUR_TOKEN")
-            .then(resp => resp.json())
-            .then(data => success(data.country))
-            .catch(() => success("us"));
-        },
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
-      });
-
-      function previewImage(event) {
-        const reader = new FileReader();
-        const preview = document.getElementById("imagePreview");
-        reader.onload = function(e) {
-          preview.src = e.target.result;
-          preview.style.display = "block";
-        };
-        reader.readAsDataURL(event.target.files[0]);
-      }
-
-      function resizeImage(file, callback) {
-        const img = new Image();
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          img.src = e.target.result;
-          img.onload = function() {
-            const canvas = document.createElement("canvas");
-            const MAX_WIDTH = 150, MAX_HEIGHT = 150;
-            let width = img.width, height = img.height;
-            if (width > height) {
-              if (width > MAX_WIDTH) {
-                height = height * (MAX_WIDTH / width);
-                width = MAX_WIDTH;
-              }
-            } else {
-              if (height > MAX_HEIGHT) {
-                width = width * (MAX_HEIGHT / height);
-                height = MAX_HEIGHT;
-              }
-            }
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0, width, height);
-            canvas.toBlob(function(blob) {
-              callback(blob);
-            }, "image/jpeg", 0.4);
-          };
-        };
-        reader.readAsDataURL(file);
-      }
-
-      // Banner dropdown toggles
-      function toggleBannerDropdown(id) {
-        const dropdown = document.getElementById(id);
-        dropdown.style.display = (dropdown.style.display === "none" || dropdown.style.display==="") ? "block" : "none";
-      }
-      function setBannerText(banner, text) {
-        if(banner === "banner1") {
-          document.getElementById("offerBanner").value = text;
-          document.getElementById("banner1Dropdown").style.display = "none";
-        } else {
-          document.getElementById("offerBannerClicked").value = text;
-          document.getElementById("banner2Dropdown").style.display = "none";
-        }
-      }
-
-      // --- Exclusive Offers Code ---
-      window.offerEditors = {}; // Quill instances for offers
-      var selectedOfferStyle = ""; // Holds the chosen style
-
-      function toggleOfferDetails(index) {
-        var container = document.getElementById("offerDetailsContainer" + index);
-        container.style.display = (container.style.display==="none" || container.style.display==="") ? "block" : "none";
-        if(container.style.display==="block" && !window.offerEditors[index]) {
-          window.offerEditors[index] = new Quill("#offerEditor" + index, {
-            theme: "snow",
-            modules: {
-              toolbar: [
-                [{ font: [] }, { size: [] }],
-                ["bold", "italic", "underline"],
-                [{ color: [] }, { background: [] }],
-                [{ align: [] }],
-                ["clean"]
-              ]
-            }
-          });
-        }
-      }
-      function previewOfferFile(event, index) {
-        const reader = new FileReader();
-        const preview = document.getElementById("offerFilePreview" + index);
-        reader.onload = function(e) {
-          preview.src = e.target.result;
-          preview.style.display = "block";
-        };
-        reader.readAsDataURL(event.target.files[0]);
-      }
-      function saveAndCloseOfferDetails(index) {
-        if(window.offerEditors[index]) {
-          document.getElementById("offerText" + index).value = window.offerEditors[index].root.innerHTML;
-        }
-        document.getElementById("offerDetailsContainer" + index).style.display = "none";
-      }
-
-      // Offer style preview
-      function toggleOfferStyleDropdown() {
-        var dropdown = document.getElementById("offerStyleDropdown");
-        dropdown.style.display = (dropdown.style.display==="none" || dropdown.style.display==="") ? "block" : "none";
-      }
-      function selectOfferStyle(style) {
-        selectedOfferStyle = style;
-        showOfferPreview(style);
-        document.getElementById("applyOfferStyleBtn").style.display = "inline-block";
-      }
-      function showOfferPreview(style) {
-        var previewDiv = document.getElementById("offerPreview");
+      // Render offers as flip cards (for horizontal style, see below)
+      function renderOffers(offers, style) {
+        const container = document.getElementById("offersFlipCardSection");
+        container.innerHTML = "<h3>Exclusive Offers</h3>";
         if(style === "accordion") {
-          previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Accordion Preview<br/><em>Click header to open details.</em></div>';
-        } else if(style === "horizontal") {
-          previewDiv.innerHTML = '<div style="overflow-x:auto; white-space:nowrap; border:1px solid #ccc; padding:10px; max-width:100%;">' +
-            '<div style="display:inline-block; width:25vw; height:25vw; background:#3498db; margin-right:5px; color:#fff; text-align:center; line-height:25vw;">Offer 1</div>' +
-            '</div>';
-        } else if(style === "tab") {
-          previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Tab-based Preview<br/><em>Switch between tabs.</em></div>';
-        } else if(style === "modal") {
-          previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Modal Popup Preview<br/><em>Click to open modal.</em></div>';
-        } else {
-          previewDiv.innerHTML = "";
-        }
-      }
-      function applyStyle() {
-        alert("Offer style '" + selectedOfferStyle + "' applied.");
-      }
-
-      // Validate & Generate
-      function validateForm() {
-        let valid = true;
-        const fieldIds = ["name", "businessName", "address", "email"];
-        fieldIds.forEach(function(id) {
-          const field = document.getElementById(id);
-          if(field) field.classList.remove("error");
-        });
-        fieldIds.forEach(function(id) {
-          const field = document.getElementById(id);
-          if(!field.value.trim()) { valid = false; field.classList.add("error"); }
-        });
-        if(!valid) { alert("Please fill all required fields."); return false; }
-        if(!iti.isValidNumber()) {
-          phoneInput.classList.add("error");
-          alert("Please enter a valid phone number.");
-          return false;
-        }
-        const emailValue = document.getElementById("email").value.trim();
-        if(!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(emailValue)) {
-          document.getElementById("email").classList.add("error");
-          alert("Please enter a valid email address.");
-          return false;
-        }
-        const socialMedia = [
-          { id:"facebook", regex:/^https?:\/\/(www\.)?facebook\.com\/.+$/i, message:"Please enter a valid Facebook URL." },
-          { id:"instagram", regex:/^https?:\/\/(www\.)?instagram\.com\/.+$/i, message:"Please enter a valid Instagram URL." },
-          { id:"youtube", regex:/^https?:\/\/(www\.)?youtube\.com\/.+$/i, message:"Please enter a valid YouTube URL." }
-        ];
-        socialMedia.forEach(function(sm) {
-          const value = document.getElementById(sm.id).value.trim();
-          if(value && !sm.regex.test(value)) {
-            document.getElementById(sm.id).classList.add("error");
-            alert(sm.message);
-            valid = false;
-          }
-        });
-        if(!valid) return false;
-        document.getElementById("businessInfo").value = quill.root.innerHTML;
-        return true;
-      }
-
-      function uploadOfferFile(file) {
-        return new Promise(function(resolve, reject) {
-          resizeImage(file, function(resizedBlob) {
-            const storageRef = firebase.storage().ref();
-            const imageRef = storageRef.child("offer_images/" + Date.now() + ".jpg");
-            imageRef.put(resizedBlob).then(function(snapshot) {
-              return snapshot.ref.getDownloadURL();
-            }).then(function(url) {
-              resolve(url);
-            }).catch(function(error) {
-              reject(error);
-            });
+          let html = '<div class="accordion-offer">';
+          offers.forEach((offer, index) => {
+            html += `<div class="offer-item" onclick="toggleAccordionContent(this)">
+                      <strong>${offer.title || "Offer " + (index+1)}</strong>
+                    </div>
+                    <div class="offer-content">
+                      ${offer.details || ""}
+                      ${offer.file ? `<br/><img src="${offer.file}" style="max-width:100%; margin-top:5px;"/>` : ""}
+                      <br/><button onclick="openWhatsAppChat()">Contact for more details</button>
+                      <br/><button class="close-detail" onclick="this.parentElement.style.display='none';">Close</button>
+                    </div>`;
           });
-        });
-      }
-      function uploadImageToFirebase(blob, formData) {
-        const storageRef = firebase.storage().ref();
-        const imageRef = storageRef.child("profile_images/" + Date.now() + ".jpg");
-        imageRef.put(blob).then(function(snapshot) {
-          return snapshot.ref.getDownloadURL();
-        }).then(function(url) {
-          formData.profileImage = url;
-          proceedToCard(formData);
-        }).catch(function(error) {
-          console.error("Error uploading image:", error);
-          alert("Image upload failed. Please try again.");
-        });
-      }
-      document.getElementById("generateCard").onclick = function() {
-        if(!validateForm()) return;
-        let formData = {
-          name: document.getElementById("name").value.trim(),
-          businessName: document.getElementById("businessName").value.trim(),
-          businessInfo: document.getElementById("businessInfo").value.trim(),
-          address: document.getElementById("address").value.trim(),
-          phone: iti.getNumber(),
-          email: document.getElementById("email").value.trim(),
-          facebook: document.getElementById("facebook").value.trim(),
-          instagram: document.getElementById("instagram").value.trim(),
-          youtube: document.getElementById("youtube").value.trim(),
-          // Banner texts
-          offerBanner: document.getElementById("offerBanner").value.trim(),
-          offerBannerClicked: document.getElementById("offerBannerClicked").value.trim()
-        };
-        // Gather offers
-        let offers = [];
-        let uploadPromises = [];
-        for(let i=1; i<=4; i++){
-          let offer = {};
-          let titleValue = document.getElementById("offerTitle"+i).value.trim();
-          offer.title = titleValue || ("Offer " + i);
-          if(window.offerEditors[i]) {
-            offer.details = window.offerEditors[i].root.innerHTML;
-          } else {
-            offer.details = document.getElementById("offerText"+i).value.trim();
-          }
-          let fileInput = document.getElementById("offerFile"+i);
-          if(fileInput && fileInput.files[0]) {
-            let file = fileInput.files[0];
-            let promise = uploadOfferFile(file).then(function(url) {
-              offer.file = url;
-            }).catch(function() {
-              offer.file = "";
-            });
-            uploadPromises.push(promise);
-          } else {
-            offer.file = "";
-          }
-          offers.push(offer);
-        }
-        formData.offers = offers;
-        formData.offerStyle = selectedOfferStyle;
-
-        Promise.all(uploadPromises).then(function(){
-          const profileImageFile = document.getElementById("profileImage").files[0];
-          if(profileImageFile){
-            resizeImage(profileImageFile, function(resizedBlob){
-              uploadImageToFirebase(resizedBlob, formData);
-            });
-          } else {
-            proceedToCard(formData);
-          }
-        });
-      };
-      function proceedToCard(formData) {
-        localStorage.setItem("formData", JSON.stringify(formData));
-        window.location.href = "card.html";
-      }
-      function toggleDropdown() {
-        const dropdownMenu = document.getElementById("dropdownMenu");
-        dropdownMenu.classList.toggle("active");
-      }
-      function toggleSubDropdown(id) {
-        const header = document.querySelector('h4[onclick*="'+id+'"]');
-        const subDropdown = document.getElementById(id+"SubDropdown");
-        subDropdown.classList.toggle("active");
-        if(header) {
-          const arrow = header.querySelector(".arrow-icon");
-          if(arrow) arrow.classList.toggle("rotated");
+          html += "</div>";
+          container.innerHTML += html;
+        } else if(style === "horizontal") {
+          // Create a container that forces one horizontal row
+          let html = '<div class="flipcards-container" style="display:flex; gap:10px; overflow-x:auto; padding:10px;">';
+          offers.forEach((offer, index) => {
+            html += `<div class="flip-card" onclick="toggleFlip(this)" style="width:25vw; height:25vw; perspective:1000px;">
+                      <div class="flip-card-inner" style="position:relative; width:100%; height:100%; transition: transform 0.6s; transform-style: preserve-3d;">
+                        <div class="flip-card-front" style="position:absolute; width:100%; height:100%; backface-visibility:hidden; background: var(--secondary-color); color:#fff; display:flex; align-items:center; justify-content:center;">
+                          ${offer.title || "Offer " + (index+1)}
+                        </div>
+                        <div class="flip-card-back" style="position:absolute; width:100%; height:100%; backface-visibility:hidden; background: var(--accent-color); color:#fff; transform: rotateY(180deg); display:flex; align-items:center; justify-content:center; padding:5px; box-sizing:border-box;">
+                          ${offer.details || "No details available."}
+                          ${offer.file ? `<br/><img src="${offer.file}" style="max-width:100%; margin-top:5px;"/>` : ""}
+                        </div>
+                      </div>
+                    </div>`;
+          });
+          html += "</div>";
+          container.innerHTML += html;
+        } else if(style === "tab") {
+          let tabButtons = '<div class="tab-offer"><div class="tab-buttons">';
+          let tabContents = "";
+          offers.forEach((offer, index) => {
+            tabButtons += `<button onclick="showTabOffer(${index})" id="tabBtn${index}" ${index===0?'class="active"':''}>${offer.title || "Offer " + (index+1)}</button>`;
+            tabContents += `<div class="tab-content" id="tabContent${index}" ${index===0?'class="tab-content active"':''}>
+                              ${offer.details || ""}
+                              ${offer.file ? `<br/><img src="${offer.file}" style="max-width:100%; margin-top:5px;"/>` : ""}
+                              <br/><button onclick="openWhatsAppChat()">Contact for more details</button>
+                              <br/><button class="close-detail" onclick="this.parentElement.style.display='none';">Close</button>
+                            </div>`;
+          });
+          tabButtons += '</div>';
+          container.innerHTML += tabButtons + tabContents + '</div>';
+        } else if(style === "modal") {
+          let html = "";
+          offers.forEach((offer, index) => {
+            html += `<div class="modal-offer-card" style="width:25vw; height:25vw; display:inline-block; background: var(--secondary-color); color:#fff; border-radius:6px; text-align:center; line-height:25vw; cursor:pointer; margin-right:10px;" onclick="openOfferModal(${index})">
+                      ${offer.title || "Offer " + (index+1)}
+                    </div>`;
+          });
+          container.innerHTML += html;
         }
       }
-      function previewMood(mood) { /* Placeholder */ }
-      function applyMood() { /* Placeholder */ }
-      function previewTheme(type, value) { /* Placeholder */ }
-      function applyTheme() { /* Placeholder */ }
-      function previewStyle(style) { showOfferPreview(style); }
+      // Flip card toggle for horizontal style
+      function toggleFlip(cardElem) {
+        const inner = cardElem.querySelector(".flip-card-inner");
+        if(inner.classList.contains("flipped")){
+          inner.classList.remove("flipped");
+          inner.style.transform = "rotateY(0deg)";
+        } else {
+          inner.classList.add("flipped");
+          inner.style.transform = "rotateY(180deg)";
+        }
+      }
+      // Accordion and Tab functions remain unchanged
+      function toggleAccordionContent(element) {
+        const content = element.nextElementSibling;
+        content.style.display = (content.style.display==="block") ? "none" : "block";
+      }
+      function showTabOffer(index) {
+        const buttons = document.querySelectorAll(".tab-offer .tab-buttons button");
+        const contents = document.querySelectorAll(".tab-offer .tab-content");
+        buttons.forEach((btn, idx) => {
+          btn.classList.toggle("active", idx===index);
+          contents[idx].classList.toggle("active", idx===index);
+        });
+      }
+      function openOfferModal(index) {
+        const modal = document.getElementById("offerModal");
+        document.getElementById("offerModalContent").innerHTML = "Offer " + (index+1) + " details here.<br/><button onclick='openWhatsAppChat()'>Contact for more details</button><br/><button onclick='closeOfferModal()'>Close</button>";
+        modal.style.display = "block";
+      }
+      function closeOfferModal() {
+        document.getElementById("offerModal").style.display = "none";
+      }
+      function openWhatsAppChat() {
+        window.open("https://wa.me/1234567890", "_blank");
+      }
+      // Settings panel behavior
+      document.addEventListener("click", (e) => {
+        if (!document.getElementById("styleControlsContainer").contains(e.target)) {
+          document.getElementById("styleDropdown").style.display = "none";
+        }
+      });
+      document.getElementById("styleButton").addEventListener("click", (e) => {
+        e.stopPropagation();
+        const dd = document.getElementById("styleDropdown");
+        dd.style.display = (dd.style.display==="block") ? "none" : "block";
+      });
     </script>
   </body>
 </html>
