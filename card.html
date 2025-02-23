@@ -239,7 +239,6 @@
         transform: scale(1.1);
         color: var(--accent-color);
       }
-
       /* Blinking Box for Banner Text */
       .blinking-banner-box {
         position: absolute;
@@ -260,7 +259,6 @@
         0%, 100% { opacity: 1; }
         50% { opacity: 0.4; }
       }
-
       /* Exclusive Offers Flip Card Section */
       #offersFlipCardSection {
         margin: 1rem 0;
@@ -685,71 +683,38 @@
           let tabButtons = '<div class="tab-offer"><div class="tab-buttons">';
           let tabContents = "";
           offers.forEach((offer, index) => {
-            tabButtons += `<button onclick="showTabOffer(${index})" id="tabBtn${index}" ${index===0?'class="active"':''}>${offer.title || "Offer " + (index+1)}</button>`;
-            tabContents += `<div class="tab-content" id="tabContent${index}" ${index===0?'class="tab-content active"':''}>
+            tabButtons += `<button data-tab="tab${index}" ${index===0 ? 'class="active"' : ''}>${offer.title || "Offer " + (index+1)}</button>`;
+            tabContents += `<div class="tab-content ${index===0 ? 'active' : ''}" id="tab${index}">
                               ${offer.details || ""}
                               ${offer.file ? `<br/><img src="${offer.file}" style="max-width:100%; margin-top:5px;"/>` : ""}
                               <br/><button onclick="openWhatsAppChat()">Contact for more details</button>
-                              <br/><button class="close-detail" onclick="this.parentElement.style.display='none';">Close</button>
                             </div>`;
           });
           tabButtons += "</div>";
           container.innerHTML += tabButtons + tabContents + "</div>";
         } else if(style === "modal") {
-          let html = "";
+          let html = '<div class="modal-offer-card" onclick="openOfferModal()">';
           offers.forEach((offer, index) => {
-            html += `<div class="modal-offer-card" onclick="openOfferModal(${index})">
-                      ${offer.title || "Offer " + (index+1)}
+            html += `<div>
+                      <strong>${offer.title || "Offer " + (index+1)}</strong>
                     </div>`;
           });
+          html += "</div>";
           container.innerHTML += html;
         }
       }
-      function toggleAccordionContent(element) {
-        const content = element.nextElementSibling;
-        content.style.display = (content.style.display==="block") ? "none" : "block";
+
+      // Dummy function for WhatsApp chat (should be replaced with actual implementation)
+      function openWhatsAppChat() {
+        window.open("https://wa.me/1234567890", "_blank");
       }
-      function toggleScrollOfferDetail(index) {
-        const detailDiv = document.getElementById("scrollOfferDetail");
-        if(!detailDiv.innerHTML) {
-          detailDiv.innerHTML = "Offer " + (index+1) + " details...<br/><button onclick='openWhatsAppChat()'>Contact for more details</button><br/><button onclick='this.parentElement.innerHTML=\"\";'>Close</button>";
-        } else {
-          detailDiv.innerHTML = "";
-        }
-      }
-      function showTabOffer(index) {
-        const buttons = document.querySelectorAll(".tab-offer .tab-buttons button");
-        const contents = document.querySelectorAll(".tab-offer .tab-content");
-        buttons.forEach((btn, idx) => {
-          btn.classList.toggle("active", idx===index);
-          contents[idx].classList.toggle("active", idx===index);
-        });
-      }
-      function openOfferModal(index) {
-        const modal = document.getElementById("offerModal");
-        document.getElementById("offerModalContent").innerHTML =
-          "Offer " + (index+1) + " details here.<br/><button onclick='openWhatsAppChat()'>Contact for more details</button><br/><button onclick='closeOfferModal()'>Close</button>";
-        modal.style.display = "block";
+      // Dummy function to open and close modal offer
+      function openOfferModal() {
+        document.getElementById("offerModal").style.display = "block";
       }
       function closeOfferModal() {
         document.getElementById("offerModal").style.display = "none";
       }
-      function openWhatsAppChat() {
-        window.open("https://wa.me/1234567890", "_blank");
-      }
-
-      // Settings panel
-      document.addEventListener("click", (e) => {
-        if (!document.getElementById("styleControlsContainer").contains(e.target)) {
-          document.getElementById("styleDropdown").style.display = "none";
-        }
-      });
-      const styleButton = document.getElementById("styleButton");
-      styleButton.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const styleDropdown = document.getElementById("styleDropdown");
-        styleDropdown.style.display = (styleDropdown.style.display === "block") ? "none" : "block";
-      });
     </script>
   </body>
 </html>
