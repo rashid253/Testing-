@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Offer Details</title>
+    <!-- Font Awesome for icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --accent-color: #e74c3c;
+        --background-color: #ffffff;
+      }
+      body {
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 1rem;
+        background: var(--background-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+      .offer-container {
+        max-width: 600px;
+        width: 100%;
+        background: #f9f9f9;
+        border-radius: 15px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        padding: 1.5rem;
+        box-sizing: border-box;
+        position: relative;
+        text-align: center;
+      }
+      .offer-header h1 {
+        margin: 0 0 1rem;
+        color: var(--primary-color);
+      }
+      .offer-details p {
+        font-size: 1rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+      .offer-image-upload {
+        border: 2px dashed var(--secondary-color);
+        border-radius: 8px;
+        padding: 1rem;
+        text-align: center;
+        margin-bottom: 1rem;
+        cursor: pointer;
+      }
+      .offer-image-upload input {
+        display: none;
+      }
+      #offerImagePreview {
+        max-width: 100%;
+        height: auto;
+        display: none;
+        margin-top: 1rem;
+      }
+      /* Live Chat Box */
+      .live-chat-box {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--secondary-color);
+        color: #fff;
+        padding: 0.8rem 1rem;
+        border-radius: 50px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      }
+      .live-chat-box:hover {
+        background: var(--accent-color);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="offer-container">
+      <div class="offer-header">
+        <h1 id="offerTitle">Special Offer!</h1>
+      </div>
+      <div class="offer-details">
+        <p id="offerDetails">
+          Enjoy an exclusive discount on our premium products. This offer is valid for a limited time only!
+        </p>
+      </div>
+      <div class="offer-image-upload" onclick="document.getElementById('offerImageInput').click();">
+        <i class="fas fa-upload fa-2x"></i>
+        <p>Upload Offer Image</p>
+        <input type="file" id="offerImageInput" accept="image/*" onchange="previewOfferImage(event)" />
+        <img id="offerImagePreview" alt="Offer Image Preview" />
+      </div>
+    </div>
+
+    <!-- Live Chat Button -->
+    <a class="live-chat-box" href="https://wa.me/1234567890" target="_blank">
+      <i class="fas fa-comment-dots"></i>
+      <span>Contact for More Details</span>
+    </a>
+
+    <script>
+      function previewOfferImage(event) {
+        const file = event.target.files[0];
+        if(file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const preview = document.getElementById('offerImagePreview');
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+          }
+          reader.readAsDataURL(file);
+        }
+      }
+    </script>
+  </body>
+</html>
