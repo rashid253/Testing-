@@ -15,13 +15,12 @@
       --primary-color: #2C3E50;
       --secondary-color: #3498DB;
       --accent-color: #E74C3E;
-      --neutral-light: rgba(236, 240, 241, 0.9);
+      --neutral-light: rgba(236,240,241,0.9);
       --neutral-dark: #34495E;
       --background-color: #ffffff;
-      --text-color: #000000;
     }
     body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 1rem;
       background: var(--background-color);
@@ -29,25 +28,21 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      position: relative;
-      transition: background 0.3s ease, color 0.3s ease;
     }
     .form-container {
       width: 100%;
       max-width: 450px;
-      background: white;
+      background: #fff;
       border-radius: 15px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.12);
       padding: 1.5rem;
       margin: 1rem;
       box-sizing: border-box;
-      position: relative;
-      transition: filter 0.3s ease;
     }
     .form-header {
+      text-align: center;
       color: var(--primary-color);
       margin-bottom: 1.5rem;
-      text-align: center;
     }
     .form-grid {
       display: grid;
@@ -73,8 +68,8 @@
       border: 1px solid var(--neutral-light);
       border-radius: 6px;
       font-size: 0.9rem;
-      transition: border-color 0.2s ease;
       box-sizing: border-box;
+      transition: border-color 0.2s ease;
     }
     input:focus, select:focus, textarea:focus {
       border-color: var(--secondary-color);
@@ -87,7 +82,6 @@
       border: 2px solid var(--accent-color);
     }
     .image-upload-group {
-      grid-column: 1 / -1;
       text-align: center;
       border: 2px dashed var(--neutral-light);
       padding: 1rem;
@@ -103,21 +97,11 @@
       margin: 0.5rem auto;
       display: none;
     }
-    #generateCard {
-      background: var(--secondary-color);
-      color: white;
-      width: 100%;
-      padding: 0.8rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    /* New styles for Exclusive Offers Section */
+    /* Exclusive Offers Section */
     .exclusive-offers {
       margin-top: 1.5rem;
-      border-top: 2px solid var(--secondary-color);
       padding-top: 1rem;
+      border-top: 2px solid var(--secondary-color);
     }
     .exclusive-offers h3 {
       text-align: center;
@@ -134,10 +118,6 @@
       justify-content: space-between;
       align-items: center;
     }
-    .offer-item .offer-details {
-      display: none;
-      margin-top: 0.5rem;
-    }
     .offer-item .toggle-details-btn {
       background: var(--secondary-color);
       color: #fff;
@@ -145,6 +125,11 @@
       padding: 0.3rem 0.5rem;
       border-radius: 4px;
       cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .offer-details {
+      display: none;
+      margin-top: 0.5rem;
     }
     .offer-style-select {
       margin-top: 1rem;
@@ -164,8 +149,8 @@
       max-width: 300px;
       margin: 0 auto;
       max-height: 25vh;
-      cursor: pointer;
       perspective: 1000px;
+      cursor: pointer;
     }
     .offer-preview .flip-card-inner {
       position: relative;
@@ -210,13 +195,23 @@
       cursor: pointer;
       font-size: 1rem;
     }
+    #generateCard {
+      background: var(--secondary-color);
+      color: white;
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
   </style>
   <!-- Include Quill JS -->
   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 </head>
 <body>
   <div class="form-container" id="formContainer">
-    <!-- Existing Form Header and Input Fields -->
     <div class="form-header">
       <h2>Create Business Card</h2>
       <p>Fill in all required information</p>
@@ -238,13 +233,12 @@
         <label for="businessName">Business Name <span class="required">*</span></label>
         <input type="text" id="businessName" placeholder="Business Name" required />
       </div>
-      <!-- Business Info using Quill Editor -->
       <div class="input-group">
         <label for="businessInfo">Business Info <span class="required">*</span></label>
         <div id="editor-container"></div>
-        <textarea id="businessInfo" name="businessInfo" style="display:none;" required></textarea>
+        <textarea id="businessInfo" style="display:none;" required></textarea>
         <small style="color: var(--neutral-dark); font-size: 0.8rem;">
-          <strong>Instructions:</strong> Write 3 to 5 paragraphs. Each paragraph must not exceed 150 words. Separate paragraphs with a new line.
+          Write 3 to 5 paragraphs (each not more than 150 words). Separate paragraphs with new lines.
         </small>
       </div>
       <div class="input-group">
@@ -257,22 +251,21 @@
       </div>
       <div class="input-group">
         <label for="email">Email Address <span class="required">*</span></label>
-        <input type="email" id="email" placeholder="Email Address" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address." />
+        <input type="email" id="email" placeholder="Email Address" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" />
       </div>
       <div class="input-group">
         <label for="facebook">Facebook URL</label>
-        <input type="url" id="facebook" placeholder="Facebook URL" pattern="https?://(www\.)?facebook\.com/.*" title="Please enter a valid Facebook URL." />
+        <input type="url" id="facebook" placeholder="Facebook URL" />
       </div>
       <div class="input-group">
         <label for="instagram">Instagram URL</label>
-        <input type="url" id="instagram" placeholder="Instagram URL" pattern="https?://(www\.)?instagram\.com/.*" title="Please enter a valid Instagram URL." />
+        <input type="url" id="instagram" placeholder="Instagram URL" />
       </div>
       <div class="input-group">
         <label for="youtube">YouTube URL</label>
-        <input type="url" id="youtube" placeholder="YouTube URL" pattern="https?://(www\.)?youtube\.com/.*" title="Please enter a valid YouTube URL." />
+        <input type="url" id="youtube" placeholder="YouTube URL" />
       </div>
     </div>
-    
     <!-- Exclusive Offers Section -->
     <div class="exclusive-offers">
       <h3>Exclusive Offers</h3>
@@ -331,7 +324,7 @@
           <option value="modal">Modal Popup Offers</option>
         </select>
       </div>
-      <!-- Offer Preview -->
+      <!-- Offer Preview (simple flip-card preview) -->
       <div class="offer-preview" id="offerPreviewArea">
         <div class="flip-card" id="offerPreviewCard">
           <div class="flip-card-inner">
@@ -355,33 +348,18 @@
     // Initialize Quill Editor for business info
     var quill = new Quill('#editor-container', {
       theme: 'snow',
-      modules: {
-        toolbar: [
-          [{ 'font': [] }, { 'size': [] }],
-          ['bold', 'italic', 'underline'],
-          [{ 'color': [] }, { 'background': [] }],
-          [{ 'align': [] }],
-          ['clean']
-        ]
-      }
+      modules: { toolbar: [['bold', 'italic', 'underline'], [{ 'color': [] }], [{ 'align': [] }], ['clean']] }
     });
-    // Initialize Quill Editors for each offer details
-    var quillOffers = [];
+    // Initialize Quill Editors for each offer details (1 to 4)
+    var quillOffers = {};
     for (let i = 1; i <= 4; i++) {
       quillOffers[i] = new Quill('#offerDetailsEditor' + i, {
         theme: 'snow',
-        modules: {
-          toolbar: [
-            ['bold', 'italic', 'underline'],
-            [{ 'color': [] }, { 'background': [] }],
-            [{ 'align': [] }],
-            ['clean']
-          ]
-        }
+        modules: { toolbar: [['bold', 'italic', 'underline'], [{ 'color': [] }], [{ 'align': [] }], ['clean']] }
       });
     }
     
-    // Firebase configuration – replace with your own details.
+    // Firebase configuration – REPLACE with your actual credentials.
     var firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_AUTH_DOMAIN",
@@ -450,7 +428,7 @@
       container.style.display = (container.style.display === "block") ? "none" : "block";
     }
     
-    // Process exclusive offers: gather title, details, and upload file if provided.
+    // Process exclusive offers: returns a promise that resolves with an array of offers
     function processExclusiveOffers() {
       let offers = [];
       let promises = [];
@@ -482,7 +460,7 @@
       return Promise.all(promises).then(() => offers);
     }
     
-    // Update preview based on selected offer style
+    // Update preview flip-card based on selected offer style from dropdown
     document.getElementById('offerStyleSelect').addEventListener('change', function() {
       const style = this.value;
       const previewCard = document.getElementById('offerPreviewCard');
@@ -537,20 +515,7 @@
         alert("Please enter a valid email address.");
         return false;
       }
-      const socialMedia = [
-        { id: 'facebook', regex: /^https?:\/\/(www\.)?facebook\.com\/.+$/i, message: "Please enter a valid Facebook URL." },
-        { id: 'instagram', regex: /^https?:\/\/(www\.)?instagram\.com\/.+$/i, message: "Please enter a valid Instagram URL." },
-        { id: 'youtube', regex: /^https?:\/\/(www\.)?youtube\.com\/.+$/i, message: "Please enter a valid YouTube URL." }
-      ];
-      socialMedia.forEach(function(sm) {
-        const value = document.getElementById(sm.id).value.trim();
-        if (value && !sm.regex.test(value)) { 
-          document.getElementById(sm.id).classList.add('error'); 
-          alert(sm.message); 
-          valid = false; 
-        }
-      });
-      if (!valid) return false;
+      // Copy Quill editor content to hidden textarea
       document.getElementById('businessInfo').value = quill.root.innerHTML;
       return true;
     }
@@ -599,141 +564,6 @@
         redirectToCard(formData);
       }
     };
-    
-    // Existing dropdown functions for form container (unchanged)
-    function toggleDropdown() {
-      const dropdownMenu = document.getElementById('dropdownMenu');
-      dropdownMenu.classList.toggle('active');
-    }
-    
-    function toggleSubDropdown(id) {
-      const header = document.querySelector('h4[onclick*="' + id + '"]');
-      const subDropdown = document.getElementById(id + 'SubDropdown');
-      subDropdown.classList.toggle('active');
-      if(header) {
-        const arrow = header.querySelector('.arrow-icon');
-        if (arrow) arrow.classList.toggle('rotated');
-      }
-    }
-    
-    var appliedMood = null, appliedTheme = null, appliedStyle = null;
-    var moodPreviewValue = null, themePreviewValue = null, stylePreviewValue = null;
-    
-    function updateFormContainer() {
-      var formContainer = document.getElementById('formContainer');
-      formContainer.style.backgroundColor = "";
-      formContainer.style.color = "";
-      formContainer.style.backgroundImage = "";
-      formContainer.style.boxShadow = "";
-      formContainer.style.border = "";
-      if (appliedMood === 'day'){
-        formContainer.style.backgroundColor = '#ffffff';
-        formContainer.style.color = '#000000';
-      } else if (appliedMood === 'night'){
-        formContainer.style.backgroundColor = '#34495E';
-        formContainer.style.color = '#ffffff';
-      }
-      if (appliedTheme) {
-        if (appliedTheme.option === 'default'){
-          formContainer.style.backgroundColor = "";
-          formContainer.style.backgroundImage = "";
-        } else if (appliedTheme.option === 'image'){
-          formContainer.style.backgroundImage = `url(${appliedTheme.src})`;
-          formContainer.style.backgroundSize = 'cover';
-        } else if (appliedTheme.option === 'color'){
-          formContainer.style.backgroundColor = appliedTheme.value;
-        }
-      }
-      if (appliedStyle === 'styleA'){
-        formContainer.style.backgroundColor = "#f9f9f9";
-        formContainer.style.border = "2px solid var(--secondary-color)";
-      } else if (appliedStyle === 'styleB'){
-        formContainer.style.backgroundColor = "#ffffff";
-        formContainer.style.boxShadow = "0 0 15px rgba(0,0,0,0.5)";
-      }
-    }
-    
-    function previewMood(value) {
-      var formContainer = document.getElementById('formContainer');
-      if(value === 'day'){
-        formContainer.style.backgroundColor = '#ffffff';
-        formContainer.style.color = '#000000';
-      } else if(value === 'night'){
-        formContainer.style.backgroundColor = '#34495E';
-        formContainer.style.color = '#ffffff';
-      }
-      moodPreviewValue = value;
-      document.getElementById('moodActionButtons').style.display = 'flex';
-    }
-    
-    function applyMood() {
-      appliedMood = moodPreviewValue;
-      moodPreviewValue = null;
-      document.getElementById('moodActionButtons').style.display = 'none';
-    }
-    
-    function previewTheme(option, value) {
-      var formContainer = document.getElementById('formContainer');
-      if(option === 'default'){
-        formContainer.style.backgroundColor = "";
-        formContainer.style.backgroundImage = "";
-        themePreviewValue = { option: 'default' };
-      } else if(option === 'image'){
-        formContainer.style.backgroundImage = `url(${value})`;
-        formContainer.style.backgroundSize = 'cover';
-        themePreviewValue = { option: 'image', src: value };
-      } else if(option === 'color'){
-        formContainer.style.backgroundImage = 'none';
-        formContainer.style.backgroundColor = value;
-        themePreviewValue = { option: 'color', value: value };
-      }
-      document.getElementById('themeActionButtons').style.display = 'flex';
-    }
-    
-    function applyTheme() {
-      appliedTheme = themePreviewValue;
-      themePreviewValue = null;
-      document.getElementById('themeActionButtons').style.display = 'none';
-    }
-    
-    function previewStyle(style) {
-      var formContainer = document.getElementById('formContainer');
-      if(style === 'default'){
-        formContainer.style.backgroundColor = "";
-        formContainer.style.boxShadow = "";
-        formContainer.style.border = "";
-      } else if(style === 'styleA'){
-        formContainer.style.backgroundColor = "#f9f9f9";
-        formContainer.style.border = "2px solid var(--secondary-color)";
-      } else if(style === 'styleB'){
-        formContainer.style.backgroundColor = "#ffffff";
-        formContainer.style.boxShadow = "0 0 15px rgba(0,0,0,0.5)";
-      }
-      stylePreviewValue = style;
-      document.getElementById('styleActionButtons').style.display = 'flex';
-    }
-    
-    function applyStyle() {
-      appliedStyle = stylePreviewValue;
-      stylePreviewValue = null;
-      document.getElementById('styleActionButtons').style.display = 'none';
-    }
-    
-    document.addEventListener('click', function(event) {
-      const dropdownMenu = document.getElementById('dropdownMenu');
-      if(dropdownMenu.classList.contains('active') &&
-         !event.target.closest('.dropdown-menu') &&
-         !event.target.closest('.gear-icon')){
-        dropdownMenu.classList.remove('active');
-        moodPreviewValue = null;
-        themePreviewValue = null;
-        stylePreviewValue = null;
-        updateFormContainer();
-        document.getElementById('moodActionButtons').style.display = 'none';
-        document.getElementById('themeActionButtons').style.display = 'none';
-        document.getElementById('styleActionButtons').style.display = 'none';
-      }
-    });
   </script>
 </body>
 </html>
