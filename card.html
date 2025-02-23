@@ -22,8 +22,8 @@
         --card-background: #fff;
         --body-bg: linear-gradient(135deg, #cfd8dc, #eceff1);
         --business-info-bg: #e0f7fa;
-        /* 2mm ~ 0.08in */
-        --side-padding: 0.08in;
+        /* Reduced side padding: 0.02in (~0.5mm) */
+        --side-padding: 0.02in;
       }
       body {
         font-family: 'Segoe UI', sans-serif;
@@ -50,8 +50,7 @@
         overflow: hidden;
       }
       /* Settings and Share Icons */
-      #styleControlsContainer,
-      .top-icons {
+      #styleControlsContainer, .top-icons {
         position: absolute;
         z-index: 10;
       }
@@ -207,12 +206,12 @@
       /* Offers Section */
       .offers-section {
         margin: 1rem 0;
-        padding: 1rem var(--side-padding); /* horizontal padding of 2mm */
+        padding: 1rem var(--side-padding);
         border: 1px dashed var(--neutral-light);
         border-radius: 10px;
         position: relative;
       }
-      /* Blinking Banner (Exclusive Offer) – placed at top–right of the Offers container */
+      /* Blinking Banner */
       .exclusive-offer-banner {
         position: absolute;
         top: -1rem;
@@ -226,18 +225,17 @@
         font-size: 0.8rem;
         z-index: 10;
       }
-      /* Auto–scroll container */
+      /* Auto-scroll container */
       .flip-cards-container {
         overflow: hidden;
         position: relative;
-        margin-top: 1.2rem; /* leave space for banner */
+        margin-top: 1.2rem;
       }
       .flip-cards-track {
         display: inline-flex;
         gap: 0.08in; /* 2mm gap */
         animation: scrollCards 20s linear infinite;
       }
-      /* Duplicate content for seamless scrolling */
       @keyframes scrollCards {
         0% { transform: translateX(0); }
         100% { transform: translateX(-50%); }
@@ -405,7 +403,7 @@
   </head>
   <body>
     <div class="card-container" id="cardContainer">
-      <!-- Settings and Share -->
+      <!-- Settings and Share Icons -->
       <div id="styleControlsContainer">
         <button id="styleButton" title="Settings"><i class="fas fa-cog"></i></button>
         <div id="styleDropdown">
@@ -480,9 +478,7 @@
           <p class="contact-info" id="cardPhone"></p>
           <p class="contact-info" id="cardEmail"></p>
         </div>
-        <div class="connect-btn" id="connectButton" title="Save Contact">
-          <i class="fas fa-save"></i>
-        </div>
+        <div class="connect-btn" id="connectButton" title="Save Contact"><i class="fas fa-save"></i></div>
       </div>
       <!-- Offers Section -->
       <div class="offers-section" id="offersFlipCardSection">
@@ -541,20 +537,24 @@
           }, 8000);
         }
         // Social Links
-        const socialLinks = { facebook: document.getElementById("facebookButton"), instagram: document.getElementById("instagramButton"), youtube: document.getElementById("youtubeButton") };
+        const socialLinks = {
+          facebook: document.getElementById("facebookButton"),
+          instagram: document.getElementById("instagramButton"),
+          youtube: document.getElementById("youtubeButton")
+        };
         Object.entries(socialLinks).forEach(([platform, element]) => {
           const url = formData[platform];
-          if(url) { element.href = url; element.style.visibility = "visible"; element.target = "_blank"; }
+          if (url) { element.href = url; element.style.visibility = "visible"; element.target = "_blank"; }
           else { element.style.visibility = "hidden"; }
         });
         // Render Offers (if offerStyle is "horizontal")
-        if(formData.offers && formData.offerStyle === "horizontal") {
+        if (formData.offers && formData.offerStyle === "horizontal") {
           renderFlipCards(formData.offers);
         }
       });
-      // Array of preset background colors for card fronts
+      // Preset background colors for card fronts
       const cardColors = ["#1abc9c", "#3498db", "#9b59b6", "#e67e22", "#e74c3c", "#2ecc71", "#f1c40f", "#34495e"];
-      // Render flip cards with duplication for seamless scrolling
+      // Render flip cards (with content duplicated for seamless scrolling)
       function renderFlipCards(offers) {
         const track = document.getElementById("flipCardsTrack");
         let cardsHTML = "";
@@ -579,7 +579,6 @@
           `;
           cardsHTML += cardHTML;
         });
-        // Duplicate for seamless scroll
         track.innerHTML = cardsHTML + cardsHTML;
       }
       function openOfferDetails(index) {
