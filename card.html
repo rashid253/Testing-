@@ -239,7 +239,6 @@
         transform: scale(1.1);
         color: var(--accent-color);
       }
-
       /* Blinking Banner Box */
       .blinking-banner-box {
         position: absolute;
@@ -260,7 +259,6 @@
         0%, 100% { opacity: 1; }
         50% { opacity: 0.4; }
       }
-
       /* Exclusive Offers Flip Card Section */
       #offersFlipCardSection {
         margin: 1rem 0;
@@ -276,11 +274,12 @@
       /* Flip Card Styles */
       .flip-card {
         background-color: transparent;
-        width: 2.5cm;
-        height: 2.5cm;
+        width: 2.5in;
+        height: 2.5in;
         perspective: 1000px;
         display: inline-block;
         margin-right: 5px;
+        cursor: pointer;
       }
       .flip-card-inner {
         position: relative;
@@ -289,6 +288,10 @@
         text-align: center;
         transition: transform 0.6s;
         transform-style: preserve-3d;
+      }
+      /* Add a subtle hover effect */
+      .flip-card:hover {
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       }
       /* When card is touched or clicked, add a class "flipped" */
       .flip-card.flipped .flip-card-inner {
@@ -302,33 +305,28 @@
         -webkit-backface-visibility: hidden;
         border-radius: 6px;
         box-sizing: border-box;
-        padding: 0.2cm;
+        padding: 0.2in;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
       .flip-card-front {
         background: var(--secondary-color);
         color: #fff;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        font-size: 0.3cm;
-        overflow: hidden;
+        font-size: 0.5in;
       }
       .flip-card-back {
         background: var(--accent-color);
         color: #fff;
         transform: rotateY(180deg);
-        display: flex;
-        align-items: center;
-        justify-content: center;
       }
       .more-details-btn {
         background: #fff;
         color: var(--accent-color);
-        padding: 0.2cm 0.4cm;
+        padding: 0.2in 0.4in;
         border: none;
         border-radius: 4px;
-        font-size: 0.3cm;
+        font-size: 0.3in;
         cursor: pointer;
       }
       /* Business Info Section */
@@ -646,18 +644,17 @@
           // Create inner container
           const flipCardInner = document.createElement("div");
           flipCardInner.className = "flip-card-inner";
-          // Front face: display offer title and snippet (2-3 lines)
+          // Front face: display only the offer title
           const frontFace = document.createElement("div");
           frontFace.className = "flip-card-face flip-card-front";
-          frontFace.innerHTML = `<strong>${offer.title || "Offer " + (index + 1)}</strong><br>
-                                 <span>${offer.details ? offer.details.substring(0, 60) + "..." : ""}</span>`;
+          frontFace.textContent = offer.title || "Offer " + (index + 1);
           // Back face: contains More Details button
           const backFace = document.createElement("div");
           backFace.className = "flip-card-face flip-card-back";
           const moreBtn = document.createElement("button");
           moreBtn.className = "more-details-btn";
           moreBtn.textContent = "More Details";
-          // Prevent card flip toggle when clicking button
+          // Prevent card flip toggle when clicking the button
           moreBtn.addEventListener("click", function (e) {
             e.stopPropagation();
             openOfferDetails(index);
