@@ -44,20 +44,6 @@
       position: relative;
       transition: filter 0.3s ease;
     }
-    /* Gear icon */
-    .gear-icon {
-      position: absolute;
-      top: -10px;
-      right: 1rem;
-      font-size: 1.5rem;
-      color: var(--primary-color);
-      cursor: pointer;
-      transition: transform 0.3s ease, color 0.3s ease;
-    }
-    .gear-icon:hover {
-      color: var(--secondary-color);
-      transform: rotate(90deg);
-    }
     .form-header {
       color: var(--primary-color);
       margin-bottom: 1.5rem;
@@ -109,7 +95,6 @@
       cursor: pointer;
       position: relative;
     }
-    /* Profile Image Preview */
     #imagePreview {
       width: 50px;
       height: 50px;
@@ -128,196 +113,110 @@
       cursor: pointer;
       font-size: 1rem;
     }
-    /* Dropdown Menu */
-    .dropdown-menu {
-      display: none;
-      position: absolute;
-      top: 2rem;
-      right: -20px;
-      background: #fff;
+    /* New styles for Exclusive Offers Section */
+    .exclusive-offers {
+      margin-top: 1.5rem;
+      border-top: 2px solid var(--secondary-color);
+      padding-top: 1rem;
+    }
+    .exclusive-offers h3 {
+      text-align: center;
+      color: var(--primary-color);
+    }
+    .offer-item {
       border: 1px solid var(--neutral-light);
       border-radius: 8px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
       padding: 0.5rem;
-      width: 80px;
-      z-index: 1000;
+      margin-bottom: 1rem;
+    }
+    .offer-item .offer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .offer-item .offer-details {
+      display: none;
+      margin-top: 0.5rem;
+    }
+    .offer-item .toggle-details-btn {
+      background: var(--secondary-color);
+      color: #fff;
+      border: none;
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .offer-style-select {
+      margin-top: 1rem;
       text-align: center;
     }
-    .dropdown-menu.active { display: block; }
-    .dropdown-menu h4 {
-      margin: 0 0 0.3rem;
-      font-size: 0.8rem;
-      font-family: 'Roboto', sans-serif;
-      font-weight: bold;
-      background: var(--secondary-color);
-      color: #ffffff;
+    .offer-style-select select {
+      padding: 0.5rem;
+      border-radius: 4px;
+      border: 1px solid var(--neutral-light);
+    }
+    .offer-preview {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .offer-preview .flip-card {
+      width: 90%;
+      max-width: 300px;
+      margin: 0 auto;
+      max-height: 25vh;
       cursor: pointer;
+      perspective: 1000px;
+    }
+    .offer-preview .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .offer-preview .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .offer-preview .flip-card-front, .offer-preview .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0.4rem;
-      border-radius: 4px;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.35);
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
-      transition: transform 0.1s ease, box-shadow 0.2s ease;
+      padding: 0.5rem;
+      box-sizing: border-box;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
     }
-    .dropdown-menu h4:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.45);
-    }
-    .arrow-icon {
-      transition: transform 0.3s ease;
-      font-size: 0.8rem;
-      margin-left: 0.2rem;
-    }
-    .arrow-icon.rotated { transform: rotate(-180deg); }
-    .dropdown-menu button {
-      width: 100%;
-      padding: 0.3rem;
-      margin: 0.2rem 0;
-      background: #ffffff;
-      color: var(--secondary-color);
-      border: 1px solid var(--neutral-light);
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.8rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      transition: transform 0.1s ease, box-shadow 0.2s ease;
-    }
-    .dropdown-menu button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-    .sub-dropdown {
-      display: none;
-      margin: 0.3rem 0;
-    }
-    .sub-dropdown.active { display: block; }
-    .image-thumbnails, .color-thumbnails {
-      display: flex;
-      gap: 0.3rem;
-      overflow-x: auto;
-      white-space: nowrap;
-      margin-bottom: 0.3rem;
-    }
-    .image-thumbnails img {
-      width: 25px;
-      height: 25px;
-      object-fit: cover;
-      border-radius: 4px;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: border-color 0.2s ease;
-    }
-    .image-thumbnails img:hover { border-color: var(--secondary-color); }
-    .color-thumbnails div {
-      width: 25px;
-      height: 25px;
-      border-radius: 4px;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: border-color 0.2s ease;
-    }
-    .color-thumbnails div:hover { border-color: var(--secondary-color); }
-    .action-buttons {
-      display: none;
-      margin-top: 5px;
-      display: flex;
-      justify-content: center;
-    }
-    .action-buttons button {
-      padding: 0.3rem 0.5rem;
-      border: none;
-      border-radius: 4px;
+    .offer-preview .flip-card-front {
       background: var(--secondary-color);
-      color: #ffffff;
-      cursor: pointer;
-      font-size: 0.8rem;
     }
-    .glassy-background {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      padding: 1.5rem;
+    .offer-preview .flip-card-back {
+      background: var(--accent-color);
+      transform: rotateY(180deg);
     }
-    /* Quill editor container styling */
-    #editor-container {
-      height: 200px;
-      background: #ffffff;
-      border: 1px solid var(--neutral-light);
+    .apply-offers-btn {
+      margin-top: 1rem;
+      background: var(--secondary-color);
+      color: #fff;
+      border: none;
+      padding: 0.7rem;
       border-radius: 6px;
-    }
-    @media (max-width: 480px) {
-      .form-container { max-width: 90%; padding: 1rem; }
+      width: 100%;
+      cursor: pointer;
+      font-size: 1rem;
     }
   </style>
   <!-- Include Quill JS -->
   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 </head>
 <body>
-  <div class="form-container glassy-background" id="formContainer">
-    <!-- Gear Icon -->
-    <div class="gear-icon" onclick="toggleDropdown()">
-      <i class="fas fa-cog"></i>
-    </div>
-    <!-- Dropdown Menu -->
-    <div class="dropdown-menu" id="dropdownMenu">
-      <h4 onclick="toggleSubDropdown('mood')">
-        Mood <i class="fas fa-chevron-down arrow-icon"></i>
-      </h4>
-      <div id="moodSubDropdown" class="sub-dropdown">
-        <button onclick="previewMood('day')">Day</button>
-        <button onclick="previewMood('night')">Night</button>
-        <div id="moodActionButtons" class="action-buttons">
-          <button onclick="applyMood()">Apply</button>
-        </div>
-      </div>
-      <h4 onclick="toggleSubDropdown('theme')">
-        Theme <i class="fas fa-chevron-down arrow-icon"></i>
-      </h4>
-      <div id="themeSubDropdown" class="sub-dropdown">
-        <button onclick="previewTheme('default')">Default</button>
-        <button onclick="toggleSubDropdown('image')">
-          Image <i class="fas fa-chevron-down arrow-icon"></i>
-        </button>
-        <div id="imageSubDropdown" class="sub-dropdown">
-          <div class="image-thumbnails">
-            <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Image 1" onclick="previewTheme('image', this.src)">
-            <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Image 2" onclick="previewTheme('image', this.src)">
-            <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Image 3" onclick="previewTheme('image', this.src)">
-            <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Image 4" onclick="previewTheme('image', this.src)">
-            <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Image 5" onclick="previewTheme('image', this.src)">
-          </div>
-        </div>
-        <button onclick="toggleSubDropdown('color')">
-          Color <i class="fas fa-chevron-down arrow-icon"></i>
-        </button>
-        <div id="colorSubDropdown" class="sub-dropdown">
-          <div class="color-thumbnails">
-            <div style="background-color: #3498DB;" onclick="previewTheme('color', '#3498DB')"></div>
-            <div style="background-color: #E74C3E;" onclick="previewTheme('color', '#E74C3E')"></div>
-            <div style="background-color: #2ECC71;" onclick="previewTheme('color', '#2ECC71')"></div>
-            <div style="background-color: #9B59B6;" onclick="previewTheme('color', '#9B59B6')"></div>
-            <div style="background-color: #F1C40F;" onclick="previewTheme('color', '#F1C40F')"></div>
-          </div>
-        </div>
-        <div id="themeActionButtons" class="action-buttons">
-          <button onclick="applyTheme()">Apply</button>
-        </div>
-      </div>
-      <h4 onclick="toggleSubDropdown('style')">
-        Style <i class="fas fa-chevron-down arrow-icon"></i>
-      </h4>
-      <div id="styleSubDropdown" class="sub-dropdown">
-        <button onclick="previewStyle('default')">Default</button>
-        <button onclick="previewStyle('styleA')">Style A</button>
-        <button onclick="previewStyle('styleB')">Style B</button>
-        <div id="styleActionButtons" class="action-buttons">
-          <button onclick="applyStyle()">Apply</button>
-        </div>
-      </div>
-    </div>
-    <!-- Form Header -->
+  <div class="form-container" id="formContainer">
+    <!-- Existing Form Header and Input Fields -->
     <div class="form-header">
       <h2>Create Business Card</h2>
       <p>Fill in all required information</p>
@@ -342,9 +241,7 @@
       <!-- Business Info using Quill Editor -->
       <div class="input-group">
         <label for="businessInfo">Business Info <span class="required">*</span></label>
-        <!-- Quill editor container -->
         <div id="editor-container"></div>
-        <!-- Hidden textarea to store HTML content -->
         <textarea id="businessInfo" name="businessInfo" style="display:none;" required></textarea>
         <small style="color: var(--neutral-dark); font-size: 0.8rem;">
           <strong>Instructions:</strong> Write 3 to 5 paragraphs. Each paragraph must not exceed 150 words. Separate paragraphs with a new line.
@@ -375,15 +272,87 @@
         <input type="url" id="youtube" placeholder="YouTube URL" pattern="https?://(www\.)?youtube\.com/.*" title="Please enter a valid YouTube URL." />
       </div>
     </div>
+    
+    <!-- Exclusive Offers Section -->
+    <div class="exclusive-offers">
+      <h3>Exclusive Offers</h3>
+      <!-- Four offer items -->
+      <div class="offer-item" id="offerItem1">
+        <div class="offer-header">
+          <input type="text" id="offerTitle1" placeholder="Offer 1 Title" />
+          <button type="button" class="toggle-details-btn" onclick="toggleOfferDetails(1)">Details</button>
+        </div>
+        <div class="offer-details" id="offerDetailsContainer1">
+          <div id="offerDetailsEditor1" style="height:100px;"></div>
+          <textarea id="offerDetails1" style="display:none;"></textarea>
+          <input type="file" id="offerFile1" accept="image/*" />
+        </div>
+      </div>
+      <div class="offer-item" id="offerItem2">
+        <div class="offer-header">
+          <input type="text" id="offerTitle2" placeholder="Offer 2 Title" />
+          <button type="button" class="toggle-details-btn" onclick="toggleOfferDetails(2)">Details</button>
+        </div>
+        <div class="offer-details" id="offerDetailsContainer2">
+          <div id="offerDetailsEditor2" style="height:100px;"></div>
+          <textarea id="offerDetails2" style="display:none;"></textarea>
+          <input type="file" id="offerFile2" accept="image/*" />
+        </div>
+      </div>
+      <div class="offer-item" id="offerItem3">
+        <div class="offer-header">
+          <input type="text" id="offerTitle3" placeholder="Offer 3 Title" />
+          <button type="button" class="toggle-details-btn" onclick="toggleOfferDetails(3)">Details</button>
+        </div>
+        <div class="offer-details" id="offerDetailsContainer3">
+          <div id="offerDetailsEditor3" style="height:100px;"></div>
+          <textarea id="offerDetails3" style="display:none;"></textarea>
+          <input type="file" id="offerFile3" accept="image/*" />
+        </div>
+      </div>
+      <div class="offer-item" id="offerItem4">
+        <div class="offer-header">
+          <input type="text" id="offerTitle4" placeholder="Offer 4 Title" />
+          <button type="button" class="toggle-details-btn" onclick="toggleOfferDetails(4)">Details</button>
+        </div>
+        <div class="offer-details" id="offerDetailsContainer4">
+          <div id="offerDetailsEditor4" style="height:100px;"></div>
+          <textarea id="offerDetails4" style="display:none;"></textarea>
+          <input type="file" id="offerFile4" accept="image/*" />
+        </div>
+      </div>
+      <!-- Offer Style Selection -->
+      <div class="offer-style-select">
+        <label for="offerStyleSelect"><strong>Select Offer Style:</strong></label>
+        <select id="offerStyleSelect">
+          <option value="accordion">Accordion Offers</option>
+          <option value="horizontal">Horizontal Scroll Offers</option>
+          <option value="tab">Tab-Based Offers</option>
+          <option value="modal">Modal Popup Offers</option>
+        </select>
+      </div>
+      <!-- Offer Preview -->
+      <div class="offer-preview" id="offerPreviewArea">
+        <div class="flip-card" id="offerPreviewCard">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">Offer Title Preview</div>
+            <div class="flip-card-back">Offer Details Preview</div>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="apply-offers-btn" onclick="applyExclusiveOffers()">Apply Offers</button>
+    </div>
+    
     <button id="generateCard">Generate Card</button>
   </div>
+  
   <!-- Firebase and intl-tel-input Scripts -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
   <script>
-    // Initialize Quill Editor
+    // Initialize Quill Editor for business info
     var quill = new Quill('#editor-container', {
       theme: 'snow',
       modules: {
@@ -396,6 +365,21 @@
         ]
       }
     });
+    // Initialize Quill Editors for each offer details
+    var quillOffers = [];
+    for (let i = 1; i <= 4; i++) {
+      quillOffers[i] = new Quill('#offerDetailsEditor' + i, {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline'],
+            [{ 'color': [] }, { 'background': [] }],
+            [{ 'align': [] }],
+            ['clean']
+          ]
+        }
+      });
+    }
     
     // Firebase configuration – replace with your own details.
     var firebaseConfig = {
@@ -461,6 +445,75 @@
       reader.readAsDataURL(file);
     }
     
+    function toggleOfferDetails(num) {
+      const container = document.getElementById('offerDetailsContainer' + num);
+      container.style.display = (container.style.display === "block") ? "none" : "block";
+    }
+    
+    // Process exclusive offers: gather title, details, and upload file if provided.
+    function processExclusiveOffers() {
+      let offers = [];
+      let promises = [];
+      for (let i = 1; i <= 4; i++) {
+        const title = document.getElementById('offerTitle' + i).value.trim();
+        const detailsHTML = quillOffers[i].root.innerHTML;
+        document.getElementById('offerDetails' + i).value = detailsHTML;
+        const details = document.getElementById('offerDetails' + i).value;
+        const fileInput = document.getElementById('offerFile' + i);
+        let offerData = { title, details, fileUrl: "" };
+        if (fileInput.files[0]) {
+          promises.push(new Promise((resolve, reject) => {
+            resizeImage(fileInput.files[0], function(resizedBlob) {
+              const storageRef = firebase.storage().ref();
+              const imageRef = storageRef.child('offer_images/' + Date.now() + '.jpg');
+              imageRef.put(resizedBlob).then(function(snapshot) {
+                snapshot.ref.getDownloadURL().then(function(url) {
+                  offerData.fileUrl = url;
+                  offers[i - 1] = offerData;
+                  resolve();
+                });
+              }).catch(reject);
+            });
+          }));
+        } else {
+          offers[i - 1] = offerData;
+        }
+      }
+      return Promise.all(promises).then(() => offers);
+    }
+    
+    // Update preview based on selected offer style
+    document.getElementById('offerStyleSelect').addEventListener('change', function() {
+      const style = this.value;
+      const previewCard = document.getElementById('offerPreviewCard');
+      if (style === 'accordion') {
+        previewCard.querySelector('.flip-card-front').textContent = "Accordion Offer";
+        previewCard.querySelector('.flip-card-back').textContent = "Details in Accordion style";
+      } else if (style === 'horizontal') {
+        previewCard.querySelector('.flip-card-front').textContent = "Horizontal Scroll Offer";
+        previewCard.querySelector('.flip-card-back').textContent = "Details in Horizontal style";
+      } else if (style === 'tab') {
+        previewCard.querySelector('.flip-card-front').textContent = "Tab-Based Offer";
+        previewCard.querySelector('.flip-card-back').textContent = "Details in Tab style";
+      } else if (style === 'modal') {
+        previewCard.querySelector('.flip-card-front').textContent = "Modal Popup Offer";
+        previewCard.querySelector('.flip-card-back').textContent = "Details in Modal style";
+      }
+    });
+    
+    function applyExclusiveOffers() {
+      processExclusiveOffers().then(function(offers) {
+        let formData = JSON.parse(localStorage.getItem('formData')) || {};
+        formData.exclusiveOffers = offers;
+        formData.offerStyle = document.getElementById('offerStyleSelect').value;
+        localStorage.setItem('formData', JSON.stringify(formData));
+        alert("Exclusive Offers applied! Preview updated.");
+      }).catch(function(err) {
+        console.error("Error processing exclusive offers:", err);
+        alert("Failed to process exclusive offers. Please try again.");
+      });
+    }
+    
     function validateForm() {
       let valid = true;
       const fieldIds = ['name', 'businessName', 'address', 'email'];
@@ -498,28 +551,25 @@
         }
       });
       if (!valid) return false;
-      // Before submission, copy the Quill editor content into the hidden textarea.
       document.getElementById('businessInfo').value = quill.root.innerHTML;
       return true;
     }
     
-    function uploadImageToFirebase(blob, formData) {
-      const storageRef = firebase.storage().ref();
-      const imageRef = storageRef.child('profile_images/' + Date.now() + '.jpg');
-      imageRef.put(blob).then(function(snapshot) {
-        return snapshot.ref.getDownloadURL();
-      }).then(function(url) {
-        formData.profileImage = url;
-        redirectToCard(formData);
-      }).catch(function(error) {
-        console.error('Error uploading image:', error);
-        alert('Image upload failed. Please try again.');
-      });
+    function redirectToCard(formData) {
+      const params = new URLSearchParams();
+      for (let key in formData) {
+        if (typeof formData[key] === "object") {
+          params.set(key, JSON.stringify(formData[key]));
+        } else {
+          params.set(key, formData[key]);
+        }
+      }
+      window.location.href = `card.html?${params.toString()}`;
     }
     
     document.getElementById('generateCard').onclick = function () {
       if (!validateForm()) return;
-      const formData = {
+      let formData = {
         name: document.getElementById('name').value.trim(),
         businessName: document.getElementById('businessName').value.trim(),
         businessInfo: document.getElementById('businessInfo').value.trim(),
@@ -528,24 +578,29 @@
         email: document.getElementById('email').value.trim(),
         facebook: document.getElementById('facebook').value.trim(),
         instagram: document.getElementById('instagram').value.trim(),
-        youtube: document.getElementById('youtube').value.trim(),
-        profileImage: document.getElementById('profileImage').files[0]
+        youtube: document.getElementById('youtube').value.trim()
       };
-      if (formData.profileImage) {
-        resizeImage(formData.profileImage, function(resizedBlob) {
-          uploadImageToFirebase(resizedBlob, formData);
+      localStorage.setItem('formData', JSON.stringify(formData));
+      if (document.getElementById('profileImage').files[0]) {
+        resizeImage(document.getElementById('profileImage').files[0], function(resizedBlob) {
+          const storageRef = firebase.storage().ref();
+          const imageRef = storageRef.child('profile_images/' + Date.now() + '.jpg');
+          imageRef.put(resizedBlob).then(function(snapshot) {
+            snapshot.ref.getDownloadURL().then(function(url) {
+              formData.profileImage = url;
+              redirectToCard(formData);
+            });
+          }).catch(function(error) {
+            console.error('Error uploading profile image:', error);
+            alert('Profile image upload failed. Please try again.');
+          });
         });
       } else {
         redirectToCard(formData);
       }
     };
     
-    function redirectToCard(formData) {
-      const params = new URLSearchParams();
-      for (let key in formData) { params.set(key, formData[key]); }
-      window.location.href = `card.html?${params.toString()}`;
-    }
-    
+    // Existing dropdown functions for form container (unchanged)
     function toggleDropdown() {
       const dropdownMenu = document.getElementById('dropdownMenu');
       dropdownMenu.classList.toggle('active');
