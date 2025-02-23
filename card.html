@@ -17,7 +17,7 @@
         --secondary-color: #1e90ff;
         --accent-color: #ff5722;
         --transparent-green: rgba(0, 128, 0, 0.4);
-        --golden: rgba(218, 165, 32, 0.4);
+        --golden: rgba(218, 165, 32, 0.8);
         --neutral-light: rgba(245, 245, 245, 0.9);
         --neutral-dark: #333333;
         --card-background: #ffffff;
@@ -46,7 +46,7 @@
         border-radius: 20px;
         border: 2px solid transparent;
         border-image: linear-gradient(45deg, var(--secondary-color), var(--accent-color), #3f51b5) 1;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.2);
         padding: 1.5rem;
         margin: 1rem auto;
         transition: background-color 0.5s ease, box-shadow 0.5s ease;
@@ -100,7 +100,7 @@
         z-index: 10;
         font-size: 0.75rem;
         width: 100px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       }
       .setting-group {
         border-bottom: 1px solid #ddd;
@@ -112,17 +112,17 @@
         background: linear-gradient(to bottom, #f8f8f8, #dcdcdc);
         border: 1px solid #ccc;
         border-radius: 5px;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
         color: var(--dropdown-header-color);
         padding: 5px 8px;
         cursor: pointer;
         font-size: 0.8rem;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         transition: all 0.3s ease;
         margin: 3px 0;
       }
       .setting-header:hover {
-        box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.4);
+        box-shadow: 3px 3px 7px rgba(0,0,0,0.4);
         transform: translateY(-1px);
       }
       .setting-content {
@@ -161,7 +161,7 @@
       }
       .dropdown-btns button:hover {
         background: var(--dropdown-btn-hover);
-        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
       }
       /* Mini Icons */
       .mini-icons {
@@ -177,13 +177,13 @@
         cursor: pointer;
         border-radius: 50%;
         padding: 0.5rem;
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255,255,255,0.1);
         transition: transform 0.3s, box-shadow 0.3s;
       }
       .mini-icons .icon:hover {
         color: var(--secondary-color);
         transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
       }
       /* Profile Section */
       .profile-section {
@@ -208,7 +208,7 @@
         transition: box-shadow 0.3s ease;
       }
       .profile-image:hover {
-        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+        box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
       }
       .profile-name {
         color: var(--primary-color);
@@ -241,20 +241,19 @@
         transform: scale(1.1);
         color: var(--accent-color);
       }
-      /* Blinking Banner Box - Now placed above the offers section on RHS */
+      /* Blinking Banner (Exclusive Offer) */
       .exclusive-offer-banner {
         position: absolute;
-        top: 1.2rem;
+        top: -1.2rem;
         right: 1.2rem;
-        padding: 0.3rem 0.6rem;
-        border: 2px dashed;
-        border-color: var(--golden);
+        padding: 0.2rem 0.5rem;
+        border: 2px solid var(--golden);
         border-radius: 8px;
-        background: var(--transparent-green);
+        background: rgba(218,165,32,0.5);
         color: var(--neutral-dark);
         font-weight: bold;
-        animation: blink 1.5s infinite;
-        z-index: 5;
+        font-size: 0.8rem;
+        z-index: 10;
       }
       @keyframes blink {
         0%, 100% { opacity: 1; }
@@ -275,9 +274,11 @@
       }
       .flip-cards-track {
         display: inline-flex;
-        gap: 0.08in; /* Approximately 2mm gap */
+        /* Set gap between cards to 2mm (approximately 0.08in) */
+        gap: 0.08in;
         animation: scrollCards 20s linear infinite;
       }
+      /* To create a seamless scroll, duplicate the content in the track */
       @keyframes scrollCards {
         0% { transform: translateX(0); }
         100% { transform: translateX(-50%); }
@@ -322,7 +323,6 @@
       .flip-card-front {
         color: #fff;
         font-size: 0.25in;
-        /* Each card will have a different background color (set via JS) */
       }
       .flip-card-front img {
         max-width: 100%;
@@ -398,13 +398,13 @@
         border-radius: 10px;
         cursor: pointer;
         color: #fff;
-        box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.3),
-          inset -2px -2px 4px rgba(255, 255, 255, 0.2);
+        box-shadow: 4px 4px 6px rgba(0,0,0,0.3),
+          inset -2px -2px 4px rgba(255,255,255,0.2);
         transition: transform 0.3s, box-shadow 0.3s;
       }
       .action-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
       }
       .action-btn:active {
         filter: brightness(90%);
@@ -426,13 +426,13 @@
         border-radius: 50%;
         text-decoration: none;
         padding: 0.5rem;
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255,255,255,0.1);
         transition: transform 0.3s, box-shadow 0.3s;
       }
       .social-icon:hover {
         color: var(--secondary-color);
         transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
       }
       /* Floating Chat Button INSIDE card */
       .floating-chat-btn {
@@ -447,7 +447,7 @@
         height: 50px;
         cursor: pointer;
         font-size: 1.5rem;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         transition: transform 0.3s, box-shadow 0.3s;
       }
       .floating-chat-btn:hover {
@@ -556,17 +556,14 @@
 
       <!-- Exclusive Offers Flip Card Section -->
       <div id="offersFlipCardSection">
-        <!-- Blinking Banner: "Grab Your Exclusive Offer" placed at top–right of offers section -->
+        <!-- Blinking Banner repositioned above the cards -->
         <div class="exclusive-offer-banner">Grab Your Exclusive Offer</div>
         <div class="flip-cards-container">
           <div class="flip-cards-track" id="flipCardsTrack">
-            <!-- Flip cards will be rendered here -->
+            <!-- Flip cards will be rendered here; content will be duplicated for seamless scrolling -->
           </div>
         </div>
       </div>
-
-      <!-- Blinking Banner Box from original (if needed, hidden now) -->
-      <!-- <div id="blinkingBannerBox" class="blinking-banner-box"></div> -->
 
       <!-- Business Info Section -->
       <div class="business-info-section">
@@ -667,68 +664,39 @@
         "#f1c40f", "#34495e"
       ];
 
-      // Function to render flip cards horizontally
+      // Function to render flip cards horizontally with duplicated content for seamless scrolling
       function renderFlipCards(offers) {
         const track = document.getElementById("flipCardsTrack");
-        track.innerHTML = "";
+        let cardsHTML = "";
         offers.forEach((offer, index) => {
-          const flipCard = document.createElement("div");
-          flipCard.className = "flip-card";
-          // Toggle flipped state on click
-          flipCard.addEventListener("click", function () {
-            flipCard.classList.toggle("flipped");
-          });
-          const flipCardInner = document.createElement("div");
-          flipCardInner.className = "flip-card-inner";
-
-          // Front face: show heading, snippet details and (if available) an image with a remove BG option
-          const frontFace = document.createElement("div");
-          frontFace.className = "flip-card-face flip-card-front";
-          // Assign a background color from the array (cycling through)
-          frontFace.style.background = cardColors[index % cardColors.length];
           let snippet = "";
           if (offer.details) {
             snippet = offer.details.substring(0, 50) + "...";
           }
-          // Use a container so text does not overlap into another card
-          frontFace.innerHTML = `<div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:100%;"><strong>${offer.title || "Offer " + (index + 1)}</strong></div>
-                                 <div style="font-size:0.18in; margin-top:0.05in;">${snippet}</div>`;
-          if (offer.file) {
-            const img = document.createElement("img");
-            img.src = offer.file;
-            img.alt = "Offer Image";
-            img.style.maxWidth = "100%";
-            img.style.maxHeight = "40%";
-            img.style.marginBottom = "0.05in";
-            frontFace.prepend(img);
-            // Add a button to remove image background
-            const removeBtn = document.createElement("button");
-            removeBtn.className = "remove-bg-btn";
-            removeBtn.textContent = "Remove BG";
-            removeBtn.addEventListener("click", function (e) {
-              e.stopPropagation();
-              img.style.background = "none";
-            });
-            frontFace.appendChild(removeBtn);
-          }
-
-          // Back face: contains More Details button
-          const backFace = document.createElement("div");
-          backFace.className = "flip-card-face flip-card-back";
-          const moreBtn = document.createElement("button");
-          moreBtn.className = "more-details-btn";
-          moreBtn.textContent = "More Details";
-          moreBtn.addEventListener("click", function (e) {
-            e.stopPropagation();
-            openOfferDetails(index);
-          });
-          backFace.appendChild(moreBtn);
-
-          flipCardInner.appendChild(frontFace);
-          flipCardInner.appendChild(backFace);
-          flipCard.appendChild(flipCardInner);
-          track.appendChild(flipCard);
+          // Use inline styles to contain the text within the card (prevent overlapping)
+          const cardHTML = `
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+              <div class="flip-card-inner">
+                <div class="flip-card-face flip-card-front" style="background: ${cardColors[index % cardColors.length]};">
+                  <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:100%;">
+                    <strong>${offer.title || "Offer " + (index + 1)}</strong>
+                  </div>
+                  <div style="font-size:0.18in; margin-top:0.05in;">
+                    ${snippet}
+                  </div>
+                  ${offer.file ? `<img src="${offer.file}" alt="Offer Image" /> 
+                  <button class="remove-bg-btn" onclick="event.stopPropagation(); this.previousElementSibling.style.background='none';">Remove BG</button>` : ""}
+                </div>
+                <div class="flip-card-face flip-card-back">
+                  <button class="more-details-btn" onclick="event.stopPropagation(); openOfferDetails(${index});">More Details</button>
+                </div>
+              </div>
+            </div>
+          `;
+          cardsHTML += cardHTML;
         });
+        // Duplicate the cardsHTML for seamless scroll
+        track.innerHTML = cardsHTML + cardsHTML;
       }
 
       // Navigate to offer details page
