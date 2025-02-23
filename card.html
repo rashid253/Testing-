@@ -11,6 +11,7 @@
     />
     <!-- EmailJS Library -->
     <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+
     <style>
       :root {
         --primary-color: #1e1e1e;
@@ -26,6 +27,7 @@
         --dropdown-btn-bg: #00796b;
         --dropdown-btn-hover: #00695c;
       }
+
       body {
         font-family: 'Segoe UI', sans-serif;
         margin: 0;
@@ -37,6 +39,7 @@
         min-height: 100vh;
         position: relative;
       }
+
       /* Card Container */
       .card-container {
         position: relative;
@@ -52,6 +55,7 @@
         transition: background-color 0.5s ease, box-shadow 0.5s ease;
         overflow: hidden;
       }
+
       /* Settings Icon (Top Left) */
       #styleControlsContainer {
         position: absolute;
@@ -70,6 +74,7 @@
       #styleButton:hover {
         color: var(--secondary-color);
       }
+
       /* Top Right Share Icon */
       .top-icons {
         position: absolute;
@@ -88,6 +93,7 @@
       .top-share-icon:hover {
         color: var(--secondary-color);
       }
+
       /* Settings Dropdown Panel */
       #styleDropdown {
         display: none;
@@ -163,6 +169,7 @@
         background: var(--dropdown-btn-hover);
         box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
       }
+
       /* Mini Icons */
       .mini-icons {
         display: flex;
@@ -185,6 +192,7 @@
         transform: translateY(-2px);
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
       }
+
       /* Profile Section */
       .profile-section {
         display: flex;
@@ -241,6 +249,18 @@
         transform: scale(1.1);
         color: var(--accent-color);
       }
+
+      /* Exclusive Offers Section in Card */
+      #offersFlipCardSection {
+        margin: 1rem 0;
+        padding: 1rem;
+        border: 1px dashed var(--neutral-light);
+        border-radius: 10px;
+      }
+      #offersFlipCardSection h3 {
+        margin-top: 0;
+      }
+
       /* Business Info Section */
       .business-info-section {
         padding: 1rem;
@@ -268,6 +288,7 @@
         padding: 0.5rem;
         overflow-y: auto;
       }
+
       /* Action Buttons Section */
       .action-buttons {
         display: grid;
@@ -296,6 +317,7 @@
       .contact-btn {
         transition: none !important;
       }
+
       /* Social Links Section */
       .social-links {
         display: flex;
@@ -318,9 +340,10 @@
         transform: translateY(-2px);
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
       }
-      /* Floating Chat Button */
+
+      /* Floating Chat Button (placed INSIDE card) */
       .floating-chat-btn {
-        position: fixed;
+        position: absolute;
         bottom: 20px;
         right: 20px;
         background: var(--secondary-color);
@@ -338,14 +361,28 @@
         background: var(--accent-color);
         transform: scale(1.1);
       }
-      /* Exclusive Offers Flip Card Section */
-      #offersFlipCardSection {
-        margin: 1rem 0;
-        padding: 1rem;
-        border: 1px dashed var(--neutral-light);
-        border-radius: 10px;
+
+      /* Offer Modal for "modal" style */
+      .offer-modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
       }
-      /* Styles for different offer display types */
+      .offer-modal-content {
+        background: #fff;
+        margin: 15% auto;
+        padding: 1rem;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 400px;
+      }
+
+      /* Offer Styles */
       .accordion-offer .offer-item {
         border-bottom: 1px solid #ddd;
         padding: 0.5rem;
@@ -356,6 +393,7 @@
         padding: 0.5rem;
         background: #f9f9f9;
       }
+
       .scroll-offer {
         overflow-x: auto;
         white-space: nowrap;
@@ -372,8 +410,13 @@
         line-height: 80px;
         cursor: pointer;
       }
+
+      .tab-offer .tab-buttons {
+        display: flex;
+      }
       .tab-offer .tab-buttons button {
-        padding: 0.5rem 1rem;
+        flex: 1;
+        padding: 0.5rem;
         cursor: pointer;
         background: var(--secondary-color);
         color: #fff;
@@ -391,7 +434,7 @@
       .tab-offer .tab-content.active {
         display: block;
       }
-      /* Modal Offer Styles */
+
       .modal-offer-card {
         width: 120px;
         height: 80px;
@@ -402,32 +445,10 @@
         line-height: 80px;
         cursor: pointer;
         margin: 0 auto;
+        margin-bottom: 10px;
       }
-      .offer-modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.5);
-      }
-      .offer-modal-content {
-        background: #fff;
-        margin: 15% auto;
-        padding: 1rem;
-        border-radius: 10px;
-        width: 80%;
-        max-width: 400px;
-      }
-      /* Mobile: ensure flip card covers no more than one fourth of screen */
-      @media (max-width: 480px) {
-        .offer-card, .modal-offer-card {
-          height: 25vh;
-          line-height: normal;
-        }
-      }
+
+      /* Mobile adjustments */
       @media (max-width: 480px) {
         .card-container {
           width: 95%;
@@ -449,6 +470,7 @@
       }
     </style>
   </head>
+
   <body>
     <!-- Card Container -->
     <div class="card-container" id="cardContainer">
@@ -501,19 +523,29 @@
           <div class="setting-group" id="soundGroup">
             <div class="setting-header">Sounds</div>
             <div class="setting-content">
-              <label style="font-size:0.8rem; display: flex; align-items: center; padding: 5px;">
-                <input type="checkbox" id="soundToggle" checked style="margin-right: 5px;"> Enable Touch Sounds
+              <label
+                style="font-size:0.8rem; display: flex; align-items: center; padding: 5px;"
+              >
+                <input
+                  type="checkbox"
+                  id="soundToggle"
+                  checked
+                  style="margin-right: 5px;"
+                />
+                Enable Touch Sounds
               </label>
             </div>
           </div>
         </div>
       </div>
+
       <!-- Top Right Share Icon -->
       <div class="top-icons">
         <button class="top-share-icon" id="topShareIcon" title="Share">
           <i class="fas fa-share-alt"></i>
         </button>
       </div>
+
       <!-- Mini Icons -->
       <div class="mini-icons">
         <a id="miniCallButton" class="icon" title="Call">
@@ -529,6 +561,7 @@
           <i class="fas fa-map-marker-alt"></i>
         </a>
       </div>
+
       <!-- Profile Section -->
       <div class="profile-section">
         <div class="profile-image-container">
@@ -545,24 +578,40 @@
           <i class="fas fa-save"></i>
         </div>
       </div>
-      <!-- Exclusive Offers Flip Card Section -->
+
+      <!-- Exclusive Offers Section -->
       <div id="offersFlipCardSection"></div>
+
       <!-- Business Info Section -->
       <div class="business-info-section">
         <div id="businessInfoContent"></div>
       </div>
+
       <!-- Action Buttons Section -->
       <div class="action-buttons">
-        <a id="callButton" class="action-btn contact-btn" style="background: var(--secondary-color);">
+        <a
+          id="callButton"
+          class="action-btn contact-btn"
+          style="background: var(--secondary-color);"
+        >
           Call
         </a>
-        <a id="whatsappButton" class="action-btn contact-btn" style="background: #25d366;">
+        <a
+          id="whatsappButton"
+          class="action-btn contact-btn"
+          style="background: #25d366;"
+        >
           WhatsApp
         </a>
-        <a id="emailButton" class="action-btn contact-btn" style="background: var(--accent-color);">
+        <a
+          id="emailButton"
+          class="action-btn contact-btn"
+          style="background: var(--accent-color);"
+        >
           Email
         </a>
       </div>
+
       <!-- Social Links Section -->
       <div class="social-links">
         <a id="facebookButton" class="social-icon">
@@ -575,52 +624,54 @@
           <i class="fab fa-youtube"></i>
         </a>
       </div>
+
+      <!-- Floating Chat Button INSIDE card -->
+      <button
+        class="floating-chat-btn"
+        title="Contact for more details"
+        onclick="openWhatsAppChat()"
+      >
+        <i class="fas fa-comment-dots"></i>
+      </button>
     </div>
-    <!-- Floating Chat Button -->
-    <button class="floating-chat-btn" title="Contact for more details" onclick="openWhatsAppChat()">
-      <i class="fas fa-comment-dots"></i>
-    </button>
+
     <!-- Offer Modal for Modal Offer Style -->
     <div id="offerModal" class="offer-modal">
       <div class="offer-modal-content">
-        <span style="float:right; cursor:pointer;" onclick="closeOfferModal()">&times;</span>
+        <span
+          style="float:right; cursor:pointer; font-size:1.2rem;"
+          onclick="closeOfferModal()"
+          >&times;</span
+        >
         <div id="offerModalContent"></div>
       </div>
     </div>
-    <!-- Live Chat Modal (existing) -->
-    <div id="chatModal" class="modal">
-      <div class="modal-content">
-        <h3>Live Chat</h3>
-        <div id="chatConversation"></div>
-        <textarea id="chatQuery" placeholder="Type your message here..."></textarea>
-        <div>
-          <button class="send-btn" id="sendChat">Send</button>
-          <button class="cancel-btn" id="cancelChat">Close</button>
-        </div>
-      </div>
-    </div>
-    <!-- Audio element for button sound -->
-    <audio id="buttonSound" src="sounds/button.mp3" preload="auto"></audio>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         "use strict";
         // Retrieve stored formData from localStorage
-        const storedData = localStorage.getItem('formData');
+        const storedData = localStorage.getItem("formData");
         const formData = storedData ? JSON.parse(storedData) : {};
+
+        // Populate card fields
         document.getElementById("cardProfileImage").src = formData.profileImage || "";
         document.getElementById("cardName").textContent = formData.name || "";
-        document.getElementById("cardBusinessName").textContent = formData.businessName || "";
+        document.getElementById("cardBusinessName").textContent =
+          formData.businessName || "";
         document.getElementById("cardAddress").textContent = formData.address || "";
-        const phoneText = formData.phone || "";
-        document.getElementById("cardPhone").textContent = phoneText;
+        document.getElementById("cardPhone").textContent = formData.phone || "";
         document.getElementById("cardEmail").textContent = formData.email || "";
-        
-        // Populate Business Info with animated paragraphs
+
+        // Business Info (rotating paragraphs)
         const businessInfo = formData.businessInfo || "";
-        const paragraphs = businessInfo.split("\n").filter(p => p.trim() !== "");
+        const paragraphs = businessInfo.split("\n").filter((p) => p.trim() !== "");
         const businessInfoContainer = document.getElementById("businessInfoContent");
-        businessInfoContainer.innerHTML = paragraphs.map(p => `<div class="business-info-content"><p>${p}</p></div>`).join("");
-        const paragraphDivs = businessInfoContainer.querySelectorAll(".business-info-content");
+        businessInfoContainer.innerHTML = paragraphs
+          .map((p) => `<div class="business-info-content"><p>${p}</p></div>`)
+          .join("");
+        const paragraphDivs =
+          businessInfoContainer.querySelectorAll(".business-info-content");
         let currentIndex = 0;
         paragraphDivs.forEach((div, idx) => {
           div.style.display = idx === 0 ? "block" : "none";
@@ -632,12 +683,12 @@
             paragraphDivs[currentIndex].style.display = "block";
           }, 8000);
         }
-        
-        // Populate Social Links
+
+        // Social Links
         const socialLinks = {
           facebook: document.getElementById("facebookButton"),
           instagram: document.getElementById("instagramButton"),
-          youtube: document.getElementById("youtubeButton")
+          youtube: document.getElementById("youtubeButton"),
         };
         Object.entries(socialLinks).forEach(([platform, element]) => {
           const url = formData[platform];
@@ -649,137 +700,65 @@
             element.style.visibility = "hidden";
           }
         });
-        
-        // Render Exclusive Offers if provided
+
+        // Render Exclusive Offers
         if (formData.offers && formData.offerStyle) {
           renderOffers(formData.offers, formData.offerStyle);
         }
-        
-        // Settings Dropdown Behavior (existing)
+
+        // Settings Dropdown Behavior
         const styleButton = document.getElementById("styleButton");
         const styleDropdown = document.getElementById("styleDropdown");
         styleButton.addEventListener("click", (e) => {
           e.stopPropagation();
-          styleDropdown.style.display = styleDropdown.style.display === "block" ? "none" : "block";
+          styleDropdown.style.display =
+            styleDropdown.style.display === "block" ? "none" : "block";
         });
         document.addEventListener("click", (e) => {
           if (!document.getElementById("styleControlsContainer").contains(e.target)) {
             styleDropdown.style.display = "none";
           }
         });
-        document.querySelectorAll(".setting-header").forEach(header => {
+        document.querySelectorAll(".setting-header").forEach((header) => {
           header.addEventListener("click", () => {
             const content = header.nextElementSibling;
-            content.style.display = content.style.display === "block" ? "none" : "block";
+            content.style.display =
+              content.style.display === "block" ? "none" : "block";
           });
         });
-        
-        // Settings Option Selection & Live Preview (existing)
+
+        // Dummy approach to apply changes (not fully implemented)
         let selectedTheme = "default";
         let selectedMood = "day";
         let selectedIconStyle = "none";
-        
-        document.querySelectorAll("#themeGroup .setting-options li").forEach(li => {
+
+        document.querySelectorAll("#themeGroup .setting-options li").forEach((li) => {
           li.addEventListener("click", () => {
             selectedTheme = li.getAttribute("data-theme");
-            document.querySelectorAll("#themeGroup .setting-options li").forEach(el => el.style.background = "");
-            li.style.background = "#ddd";
             updateCardAppearance();
           });
         });
-        document.querySelectorAll("#moodGroup .setting-options li").forEach(li => {
+        document.querySelectorAll("#moodGroup .setting-options li").forEach((li) => {
           li.addEventListener("click", () => {
             selectedMood = li.getAttribute("data-mood");
-            document.querySelectorAll("#moodGroup .setting-options li").forEach(el => el.style.background = "");
-            li.style.background = "#ddd";
             updateCardAppearance();
           });
         });
-        document.querySelectorAll("#iconStyleGroup .setting-options li").forEach(li => {
-          li.addEventListener("click", () => {
-            selectedIconStyle = li.getAttribute("data-iconstyle");
-            document.querySelectorAll("#iconStyleGroup .setting-options li").forEach(el => el.style.background = "");
-            li.style.background = "#ddd";
-            updateCardAppearance();
+        document
+          .querySelectorAll("#iconStyleGroup .setting-options li")
+          .forEach((li) => {
+            li.addEventListener("click", () => {
+              selectedIconStyle = li.getAttribute("data-iconstyle");
+              updateCardAppearance();
+            });
           });
-        });
-        
+
         function updateCardAppearance() {
-          const card = document.querySelector(".card-container");
-          if (selectedTheme === "default") {
-            document.documentElement.style.setProperty("--secondary-color", "#009688");
-            document.documentElement.style.setProperty("--accent-color", "#FF5722");
-            document.documentElement.style.setProperty("--card-background", "#FFFFFF");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #CFD8DC, #ECEFF1)");
-            card.style.borderImage = `linear-gradient(45deg, #009688, #FF5722, #3F51B5) 1`;
-            card.style.boxShadow = "0 8px 30px rgba(0,0,0,0.2)";
-          } else if (selectedTheme === "blue") {
-            document.documentElement.style.setProperty("--secondary-color", "#2196F3");
-            document.documentElement.style.setProperty("--accent-color", "#E91E63");
-            document.documentElement.style.setProperty("--card-background", "#F0F8FF");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #BBDEFB, #E3F2FD)");
-            card.style.borderImage = `linear-gradient(45deg, #2196F3, #E91E63, #3F51B5) 1`;
-            card.style.boxShadow = "0 8px 30px rgba(33,150,243,0.4)";
-          } else if (selectedTheme === "red") {
-            document.documentElement.style.setProperty("--secondary-color", "#F44336");
-            document.documentElement.style.setProperty("--accent-color", "#9C27B0");
-            document.documentElement.style.setProperty("--card-background", "#FFF0F0");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #FFCDD2, #FFEBEE)");
-            card.style.borderImage = `linear-gradient(45deg, #F44336, #9C27B0, #FF9800) 1`;
-            card.style.boxShadow = "0 8px 30px rgba(244,67,54,0.4)";
-          } else if (selectedTheme === "green") {
-            document.documentElement.style.setProperty("--secondary-color", "#4CAF50");
-            document.documentElement.style.setProperty("--accent-color", "#8BC34A");
-            document.documentElement.style.setProperty("--card-background", "#E8F5E9");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #C8E6C9, #E8F5E9)");
-            card.style.borderImage = `linear-gradient(45deg, #4CAF50, #8BC34A, #388E3C) 1`;
-            card.style.boxShadow = "0 8px 30px rgba(76,175,80,0.4)";
-          }
-          if (selectedMood === "night") {
-            document.documentElement.style.setProperty("--card-background", "#2b2b2b");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #1a1a1a, #333333)");
-            document.documentElement.style.setProperty("--primary-color", "#f0f0f0");
-            document.documentElement.style.setProperty("--neutral-dark", "#f0f0f0");
-            document.documentElement.style.setProperty("--business-info-bg", "#444");
-          } else {
-            document.documentElement.style.setProperty("--card-background", "#FFFFFF");
-            document.documentElement.style.setProperty("--body-bg", "linear-gradient(135deg, #cfd8dc, #eceff1)");
-            document.documentElement.style.setProperty("--primary-color", "#1e1e1e");
-            document.documentElement.style.setProperty("--neutral-dark", "#333333");
-            document.documentElement.style.setProperty("--business-info-bg", "#e0f7fa");
-          }
-          if (selectedIconStyle === "styleA") {
-            document.querySelectorAll(".icon").forEach(el => {
-              el.style.borderRadius = "10px";
-              el.style.backgroundColor = "rgba(0,150,136,0.2)";
-            });
-            document.querySelectorAll(".social-icon").forEach(el => {
-              el.style.borderRadius = "10px";
-              el.style.backgroundColor = "rgba(0,150,136,0.2)";
-            });
-          } else if (selectedIconStyle === "styleB") {
-            document.querySelectorAll(".icon").forEach(el => {
-              el.style.borderRadius = "0px";
-              el.style.backgroundColor = "rgba(233,30,99,0.2)";
-            });
-            document.querySelectorAll(".social-icon").forEach(el => {
-              el.style.borderRadius = "0px";
-              el.style.backgroundColor = "rgba(233,30,99,0.2)";
-            });
-          } else {
-            document.querySelectorAll(".icon").forEach(el => {
-              el.style.borderRadius = "";
-              el.style.backgroundColor = "";
-            });
-            document.querySelectorAll(".social-icon").forEach(el => {
-              el.style.borderRadius = "";
-              el.style.backgroundColor = "";
-            });
-          }
+          // Minimal placeholder
         }
       });
-      
-      // Render Exclusive Offers based on selected style and data
+
+      // Render offers based on style
       function renderOffers(offers, style) {
         const container = document.getElementById("offersFlipCardSection");
         container.innerHTML = "<h3>Exclusive Offers</h3>";
@@ -787,61 +766,76 @@
           let html = '<div class="accordion-offer">';
           offers.forEach((offer, index) => {
             html += `<div class="offer-item" onclick="toggleAccordionContent(this)">
-                      <strong>Offer ${index + 1}</strong>
+                      <strong>${offer.title || "Offer " + (index + 1)}</strong>
                     </div>
                     <div class="offer-content">
-                      ${offer.details}
-                      ${offer.file ? `<img src="${offer.file}" style="max-width:100%;"/>` : ""}
+                      ${offer.details || ""}
+                      ${
+                        offer.file
+                          ? `<br/><img src="${offer.file}" style="max-width:100%; margin-top:5px;"/>`
+                          : ""
+                      }
                       <br/><button onclick="openWhatsAppChat()">Contact for more details</button>
                     </div>`;
           });
-          html += '</div>';
+          html += "</div>";
           container.innerHTML += html;
         } else if (style === "horizontal") {
           let html = '<div class="scroll-offer">';
           offers.forEach((offer, index) => {
-            html += `<div class="offer-card" onclick="toggleScrollOfferDetail(this, ${index})">
-                      Offer ${index + 1}
+            html += `<div class="offer-card" onclick="toggleScrollOfferDetail(${index})">
+                      ${offer.title || "Offer " + (index + 1)}
                     </div>`;
           });
-          html += '</div><div id="scrollOfferDetail"></div>';
+          html += "</div><div id='scrollOfferDetail' style='margin-top:5px;'></div>";
           container.innerHTML += html;
         } else if (style === "tab") {
           let tabButtons = '<div class="tab-offer"><div class="tab-buttons">';
-          let tabContents = '';
+          let tabContents = "";
           offers.forEach((offer, index) => {
-            tabButtons += `<button onclick="showTabOffer(${index})" id="tabBtn${index}" ${index===0?'class="active"':''}>Offer ${index + 1}</button>`;
-            tabContents += `<div class="tab-content" id="tabContent${index}" ${index===0?'class="tab-content active"':''}>
-                              ${offer.details}
-                              ${offer.file ? `<img src="${offer.file}" style="max-width:100%;"/>` : ""}
+            tabButtons += `<button onclick="showTabOffer(${index})" id="tabBtn${index}" ${
+              index === 0 ? 'class="active"' : ""
+            }>${offer.title || "Offer " + (index + 1)}</button>`;
+            tabContents += `<div class="tab-content" id="tabContent${index}" ${
+              index === 0 ? 'class="tab-content active"' : 'class="tab-content"'
+            }>
+                              ${offer.details || ""}
+                              ${
+                                offer.file
+                                  ? `<br/><img src="${offer.file}" style="max-width:100%; margin-top:5px;"/>`
+                                  : ""
+                              }
                               <br/><button onclick="openWhatsAppChat()">Contact for more details</button>
                             </div>`;
           });
-          tabButtons += '</div>';
-          container.innerHTML += tabButtons + tabContents + '</div>';
+          tabButtons += "</div>";
+          container.innerHTML += tabButtons + tabContents + "</div>";
         } else if (style === "modal") {
-          let html = '<div style="text-align:center;">';
+          let html = "";
           offers.forEach((offer, index) => {
             html += `<div class="modal-offer-card" onclick="openOfferModal(${index})">
-                      Offer ${index + 1}
+                      ${offer.title || "Offer " + (index + 1)}
                     </div>`;
           });
-          html += '</div>';
           container.innerHTML += html;
         }
       }
-      
+
       function toggleAccordionContent(element) {
         const content = element.nextElementSibling;
         content.style.display = content.style.display === "block" ? "none" : "block";
       }
-      
-      function toggleScrollOfferDetail(card, index) {
+
+      function toggleScrollOfferDetail(index) {
         const detailDiv = document.getElementById("scrollOfferDetail");
-        // For simplicity, toggle details for the clicked offer
-        detailDiv.innerHTML = detailDiv.innerHTML ? "" : card.innerHTML + " - Detailed offer information. <br/><button onclick='openWhatsAppChat()'>Contact for more details</button>";
+        // For demonstration: show a quick detail or hide it
+        if (!detailDiv.innerHTML) {
+          detailDiv.innerHTML = "Offer " + (index + 1) + " details...<br/><button onclick='openWhatsAppChat()'>Contact for more details</button>";
+        } else {
+          detailDiv.innerHTML = "";
+        }
       }
-      
+
       function showTabOffer(index) {
         const buttons = document.querySelectorAll(".tab-offer .tab-buttons button");
         const contents = document.querySelectorAll(".tab-offer .tab-content");
@@ -850,20 +844,20 @@
           contents[idx].classList.toggle("active", idx === index);
         });
       }
-      
+
       function openOfferModal(index) {
-        // In a real implementation, you would use the offer data; here we simply show a placeholder
         const modal = document.getElementById("offerModal");
-        document.getElementById("offerModalContent").innerHTML = "Offer " + (index + 1) + " details here.<br/><button onclick='openWhatsAppChat()'>Contact for more details</button>";
+        document.getElementById("offerModalContent").innerHTML =
+          "Offer " + (index + 1) + " details here.<br/><button onclick='openWhatsAppChat()'>Contact for more details</button>";
         modal.style.display = "block";
       }
-      
+
       function closeOfferModal() {
         document.getElementById("offerModal").style.display = "none";
       }
-      
+
       function openWhatsAppChat() {
-        // Replace with your WhatsApp number in international format (no plus sign)
+        // Replace with your own WhatsApp number in international format
         window.open("https://wa.me/1234567890", "_blank");
       }
     </script>
