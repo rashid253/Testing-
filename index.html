@@ -279,43 +279,32 @@
         color: var(--primary-color);
         text-align: center;
       }
-      /* New Offer Banner Field (at top of offers section) */
-      .offer-banner-field {
+      .banner-field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        margin-bottom: 1rem;
+      }
+      .banner-field {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        margin-bottom: 1rem;
       }
-      .offer-banner-field input[type="text"] {
+      .banner-field input {
         flex: 1;
-        padding: 0.5rem;
-        border: 1px solid var(--neutral-light);
-        border-radius: 4px;
       }
-      .offer-banner-field button {
-        background: var(--secondary-color);
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        padding: 0.5rem;
-        cursor: pointer;
-      }
-      .offer-banner-dropdown {
-        display: none;
+      .banner-dropdown {
         position: absolute;
-        top: 2.2rem;
-        left: 50%;
-        transform: translateX(-50%);
         background: #fff;
         border: 1px solid var(--neutral-light);
-        border-radius: 8px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        border-radius: 6px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.3);
         padding: 0.5rem;
+        display: none;
         width: 250px;
-        z-index: 1000;
-        text-align: center;
+        z-index: 999;
       }
-      .offer-banner-dropdown button {
+      .banner-dropdown button {
         width: 100%;
         padding: 0.3rem;
         margin: 0.2rem 0;
@@ -325,14 +314,13 @@
         cursor: pointer;
         font-size: 0.8rem;
       }
-      /* Offer Fields */
       .offer-field {
         border: 1px solid var(--neutral-light);
         border-radius: 6px;
         padding: 0.5rem;
         margin-bottom: 0.8rem;
       }
-      .offer-field .offer-field-row {
+      .offer-field-row {
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -382,15 +370,6 @@
         padding: 0.5rem 1rem;
         border-radius: 4px;
         cursor: pointer;
-        position: relative;
-      }
-      /* Add a dropdown arrow icon on the button */
-      #offerStyleBtn::after {
-        content: "\f078"; /* Font Awesome chevron-down */
-        font-family: "Font Awesome 5 Free";
-        font-weight: 900;
-        position: absolute;
-        right: 10px;
       }
       .offer-style-dropdown {
         display: none;
@@ -511,10 +490,10 @@
           Style <i class="fas fa-chevron-down arrow-icon"></i>
         </h4>
         <div id="styleSubDropdown" class="sub-dropdown">
-          <button onclick="previewStyle('accordion'); closeOfferStyleDropdown();">Accordion</button>
-          <button onclick="previewStyle('horizontal'); closeOfferStyleDropdown();">Horizontal</button>
-          <button onclick="previewStyle('tab'); closeOfferStyleDropdown();">Tab-based</button>
-          <button onclick="previewStyle('modal'); closeOfferStyleDropdown();">Modal Popup</button>
+          <button onclick="previewStyle('accordion')">Accordion</button>
+          <button onclick="previewStyle('horizontal')">Horizontal</button>
+          <button onclick="previewStyle('tab')">Tab-based</button>
+          <button onclick="previewStyle('modal')">Modal Popup</button>
           <div id="styleActionButtons" class="action-buttons">
             <button onclick="applyStyle()">Apply</button>
           </div>
@@ -590,18 +569,33 @@
 
       <!-- Exclusive Offers Section -->
       <div class="exclusive-offers-section">
-        <!-- New Offer Banner Field -->
-        <div class="offer-banner-field">
-          <input type="text" id="offerBanner" value="Grab your offer today!" />
-          <button type="button" onclick="toggleOfferBannerOptions()">Options</button>
-          <div class="offer-banner-dropdown" id="offerBannerDropdown">
-            <button type="button" onclick="selectOfferBanner('Visit our store to unlock exclusive deals!')">Visit our store to unlock exclusive deals!</button>
-            <button type="button" onclick="selectOfferBanner('Limited time offer – seize the opportunity now!')">Limited time offer – seize the opportunity now!</button>
-            <button type="button" onclick="selectOfferBanner('Enjoy special discounts on premium products!')">Enjoy special discounts on premium products!</button>
+        <h3>Exclusive Offers</h3>
+
+        <!-- Banner field group: 2 lines, each can be typed or chosen from dropdown -->
+        <div class="banner-field-group">
+          <label for="offerBanner">Blinking Text (initial):</label>
+          <div class="banner-field" style="position:relative;">
+            <input type="text" id="offerBanner" value="Grab your offer today!" />
+            <button type="button" onclick="toggleBannerDropdown('banner1Dropdown')">Options</button>
+            <div class="banner-dropdown" id="banner1Dropdown">
+              <button type="button" onclick="setBannerText('banner1', 'Get amazing deals now!')">Get amazing deals now!</button>
+              <button type="button" onclick="setBannerText('banner1', 'Unlock exclusive discounts here!')">Unlock exclusive discounts here!</button>
+              <button type="button" onclick="setBannerText('banner1', 'Save big on your next purchase!')">Save big on your next purchase!</button>
+            </div>
+          </div>
+
+          <label for="offerBannerClicked">On‐click Text:</label>
+          <div class="banner-field" style="position:relative;">
+            <input type="text" id="offerBannerClicked" value="Visit our store now!" />
+            <button type="button" onclick="toggleBannerDropdown('banner2Dropdown')">Options</button>
+            <div class="banner-dropdown" id="banner2Dropdown">
+              <button type="button" onclick="setBannerText('banner2', 'Limited time offer – don’t miss out!')">Limited time offer – don’t miss out!</button>
+              <button type="button" onclick="setBannerText('banner2', 'Visit our store for premium deals!')">Visit our store for premium deals!</button>
+              <button type="button" onclick="setBannerText('banner2', 'Grab exclusive offers while they last!')">Grab exclusive offers while they last!</button>
+            </div>
           </div>
         </div>
 
-        <h3>Exclusive Offers</h3>
         <div id="offersContainer">
           <!-- Offer 1 -->
           <div class="offer-field" id="offerField1">
@@ -667,7 +661,9 @@
 
         <!-- Offer Style Dropdown & Preview -->
         <div class="offer-style-selection">
-          <button type="button" id="offerStyleBtn" onclick="toggleOfferStyleDropdown()">Select Offer Style</button>
+          <button type="button" id="offerStyleBtn" onclick="toggleOfferStyleDropdown()">
+            Select Offer Style
+          </button>
           <div class="offer-style-dropdown" id="offerStyleDropdown">
             <button type="button" onclick="selectOfferStyle('accordion');">Accordion</button>
             <button type="button" onclick="selectOfferStyle('horizontal');">Horizontal</button>
@@ -675,7 +671,9 @@
             <button type="button" onclick="selectOfferStyle('modal');">Modal Popup</button>
           </div>
           <div id="offerPreview"></div>
-          <button type="button" id="applyOfferStyleBtn" onclick="applyStyle()">Apply Offer Style</button>
+          <button type="button" id="applyOfferStyleBtn" onclick="applyStyle()">
+            Apply Offer Style
+          </button>
         </div>
       </div>
 
@@ -686,8 +684,17 @@
       // Initialize main Quill Editor for Business Info
       var quill = new Quill('#editor-container', {
         theme: 'snow',
-        modules: { toolbar: [[{ font: [] }, { size: [] }], ['bold', 'italic', 'underline'], [{ color: [] }, { background: [] }], [{ align: [] }], ['clean']] }
+        modules: {
+          toolbar: [
+            [{ font: [] }, { size: [] }],
+            ['bold', 'italic', 'underline'],
+            [{ color: [] }, { background: [] }],
+            [{ align: [] }],
+            ['clean']
+          ]
+        }
       });
+
       // Firebase configuration – replace with your own details.
       var firebaseConfig = {
         apiKey: "YOUR_API_KEY",
@@ -698,6 +705,7 @@
         appId: "YOUR_APP_ID"
       };
       firebase.initializeApp(firebaseConfig);
+
       var phoneInput = document.querySelector("#phone");
       var iti = window.intlTelInput(phoneInput, {
         initialCountry: "auto",
@@ -710,6 +718,7 @@
         },
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
       });
+
       function previewImage(event) {
         const reader = new FileReader();
         const preview = document.getElementById("imagePreview");
@@ -719,6 +728,7 @@
         };
         reader.readAsDataURL(event.target.files[0]);
       }
+
       function resizeImage(file, callback) {
         const img = new Image();
         const reader = new FileReader();
@@ -728,26 +738,63 @@
             const canvas = document.createElement("canvas");
             const MAX_WIDTH = 150, MAX_HEIGHT = 150;
             let width = img.width, height = img.height;
-            if (width > height) { if (width > MAX_WIDTH) { height = height * (MAX_WIDTH / width); width = MAX_WIDTH; } }
-            else { if (height > MAX_HEIGHT) { width = width * (MAX_HEIGHT / height); height = MAX_HEIGHT; } }
-            canvas.width = width; canvas.height = height;
+            if (width > height) {
+              if (width > MAX_WIDTH) {
+                height = height * (MAX_WIDTH / width);
+                width = MAX_WIDTH;
+              }
+            } else {
+              if (height > MAX_HEIGHT) {
+                width = width * (MAX_HEIGHT / height);
+                height = MAX_HEIGHT;
+              }
+            }
+            canvas.width = width;
+            canvas.height = height;
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0, width, height);
-            canvas.toBlob(function(blob) { callback(blob); }, "image/jpeg", 0.4);
+            canvas.toBlob(function(blob) {
+              callback(blob);
+            }, "image/jpeg", 0.4);
           };
         };
         reader.readAsDataURL(file);
       }
+
+      // Banner dropdown toggles
+      function toggleBannerDropdown(id) {
+        const dropdown = document.getElementById(id);
+        dropdown.style.display = (dropdown.style.display === "none" || dropdown.style.display==="") ? "block" : "none";
+      }
+      function setBannerText(banner, text) {
+        if(banner === "banner1") {
+          document.getElementById("offerBanner").value = text;
+          document.getElementById("banner1Dropdown").style.display = "none";
+        } else {
+          document.getElementById("offerBannerClicked").value = text;
+          document.getElementById("banner2Dropdown").style.display = "none";
+        }
+      }
+
       // --- Exclusive Offers Code ---
       window.offerEditors = {}; // Quill instances for offers
       var selectedOfferStyle = ""; // Holds the chosen style
+
       function toggleOfferDetails(index) {
         var container = document.getElementById("offerDetailsContainer" + index);
-        container.style.display = (container.style.display === "none" || container.style.display === "") ? "block" : "none";
+        container.style.display = (container.style.display==="none" || container.style.display==="") ? "block" : "none";
         if(container.style.display==="block" && !window.offerEditors[index]) {
           window.offerEditors[index] = new Quill("#offerEditor" + index, {
             theme: "snow",
-            modules: { toolbar: [[{ font: [] }, { size: [] }], ["bold", "italic", "underline"], [{ color: [] }, { background: [] }], [{ align: [] }], ["clean"]] }
+            modules: {
+              toolbar: [
+                [{ font: [] }, { size: [] }],
+                ["bold", "italic", "underline"],
+                [{ color: [] }, { background: [] }],
+                [{ align: [] }],
+                ["clean"]
+              ]
+            }
           });
         }
       }
@@ -766,45 +813,38 @@
         }
         document.getElementById("offerDetailsContainer" + index).style.display = "none";
       }
-      function toggleOfferBannerOptions() {
-        var dropdown = document.getElementById("offerBannerDropdown");
-        dropdown.style.display = (dropdown.style.display === "none" || dropdown.style.display === "") ? "block" : "none";
-      }
-      function selectOfferBanner(text) {
-        document.getElementById("offerBanner").value = text;
-        document.getElementById("offerBannerDropdown").style.display = "none";
-      }
+
+      // Offer style preview
       function toggleOfferStyleDropdown() {
         var dropdown = document.getElementById("offerStyleDropdown");
-        dropdown.style.display = (dropdown.style.display === "none" || dropdown.style.display === "") ? "block" : "none";
-      }
-      function closeOfferStyleDropdown() {
-        document.getElementById("offerStyleDropdown").style.display = "none";
+        dropdown.style.display = (dropdown.style.display==="none" || dropdown.style.display==="") ? "block" : "none";
       }
       function selectOfferStyle(style) {
         selectedOfferStyle = style;
         showOfferPreview(style);
-        closeOfferStyleDropdown();
         document.getElementById("applyOfferStyleBtn").style.display = "inline-block";
       }
       function showOfferPreview(style) {
         var previewDiv = document.getElementById("offerPreview");
         if(style === "accordion") {
-          previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Accordion Preview<br/><em>Click header to open details. <button onclick="closeAccordionPreview(this)">Close</button></em></div>';
+          previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Accordion Preview<br/><em>Click header to open details.</em></div>';
         } else if(style === "horizontal") {
           previewDiv.innerHTML = '<div style="overflow-x:auto; white-space:nowrap; border:1px solid #ccc; padding:10px; max-width:100%;">' +
             '<div style="display:inline-block; width:25vw; height:25vw; background:#3498db; margin-right:5px; color:#fff; text-align:center; line-height:25vw;">Offer 1</div>' +
             '</div>';
         } else if(style === "tab") {
-          previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Tab-based Preview<br/><em>Switch between tabs. <button onclick="closeTabPreview(this)">Close</button></em></div>';
+          previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Tab-based Preview<br/><em>Switch between tabs.</em></div>';
         } else if(style === "modal") {
-          previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Modal Popup Preview<br/><em>Click to open modal. <button onclick="closeModalPreview(this)">Close</button></em></div>';
-        } else { previewDiv.innerHTML = ""; }
+          previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Modal Popup Preview<br/><em>Click to open modal.</em></div>';
+        } else {
+          previewDiv.innerHTML = "";
+        }
       }
-      function closeAccordionPreview(btn) { btn.parentElement.parentElement.style.display = "none"; }
-      function closeTabPreview(btn) { btn.parentElement.parentElement.style.display = "none"; }
-      function closeModalPreview(btn) { btn.parentElement.parentElement.style.display = "none"; }
-      function applyStyle() { alert("Offer style '" + selectedOfferStyle + "' applied."); }
+      function applyStyle() {
+        alert("Offer style '" + selectedOfferStyle + "' applied.");
+      }
+
+      // Validate & Generate
       function validateForm() {
         let valid = true;
         const fieldIds = ["name", "businessName", "address", "email"];
@@ -817,10 +857,16 @@
           if(!field.value.trim()) { valid = false; field.classList.add("error"); }
         });
         if(!valid) { alert("Please fill all required fields."); return false; }
-        if(!iti.isValidNumber()) { phoneInput.classList.add("error"); alert("Please enter a valid phone number."); return false; }
+        if(!iti.isValidNumber()) {
+          phoneInput.classList.add("error");
+          alert("Please enter a valid phone number.");
+          return false;
+        }
         const emailValue = document.getElementById("email").value.trim();
         if(!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(emailValue)) {
-          document.getElementById("email").classList.add("error"); alert("Please enter a valid email address."); return false;
+          document.getElementById("email").classList.add("error");
+          alert("Please enter a valid email address.");
+          return false;
         }
         const socialMedia = [
           { id:"facebook", regex:/^https?:\/\/(www\.)?facebook\.com\/.+$/i, message:"Please enter a valid Facebook URL." },
@@ -829,12 +875,17 @@
         ];
         socialMedia.forEach(function(sm) {
           const value = document.getElementById(sm.id).value.trim();
-          if(value && !sm.regex.test(value)) { document.getElementById(sm.id).classList.add("error"); alert(sm.message); valid = false; }
+          if(value && !sm.regex.test(value)) {
+            document.getElementById(sm.id).classList.add("error");
+            alert(sm.message);
+            valid = false;
+          }
         });
         if(!valid) return false;
         document.getElementById("businessInfo").value = quill.root.innerHTML;
         return true;
       }
+
       function uploadOfferFile(file) {
         return new Promise(function(resolve, reject) {
           resizeImage(file, function(resizedBlob) {
@@ -842,7 +893,11 @@
             const imageRef = storageRef.child("offer_images/" + Date.now() + ".jpg");
             imageRef.put(resizedBlob).then(function(snapshot) {
               return snapshot.ref.getDownloadURL();
-            }).then(function(url) { resolve(url); }).catch(function(error) { reject(error); });
+            }).then(function(url) {
+              resolve(url);
+            }).catch(function(error) {
+              reject(error);
+            });
           });
         });
       }
@@ -851,7 +906,10 @@
         const imageRef = storageRef.child("profile_images/" + Date.now() + ".jpg");
         imageRef.put(blob).then(function(snapshot) {
           return snapshot.ref.getDownloadURL();
-        }).then(function(url) { formData.profileImage = url; proceedToCard(formData); }).catch(function(error) {
+        }).then(function(url) {
+          formData.profileImage = url;
+          proceedToCard(formData);
+        }).catch(function(error) {
           console.error("Error uploading image:", error);
           alert("Image upload failed. Please try again.");
         });
@@ -868,8 +926,11 @@
           facebook: document.getElementById("facebook").value.trim(),
           instagram: document.getElementById("instagram").value.trim(),
           youtube: document.getElementById("youtube").value.trim(),
-          offerBanner: document.getElementById("offerBanner").value.trim()
+          // Banner texts
+          offerBanner: document.getElementById("offerBanner").value.trim(),
+          offerBannerClicked: document.getElementById("offerBannerClicked").value.trim()
         };
+        // Gather offers
         let offers = [];
         let uploadPromises = [];
         for(let i=1; i<=4; i++){
@@ -884,20 +945,31 @@
           let fileInput = document.getElementById("offerFile"+i);
           if(fileInput && fileInput.files[0]) {
             let file = fileInput.files[0];
-            let promise = uploadOfferFile(file).then(function(url) { offer.file = url; }).catch(function(){ offer.file = ""; });
+            let promise = uploadOfferFile(file).then(function(url) {
+              offer.file = url;
+            }).catch(function() {
+              offer.file = "";
+            });
             uploadPromises.push(promise);
-          } else { offer.file = ""; }
+          } else {
+            offer.file = "";
+          }
           offers.push(offer);
         }
         formData.offers = offers;
         formData.offerStyle = selectedOfferStyle;
+
         Promise.all(uploadPromises).then(function(){
           const profileImageFile = document.getElementById("profileImage").files[0];
           if(profileImageFile){
-            resizeImage(profileImageFile, function(resizedBlob){ uploadImageToFirebase(resizedBlob, formData); });
-          } else { proceedToCard(formData); }
+            resizeImage(profileImageFile, function(resizedBlob){
+              uploadImageToFirebase(resizedBlob, formData);
+            });
+          } else {
+            proceedToCard(formData);
+          }
         });
-      }
+      };
       function proceedToCard(formData) {
         localStorage.setItem("formData", JSON.stringify(formData));
         window.location.href = "card.html";
@@ -919,8 +991,7 @@
       function applyMood() { /* Placeholder */ }
       function previewTheme(type, value) { /* Placeholder */ }
       function applyTheme() { /* Placeholder */ }
-      function previewStyle(style) { /* For index preview, call showOfferPreview */ showOfferPreview(style); }
-      function applyStyle() { alert("Offer style '"+selectedOfferStyle+"' applied."); }
+      function previewStyle(style) { showOfferPreview(style); }
     </script>
   </body>
 </html>
