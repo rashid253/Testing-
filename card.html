@@ -266,34 +266,39 @@
         border: 1px dashed var(--neutral-light);
         border-radius: 10px;
       }
-      /* Container for horizontal scrolling */
+      /* Container for horizontal scrolling with auto-scroll animation */
       .flip-cards-container {
-        overflow-x: auto;
-        white-space: nowrap;
+        overflow: hidden;
+        position: relative;
+      }
+      .flip-cards-track {
+        display: inline-flex;
+        gap: 0.08in; /* Approximately 2mm margin on sides */
+        animation: scrollCards 20s linear infinite;
+      }
+      @keyframes scrollCards {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
       }
       /* Flip Card Styles */
       .flip-card {
         background-color: transparent;
         width: 2.5in;
-        height: 2.5in;
+        height: 2in;
         perspective: 1000px;
-        display: inline-block;
-        margin-right: 5px;
+        flex-shrink: 0;
         cursor: pointer;
       }
       .flip-card-inner {
         position: relative;
         width: 100%;
         height: 100%;
-        text-align: center;
         transition: transform 0.6s;
         transform-style: preserve-3d;
       }
-      /* Add a subtle hover effect */
       .flip-card:hover {
         box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       }
-      /* When card is touched or clicked, add a class "flipped" */
       .flip-card.flipped .flip-card-inner {
         transform: rotateY(180deg);
       }
@@ -302,18 +307,24 @@
         width: 100%;
         height: 100%;
         backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
         border-radius: 6px;
         box-sizing: border-box;
-        padding: 0.2in;
+        padding: 0.1in;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
+        text-align: center;
       }
       .flip-card-front {
         background: var(--secondary-color);
         color: #fff;
-        font-size: 0.5in;
+        font-size: 0.3in;
+      }
+      .flip-card-front img {
+        max-width: 100%;
+        max-height: 50%;
+        margin-bottom: 0.05in;
       }
       .flip-card-back {
         background: var(--accent-color);
@@ -323,11 +334,22 @@
       .more-details-btn {
         background: #fff;
         color: var(--accent-color);
-        padding: 0.2in 0.4in;
+        padding: 0.1in 0.2in;
         border: none;
         border-radius: 4px;
-        font-size: 0.3in;
+        font-size: 0.25in;
         cursor: pointer;
+      }
+      /* Button to remove image background */
+      .remove-bg-btn {
+        background: #fff;
+        color: var(--secondary-color);
+        padding: 0.05in 0.1in;
+        border: none;
+        border-radius: 4px;
+        font-size: 0.2in;
+        cursor: pointer;
+        margin-top: 0.05in;
       }
       /* Business Info Section */
       .business-info-section {
@@ -529,8 +551,10 @@
       <!-- Exclusive Offers Flip Card Section -->
       <div id="offersFlipCardSection">
         <h3>Exclusive Offers</h3>
-        <div class="flip-cards-container" id="flipCardsContainer">
-          <!-- Flip cards will be rendered here -->
+        <div class="flip-cards-container">
+          <div class="flip-cards-track" id="flipCardsTrack">
+            <!-- Flip cards will be rendered here -->
+          </div>
         </div>
       </div>
 
@@ -623,50 +647,68 @@
           }
         });
 
-        // Render Offers using horizontal flip cards
+        // Render Offers using horizontal flip cards (offerStyle "horizontal")
         if(formData.offers && formData.offerStyle === "horizontal"){
           renderFlipCards(formData.offers);
         }
-      }); // end DOMContentLoaded
+      });
 
       // Function to render flip cards horizontally
       function renderFlipCards(offers) {
-        const container = document.getElementById("flipCardsContainer");
-        container.innerHTML = "";
+        const track = document.getElementById("flipCardsTrack");
+        track.innerHTML = "";
         offers.forEach((offer, index) => {
-          // Create card container
           const flipCard = document.createElement("div");
           flipCard.className = "flip-card";
+          // Toggle flipped state on click
           flipCard.addEventListener("click", function () {
-            // Toggle flip state on touch/click
             flipCard.classList.toggle("flipped");
           });
-          // Create inner container
           const flipCardInner = document.createElement("div");
           flipCardInner.className = "flip-card-inner";
-          // Front face: display only the offer title
+
+          // Front face: show heading, snippet details and if exists, an image with a remove BG option
           const frontFace = document.createElement("div");
           frontFace.className = "flip-card-face flip-card-front";
-          frontFace.textContent = offer.title || "Offer " + (index + 1);
+          let snippet = "";
+          if (offer.details) {
+            snippet = offer.details.substring(0, 50) + "...";
+          }
+          frontFace.innerHTML = `<strong>${offer.title || "Offer " + (index + 1)}</strong><br>${snippet}`;
+          if (offer.file) {
+            const img = document.createElement("img");
+            img.src = offer.file;
+            img.alt = "Offer Image";
+            // Initially show image background (if any) – user can remove it
+            img.style.background = "inherit";
+            frontFace.prepend(img);
+            // Add a button to remove image background
+            const removeBtn = document.createElement("button");
+            removeBtn.className = "remove-bg-btn";
+            removeBtn.textContent = "Remove BG";
+            removeBtn.addEventListener("click", function (e) {
+              e.stopPropagation();
+              img.style.background = "none";
+            });
+            frontFace.appendChild(removeBtn);
+          }
+
           // Back face: contains More Details button
           const backFace = document.createElement("div");
           backFace.className = "flip-card-face flip-card-back";
           const moreBtn = document.createElement("button");
           moreBtn.className = "more-details-btn";
           moreBtn.textContent = "More Details";
-          // Prevent card flip toggle when clicking the button
           moreBtn.addEventListener("click", function (e) {
             e.stopPropagation();
             openOfferDetails(index);
           });
           backFace.appendChild(moreBtn);
-          // Append faces to inner container
+
           flipCardInner.appendChild(frontFace);
           flipCardInner.appendChild(backFace);
-          // Append inner container to card container
           flipCard.appendChild(flipCardInner);
-          // Append card to horizontal container
-          container.appendChild(flipCard);
+          track.appendChild(flipCard);
         });
       }
 
