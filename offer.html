@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offer Details</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    .offer-details-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .offer-details-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .offer-details-container img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .offer-details-container p {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .offer-details-container button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .offer-details-container button:hover {
+      background: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <div class="offer-details-container">
+    <h2 id="offerTitle"></h2>
+    <img id="offerImage" src="" alt="Offer Image" />
+    <p id="offerDescription"></p>
+    <button onclick="window.location.href='card.html'">Back to Card</button>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const offer = JSON.parse(localStorage.getItem("selectedOffer"));
+      if (offer) {
+        document.getElementById("offerTitle").textContent = offer.title || "Offer Details";
+        document.getElementById("offerDescription").textContent = offer.details || "No details available.";
+        if (offer.file) {
+          document.getElementById("offerImage").src = offer.file;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
