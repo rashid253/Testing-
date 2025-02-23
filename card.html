@@ -16,6 +16,8 @@
         --primary-color: #1e1e1e;
         --secondary-color: #1e90ff;
         --accent-color: #ff5722;
+        --transparent-green: rgba(0, 128, 0, 0.4);
+        --golden: rgba(218, 165, 32, 0.4);
         --neutral-light: rgba(245, 245, 245, 0.9);
         --neutral-dark: #333333;
         --card-background: #ffffff;
@@ -239,21 +241,20 @@
         transform: scale(1.1);
         color: var(--accent-color);
       }
-      /* Blinking Banner Box */
-      .blinking-banner-box {
+      /* Blinking Banner Box - Now placed above the offers section on RHS */
+      .exclusive-offer-banner {
         position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
-        padding: 0.5rem 0.8rem;
-        border: 2px dashed gold;
-        border-radius: 10px;
-        background: rgba(255, 255, 0, 0.1);
-        color: #000;
-        animation: blink 1.5s infinite;
-        cursor: pointer;
+        top: 1.2rem;
+        right: 1.2rem;
+        padding: 0.3rem 0.6rem;
+        border: 2px dashed;
+        border-color: var(--golden);
+        border-radius: 8px;
+        background: var(--transparent-green);
+        color: var(--neutral-dark);
         font-weight: bold;
-        max-width: 180px;
-        text-align: center;
+        animation: blink 1.5s infinite;
+        z-index: 5;
       }
       @keyframes blink {
         0%, 100% { opacity: 1; }
@@ -265,6 +266,7 @@
         padding: 1rem;
         border: 1px dashed var(--neutral-light);
         border-radius: 10px;
+        position: relative;
       }
       /* Container for horizontal scrolling with auto-scroll animation */
       .flip-cards-container {
@@ -273,7 +275,7 @@
       }
       .flip-cards-track {
         display: inline-flex;
-        gap: 0.08in; /* Approximately 2mm margin on sides */
+        gap: 0.08in; /* Approximately 2mm gap */
         animation: scrollCards 20s linear infinite;
       }
       @keyframes scrollCards {
@@ -283,7 +285,7 @@
       /* Flip Card Styles */
       .flip-card {
         background-color: transparent;
-        width: 2.5in;
+        width: 1.5in;
         height: 2in;
         perspective: 1000px;
         flex-shrink: 0;
@@ -315,21 +317,25 @@
         justify-content: center;
         align-items: center;
         text-align: center;
+        overflow: hidden;
       }
       .flip-card-front {
-        background: var(--secondary-color);
         color: #fff;
-        font-size: 0.3in;
+        font-size: 0.25in;
+        /* Each card will have a different background color (set via JS) */
       }
       .flip-card-front img {
         max-width: 100%;
-        max-height: 50%;
+        max-height: 40%;
         margin-bottom: 0.05in;
       }
       .flip-card-back {
         background: var(--accent-color);
         color: #fff;
         transform: rotateY(180deg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .more-details-btn {
         background: #fff;
@@ -337,7 +343,7 @@
         padding: 0.1in 0.2in;
         border: none;
         border-radius: 4px;
-        font-size: 0.25in;
+        font-size: 0.2in;
         cursor: pointer;
       }
       /* Button to remove image background */
@@ -347,7 +353,7 @@
         padding: 0.05in 0.1in;
         border: none;
         border-radius: 4px;
-        font-size: 0.2in;
+        font-size: 0.18in;
         cursor: pointer;
         margin-top: 0.05in;
       }
@@ -550,7 +556,8 @@
 
       <!-- Exclusive Offers Flip Card Section -->
       <div id="offersFlipCardSection">
-        <h3>Exclusive Offers</h3>
+        <!-- Blinking Banner: "Grab Your Exclusive Offer" placed at top–right of offers section -->
+        <div class="exclusive-offer-banner">Grab Your Exclusive Offer</div>
         <div class="flip-cards-container">
           <div class="flip-cards-track" id="flipCardsTrack">
             <!-- Flip cards will be rendered here -->
@@ -558,8 +565,8 @@
         </div>
       </div>
 
-      <!-- Blinking Banner Box -->
-      <div id="blinkingBannerBox" class="blinking-banner-box"></div>
+      <!-- Blinking Banner Box from original (if needed, hidden now) -->
+      <!-- <div id="blinkingBannerBox" class="blinking-banner-box"></div> -->
 
       <!-- Business Info Section -->
       <div class="business-info-section">
@@ -653,6 +660,13 @@
         }
       });
 
+      // Array of preset background colors for the front faces
+      const cardColors = [
+        "#1abc9c", "#3498db", "#9b59b6",
+        "#e67e22", "#e74c3c", "#2ecc71",
+        "#f1c40f", "#34495e"
+      ];
+
       // Function to render flip cards horizontally
       function renderFlipCards(offers) {
         const track = document.getElementById("flipCardsTrack");
@@ -667,20 +681,25 @@
           const flipCardInner = document.createElement("div");
           flipCardInner.className = "flip-card-inner";
 
-          // Front face: show heading, snippet details and if exists, an image with a remove BG option
+          // Front face: show heading, snippet details and (if available) an image with a remove BG option
           const frontFace = document.createElement("div");
           frontFace.className = "flip-card-face flip-card-front";
+          // Assign a background color from the array (cycling through)
+          frontFace.style.background = cardColors[index % cardColors.length];
           let snippet = "";
           if (offer.details) {
             snippet = offer.details.substring(0, 50) + "...";
           }
-          frontFace.innerHTML = `<strong>${offer.title || "Offer " + (index + 1)}</strong><br>${snippet}`;
+          // Use a container so text does not overlap into another card
+          frontFace.innerHTML = `<div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:100%;"><strong>${offer.title || "Offer " + (index + 1)}</strong></div>
+                                 <div style="font-size:0.18in; margin-top:0.05in;">${snippet}</div>`;
           if (offer.file) {
             const img = document.createElement("img");
             img.src = offer.file;
             img.alt = "Offer Image";
-            // Initially show image background (if any) – user can remove it
-            img.style.background = "inherit";
+            img.style.maxWidth = "100%";
+            img.style.maxHeight = "40%";
+            img.style.marginBottom = "0.05in";
             frontFace.prepend(img);
             // Add a button to remove image background
             const removeBtn = document.createElement("button");
