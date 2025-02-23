@@ -16,7 +16,7 @@
         --primary-color: #1e1e1e;
         --secondary-color: #1e90ff;
         --accent-color: #ff5722;
-        --neutral-light: rgba(245,245,245,0.9);
+        --neutral-light: rgba(245, 245, 245, 0.9);
         --neutral-dark: #333333;
         --card-background: #ffffff;
         --body-bg: linear-gradient(135deg, #cfd8dc, #eceff1);
@@ -239,6 +239,28 @@
         transform: scale(1.1);
         color: var(--accent-color);
       }
+
+      /* Blinking Box for Banner Text */
+      .blinking-banner-box {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        padding: 0.5rem 0.8rem;
+        border: 2px dashed gold;
+        border-radius: 10px;
+        background: rgba(255,255,0,0.1);
+        color: #000;
+        animation: blink 1.5s infinite;
+        cursor: pointer;
+        font-weight: bold;
+        max-width: 180px;
+        text-align: center;
+      }
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+      }
+
       /* Exclusive Offers Flip Card Section */
       #offersFlipCardSection {
         margin: 1rem 0;
@@ -250,7 +272,6 @@
       #offersFlipCardSection h3 {
         margin-top: 0;
       }
-      /* Increase size of flip cards */
       .scroll-offer .offer-card {
         display: inline-block;
         width: 25vw;
@@ -310,15 +331,20 @@
         border-radius: 10px;
         cursor: pointer;
         color: #fff;
-        box-shadow: 4px 4px 6px rgba(0,0,0,0.3), inset -2px -2px 4px rgba(255,255,255,0.2);
+        box-shadow: 4px 4px 6px rgba(0,0,0,0.3),
+          inset -2px -2px 4px rgba(255,255,255,0.2);
         transition: transform 0.3s, box-shadow 0.3s;
       }
       .action-btn:hover {
         transform: translateY(-2px);
         box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
       }
-      .action-btn:active { filter: brightness(90%); }
-      .contact-btn { transition: none !important; }
+      .action-btn:active {
+        filter: brightness(90%);
+      }
+      .contact-btn {
+        transition: none !important;
+      }
       /* Social Links Section */
       .social-links {
         display: flex;
@@ -380,16 +406,8 @@
         width: 80%;
         max-width: 400px;
       }
-      /* Offer Styles for details (accordion, tab, modal) include a close option */
-      .accordion-offer .offer-content button.close-detail {
-        margin-top: 0.5rem;
-        background: var(--accent-color);
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        padding: 0.3rem 0.6rem;
-        cursor: pointer;
-      }
+      /* "Close" buttons in accordion, tab, etc. */
+      .accordion-offer .offer-content button.close-detail,
       .tab-offer .tab-content button.close-detail {
         margin-top: 0.5rem;
         background: var(--accent-color);
@@ -399,28 +417,28 @@
         padding: 0.3rem 0.6rem;
         cursor: pointer;
       }
-      /* Blinking star icon for offer banner */
-      .offer-banner-star {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 1.5rem;
-        color: gold;
-        animation: blink 1s infinite;
-        cursor: pointer;
-      }
-      @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.3; }
-      }
       @media (max-width: 480px) {
-        .card-container { width: 95%; padding: 1rem; }
-        .profile-section { flex-direction: column; align-items: center; text-align: center; }
-        .profile-image-container, .profile-info { width: 100%; padding: 0; }
-        .profile-info { margin-top: 1rem; }
+        .card-container {
+          width: 95%;
+          padding: 1rem;
+        }
+        .profile-section {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+        .profile-image-container,
+        .profile-info {
+          width: 100%;
+          padding: 0;
+        }
+        .profile-info {
+          margin-top: 1rem;
+        }
       }
     </style>
   </head>
+
   <body>
     <div class="card-container" id="cardContainer">
       <!-- Top Left Settings Icon -->
@@ -478,12 +496,14 @@
           </div>
         </div>
       </div>
+
       <!-- Top Right Share Icon -->
       <div class="top-icons">
         <button class="top-share-icon" id="topShareIcon" title="Share">
           <i class="fas fa-share-alt"></i>
         </button>
       </div>
+
       <!-- Mini Icons -->
       <div class="mini-icons">
         <a id="miniCallButton" class="icon" title="Call">
@@ -499,6 +519,7 @@
           <i class="fas fa-map-marker-alt"></i>
         </a>
       </div>
+
       <!-- Profile Section -->
       <div class="profile-section">
         <div class="profile-image-container">
@@ -515,16 +536,18 @@
           <i class="fas fa-save"></i>
         </div>
       </div>
-      <!-- Blinking Star Banner for Offer Banner -->
-      <div class="offer-banner-star" id="offerBannerStar" title="Grab your offer!">
-        <i class="fas fa-star"></i>
-      </div>
+
       <!-- Exclusive Offers Flip Card Section -->
       <div id="offersFlipCardSection"></div>
+
+      <!-- Blinking Banner Box: displays "offerBanner" text, changes to "offerBannerClicked" on click -->
+      <div id="blinkingBannerBox" class="blinking-banner-box"></div>
+
       <!-- Business Info Section -->
       <div class="business-info-section">
         <div id="businessInfoContent"></div>
       </div>
+
       <!-- Action Buttons Section -->
       <div class="action-buttons">
         <a id="callButton" class="action-btn contact-btn" style="background: var(--secondary-color);">
@@ -537,6 +560,7 @@
           Email
         </a>
       </div>
+
       <!-- Social Links Section -->
       <div class="social-links">
         <a id="facebookButton" class="social-icon">
@@ -549,6 +573,7 @@
           <i class="fab fa-youtube"></i>
         </a>
       </div>
+
       <!-- Floating Chat Button INSIDE card -->
       <button class="floating-chat-btn" title="Contact for more details" onclick="openWhatsAppChat()">
         <i class="fas fa-comment-dots"></i>
@@ -563,26 +588,20 @@
       </div>
     </div>
 
-    <!-- Chat Banner Dropdown triggered by blinking star -->
-    <div id="chatBannerDropdown" class="offer-banner-dropdown" style="top: 2rem; right: 0;">
-      <button type="button" onclick="selectChatBanner('Visit our store to grab the best deals!')">Visit our store to grab the best deals!</button>
-      <button type="button" onclick="selectChatBanner('Limited time offer – don’t miss out!')">Limited time offer – don’t miss out!</button>
-      <button type="button" onclick="selectChatBanner('Enjoy exclusive discounts on premium products!')">Enjoy exclusive discounts on premium products!</button>
-      <button type="button" onclick="toggleChatBannerDropdown()">Close</button>
-    </div>
-
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         "use strict";
-        // Retrieve stored formData
         const storedData = localStorage.getItem("formData");
         const formData = storedData ? JSON.parse(storedData) : {};
+
+        // Populate card fields
         document.getElementById("cardProfileImage").src = formData.profileImage || "";
         document.getElementById("cardName").textContent = formData.name || "";
         document.getElementById("cardBusinessName").textContent = formData.businessName || "";
         document.getElementById("cardAddress").textContent = formData.address || "";
         document.getElementById("cardPhone").textContent = formData.phone || "";
         document.getElementById("cardEmail").textContent = formData.email || "";
+
         // Business Info
         const businessInfo = formData.businessInfo || "";
         const paragraphs = businessInfo.split("\n").filter(p => p.trim() !== "");
@@ -590,7 +609,9 @@
         businessInfoContainer.innerHTML = paragraphs.map(p => `<div class="business-info-content"><p>${p}</p></div>`).join("");
         const paragraphDivs = businessInfoContainer.querySelectorAll(".business-info-content");
         let currentIndex = 0;
-        paragraphDivs.forEach((div, idx) => { div.style.display = idx === 0 ? "block" : "none"; });
+        paragraphDivs.forEach((div, idx) => {
+          div.style.display = (idx === 0) ? "block" : "none";
+        });
         if (paragraphDivs.length > 0) {
           setInterval(() => {
             paragraphDivs[currentIndex].style.display = "none";
@@ -598,27 +619,40 @@
             paragraphDivs[currentIndex].style.display = "block";
           }, 8000);
         }
+
         // Social Links
-        const socialLinks = { facebook: document.getElementById("facebookButton"), instagram: document.getElementById("instagramButton"), youtube: document.getElementById("youtubeButton") };
+        const socialLinks = {
+          facebook: document.getElementById("facebookButton"),
+          instagram: document.getElementById("instagramButton"),
+          youtube: document.getElementById("youtubeButton")
+        };
         Object.entries(socialLinks).forEach(([platform, element]) => {
           const url = formData[platform];
-          if(url){ element.href = url; element.style.visibility = "visible"; element.target = "_blank"; } else { element.style.visibility = "hidden"; }
+          if(url){
+            element.href = url;
+            element.style.visibility = "visible";
+            element.target = "_blank";
+          } else {
+            element.style.visibility = "hidden";
+          }
         });
-        // Render Offers if available
-        if(formData.offers && formData.offerStyle){ renderOffers(formData.offers, formData.offerStyle); }
-        // Set Offer Banner Star text from formData.offerBanner
-        if(formData.offerBanner){
-          document.getElementById("offerBannerStar").setAttribute("title", formData.offerBanner);
+
+        // Render Offers
+        if(formData.offers && formData.offerStyle){
+          renderOffers(formData.offers, formData.offerStyle);
         }
-        // Settings Dropdown Behavior
-        const styleButton = document.getElementById("styleButton");
-        const styleDropdown = document.getElementById("styleDropdown");
-        styleButton.addEventListener("click", (e) => { e.stopPropagation(); styleDropdown.style.display = styleDropdown.style.display === "block" ? "none" : "block"; });
-        document.addEventListener("click", (e) => { if(!document.getElementById("styleControlsContainer").contains(e.target)){ styleDropdown.style.display = "none"; } });
-        document.querySelectorAll(".setting-header").forEach(header => { header.addEventListener("click", () => { const content = header.nextElementSibling; content.style.display = content.style.display === "block" ? "none" : "block"; }); });
-        // Blinking star click to toggle chat banner dropdown
-        document.getElementById("offerBannerStar").addEventListener("click", () => { toggleChatBannerDropdown(); });
-      });
+
+        // Setup blinking banner box
+        const bannerBox = document.getElementById("blinkingBannerBox");
+        let bannerInitial = formData.offerBanner || "Grab your offer today!";
+        let bannerClicked = formData.offerBannerClicked || "Visit our store now!";
+        bannerBox.textContent = bannerInitial;
+        bannerBox.addEventListener("click", function(){
+          bannerBox.textContent = bannerClicked;
+        });
+
+      }); // end DOMContentLoaded
+
       // Render offers based on style
       function renderOffers(offers, style) {
         const container = document.getElementById("offersFlipCardSection");
@@ -649,7 +683,7 @@
           container.innerHTML += html;
         } else if(style === "tab") {
           let tabButtons = '<div class="tab-offer"><div class="tab-buttons">';
-          let tabContents = '';
+          let tabContents = "";
           offers.forEach((offer, index) => {
             tabButtons += `<button onclick="showTabOffer(${index})" id="tabBtn${index}" ${index===0?'class="active"':''}>${offer.title || "Offer " + (index+1)}</button>`;
             tabContents += `<div class="tab-content" id="tabContent${index}" ${index===0?'class="tab-content active"':''}>
@@ -659,8 +693,8 @@
                               <br/><button class="close-detail" onclick="this.parentElement.style.display='none';">Close</button>
                             </div>`;
           });
-          tabButtons += '</div>';
-          container.innerHTML += tabButtons + tabContents + '</div>';
+          tabButtons += "</div>";
+          container.innerHTML += tabButtons + tabContents + "</div>";
         } else if(style === "modal") {
           let html = "";
           offers.forEach((offer, index) => {
@@ -673,7 +707,7 @@
       }
       function toggleAccordionContent(element) {
         const content = element.nextElementSibling;
-        content.style.display = content.style.display === "block" ? "none" : "block";
+        content.style.display = (content.style.display==="block") ? "none" : "block";
       }
       function toggleScrollOfferDetail(index) {
         const detailDiv = document.getElementById("scrollOfferDetail");
@@ -693,24 +727,29 @@
       }
       function openOfferModal(index) {
         const modal = document.getElementById("offerModal");
-        document.getElementById("offerModalContent").innerHTML = "Offer " + (index+1) + " details here.<br/><button onclick='openWhatsAppChat()'>Contact for more details</button><br/><button onclick='closeOfferModal()'>Close</button>";
+        document.getElementById("offerModalContent").innerHTML =
+          "Offer " + (index+1) + " details here.<br/><button onclick='openWhatsAppChat()'>Contact for more details</button><br/><button onclick='closeOfferModal()'>Close</button>";
         modal.style.display = "block";
       }
-      function closeOfferModal() { document.getElementById("offerModal").style.display = "none"; }
-      function openWhatsAppChat() { window.open("https://wa.me/1234567890", "_blank"); }
-      // Chat Banner Dropdown Functions
-      function toggleChatBannerDropdown() {
-        const dropdown = document.getElementById("chatBannerDropdown");
-        dropdown.style.display = (dropdown.style.display === "none" || dropdown.style.display === "") ? "block" : "none";
+      function closeOfferModal() {
+        document.getElementById("offerModal").style.display = "none";
       }
-      function toggleChatBannerDropdown() { 
-        const dropdown = document.getElementById("chatBannerDropdown");
-        dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block"; 
+      function openWhatsAppChat() {
+        window.open("https://wa.me/1234567890", "_blank");
       }
-      function selectChatBanner(text) {
-        document.getElementById("offerBannerStar").setAttribute("title", text);
-        toggleChatBannerDropdown();
-      }
+
+      // Settings panel
+      document.addEventListener("click", (e) => {
+        if (!document.getElementById("styleControlsContainer").contains(e.target)) {
+          document.getElementById("styleDropdown").style.display = "none";
+        }
+      });
+      const styleButton = document.getElementById("styleButton");
+      styleButton.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const styleDropdown = document.getElementById("styleDropdown");
+        styleDropdown.style.display = (styleDropdown.style.display === "block") ? "none" : "block";
+      });
     </script>
   </body>
 </html>
