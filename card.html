@@ -239,7 +239,6 @@
         transform: scale(1.1);
         color: var(--accent-color);
       }
-
       /* Business Info Section */
       .business-info-section {
         padding: 1rem;
@@ -267,7 +266,6 @@
         padding: 0.5rem;
         overflow-y: auto;
       }
-      
       /* Exclusive Offers & Auto Scroll Styles */
       .scroll-container {
         overflow: hidden;
@@ -313,7 +311,6 @@
         font-size: 0.8rem;
         margin: 0;
       }
-      
       /* Action Buttons Section */
       .action-buttons {
         display: grid;
@@ -581,6 +578,59 @@
         if(formData.offers && formData.offerStyle === "horizontal"){
           renderOffers(formData.offers, formData.offerStyle);
         }
+
+        // --- Event Listeners for Button Icons ---
+
+        // Mini Icons
+        document.getElementById("miniCallButton").addEventListener("click", function() {
+          if(formData.phone) window.location.href = "tel:" + formData.phone;
+          else alert("Phone number not available");
+        });
+        document.getElementById("miniEmailButton").addEventListener("click", function() {
+          if(formData.email) window.location.href = "mailto:" + formData.email;
+          else alert("Email not available");
+        });
+        document.getElementById("miniWhatsappButton").addEventListener("click", function() {
+          if(formData.phone) window.open("https://wa.me/" + formData.phone, "_blank");
+          else alert("WhatsApp contact not available");
+        });
+        document.getElementById("miniMapButton").addEventListener("click", function() {
+          if(formData.address) window.open("https://www.google.com/maps/search/" + encodeURIComponent(formData.address), "_blank");
+          else alert("Address not available");
+        });
+
+        // Top Share Icon
+        document.getElementById("topShareIcon").addEventListener("click", function() {
+          if(navigator.share) {
+            navigator.share({
+              title: formData.name || "Business Card",
+              text: "Check out this business card.",
+              url: window.location.href
+            }).catch(err => console.log("Error sharing:", err));
+          } else {
+            alert("Share feature not supported in this browser.");
+          }
+        });
+
+        // Action Buttons
+        document.getElementById("callButton").addEventListener("click", function() {
+          if(formData.phone) window.location.href = "tel:" + formData.phone;
+          else alert("Phone number not available");
+        });
+        document.getElementById("whatsappButton").addEventListener("click", function() {
+          if(formData.phone) window.open("https://wa.me/" + formData.phone, "_blank");
+          else alert("WhatsApp contact not available");
+        });
+        document.getElementById("emailButton").addEventListener("click", function() {
+          if(formData.email) window.location.href = "mailto:" + formData.email;
+          else alert("Email not available");
+        });
+
+        // Connect/Save Contact Button
+        document.getElementById("connectButton").addEventListener("click", function() {
+          // Here you can add your own functionality, such as saving the contact info.
+          alert("Contact saved successfully!");
+        });
       }); // end DOMContentLoaded
 
       // Render offers based on style (only horizontal modified for flip cards)
@@ -645,7 +695,10 @@
       }
 
       function openWhatsAppChat() {
-        window.open("https://wa.me/1234567890", "_blank");
+        if(document.getElementById("cardPhone").textContent)
+          window.open("https://wa.me/" + document.getElementById("cardPhone").textContent, "_blank");
+        else
+          alert("WhatsApp contact not available");
       }
 
       // Settings panel toggle
