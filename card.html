@@ -36,6 +36,10 @@
         min-height: 100vh;
         position: relative;
       }
+      /* Remove default focus outline to avoid blinking */
+      button:focus {
+        outline: none;
+      }
       .card-container {
         position: relative;
         width: 90%;
@@ -189,6 +193,7 @@
         padding: 1rem;
         margin: 0.5rem;
         border-bottom: 2px solid var(--secondary-color);
+        align-items: center;
       }
       .profile-image-container {
         width: 40%;
@@ -220,16 +225,17 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        text-align: center;
       }
       .contact-info {
         color: var(--neutral-dark);
         margin: 0.3rem 0;
         font-size: 0.85rem;
         line-height: 1.4;
-        white-space: nowrap;
       }
       .connect-btn {
-        align-self: flex-end;
+        align-self: flex-start;
+        margin-left: 10px; /* Shifted a bit away from the border */
         font-size: 1.2rem;
         color: var(--secondary-color);
         cursor: pointer;
@@ -282,34 +288,50 @@
         0% { transform: translateX(100%); }
         100% { transform: translateX(-100%); }
       }
-      .scroll-offer .offer-card {
-        display: inline-block;
+      /* Flip Card Styles for Exclusive Offers */
+      .flip-card {
+        background-color: transparent;
         width: 150px;
         height: 150px;
-        background: #f1f1f1;
-        color: #333;
+        perspective: 1000px;
+        display: inline-block;
         margin-right: 10px;
-        border-radius: 8px;
-        text-align: center;
         cursor: pointer;
-        padding: 10px;
-        box-sizing: border-box;
-        overflow: hidden;
+      }
+      .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+      }
+      .flip-card.flipped .flip-card-inner {
+        transform: rotateY(180deg);
+      }
+      .flip-card-front,
+      .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
         border: 1px solid #ddd;
+        border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        transition: transform 0.3s, box-shadow 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f1f1f1;
       }
-      .scroll-offer .offer-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      .flip-card-front {
+        /* Only title on the front side */
       }
-      .scroll-offer .offer-card h4 {
-        margin: 0.5rem 0;
-        font-size: 1rem;
-      }
-      .scroll-offer .offer-card p.offer-snippet {
+      .flip-card-back {
+        transform: rotateY(180deg);
+        background: #e0e0e0;
+        color: #333;
         font-size: 0.8rem;
-        margin: 0;
+        padding: 5px;
       }
       /* Action Buttons Section */
       .action-buttons {
@@ -360,26 +382,6 @@
         color: var(--secondary-color);
         transform: translateY(-2px);
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-      }
-      /* Floating Chat Button INSIDE card */
-      .floating-chat-btn {
-        position: absolute;
-        bottom: 20px;
-        right: 20px;
-        background: var(--secondary-color);
-        color: #fff;
-        border: none;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        cursor: pointer;
-        font-size: 1.5rem;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        transition: transform 0.3s, box-shadow 0.3s;
-      }
-      .floating-chat-btn:hover {
-        background: var(--accent-color);
-        transform: scale(1.1);
       }
     </style>
   </head>
@@ -482,16 +484,13 @@
         </div>
       </div>
 
-      <!-- Business Info Section (now comes BEFORE exclusive offers) -->
+      <!-- Business Info Section (comes BEFORE exclusive offers) -->
       <div class="business-info-section">
         <div id="businessInfoContent"></div>
       </div>
 
       <!-- Exclusive Offers Flip Card Section (moved below Business Info) -->
       <div id="offersFlipCardSection"></div>
-
-      <!-- Blinking Banner Box (associated with offers) -->
-      <div id="blinkingBannerBox" class="blinking-banner-box"></div>
 
       <!-- Action Buttons Section -->
       <div class="action-buttons">
@@ -518,11 +517,6 @@
           <i class="fab fa-youtube"></i>
         </a>
       </div>
-
-      <!-- Floating Chat Button INSIDE card -->
-      <button class="floating-chat-btn" title="Contact for more details" onclick="openWhatsAppChat()">
-        <i class="fas fa-comment-dots"></i>
-      </button>
     </div>
 
     <script>
@@ -628,7 +622,7 @@
 
         // Connect/Save Contact Button
         document.getElementById("connectButton").addEventListener("click", function() {
-          // Here you can add your own functionality, such as saving the contact info.
+          // Add your save functionality here
           alert("Contact saved successfully!");
         });
       }); // end DOMContentLoaded
@@ -640,79 +634,34 @@
         if(style === "horizontal") {
           let html = '<div class="scroll-container"><div class="scroll-offer">';
           offers.forEach((offer, index) => {
-            html += `<div class="offer-card" onclick="openOfferDetails(${index})">
-                        <h4>${offer.title || "Offer " + (index+1)}</h4>
-                        <p class="offer-snippet">${offer.details ? offer.details.substring(0, 100) : ""}</p>
-                     </div>`;
+            html += `
+              <div class="flip-card" onclick="toggleFlip(this)">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front">
+                    <h4>${offer.title || "Offer " + (index+1)}</h4>
+                  </div>
+                  <div class="flip-card-back">
+                    <p>Click to view details</p>
+                  </div>
+                </div>
+              </div>
+            `;
           });
           html += "</div></div>";
           container.innerHTML += html;
         }
-        // Other styles remain unchanged (if needed)
-        else if(style === "accordion") {
-          let html = '<div class="accordion-offer">';
-          offers.forEach((offer, index) => {
-            html += `<div class="offer-item" onclick="openOfferDetails(${index})">
-                        <strong>${offer.title || "Offer " + (index+1)}</strong>
-                     </div>
-                     <div class="offer-content">
-                        ${offer.details || ""}
-                        ${offer.file ? `<br/><img src="${offer.file}" style="max-width:100%; margin-top:5px;"/>` : ""}
-                        <br/><button onclick="openWhatsAppChat()">Contact for more details</button>
-                     </div>`;
-          });
-          html += "</div>";
-          container.innerHTML += html;
-        }
-        else if(style === "tab") {
-          let tabButtons = '<div class="tab-offer"><div class="tab-buttons">';
-          let tabContents = "";
-          offers.forEach((offer, index) => {
-            tabButtons += `<button onclick="openOfferDetails(${index})" id="tabBtn${index}" ${index===0?'class="active"':''}>${offer.title || "Offer " + (index+1)}</button>`;
-            tabContents += `<div class="tab-content" id="tabContent${index}" ${index===0?'class="tab-content active"':''}>
-                              ${offer.details || ""}
-                              ${offer.file ? `<br/><img src="${offer.file}" style="max-width:100%; margin-top:5px;"/>` : ""}
-                              <br/><button onclick="openWhatsAppChat()">Contact for more details</button>
-                            </div>`;
-          });
-          tabButtons += "</div>";
-          container.innerHTML += tabButtons + tabContents + "</div>";
-        }
-        else if(style === "modal") {
-          let html = "";
-          offers.forEach((offer, index) => {
-            html += `<div class="modal-offer-card" onclick="openOfferDetails(${index})">
-                        ${offer.title || "Offer " + (index+1)}
-                     </div>`;
-          });
-          container.innerHTML += html;
-        }
+        // Other styles can be implemented similarly if needed
       }
 
-      // Navigate to offer details page
+      // Toggle flip state on a card element
+      function toggleFlip(cardElement) {
+        cardElement.classList.toggle("flipped");
+      }
+
+      // Navigate to offer details page (if required)
       function openOfferDetails(index) {
         window.location.href = "offerDetails.html?offer=" + index;
       }
-
-      function openWhatsAppChat() {
-        if(document.getElementById("cardPhone").textContent)
-          window.open("https://wa.me/" + document.getElementById("cardPhone").textContent, "_blank");
-        else
-          alert("WhatsApp contact not available");
-      }
-
-      // Settings panel toggle
-      document.addEventListener("click", (e) => {
-        if (!document.getElementById("styleControlsContainer").contains(e.target)) {
-          document.getElementById("styleDropdown").style.display = "none";
-        }
-      });
-      const styleButton = document.getElementById("styleButton");
-      styleButton.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const styleDropdown = document.getElementById("styleDropdown");
-        styleDropdown.style.display = (styleDropdown.style.display === "block") ? "none" : "block";
-      });
     </script>
   </body>
 </html>
