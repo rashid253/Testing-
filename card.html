@@ -20,6 +20,7 @@
         --neutral-dark: #333333;
         --card-background: #ffffff;
         --body-bg: linear-gradient(135deg, #cfd8dc, #eceff1);
+        --business-info-bg: #ffffff;
         --dropdown-header-color: #333;
         --dropdown-btn-bg: #00796b;
         --dropdown-btn-hover: #00695c;
@@ -232,92 +233,35 @@
         font-size: 0.85rem;
         line-height: 1.4;
       }
-      /* Business Info Section removed and replaced with Related Section */
-      .related-section {
+      /* Business Info Section (Carousel) */
+      .business-info-section {
         padding: 1rem;
         margin: 0.5rem 0;
-        background: #ffffff;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        height: 150px;
+        background: var(--business-info-bg);
         border: 1px solid #ddd;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
+        position: relative;
+        overflow: hidden;
       }
-      .related-section h3 {
+      .business-info-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         text-align: center;
         font-weight: bold;
-        margin-bottom: 0.5rem;
         color: var(--neutral-dark);
+        padding: 0.5rem;
+        overflow-y: auto;
       }
-      #relatedContent {
-        text-align: center;
-        font-size: 0.9rem;
-        color: var(--neutral-dark);
-      }
-      /* Save Contact Icon adjustments */
-      .connect-btn {
-        align-self: center;
-        margin-left: 20px;
-        font-size: 1.2rem;
-        color: var(--secondary-color);
-        cursor: pointer;
-        transition: transform 0.3s;
-      }
-      .connect-btn:hover {
-        transform: scale(1.1);
-        color: var(--accent-color);
-      }
-      /* Exclusive Offers & Continuous Scroll */
-      .scroll-container {
-        overflow: hidden;
-        white-space: nowrap;
-        position: relative;
-        width: 100%;
-        margin: 1rem 0;
-      }
-      .scroll-offer {
-        display: inline-block;
-        animation: scrollRight 20s linear infinite;
-      }
-      @keyframes scrollRight {
-        0% { transform: translateX(-100%); }
-        100% { transform: translateX(100%); }
-      }
-      /* Offer Card (Flip Card) Styles – now non-clickable */
-      .flip-card {
-        background-color: transparent;
-        width: 150px;
-        height: 150px;
-        perspective: 1000px;
-        display: inline-block;
-        margin-right: 10px;
-      }
-      .flip-card-inner {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        text-align: center;
-        transition: transform 0.8s;
-        transform-style: preserve-3d;
-      }
-      .flip-card-front,
-      .flip-card-back {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        backface-visibility: hidden;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #f1f1f1;
-      }
-      .flip-card-back {
-        transform: rotateY(180deg);
-        background: #e0e0e0;
-        color: #333;
-        font-size: 0.8rem;
-        padding: 5px;
+      /* Hide scrollbar in business info */
+      .business-info-content::-webkit-scrollbar {
+        display: none;
       }
       /* Action Buttons Section */
       .action-buttons {
@@ -465,13 +409,10 @@
           <i class="fas fa-save"></i>
         </div>
       </div>
-      <!-- Related Section (Business Info replaced) -->
-      <div class="related-section">
-        <h3>Related</h3>
-        <div id="relatedContent">No related information available.</div>
+      <!-- Business Info Section (Carousel) -->
+      <div class="business-info-section">
+        <div id="businessInfoContent"></div>
       </div>
-      <!-- Exclusive Offers Flip Card Section -->
-      <div id="offersFlipCardSection"></div>
       <!-- Action Buttons Section -->
       <div class="action-buttons">
         <a id="callButton" class="action-btn contact-btn" style="background: var(--secondary-color);">
@@ -509,8 +450,24 @@
         document.getElementById("cardAddress").textContent = formData.address || "";
         document.getElementById("cardPhone").textContent = formData.phone || "";
         document.getElementById("cardEmail").textContent = formData.email || "";
-        // Related Section: For now, using a static placeholder. You may update this as needed.
-        document.getElementById("relatedContent").textContent = "No related information available.";
+        // Business Info Carousel
+        const businessInfo = formData.businessInfo || "";
+        // Split paragraphs by new line – only non-empty paragraphs are used
+        const paragraphs = businessInfo.split("\n").filter(p => p.trim() !== "");
+        const businessInfoContainer = document.getElementById("businessInfoContent");
+        businessInfoContainer.innerHTML = paragraphs.map(p => `<div class="business-info-content"><p>${p}</p></div>`).join("");
+        const paragraphDivs = businessInfoContainer.querySelectorAll(".business-info-content");
+        let currentIndex = 0;
+        paragraphDivs.forEach((div, idx) => {
+          div.style.display = (idx === 0) ? "block" : "none";
+        });
+        if (paragraphDivs.length > 0) {
+          setInterval(() => {
+            paragraphDivs[currentIndex].style.display = "none";
+            currentIndex = (currentIndex + 1) % paragraphDivs.length;
+            paragraphDivs[currentIndex].style.display = "block";
+          }, 8000);
+        }
         // Social Links
         const socialLinks = {
           facebook: document.getElementById("facebookButton"),
@@ -527,11 +484,7 @@
             element.style.visibility = "hidden";
           }
         });
-        // Render Offers using horizontal flip card style (flip disabled)
-        if(formData.offers && formData.offerStyle === "horizontal"){
-          renderOffers(formData.offers, formData.offerStyle);
-        }
-        // --- Event Listeners for Button Icons ---
+        // Event Listeners for Mini Icons and Buttons
         document.getElementById("miniCallButton").addEventListener("click", function() {
           if(formData.phone) window.location.href = "tel:" + formData.phone;
           else alert("Phone number not available");
@@ -575,30 +528,6 @@
           alert("Contact saved successfully!");
         });
       });
-      // Render offers (flip is disabled so cards are not clickable)
-      function renderOffers(offers, style) {
-        const container = document.getElementById("offersFlipCardSection");
-        container.innerHTML = "<h3>Exclusive Offers</h3>";
-        if(style === "horizontal") {
-          let html = '<div class="scroll-container"><div class="scroll-offer">';
-          offers.forEach((offer, index) => {
-            html += `
-              <div class="flip-card">
-                <div class="flip-card-inner">
-                  <div class="flip-card-front">
-                    <h4>${offer.title || "Offer " + (index+1)}</h4>
-                  </div>
-                  <div class="flip-card-back">
-                    <p>Details available on next page</p>
-                  </div>
-                </div>
-              </div>
-            `;
-          });
-          html += "</div></div>";
-          container.innerHTML += html;
-        }
-      }
       // Settings panel toggle
       document.addEventListener("click", (e) => {
         if (!document.getElementById("styleControlsContainer").contains(e.target)) {
