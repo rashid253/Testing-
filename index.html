@@ -14,8 +14,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
     />
-    <!-- Quill CSS -->
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
     <style>
       :root {
         --primary-color: #2c3e50;
@@ -45,20 +43,6 @@
         padding: 1.5rem;
         position: relative;
         box-sizing: border-box;
-      }
-      /* Top gear icon */
-      .gear-icon {
-        position: absolute;
-        top: -10px;
-        right: 1rem;
-        font-size: 1.5rem;
-        color: var(--primary-color);
-        cursor: pointer;
-        transition: transform 0.3s ease;
-      }
-      .gear-icon:hover {
-        transform: rotate(90deg);
-        color: var(--secondary-color);
       }
       .form-header {
         text-align: center;
@@ -129,34 +113,6 @@
         border-radius: 6px;
         cursor: pointer;
         font-size: 1rem;
-      }
-      /* Dropdown (gear) */
-      .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 2rem;
-        right: -20px;
-        background: #fff;
-        border: 1px solid var(--neutral-light);
-        border-radius: 8px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-        padding: 0.5rem;
-        width: 80px;
-        z-index: 1000;
-        text-align: center;
-      }
-      .dropdown-menu.active {
-        display: block;
-      }
-      .dropdown-menu h4,
-      .dropdown-menu button {
-        font-size: 0.8rem;
-        margin: 0.2rem 0;
-        background: var(--secondary-color);
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
       }
       /* Banner field group */
       .banner-field-group {
@@ -237,12 +193,6 @@
         padding-top: 0.5rem;
         display: none;
       }
-      .offer-editor {
-        height: 120px;
-        background: #fff;
-        border: 1px solid var(--neutral-light);
-        border-radius: 4px;
-      }
       .offer-details .close-offer-details {
         margin-top: 0.5rem;
         background: var(--accent-color);
@@ -267,7 +217,6 @@
         cursor: pointer;
         position: relative;
       }
-      /* Add arrow indicator */
       #offerStyleBtn::after {
         content: "\f0d7";
         font-family: "Font Awesome 5 Free";
@@ -327,59 +276,6 @@
   </head>
   <body>
     <div class="form-container" id="formContainer">
-      <!-- Gear Icon -->
-      <div class="gear-icon" onclick="toggleDropdown()">
-        <i class="fas fa-cog"></i>
-      </div>
-      <!-- Dropdown Menu -->
-      <div class="dropdown-menu" id="dropdownMenu">
-        <h4 onclick="toggleSubDropdown('mood')">Mood</h4>
-        <div id="moodSubDropdown" class="sub-dropdown">
-          <button onclick="previewMood('day')">Day</button>
-          <button onclick="previewMood('night')">Night</button>
-          <div class="action-buttons">
-            <button onclick="applyMood()">Apply</button>
-          </div>
-        </div>
-        <h4 onclick="toggleSubDropdown('theme')">Theme</h4>
-        <div id="themeSubDropdown" class="sub-dropdown">
-          <button onclick="previewTheme('default')">Default</button>
-          <button onclick="toggleSubDropdown('image')">Image</button>
-          <div id="imageSubDropdown" class="sub-dropdown">
-            <div class="image-thumbnails">
-              <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Image 1" onclick="previewTheme('image', this.src)">
-              <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Image 2" onclick="previewTheme('image', this.src)">
-              <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Image 3" onclick="previewTheme('image', this.src)">
-              <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Image 4" onclick="previewTheme('image', this.src)">
-              <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Image 5" onclick="previewTheme('image', this.src)">
-            </div>
-          </div>
-          <button onclick="toggleSubDropdown('color')">Color</button>
-          <div id="colorSubDropdown" class="sub-dropdown">
-            <div class="color-thumbnails">
-              <div style="background-color: #3498db;" onclick="previewTheme('color', '#3498db')"></div>
-              <div style="background-color: #e74c3c;" onclick="previewTheme('color', '#e74c3c')"></div>
-              <div style="background-color: #2ecc71;" onclick="previewTheme('color', '#2ecc71')"></div>
-              <div style="background-color: #9b59b6;" onclick="previewTheme('color', '#9b59b6')"></div>
-              <div style="background-color: #f1c40f;" onclick="previewTheme('color', '#f1c40f')"></div>
-            </div>
-          </div>
-          <div class="action-buttons">
-            <button onclick="applyTheme()">Apply</button>
-          </div>
-        </div>
-        <h4 onclick="toggleSubDropdown('style')">Style</h4>
-        <div id="styleSubDropdown" class="sub-dropdown">
-          <button onclick="previewStyle('accordion'); closeOfferStyleDropdown()">Accordion</button>
-          <button onclick="previewStyle('horizontal'); closeOfferStyleDropdown()">Horizontal</button>
-          <button onclick="previewStyle('tab'); closeOfferStyleDropdown()">Tab-based</button>
-          <button onclick="previewStyle('modal'); closeOfferStyleDropdown()">Modal Popup</button>
-          <div class="action-buttons">
-            <button onclick="applyStyle()">Apply</button>
-          </div>
-        </div>
-      </div>
-
       <!-- Form Header -->
       <div class="form-header">
         <h2>Create Business Card</h2>
@@ -403,11 +299,10 @@
           <label for="businessName">Business Name <span class="required">*</span></label>
           <input type="text" id="businessName" placeholder="Business Name" required />
         </div>
-        <!-- Business Info -->
+        <!-- Business Info using a plain textarea -->
         <div class="input-group">
           <label for="businessInfo">Business Info <span class="required">*</span></label>
-          <div id="editor-container"></div>
-          <textarea id="businessInfo" name="businessInfo" style="display:none;" required></textarea>
+          <textarea id="businessInfo" name="businessInfo" required style="height:120px; border:1px solid var(--neutral-light); border-radius:4px; padding:0.5rem;"></textarea>
           <small style="color: var(--neutral-dark); font-size: 0.8rem;">
             Write 3–5 paragraphs (max 150 words each). Separate paragraphs by a new line.
           </small>
@@ -474,12 +369,11 @@
               <button type="button" onclick="toggleOfferDetails(1)">Details</button>
             </div>
             <div class="offer-details" id="offerDetailsContainer1">
-              <div id="offerEditor1" class="offer-editor"></div>
-              <textarea id="offerText1" name="offerText1" style="display:none;"></textarea>
+              <textarea id="offerText1" name="offerText1" style="width:100%; height:120px; border:1px solid var(--neutral-light); border-radius:4px; padding:0.5rem;"></textarea>
               <input type="file" id="offerFile1" accept="image/*" onchange="previewOfferFile(event,1)" />
               <img id="offerFilePreview1" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
               <br />
-              <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(1)">Save &amp; Close</button>
+              <button type="button" class="close-offer-details" onclick="toggleOfferDetails(1)">Save &amp; Close</button>
             </div>
           </div>
           <!-- Offer 2 -->
@@ -489,12 +383,11 @@
               <button type="button" onclick="toggleOfferDetails(2)">Details</button>
             </div>
             <div class="offer-details" id="offerDetailsContainer2">
-              <div id="offerEditor2" class="offer-editor"></div>
-              <textarea id="offerText2" name="offerText2" style="display:none;"></textarea>
+              <textarea id="offerText2" name="offerText2" style="width:100%; height:120px; border:1px solid var(--neutral-light); border-radius:4px; padding:0.5rem;"></textarea>
               <input type="file" id="offerFile2" accept="image/*" onchange="previewOfferFile(event,2)" />
               <img id="offerFilePreview2" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
               <br />
-              <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(2)">Save &amp; Close</button>
+              <button type="button" class="close-offer-details" onclick="toggleOfferDetails(2)">Save &amp; Close</button>
             </div>
           </div>
           <!-- Offer 3 -->
@@ -504,12 +397,11 @@
               <button type="button" onclick="toggleOfferDetails(3)">Details</button>
             </div>
             <div class="offer-details" id="offerDetailsContainer3">
-              <div id="offerEditor3" class="offer-editor"></div>
-              <textarea id="offerText3" name="offerText3" style="display:none;"></textarea>
+              <textarea id="offerText3" name="offerText3" style="width:100%; height:120px; border:1px solid var(--neutral-light); border-radius:4px; padding:0.5rem;"></textarea>
               <input type="file" id="offerFile3" accept="image/*" onchange="previewOfferFile(event,3)" />
               <img id="offerFilePreview3" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
               <br />
-              <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(3)">Save &amp; Close</button>
+              <button type="button" class="close-offer-details" onclick="toggleOfferDetails(3)">Save &amp; Close</button>
             </div>
           </div>
           <!-- Offer 4 -->
@@ -519,12 +411,11 @@
               <button type="button" onclick="toggleOfferDetails(4)">Details</button>
             </div>
             <div class="offer-details" id="offerDetailsContainer4">
-              <div id="offerEditor4" class="offer-editor"></div>
-              <textarea id="offerText4" name="offerText4" style="display:none;"></textarea>
+              <textarea id="offerText4" name="offerText4" style="width:100%; height:120px; border:1px solid var(--neutral-light); border-radius:4px; padding:0.5rem;"></textarea>
               <input type="file" id="offerFile4" accept="image/*" onchange="previewOfferFile(event,4)" />
               <img id="offerFilePreview4" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
               <br />
-              <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(4)">Save &amp; Close</button>
+              <button type="button" class="close-offer-details" onclick="toggleOfferDetails(4)">Save &amp; Close</button>
             </div>
           </div>
         </div>
@@ -547,17 +438,11 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
     <script>
-      // Initialize main Quill Editor for Business Info
-      var quill = new Quill('#editor-container', {
-        theme: 'snow',
-        modules: { toolbar: [[{ font: [] }, { size: [] }], ['bold','italic','underline'], [{ color: [] }, { background: [] }], [{ align: [] }], ['clean']] }
-      });
       // Firebase config (replace placeholders)
       var firebaseConfig = {
         apiKey: "YOUR_API_KEY",
@@ -615,39 +500,20 @@
         if(fieldId==="offerBanner") document.getElementById("banner1Dropdown").style.display = "none";
         else document.getElementById("banner2Dropdown").style.display = "none";
       }
-      // Offer details functions
-      window.offerEditors = {}; 
+      // Offer details toggle
       function toggleOfferDetails(index) {
         const container = document.getElementById("offerDetailsContainer" + index);
         container.style.display = (container.style.display==="block") ? "none" : "block";
-        if(container.style.display==="block" && !window.offerEditors[index]) {
-          window.offerEditors[index] = new Quill("#offerEditor" + index, {
-            theme: "snow",
-            modules: { toolbar: [[{ font: [] }, { size: [] }], ['bold','italic','underline'], [{ color: [] }, { background: [] }], [{ align: [] }], ['clean']] }
-          });
-        }
       }
-      function previewOfferFile(event, index) {
-        const reader = new FileReader();
-        const preview = document.getElementById("offerFilePreview" + index);
-        reader.onload = function(e) { preview.src = e.target.result; preview.style.display = "block"; };
-        reader.readAsDataURL(event.target.files[0]);
-      }
-      function saveAndCloseOfferDetails(index) {
-        if(window.offerEditors[index]) { document.getElementById("offerText" + index).value = window.offerEditors[index].root.innerHTML; }
-        document.getElementById("offerDetailsContainer" + index).style.display = "none";
-      }
-      // Offer style preview dropdown
+      // Offer style dropdown functions
       function toggleOfferStyleDropdown() {
         const dd = document.getElementById("offerStyleDropdown");
         dd.style.display = (dd.style.display==="block") ? "none" : "block";
       }
-      function closeOfferStyleDropdown() { document.getElementById("offerStyleDropdown").style.display = "none"; }
-      var selectedOfferStyle = "";
       function selectOfferStyle(style) {
         selectedOfferStyle = style;
         showOfferPreview(style);
-        closeOfferStyleDropdown();
+        document.getElementById("offerStyleDropdown").style.display = "none";
         document.getElementById("applyOfferStyleBtn").style.display = "inline-block";
       }
       function showOfferPreview(style) {
@@ -663,6 +529,7 @@
         else if(style==="modal") previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Modal Popup Preview<br/><em>Click to open modal.</em></div>';
         else previewDiv.innerHTML = "";
       }
+      var selectedOfferStyle = "";
       function applyStyle() {
         alert("Offer style '" + selectedOfferStyle + "' applied.");
       }
@@ -680,21 +547,6 @@
           alert("Please enter a valid email address.");
           return false;
         }
-        const social = [
-          { id:"facebook", regex:/^https?:\/\/(www\.)?facebook\.com\/.+$/i },
-          { id:"instagram", regex:/^https?:\/\/(www\.)?instagram\.com\/.+$/i },
-          { id:"youtube", regex:/^https?:\/\/(www\.)?youtube\.com\/.+$/i }
-        ];
-        social.forEach(s => {
-          const val = document.getElementById(s.id).value.trim();
-          if(val && !s.regex.test(val)){
-            document.getElementById(s.id).classList.add("error");
-            alert("Please enter a valid URL for " + s.id + ".");
-            valid = false;
-          }
-        });
-        if(!valid) return false;
-        document.getElementById("businessInfo").value = quill.root.innerHTML;
         return true;
       }
       function uploadOfferFile(file) {
@@ -738,11 +590,7 @@
           let offer = {};
           let title = document.getElementById("offerTitle" + i).value.trim();
           offer.title = title || ("Offer " + i);
-          if(window.offerEditors[i]) {
-            offer.details = window.offerEditors[i].root.innerHTML;
-          } else {
-            offer.details = document.getElementById("offerText" + i).value.trim();
-          }
+          offer.details = document.getElementById("offerText" + i).value.trim();
           let fileInput = document.getElementById("offerFile" + i);
           if(fileInput && fileInput.files[0]){
             let file = fileInput.files[0];
@@ -767,14 +615,6 @@
       function proceedToCard(formData) {
         localStorage.setItem("formData", JSON.stringify(formData));
         window.location.href = "card.html";
-      }
-      function toggleDropdown() {
-        const dd = document.getElementById("dropdownMenu");
-        dd.classList.toggle("active");
-      }
-      function toggleSubDropdown(id) {
-        const sub = document.getElementById(id + "SubDropdown");
-        if(sub) { sub.classList.toggle("active"); }
       }
     </script>
   </body>
