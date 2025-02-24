@@ -21,9 +21,6 @@
         --card-background: #ffffff;
         --body-bg: linear-gradient(135deg, #cfd8dc, #eceff1);
         --business-info-bg: #ffffff;
-        --dropdown-header-color: #333;
-        --dropdown-btn-bg: #00796b;
-        --dropdown-btn-hover: #00695c;
       }
       /* Remove default focus outline */
       button:focus {
@@ -54,24 +51,6 @@
         transition: background-color 0.5s ease, box-shadow 0.5s ease;
         overflow: hidden;
       }
-      /* Top Left Settings Icon */
-      #styleControlsContainer {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        z-index: 10;
-      }
-      #styleButton {
-        padding: 0.5rem;
-        font-size: 1.2rem;
-        border: none;
-        background: none;
-        cursor: pointer;
-        color: blue;
-      }
-      #styleButton:hover {
-        color: var(--secondary-color);
-      }
       /* Top Right Share Icon */
       .top-icons {
         position: absolute;
@@ -89,81 +68,6 @@
       }
       .top-share-icon:hover {
         color: var(--secondary-color);
-      }
-      /* Settings Dropdown Panel */
-      #styleDropdown {
-        display: none;
-        position: absolute;
-        top: 110%;
-        left: -20px;
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        z-index: 10;
-        font-size: 0.75rem;
-        width: 100px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-      }
-      .setting-group {
-        border-bottom: 1px solid #ddd;
-      }
-      .setting-group:last-child {
-        border-bottom: none;
-      }
-      .setting-header {
-        background: linear-gradient(to bottom, #f8f8f8, #dcdcdc);
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-        color: var(--dropdown-header-color);
-        padding: 5px 8px;
-        cursor: pointer;
-        font-size: 0.8rem;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-        margin: 3px 0;
-      }
-      .setting-header:hover {
-        box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.4);
-        transform: translateY(-1px);
-      }
-      .setting-content {
-        display: none;
-        padding: 5px;
-      }
-      .setting-options {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-      .setting-options li {
-        padding: 0.3rem 0.5rem;
-        cursor: pointer;
-        transition: background 0.3s;
-        color: #333;
-      }
-      .setting-options li:hover {
-        background: var(--secondary-color);
-        color: #fff;
-      }
-      .dropdown-btns {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        margin-top: 5px;
-      }
-      .dropdown-btns button {
-        padding: 0.3rem;
-        border: none;
-        background: var(--dropdown-btn-bg);
-        color: #fff;
-        cursor: pointer;
-        font-size: 0.75rem;
-        transition: box-shadow 0.3s ease;
-      }
-      .dropdown-btns button:hover {
-        background: var(--dropdown-btn-hover);
-        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
       }
       /* Mini Icons */
       .mini-icons {
@@ -247,42 +151,13 @@
         color: var(--secondary-color);
         cursor: pointer;
         transition: transform 0.3s;
+        z-index: 10;
       }
       .connect-btn:hover {
         transform: scale(1.1);
         color: var(--accent-color);
       }
-      /* Business Info Section styling */
-      .business-info-section {
-        padding: 1rem;
-        margin: 0.5rem 0;
-        font-size: 0.9rem;
-        line-height: 1.5;
-        height: 150px;
-        background: var(--business-info-bg);
-        border: 1px solid #ddd;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-        position: relative;
-        overflow: hidden;
-      }
-      .business-info-content {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        text-align: center;
-        font-weight: bold;
-        color: var(--neutral-dark);
-        padding: 0.5rem;
-        overflow-y: auto;
-      }
-      /* Hide any scrollbar inside business info */
-      .business-info-content::-webkit-scrollbar {
-        display: none;
-      }
-      /* Exclusive Offers & Continuous Scroll */
+      /* Exclusive Offers Section remains as before */
       .scroll-container {
         overflow: hidden;
         white-space: nowrap;
@@ -292,14 +167,12 @@
       }
       .scroll-offer {
         display: inline-block;
-        /* Change animation direction to left-to-right */
         animation: scrollRight 20s linear infinite;
       }
       @keyframes scrollRight {
         0% { transform: translateX(-100%); }
         100% { transform: translateX(100%); }
       }
-      /* Offer Card (Flip Card) Styles – now non-clickable */
       .flip-card {
         background-color: transparent;
         width: 150px;
@@ -307,7 +180,6 @@
         perspective: 1000px;
         display: inline-block;
         margin-right: 10px;
-        /* Remove cursor pointer as flip is disabled */
       }
       .flip-card-inner {
         position: relative;
@@ -317,7 +189,9 @@
         transition: transform 0.8s;
         transform-style: preserve-3d;
       }
-      /* Since details should not open on touch, we do not toggle flip */
+      .flip-card-inner.flipped {
+        transform: rotateY(180deg);
+      }
       .flip-card-front,
       .flip-card-back {
         position: absolute;
@@ -339,7 +213,6 @@
         font-size: 0.8rem;
         padding: 5px;
       }
-      /* Action Buttons Section */
       .action-buttons {
         display: grid;
         gap: 0.5rem;
@@ -367,7 +240,6 @@
       .contact-btn {
         transition: none !important;
       }
-      /* Social Links Section */
       .social-links {
         display: flex;
         justify-content: center;
@@ -389,65 +261,58 @@
         transform: translateY(-2px);
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
       }
+
+      /* --- Business Info Slider Section Styles --- */
+      .business-info-slider {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        margin: 1rem 0;
+        overflow: hidden;
+      }
+      .slider-container {
+        display: flex;
+        transition: transform 0.5s ease;
+      }
+      .slider-card {
+        flex: 0 0 100%;
+        box-sizing: border-box;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        margin: 0 0.5rem;
+        text-align: center;
+        font-weight: bold;
+        color: #333;
+      }
+      /* Different card template looks */
+      .card-template1 { background: #f9f1f1; }
+      .card-template2 { background: #f1f9f1; }
+      .card-template3 { background: #f1f1f9; }
+      .card-template4 { background: #fff8e1; }
+      .card-template5 { background: #e8f5e9; }
+      /* Slider dots */
+      .slider-dots {
+        text-align: center;
+        margin-top: 0.5rem;
+      }
+      .slider-dot {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin: 0 5px;
+        background: #ccc;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+      .slider-dot.active {
+        background: var(--secondary-color);
+      }
     </style>
   </head>
   <body>
     <div class="card-container" id="cardContainer">
-      <!-- Top Left Settings Icon -->
-      <div id="styleControlsContainer">
-        <button id="styleButton" title="Settings">
-          <i class="fas fa-cog"></i>
-        </button>
-        <div id="styleDropdown">
-          <div class="setting-group" id="themeGroup">
-            <div class="setting-header">Theme</div>
-            <div class="setting-content">
-              <ul class="setting-options">
-                <li data-theme="default">Default</li>
-                <li data-theme="blue">Blue</li>
-                <li data-theme="red">Red</li>
-                <li data-theme="green">Green</li>
-              </ul>
-              <div class="dropdown-btns">
-                <button class="apply-btn" data-group="theme">Apply</button>
-              </div>
-            </div>
-          </div>
-          <div class="setting-group" id="moodGroup">
-            <div class="setting-header">Mood</div>
-            <div class="setting-content">
-              <ul class="setting-options">
-                <li data-mood="day">Day</li>
-                <li data-mood="night">Night</li>
-              </ul>
-              <div class="dropdown-btns">
-                <button class="apply-btn" data-group="mood">Apply</button>
-              </div>
-            </div>
-          </div>
-          <div class="setting-group" id="iconStyleGroup">
-            <div class="setting-header">Style</div>
-            <div class="setting-content">
-              <ul class="setting-options">
-                <li data-iconstyle="none">None</li>
-                <li data-iconstyle="styleA">Style A</li>
-                <li data-iconstyle="styleB">Style B</li>
-              </ul>
-              <div class="dropdown-btns">
-                <button class="apply-btn" data-group="style">Apply</button>
-              </div>
-            </div>
-          </div>
-          <div class="setting-group" id="soundGroup">
-            <div class="setting-header">Sounds</div>
-            <div class="setting-content">
-              <label style="font-size:0.8rem; display: flex; align-items: center; padding: 5px;">
-                <input type="checkbox" id="soundToggle" checked style="margin-right: 5px;"> Enable Touch Sounds
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
       <!-- Top Right Share Icon -->
       <div class="top-icons">
         <button class="top-share-icon" id="topShareIcon" title="Share">
@@ -485,9 +350,14 @@
           <i class="fas fa-save"></i>
         </div>
       </div>
-      <!-- Business Info Section -->
-      <div class="business-info-section">
-        <div id="businessInfoContent"></div>
+      <!-- Business Info Slider Section -->
+      <div class="business-info-slider">
+        <div class="slider-container" id="businessInfoSlider">
+          <!-- Business info cards will be injected here -->
+        </div>
+        <div class="slider-dots" id="businessInfoDots">
+          <!-- Slider dots will be injected here -->
+        </div>
       </div>
       <!-- Exclusive Offers Flip Card Section -->
       <div id="offersFlipCardSection"></div>
@@ -528,40 +398,66 @@
         document.getElementById("cardAddress").textContent = formData.address || "";
         document.getElementById("cardPhone").textContent = formData.phone || "";
         document.getElementById("cardEmail").textContent = formData.email || "";
-        // Business Info
-        const businessInfo = formData.businessInfo || "";
-        const paragraphs = businessInfo.split("\n").filter(p => p.trim() !== "");
-        const businessInfoContainer = document.getElementById("businessInfoContent");
-        businessInfoContainer.innerHTML = paragraphs.map(p => `<div class="business-info-content"><p>${p}</p></div>`).join("");
-        const paragraphDivs = businessInfoContainer.querySelectorAll(".business-info-content");
-        let currentIndex = 0;
-        paragraphDivs.forEach((div, idx) => {
-          div.style.display = (idx === 0) ? "block" : "none";
-        });
-        if (paragraphDivs.length > 0) {
-          setInterval(() => {
-            paragraphDivs[currentIndex].style.display = "none";
-            currentIndex = (currentIndex + 1) % paragraphDivs.length;
-            paragraphDivs[currentIndex].style.display = "block";
-          }, 8000);
-        }
-        // Social Links
-        const socialLinks = {
-          facebook: document.getElementById("facebookButton"),
-          instagram: document.getElementById("instagramButton"),
-          youtube: document.getElementById("youtubeButton")
-        };
-        Object.entries(socialLinks).forEach(([platform, element]) => {
-          const url = formData[platform];
-          if(url){
-            element.href = url;
-            element.style.visibility = "visible";
-            element.target = "_blank";
-          } else {
-            element.style.visibility = "hidden";
+        
+        // --- Setup Business Info Slider ---
+        (function setupBusinessInfoSlider() {
+          // Get the business info text (assumed to be plain text with newlines)
+          const businessInfo = formData.businessInfo || "";
+          let infoParagraphs = businessInfo.split("\n").filter(p => p.trim() !== "");
+          // Ensure there are at least 3 cards; if not, duplicate or add placeholder text.
+          if (infoParagraphs.length < 3) {
+            while (infoParagraphs.length < 3) {
+              infoParagraphs.push("More business info coming soon...");
+            }
+          } else if (infoParagraphs.length > 5) {
+            infoParagraphs = infoParagraphs.slice(0, 5);
           }
-        });
-        // Render Offers using horizontal flip card style (flip disabled)
+          const sliderContainer = document.getElementById("businessInfoSlider");
+          const dotsContainer = document.getElementById("businessInfoDots");
+          // Array of different template classes (rotated)
+          const templateClasses = ["card-template1", "card-template2", "card-template3", "card-template4", "card-template5"];
+          infoParagraphs.forEach((para, index) => {
+            // Create a card div for this paragraph
+            const card = document.createElement("div");
+            card.classList.add("slider-card");
+            card.classList.add(templateClasses[index % templateClasses.length]);
+            card.innerHTML = `<p>${para}</p>`;
+            sliderContainer.appendChild(card);
+            // Create a dot indicator
+            const dot = document.createElement("span");
+            dot.classList.add("slider-dot");
+            if (index === 0) dot.classList.add("active");
+            dot.addEventListener("click", () => {
+              currentSlide = index;
+              updateSlider();
+              resetTimer();
+            });
+            dotsContainer.appendChild(dot);
+          });
+          let currentSlide = 0;
+          const totalSlides = infoParagraphs.length;
+          function updateSlider() {
+            sliderContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+            // Update active dot
+            const dots = dotsContainer.querySelectorAll(".slider-dot");
+            dots.forEach((dot, idx) => {
+              dot.classList.toggle("active", idx === currentSlide);
+            });
+          }
+          let slideTimer = setInterval(() => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlider();
+          }, 3000);
+          function resetTimer() {
+            clearInterval(slideTimer);
+            slideTimer = setInterval(() => {
+              currentSlide = (currentSlide + 1) % totalSlides;
+              updateSlider();
+            }, 3000);
+          }
+        })();
+
+        // Render Offers using horizontal flip card style
         if(formData.offers && formData.offerStyle === "horizontal"){
           renderOffers(formData.offers, formData.offerStyle);
         }
@@ -574,11 +470,15 @@
           if(formData.email) window.location.href = "mailto:" + formData.email;
           else alert("Email not available");
         });
-        document.getElementById("miniWhatsappButton").addEventListener("click", function() {
+        document.getElementById("miniWhatsappButton").addEventListener("click", function(e) {
+          e.preventDefault();
+          e.stopPropagation();
           if(formData.phone) window.open("https://wa.me/" + formData.phone, "_blank");
           else alert("WhatsApp contact not available");
         });
-        document.getElementById("miniMapButton").addEventListener("click", function() {
+        document.getElementById("miniMapButton").addEventListener("click", function(e) {
+          e.preventDefault();
+          e.stopPropagation();
           if(formData.address) window.open("https://www.google.com/maps/search/" + encodeURIComponent(formData.address), "_blank");
           else alert("Address not available");
         });
@@ -609,7 +509,7 @@
           alert("Contact saved successfully!");
         });
       });
-      // Render offers (flip is disabled so cards are not clickable)
+      // Render offers (flip enabled for horizontal style)
       function renderOffers(offers, style) {
         const container = document.getElementById("offersFlipCardSection");
         container.innerHTML = "<h3>Exclusive Offers</h3>";
@@ -617,7 +517,7 @@
           let html = '<div class="scroll-container"><div class="scroll-offer">';
           offers.forEach((offer, index) => {
             html += `
-              <div class="flip-card">
+              <div class="flip-card" onclick="handleFlip(event, ${index})">
                 <div class="flip-card-inner">
                   <div class="flip-card-front">
                     <h4>${offer.title || "Offer " + (index+1)}</h4>
@@ -633,17 +533,16 @@
           container.innerHTML += html;
         }
       }
-      // Settings panel toggle
-      document.addEventListener("click", (e) => {
-        if (!document.getElementById("styleControlsContainer").contains(e.target)) {
-          document.getElementById("styleDropdown").style.display = "none";
-        }
-      });
-      document.getElementById("styleButton").addEventListener("click", (e) => {
+      // Handle flip card behavior
+      function handleFlip(e, index) {
         e.stopPropagation();
-        const styleDropdown = document.getElementById("styleDropdown");
-        styleDropdown.style.display = (styleDropdown.style.display === "block") ? "none" : "block";
-      });
+        const flipCardInner = e.currentTarget.querySelector('.flip-card-inner');
+        if (!flipCardInner.classList.contains('flipped')) {
+          flipCardInner.classList.add('flipped');
+        } else {
+          window.location.href = "offerDetails.html?offer=" + index;
+        }
+      }
     </script>
   </body>
 </html>
