@@ -240,73 +240,10 @@
         color: var(--accent-color);
       }
 
-      /* Blinking Box for Banner Text */
-      .blinking-banner-box {
-        position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
-        padding: 0.5rem 0.8rem;
-        border: 2px dashed gold;
-        border-radius: 10px;
-        background: rgba(255, 255, 0, 0.1);
-        color: #000;
-        animation: blink 1.5s infinite;
-        cursor: pointer;
-        font-weight: bold;
-        max-width: 180px;
-        text-align: center;
-      }
-      @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
-      }
-
-      /* Exclusive Offers Flip Card Section */
-      #offersFlipCardSection {
-        margin: 1rem 0;
-        padding: 1rem;
-        border: 1px dashed var(--neutral-light);
-        border-radius: 10px;
-        position: relative;
-      }
-      #offersFlipCardSection h3 {
-        margin-top: 0;
-      }
-      /* Horizontal flip cards style modified */
-      .scroll-offer .offer-card {
-        display: inline-block;
-        width: 2.5cm;
-        height: 2.5cm;
-        background: var(--secondary-color);
-        color: #fff;
-        margin-right: 5px;
-        border-radius: 6px;
-        text-align: center;
-        cursor: pointer;
-        padding: 5px;
-        box-sizing: border-box;
-        overflow: hidden;
-      }
-      .offer-card h4 {
-        margin: 0;
-        font-size: 0.7cm;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .offer-card p.offer-snippet {
-        margin: 0;
-        font-size: 0.5cm;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-
       /* Business Info Section */
       .business-info-section {
         padding: 1rem;
-        margin: 0.5rem;
+        margin: 0.5rem 0;
         font-size: 0.9rem;
         line-height: 1.5;
         height: 150px;
@@ -330,6 +267,53 @@
         padding: 0.5rem;
         overflow-y: auto;
       }
+      
+      /* Exclusive Offers & Auto Scroll Styles */
+      .scroll-container {
+        overflow: hidden;
+        white-space: nowrap;
+        position: relative;
+        width: 100%;
+        margin: 1rem 0;
+      }
+      .scroll-offer {
+        display: inline-block;
+        animation: scrollLeft 20s linear infinite;
+      }
+      @keyframes scrollLeft {
+        0% { transform: translateX(100%); }
+        100% { transform: translateX(-100%); }
+      }
+      .scroll-offer .offer-card {
+        display: inline-block;
+        width: 150px;
+        height: 150px;
+        background: #f1f1f1;
+        color: #333;
+        margin-right: 10px;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        padding: 10px;
+        box-sizing: border-box;
+        overflow: hidden;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .scroll-offer .offer-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      }
+      .scroll-offer .offer-card h4 {
+        margin: 0.5rem 0;
+        font-size: 1rem;
+      }
+      .scroll-offer .offer-card p.offer-snippet {
+        font-size: 0.8rem;
+        margin: 0;
+      }
+      
       /* Action Buttons Section */
       .action-buttons {
         display: grid;
@@ -501,16 +485,16 @@
         </div>
       </div>
 
-      <!-- Exclusive Offers Flip Card Section -->
-      <div id="offersFlipCardSection"></div>
-
-      <!-- Blinking Banner Box -->
-      <div id="blinkingBannerBox" class="blinking-banner-box"></div>
-
-      <!-- Business Info Section -->
+      <!-- Business Info Section (now comes BEFORE exclusive offers) -->
       <div class="business-info-section">
         <div id="businessInfoContent"></div>
       </div>
+
+      <!-- Exclusive Offers Flip Card Section (moved below Business Info) -->
+      <div id="offersFlipCardSection"></div>
+
+      <!-- Blinking Banner Box (associated with offers) -->
+      <div id="blinkingBannerBox" class="blinking-banner-box"></div>
 
       <!-- Action Buttons Section -->
       <div class="action-buttons">
@@ -604,14 +588,14 @@
         const container = document.getElementById("offersFlipCardSection");
         container.innerHTML = "<h3>Exclusive Offers</h3>";
         if(style === "horizontal") {
-          let html = '<div class="scroll-offer">';
+          let html = '<div class="scroll-container"><div class="scroll-offer">';
           offers.forEach((offer, index) => {
             html += `<div class="offer-card" onclick="openOfferDetails(${index})">
                         <h4>${offer.title || "Offer " + (index+1)}</h4>
                         <p class="offer-snippet">${offer.details ? offer.details.substring(0, 100) : ""}</p>
                      </div>`;
           });
-          html += "</div>";
+          html += "</div></div>";
           container.innerHTML += html;
         }
         // Other styles remain unchanged (if needed)
