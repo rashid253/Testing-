@@ -20,11 +20,7 @@
     />
     <style>
       /* Reset & Global Styles */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
       body {
         font-family: 'Poppins', sans-serif;
         background: linear-gradient(135deg, #cfd8dc, #eceff1);
@@ -34,7 +30,7 @@
         flex-direction: column;
         align-items: center;
       }
-      /* Card Container (overall business card layout) */
+      /* Card Container */
       .card-container {
         position: relative;
         width: 90%;
@@ -63,9 +59,7 @@
         cursor: pointer;
         color: blue;
       }
-      #styleButton:hover {
-        color: #1e90ff;
-      }
+      #styleButton:hover { color: #1e90ff; }
       /* Top Right Share Icon */
       .top-icons {
         position: absolute;
@@ -81,9 +75,7 @@
         cursor: pointer;
         color: blue;
       }
-      .top-share-icon:hover {
-        color: #1e90ff;
-      }
+      .top-share-icon:hover { color: #1e90ff; }
       /* Mini Icons */
       .mini-icons {
         display: flex;
@@ -98,12 +90,12 @@
         cursor: pointer;
         border-radius: 50%;
         padding: 0.5rem;
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255,255,255,0.1);
         transition: transform 0.3s, box-shadow 0.3s;
       }
       .mini-icons .icon:hover {
         transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
       }
       /* Profile Section */
       .profile-section {
@@ -124,13 +116,11 @@
         width: 90px;
         height: 90px;
         border-radius: 50%;
-        border: 2px solid rgba(245, 245, 245, 0.9);
+        border: 2px solid rgba(245,245,245,0.9);
         object-fit: cover;
         transition: box-shadow 0.3s ease;
       }
-      .profile-image:hover {
-        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
-      }
+      .profile-image:hover { box-shadow: 2px 2px 6px rgba(0,0,0,0.3); }
       .profile-name {
         color: #1e1e1e;
         margin-top: 0.5rem;
@@ -159,7 +149,7 @@
         line-height: 1.5;
         background: #ffffff;
         border: 1px solid #ddd;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         border-radius: 10px;
       }
       .business-info-content {
@@ -168,14 +158,12 @@
         color: #333;
         padding: 0.5rem;
       }
-      /* --- Carousel Section (copied from carousel.html) --- */
+      /* --- Carousel Section (as in original carousel.html) --- */
       .carousel-wrapper {
         position: relative;
         width: 100%;
-        max-width: 1000px;
-        margin: auto;
-        overflow: hidden;
         margin-bottom: 20px;
+        overflow: hidden;
       }
       .slides {
         display: flex;
@@ -187,72 +175,39 @@
         justify-content: center;
         padding: 20px;
       }
-      .card {
-        width: 90%;
-        max-width: 700px;
+      /* Increase carousel card width to fill available container space */
+      .carousel-wrapper .card {
+        width: 100%;
+        max-width: 100%;
         border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         overflow: hidden;
         cursor: pointer;
         transition: transform 0.3s;
       }
-      .card:hover {
-        transform: scale(1.02);
-      }
-      /* Card Color Variations */
-      .card.card-1 {
-        background: #fde2e2;
-        color: #7a1d1d;
-      }
-      .card.card-2 {
-        background: #e2f0cb;
-        color: #355e03;
-      }
-      .card.card-3 {
-        background: #d0e6a5;
-        color: #3b4e1d;
-      }
-      .card.card-4 {
-        background: #a8dadc;
-        color: #084c61;
-      }
+      .carousel-wrapper .card:hover { transform: scale(1.02); }
+      .card.card-1 { background: #fde2e2; color: #7a1d1d; }
+      .card.card-2 { background: #e2f0cb; color: #355e03; }
+      .card.card-3 { background: #d0e6a5; color: #3b4e1d; }
+      .card.card-4 { background: #a8dadc; color: #084c61; }
       .card-content {
         display: flex;
         align-items: center;
         gap: 20px;
         padding: 16px;
       }
-      .card-content.row {
-        flex-direction: row;
-      }
-      .card-content.row-reverse {
-        flex-direction: row-reverse;
-      }
-      .text-area {
-        flex: 1;
-      }
-      .text-area h2,
-      .text-area p {
-        margin-bottom: 8px;
-        word-wrap: break-word;
-      }
-      .text-area h2 {
-        font-size: 1.8rem;
-        font-weight: 600;
-      }
-      .text-area p {
-        font-size: 1rem;
-        line-height: 1.5;
-      }
+      .card-content.row { flex-direction: row; }
+      .card-content.row-reverse { flex-direction: row-reverse; }
+      .text-area { flex: 1; }
+      .text-area h2, .text-area p { margin-bottom: 8px; word-wrap: break-word; }
+      .text-area h2 { font-size: 1.8rem; font-weight: 600; }
+      .text-area p { font-size: 1rem; line-height: 1.5; }
       .text-area [contenteditable="true"] {
-        border: 1px dashed rgba(0, 0, 0, 0.3);
+        border: 1px dashed rgba(0,0,0,0.3);
         padding: 4px;
         border-radius: 4px;
       }
-      .image-area {
-        flex: 0 0 auto;
-        max-width: 300px;
-      }
+      .image-area { flex: 0 0 auto; max-width: 300px; }
       .image-area img {
         width: 100%;
         height: auto;
@@ -270,9 +225,7 @@
         cursor: pointer;
         font-size: 0.9rem;
       }
-      input[type="file"] {
-        display: none;
-      }
+      input[type="file"] { display: none; }
       .dots {
         text-align: center;
         margin: 12px 0;
@@ -287,8 +240,14 @@
         cursor: pointer;
         transition: background 0.3s;
       }
-      .dot.active {
-        background: #ff007f;
+      .dot.active { background: #ff007f; }
+      /* Mobile adjustments for carousel */
+      @media (max-width: 600px) {
+        .text-area h2 { font-size: 1.6rem; }
+        .text-area p { font-size: 0.9rem; }
+        .upload-btn, .dot { font-size: 0.8rem; }
+        .card-content { flex-direction: column; }
+        .image-area { max-width: 100%; }
       }
       /* --- End Carousel Section --- */
       /* Exclusive Offers Section */
@@ -308,10 +267,7 @@
         background: #1e90ff;
         transition: transform 0.3s, box-shadow 0.3s;
       }
-      .action-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-      }
+      .action-btn:hover { transform: translateY(-2px); box-shadow: 2px 2px 5px rgba(0,0,0,0.3); }
       .social-links {
         display: flex;
         justify-content: center;
@@ -324,32 +280,11 @@
         visibility: hidden;
         border-radius: 50%;
         padding: 0.5rem;
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255,255,255,0.1);
         text-decoration: none;
         transition: transform 0.3s, box-shadow 0.3s;
       }
-      .social-icon:hover {
-        color: #1e90ff;
-        transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-      }
-      @media (max-width: 600px) {
-        .text-area h2 {
-          font-size: 1.6rem;
-        }
-        .text-area p {
-          font-size: 0.9rem;
-        }
-        .upload-btn, .dot {
-          font-size: 0.8rem;
-        }
-        .card-content {
-          flex-direction: column;
-        }
-        .image-area {
-          max-width: 100%;
-        }
-      }
+      .social-icon:hover { color: #1e90ff; transform: translateY(-2px); box-shadow: 2px 2px 5px rgba(0,0,0,0.3); }
     </style>
   </head>
   <body>
@@ -401,7 +336,7 @@
       <div class="business-info-section">
         <div id="businessInfoContent"></div>
       </div>
-      <!-- Carousel Section (exact copy from carousel.html) -->
+      <!-- Carousel Section (as per original carousel.html) -->
       <div class="carousel-wrapper">
         <div class="slides">
           <!-- Slide 1 -->
@@ -477,34 +412,7 @@
         <span class="dot" data-index="2"></span>
         <span class="dot" data-index="3"></span>
       </div>
-      <!-- Edit Form Section -->
-      <form id="editForm">
-        <h3>Edit Card</h3>
-        <label for="cardSelect">Select Card:</label>
-        <select id="cardSelect">
-          <option value="1">Card 1</option>
-          <option value="2">Card 2</option>
-          <option value="3">Card 3</option>
-          <option value="4">Card 4</option>
-        </select>
-        <label for="newTitle">Title (max 10 words):</label>
-        <input type="text" id="newTitle" placeholder="Enter new title" required>
-        <div class="counter" id="titleCounter">10 words remaining</div>
-        <label for="newDesc">Description (max 50 words):</label>
-        <textarea id="newDesc" rows="3" placeholder="Enter new description" required></textarea>
-        <div class="counter" id="descCounter">50 words remaining</div>
-        <label for="newDetails">Details (max 100 words):</label>
-        <textarea id="newDetails" rows="3" placeholder="Enter card details" required></textarea>
-        <div class="counter" id="detailsCounter">100 words remaining</div>
-        <label for="newImage">Upload New Image (optional):</label>
-        <input type="file" id="newImage" accept="image/*">
-        <label for="imgPosition">Image Position:</label>
-        <select id="imgPosition">
-          <option value="right" selected>Right</option>
-          <option value="left">Left</option>
-        </select>
-        <button type="submit">Update Card</button>
-      </form>
+      <!-- (Note: The Edit Card form has been removed from card.html) -->
       <!-- Exclusive Offers Section -->
       <div id="offersFlipCardSection"></div>
       <div class="action-buttons">
@@ -601,7 +509,7 @@
         });
       });
       
-      // ---------- Image Upload and Resize ----------
+      // ---------- Image Upload, Resize, and Imgur Upload ----------
       function resizeImage(file, maxWidth, fillColor, callback) {
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -620,11 +528,41 @@
             ctx.fillStyle = fillColor;
             ctx.fillRect(0, 0, width, height);
             ctx.drawImage(img, 0, 0, width, height);
-            callback(canvas.toDataURL('image/jpeg', 0.8));
+            // Instead of returning the data URL directly,
+            // upload it to Imgur using the provided Imgur ID.
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+            uploadToImgur(dataUrl, callback);
           }
           img.src = e.target.result;
         }
         reader.readAsDataURL(file);
+      }
+      
+      // Pseudo-function: Upload image to Imgur using provided Client/Album ID
+      function uploadToImgur(dataUrl, callback) {
+        // Replace '048d9400ce02b71' with your actual Imgur Client-ID if needed.
+        fetch("https://api.imgur.com/3/image", {
+          method: "POST",
+          headers: {
+            Authorization: "Client-ID 048d9400ce02b71",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            image: dataUrl.split(",")[1],
+            type: "base64"
+            // Optionally include album or other parameters
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if(data.success) {
+            callback(data.data.link);
+          } else {
+            // If upload fails, fallback to data URL
+            callback(dataUrl);
+          }
+        })
+        .catch(() => callback(dataUrl));
       }
       
       document.querySelectorAll('.file-input').forEach(input => {
@@ -634,9 +572,9 @@
           if(file) {
             const card = document.querySelector('.card[data-card="' + cardNum + '"]');
             const fillColor = window.getComputedStyle(card).backgroundColor;
-            resizeImage(file, 300, fillColor, function(resizedDataUrl) {
+            resizeImage(file, 300, fillColor, function(resizedUrl) {
               const imageEl = document.getElementById('img' + cardNum);
-              imageEl.src = resizedDataUrl;
+              imageEl.src = resizedUrl;
               imageEl.style.border = 'none';
             });
           }
@@ -685,7 +623,8 @@
         if(e.target === modal) modal.style.display = 'none';
       });
       
-      // ---------- Form Field Countdown Updates ----------
+      // ---------- (Optional) Countdown Functionality ----------
+      // If countdown is needed for any input fields, ensure the updateCountdown function is attached.
       function updateCountdown(fieldId, counterId, limit) {
         const field = document.getElementById(fieldId);
         const counter = document.getElementById(counterId);
@@ -697,19 +636,45 @@
         });
       }
       
-      updateCountdown("newTitle", "titleCounter", TITLE_LIMIT);
-      updateCountdown("newDesc", "descCounter", DESC_LIMIT);
-      updateCountdown("newDetails", "detailsCounter", DETAILS_LIMIT);
+      // (If the edit form is removed, countdown may be unnecessary here.)
       
-      // ---------- Edit Form Submission (Update Card) ----------
-      document.getElementById('editForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const cardNum = document.getElementById('cardSelect').value;
-        document.getElementById('title' + cardNum).textContent = document.getElementById('newTitle').value;
-        document.getElementById('desc' + cardNum).textContent = document.getElementById('newDesc').value;
-        const card = document.querySelector('.card[data-card="' + cardNum + '"]');
-        card.setAttribute('data-details', document.getElementById('newDetails').value);
-        alert("Card " + cardNum + " updated successfully!");
+      // ---------- Load Stored Data ----------
+      document.addEventListener("DOMContentLoaded", function () {
+        "use strict";
+        // Retrieve main form data from localStorage
+        const storedData = localStorage.getItem("formData");
+        const formData = storedData ? JSON.parse(storedData) : {};
+        document.getElementById("cardProfileImage").src = formData.profileImage || "";
+        document.getElementById("cardName").textContent = formData.name || "";
+        document.getElementById("cardBusinessName").textContent = formData.businessName || "";
+        document.getElementById("cardAddress").textContent = formData.address || "";
+        document.getElementById("cardPhone").textContent = formData.phone || "";
+        document.getElementById("cardEmail").textContent = formData.email || "";
+        
+        // Populate Business Info Section if available
+        const businessInfo = formData.businessInfo || "";
+        const paragraphs = businessInfo.split("\n").filter(p => p.trim() !== "");
+        const businessInfoContainer = document.getElementById("businessInfoContent");
+        businessInfoContainer.innerHTML = paragraphs.map(p => `<div class="business-info-content"><p>${p}</p></div>`).join("");
+        
+        // (No edit form data is processed here since the form has been removed.)
+        
+        // Social Links
+        const socialLinks = {
+          facebook: document.getElementById("facebookButton"),
+          instagram: document.getElementById("instagramButton"),
+          youtube: document.getElementById("youtubeButton")
+        };
+        Object.entries(socialLinks).forEach(([platform, element]) => {
+          const url = formData[platform];
+          if(url){
+            element.href = url;
+            element.style.visibility = "visible";
+            element.target = "_blank";
+          } else {
+            element.style.visibility = "hidden";
+          }
+        });
       });
     </script>
   </body>
