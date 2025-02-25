@@ -20,10 +20,12 @@
         --neutral-dark: #333333;
         --card-background: #ffffff;
         --body-bg: linear-gradient(135deg, #cfd8dc, #eceff1);
+        --business-info-bg: #ffffff;
         --dropdown-header-color: #333;
         --dropdown-btn-bg: #00796b;
         --dropdown-btn-hover: #00695c;
       }
+      /* Remove default focus outline */
       button:focus {
         outline: none;
       }
@@ -174,8 +176,9 @@
       .mini-icons .icon {
         font-size: 1.5rem;
         color: var(--neutral-dark);
-        cursor: pointer;
+        visibility: hidden;
         border-radius: 50%;
+        text-decoration: none;
         padding: 0.5rem;
         background: rgba(255, 255, 255, 0.1);
         transition: transform 0.3s, box-shadow 0.3s;
@@ -231,7 +234,12 @@
         font-size: 0.85rem;
         line-height: 1.4;
       }
-      /* (Removed Business Info Section – replaced by removal of Business Info Sa) */
+      /* Business name styling */
+      #cardBusinessName {
+        color: green;
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
       /* Save Contact Icon adjustments */
       .connect-btn {
         align-self: center;
@@ -245,6 +253,36 @@
         transform: scale(1.1);
         color: var(--accent-color);
       }
+      /* Business Info Section styling */
+      .business-info-section {
+        padding: 1rem;
+        margin: 0.5rem 0;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        height: 150px;
+        background: var(--business-info-bg);
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+      }
+      .business-info-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        text-align: center;
+        font-weight: bold;
+        color: var(--neutral-dark);
+        padding: 0.5rem;
+        overflow-y: auto;
+      }
+      /* Hide any scrollbar inside business info */
+      .business-info-content::-webkit-scrollbar {
+        display: none;
+      }
       /* Exclusive Offers & Continuous Scroll */
       .scroll-container {
         overflow: hidden;
@@ -255,6 +293,7 @@
       }
       .scroll-offer {
         display: inline-block;
+        /* Change animation direction to left-to-right */
         animation: scrollRight 20s linear infinite;
       }
       @keyframes scrollRight {
@@ -269,6 +308,7 @@
         perspective: 1000px;
         display: inline-block;
         margin-right: 10px;
+        /* Remove cursor pointer as flip is disabled */
       }
       .flip-card-inner {
         position: relative;
@@ -278,6 +318,7 @@
         transition: transform 0.8s;
         transform-style: preserve-3d;
       }
+      /* Since details should not open on touch, we do not toggle flip */
       .flip-card-front,
       .flip-card-back {
         position: absolute;
@@ -349,57 +390,6 @@
         transform: translateY(-2px);
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
       }
-      /* Carousel Card Template Styles (moved from carousel.html) */
-      .carousel-card-template {
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      }
-      .carousel-card-template .card-content {
-        display: flex;
-        padding: 16px;
-      }
-      .carousel-card-template .text-area {
-        flex: 1;
-      }
-      .carousel-card-template .text-area h2 {
-        font-size: 1.8rem;
-        font-weight: 600;
-      }
-      .carousel-card-template .text-area p {
-        font-size: 1rem;
-        line-height: 1.5;
-      }
-      .carousel-card-template .image-area {
-        max-width: 300px;
-      }
-      .carousel-card-template .image-area img {
-        width: 100%;
-        height: auto;
-        border-radius: 8px;
-      }
-      .carousel-card-template .upload-btn {
-        margin-top: 8px;
-        padding: 8px 16px;
-        background: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.9rem;
-      }
-      .carousel-card-template .details-btn {
-        padding: 8px 16px;
-        background: #28a745;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        margin: 16px;
-      }
     </style>
   </head>
   <body>
@@ -465,20 +455,20 @@
           <i class="fas fa-share-alt"></i>
         </button>
       </div>
-      <!-- Carousel Card Template (moved from carousel.html) -->
-      <div class="carousel-card-template" data-card="1" data-details="" data-img-pos="right">
-        <div class="card-content">
-          <div class="text-area">
-            <h2 id="title1" contenteditable="true">Card 1 Title</h2>
-            <p id="desc1" contenteditable="true">Card 1 description goes here. (Keep title under 10 words and description under 50 words.)</p>
-          </div>
-          <div class="image-area">
-            <img id="img1" src="https://via.placeholder.com/300x200.png?text=Upload+Image" alt="Image 1">
-            <button class="upload-btn" data-card="1">Upload Image</button>
-            <input type="file" class="file-input" data-card="1" accept="image/*">
-          </div>
-        </div>
-        <button class="details-btn" data-card="1">View Details</button>
+      <!-- Mini Icons -->
+      <div class="mini-icons">
+        <a id="miniCallButton" class="icon" title="Call">
+          <i class="fas fa-phone"></i>
+        </a>
+        <a id="miniEmailButton" class="icon" title="Email">
+          <i class="fas fa-envelope"></i>
+        </a>
+        <a id="miniWhatsappButton" class="icon" title="WhatsApp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+        <a id="miniMapButton" class="icon" title="Open in Google Maps">
+          <i class="fas fa-map-marker-alt"></i>
+        </a>
       </div>
       <!-- Profile Section -->
       <div class="profile-section">
@@ -496,13 +486,23 @@
           <i class="fas fa-save"></i>
         </div>
       </div>
+      <!-- Business Info Section -->
+      <div class="business-info-section">
+        <div id="businessInfoContent"></div>
+      </div>
       <!-- Exclusive Offers Flip Card Section -->
       <div id="offersFlipCardSection"></div>
       <!-- Action Buttons Section -->
       <div class="action-buttons">
-        <a id="callButton" class="action-btn contact-btn" style="background: var(--secondary-color);">Call</a>
-        <a id="whatsappButton" class="action-btn contact-btn" style="background: #25d366;">WhatsApp</a>
-        <a id="emailButton" class="action-btn contact-btn" style="background: var(--accent-color);">Email</a>
+        <a id="callButton" class="action-btn contact-btn" style="background: var(--secondary-color);">
+          Call
+        </a>
+        <a id="whatsappButton" class="action-btn contact-btn" style="background: #25d366;">
+          WhatsApp
+        </a>
+        <a id="emailButton" class="action-btn contact-btn" style="background: var(--accent-color);">
+          Email
+        </a>
       </div>
       <!-- Social Links Section -->
       <div class="social-links">
@@ -529,9 +529,23 @@
         document.getElementById("cardAddress").textContent = formData.address || "";
         document.getElementById("cardPhone").textContent = formData.phone || "";
         document.getElementById("cardEmail").textContent = formData.email || "";
-        
-        // (Business Info section removed – "Business Info Sa" not displayed)
-        
+        // Business Info
+        const businessInfo = formData.businessInfo || "";
+        const paragraphs = businessInfo.split("\n").filter(p => p.trim() !== "");
+        const businessInfoContainer = document.getElementById("businessInfoContent");
+        businessInfoContainer.innerHTML = paragraphs.map(p => `<div class="business-info-content"><p>${p}</p></div>`).join("");
+        const paragraphDivs = businessInfoContainer.querySelectorAll(".business-info-content");
+        let currentIndex = 0;
+        paragraphDivs.forEach((div, idx) => {
+          div.style.display = (idx === 0) ? "block" : "none";
+        });
+        if (paragraphDivs.length > 0) {
+          setInterval(() => {
+            paragraphDivs[currentIndex].style.display = "none";
+            currentIndex = (currentIndex + 1) % paragraphDivs.length;
+            paragraphDivs[currentIndex].style.display = "block";
+          }, 8000);
+        }
         // Social Links
         const socialLinks = {
           facebook: document.getElementById("facebookButton"),
@@ -548,13 +562,88 @@
             element.style.visibility = "hidden";
           }
         });
-        
-        // Render Offers if applicable
+        // Render Offers using horizontal flip card style (flip disabled)
         if(formData.offers && formData.offerStyle === "horizontal"){
           renderOffers(formData.offers, formData.offerStyle);
         }
-        
-        // (Other event listeners can be added as needed)
+        // --- Event Listeners for Button Icons ---
+        document.getElementById("miniCallButton").addEventListener("click", function() {
+          if(formData.phone) window.location.href = "tel:" + formData.phone;
+          else alert("Phone number not available");
+        });
+        document.getElementById("miniEmailButton").addEventListener("click", function() {
+          if(formData.email) window.location.href = "mailto:" + formData.email;
+          else alert("Email not available");
+        });
+        document.getElementById("miniWhatsappButton").addEventListener("click", function() {
+          if(formData.phone) window.open("https://wa.me/" + formData.phone, "_blank");
+          else alert("WhatsApp contact not available");
+        });
+        document.getElementById("miniMapButton").addEventListener("click", function() {
+          if(formData.address) window.open("https://www.google.com/maps/search/" + encodeURIComponent(formData.address), "_blank");
+          else alert("Address not available");
+        });
+        document.getElementById("topShareIcon").addEventListener("click", function() {
+          if(navigator.share) {
+            navigator.share({
+              title: formData.name || "Business Card",
+              text: "Check out this business card.",
+              url: window.location.href
+            }).catch(err => console.log("Error sharing:", err));
+          } else {
+            alert("Share feature not supported in this browser.");
+          }
+        });
+        document.getElementById("callButton").addEventListener("click", function() {
+          if(formData.phone) window.location.href = "tel:" + formData.phone;
+          else alert("Phone number not available");
+        });
+        document.getElementById("whatsappButton").addEventListener("click", function() {
+          if(formData.phone) window.open("https://wa.me/" + formData.phone, "_blank");
+          else alert("WhatsApp contact not available");
+        });
+        document.getElementById("emailButton").addEventListener("click", function() {
+          if(formData.email) window.location.href = "mailto:" + formData.email;
+          else alert("Email not available");
+        });
+        document.getElementById("connectButton").addEventListener("click", function() {
+          alert("Contact saved successfully!");
+        });
+      });
+      // Render offers (flip is disabled so cards are not clickable)
+      function renderOffers(offers, style) {
+        const container = document.getElementById("offersFlipCardSection");
+        container.innerHTML = "<h3>Exclusive Offers</h3>";
+        if(style === "horizontal") {
+          let html = '<div class="scroll-container"><div class="scroll-offer">';
+          offers.forEach((offer, index) => {
+            html += `
+              <div class="flip-card">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front">
+                    <h4>${offer.title || "Offer " + (index+1)}</h4>
+                  </div>
+                  <div class="flip-card-back">
+                    <p>Details available on next page</p>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          html += "</div></div>";
+          container.innerHTML += html;
+        }
+      }
+      // Settings panel toggle
+      document.addEventListener("click", (e) => {
+        if (!document.getElementById("styleControlsContainer").contains(e.target)) {
+          document.getElementById("styleDropdown").style.display = "none";
+        }
+      });
+      document.getElementById("styleButton").addEventListener("click", (e) => {
+        e.stopPropagation();
+        const styleDropdown = document.getElementById("styleDropdown");
+        styleDropdown.style.display = (styleDropdown.style.display === "block") ? "none" : "block";
       });
     </script>
   </body>
