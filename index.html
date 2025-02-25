@@ -71,7 +71,7 @@
         gap: 1rem;
         margin-bottom: 1.5rem;
       }
-      /* Profile Section for the form */
+      /* Profile Section for basic info */
       .profile-section-form {
         display: grid;
         gap: 1rem;
@@ -136,6 +136,11 @@
         cursor: pointer;
         font-size: 1rem;
       }
+      /* Countdown style */
+      .counter {
+        font-size: 0.8rem;
+        color: #555;
+      }
       /* Dropdown (gear) */
       .dropdown-menu {
         display: none;
@@ -164,7 +169,7 @@
         border-radius: 4px;
         cursor: pointer;
       }
-      /* New "Just for you" Section (replacing removed Business Info) */
+      /* New "Just for you" Section (copied from carousel.html) */
       .just-for-you-section {
         border: 1px solid var(--neutral-light);
         border-radius: 8px;
@@ -178,6 +183,27 @@
       .just-for-you-section p {
         font-size: 0.9rem;
         color: var(--neutral-dark);
+      }
+      /* Edit Card Section (moved inside the main form) */
+      #editForm {
+        border: 1px solid var(--neutral-light);
+        border-radius: 8px;
+        padding: 1rem;
+        background: #f5f5f5;
+        margin-bottom: 1rem;
+      }
+      #editForm h3 {
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+        color: var(--primary-color);
+      }
+      #editForm label {
+        font-size: 0.9rem;
+      }
+      #editForm input,
+      #editForm textarea,
+      #editForm select {
+        font-size: 0.9rem;
       }
       /* Banner field group */
       .banner-field-group {
@@ -405,7 +431,7 @@
         <p>Fill in all required information</p>
       </div>
       <div class="form-grid">
-        <!-- Profile Section: image upload + basic info -->
+        <!-- Profile Section: image upload and basic info -->
         <div class="profile-section-form">
           <div class="image-upload-group">
             <label for="profileImage">
@@ -424,12 +450,12 @@
             <input type="text" id="businessName" placeholder="Business Name" required />
           </div>
         </div>
-        <!-- New "Just for you" section moved below the profile section -->
+        <!-- New "Just for you" section (from carousel.html) -->
         <div class="just-for-you-section">
           <h3>Just for you</h3>
           <p>This section is specially curated to provide personalized recommendations and content—exclusively for you!</p>
         </div>
-        <!-- Rest of the form fields -->
+        <!-- Additional fields -->
         <div class="input-group">
           <label for="address">Business Address <span class="required">*</span></label>
           <input type="text" id="address" placeholder="Business Address" required />
@@ -454,6 +480,34 @@
           <label for="youtube">YouTube URL</label>
           <input type="url" id="youtube" placeholder="YouTube URL" pattern="https?://(www\.)?youtube\.com/.*" title="Please enter a valid YouTube URL." />
         </div>
+        <!-- Edit Card Section (moved from below Generate Card to above the Exclusive Offers section) -->
+        <form id="editForm">
+          <h3>Edit Card</h3>
+          <label for="cardSelect">Select Card:</label>
+          <select id="cardSelect">
+            <option value="1">Card 1</option>
+            <option value="2">Card 2</option>
+            <option value="3">Card 3</option>
+            <option value="4">Card 4</option>
+          </select>
+          <label for="newTitle">Title (max 10 words):</label>
+          <input type="text" id="newTitle" placeholder="Enter new title" required />
+          <div class="counter" id="titleCounter">10 words remaining</div>
+          <label for="newDesc">Description (max 50 words):</label>
+          <textarea id="newDesc" rows="3" placeholder="Enter new description" required></textarea>
+          <div class="counter" id="descCounter">50 words remaining</div>
+          <label for="newDetails">Details (max 100 words):</label>
+          <textarea id="newDetails" rows="3" placeholder="Enter card details" required></textarea>
+          <div class="counter" id="detailsCounter">100 words remaining</div>
+          <label for="newImage">Upload New Image (optional):</label>
+          <input type="file" id="newImage" accept="image/*" />
+          <label for="imgPosition">Image Position:</label>
+          <select id="imgPosition">
+            <option value="right" selected>Right</option>
+            <option value="left">Left</option>
+          </select>
+          <button type="submit">Update Card</button>
+        </form>
         <!-- Exclusive Offers Section -->
         <div class="exclusive-offers-section">
           <div class="banner-field-group">
@@ -571,37 +625,9 @@
             <button type="button" id="applyOfferStyleBtn" onclick="applyStyle()">Apply Offer Style</button>
           </div>
         </div>
+        <!-- Generate Card Button -->
         <button id="generateCard">Generate Card</button>
       </div>
-      
-      <!-- Edit Form Section (shifted from carousel.html) -->
-      <form id="editForm">
-        <h3>Edit Card</h3>
-        <label for="cardSelect">Select Card:</label>
-        <select id="cardSelect">
-          <option value="1">Card 1</option>
-          <option value="2">Card 2</option>
-          <option value="3">Card 3</option>
-          <option value="4">Card 4</option>
-        </select>
-        <label for="newTitle">Title (max 10 words):</label>
-        <input type="text" id="newTitle" placeholder="Enter new title" required>
-        <div class="counter" id="titleCounter">10 words remaining</div>
-        <label for="newDesc">Description (max 50 words):</label>
-        <textarea id="newDesc" rows="3" placeholder="Enter new description" required></textarea>
-        <div class="counter" id="descCounter">50 words remaining</div>
-        <label for="newDetails">Details (max 100 words):</label>
-        <textarea id="newDetails" rows="3" placeholder="Enter card details" required></textarea>
-        <div class="counter" id="detailsCounter">100 words remaining</div>
-        <label for="newImage">Upload New Image (optional):</label>
-        <input type="file" id="newImage" accept="image/*">
-        <label for="imgPosition">Image Position:</label>
-        <select id="imgPosition">
-          <option value="right" selected>Right</option>
-          <option value="left">Left</option>
-        </select>
-        <button type="submit">Update Card</button>
-      </form>
       
       <!-- Modal for Card Details (shifted from carousel.html) -->
       <div class="modal" id="detailsModal">
@@ -655,23 +681,33 @@
       // Banner dropdown functions
       function toggleBannerDropdown(id) {
         const dd = document.getElementById(id);
-        dd.style.display = (dd.style.display==="block") ? "none" : "block";
+        dd.style.display = (dd.style.display === "block") ? "none" : "block";
       }
       function setBannerText(fieldId, text) {
         document.getElementById(fieldId).value = text;
-        if(fieldId==="offerBanner") document.getElementById("banner1Dropdown").style.display = "none";
-        else document.getElementById("banner2Dropdown").style.display = "none";
+        if (fieldId === "offerBanner")
+          document.getElementById("banner1Dropdown").style.display = "none";
+        else
+          document.getElementById("banner2Dropdown").style.display = "none";
       }
       
       // Offer details functions
-      window.offerEditors = {}; 
+      window.offerEditors = {};
       function toggleOfferDetails(index) {
         const container = document.getElementById("offerDetailsContainer" + index);
-        container.style.display = (container.style.display==="block") ? "none" : "block";
-        if(container.style.display==="block" && !window.offerEditors[index]) {
+        container.style.display = (container.style.display === "block") ? "none" : "block";
+        if (container.style.display === "block" && !window.offerEditors[index]) {
           window.offerEditors[index] = new Quill("#offerEditor" + index, {
             theme: "snow",
-            modules: { toolbar: [[{ font: [] }, { size: [] }], ['bold','italic','underline'], [{ color: [] }, { background: [] }], [{ align: [] }], ['clean']] }
+            modules: {
+              toolbar: [
+                [{ font: [] }, { size: [] }],
+                ["bold", "italic", "underline"],
+                [{ color: [] }, { background: [] }],
+                [{ align: [] }],
+                ["clean"]
+              ]
+            }
           });
         }
       }
@@ -682,15 +718,19 @@
         reader.readAsDataURL(event.target.files[0]);
       }
       function saveAndCloseOfferDetails(index) {
-        if(window.offerEditors[index]) { document.getElementById("offerText" + index).value = window.offerEditors[index].root.innerHTML; }
+        if (window.offerEditors[index]) {
+          document.getElementById("offerText" + index).value = window.offerEditors[index].root.innerHTML;
+        }
         document.getElementById("offerDetailsContainer" + index).style.display = "none";
       }
       // Offer style preview dropdown
       function toggleOfferStyleDropdown() {
         const dd = document.getElementById("offerStyleDropdown");
-        dd.style.display = (dd.style.display==="block") ? "none" : "block";
+        dd.style.display = (dd.style.display === "block") ? "none" : "block";
       }
-      function closeOfferStyleDropdown() { document.getElementById("offerStyleDropdown").style.display = "none"; }
+      function closeOfferStyleDropdown() {
+        document.getElementById("offerStyleDropdown").style.display = "none";
+      }
       var selectedOfferStyle = "";
       function selectOfferStyle(style) {
         selectedOfferStyle = style;
@@ -700,80 +740,78 @@
       }
       function showOfferPreview(style) {
         const previewDiv = document.getElementById("offerPreview");
-        if(style==="accordion") previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Accordion Preview<br/><em>Click header to expand details.</em></div>';
-        else if(style==="horizontal") {
-          previewDiv.innerHTML = '<div style="overflow-x:auto; white-space:nowrap; border:1px solid #ccc; padding:10px;">' +
+        if (style === "accordion")
+          previewDiv.innerHTML =
+            '<div style="border:1px solid #ccc; padding:10px;">Accordion Preview<br/><em>Click header to expand details.</em></div>';
+        else if (style === "horizontal")
+          previewDiv.innerHTML =
+            '<div style="overflow-x:auto; white-space:nowrap; border:1px solid #ccc; padding:10px;">' +
             '<div style="display:inline-block; width:25vw; height:25vw; background:#3498db; margin-right:5px; color:#fff; text-align:center;">Horizontal Preview</div>' +
             '</div>';
-        } else if(style==="tab") previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Tab-based Preview</div>';
-        else if(style==="modal") previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Modal Popup Preview</div>';
+        else if (style === "tab")
+          previewDiv.innerHTML =
+            '<div style="border:1px solid #ccc; padding:10px;">Tab-based Preview</div>';
+        else if (style === "modal")
+          previewDiv.innerHTML =
+            '<div style="border:1px solid #ccc; padding:10px;">Modal Popup Preview</div>';
       }
       function applyStyle() {
         alert("Offer style " + selectedOfferStyle + " applied!");
       }
       
-      // Carousel and Edit Form JS (shifted from carousel.html)
-      const slidesContainer = document.querySelector('.slides');
-      const dots = document.querySelectorAll('.dot');
-      let currentSlide = 0;
-      const totalSlides = dots ? dots.length : 0;
-      function goToSlide(n) {
-        if(slidesContainer) {
-          currentSlide = (n + totalSlides) % totalSlides;
-          slidesContainer.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
-          dots.forEach(dot => dot.classList.remove('active'));
-          dots[currentSlide].classList.add('active');
-        }
-      }
-      let slideInterval = setInterval(() => {
-        if(slidesContainer) goToSlide(currentSlide + 1);
-      }, 5000);
-      function pauseAutoSlide(duration = 30000) {
-        clearInterval(slideInterval);
-        setTimeout(() => {
-          slideInterval = setInterval(() => {
-            if(slidesContainer) goToSlide(currentSlide + 1);
-          }, 5000);
-        }, duration);
-      }
-      if(dots) {
-        dots.forEach(dot => {
-          dot.addEventListener('click', function() {
-            goToSlide(parseInt(this.getAttribute('data-index')));
-            pauseAutoSlide();
-          });
-        });
-      }
-      // Modal functionality for edit form
-      const modal = document.getElementById('detailsModal');
-      const modalBody = document.getElementById('modalBody');
-      const closeBtn = document.querySelector('.close-btn');
-      document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('click', function(e) {
-          if(e.target.classList.contains('upload-btn') || e.target.classList.contains('details-btn')) return;
-          const detailsText = this.getAttribute('data-details') || "No details available.";
-          modalBody.innerHTML = `<h3>Card ${this.getAttribute('data-card')} Details</h3><p>${detailsText}</p>`;
-          modal.style.display = 'flex';
-          pauseAutoSlide();
+      // Generate Card functionality – on click, gather form data, store it, and redirect
+      document.getElementById("generateCard").addEventListener("click", function (e) {
+        e.preventDefault();
+        const formData = {
+          profileImage: document.getElementById("imagePreview").src,
+          name: document.getElementById("name").value,
+          businessName: document.getElementById("businessName").value,
+          address: document.getElementById("address").value,
+          phone: document.getElementById("phone").value,
+          email: document.getElementById("email").value,
+          facebook: document.getElementById("facebook").value,
+          instagram: document.getElementById("instagram").value,
+          youtube: document.getElementById("youtube").value
+          // You can add further fields (including offers) as needed
+        };
+        localStorage.setItem("formData", JSON.stringify(formData));
+        window.location.href = "card.html";
+      });
+      
+      // (Optional: Code for carousel auto-slide if needed – omitted if not in this design)
+      
+      // Modal functionality for card details (if any card is clicked)
+      const modal = document.getElementById("detailsModal");
+      const modalBody = document.getElementById("modalBody");
+      const closeBtn = document.querySelector(".close-btn");
+      document.querySelectorAll(".card").forEach(function (card) {
+        card.addEventListener("click", function (e) {
+          if (
+            e.target.classList.contains("upload-btn") ||
+            e.target.classList.contains("details-btn")
+          )
+            return;
+          const detailsText = this.getAttribute("data-details") || "No details available.";
+          modalBody.innerHTML = `<h3>Card ${this.getAttribute("data-card")} Details</h3><p>${detailsText}</p>`;
+          modal.style.display = "flex";
         });
       });
-      document.querySelectorAll('.details-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
+      document.querySelectorAll(".details-btn").forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
           e.stopPropagation();
-          const card = this.closest('.card');
-          const detailsText = card.getAttribute('data-details') || "No details available.";
-          modalBody.innerHTML = `<h3>Card ${card.getAttribute('data-card')} Details</h3><p>${detailsText}</p>`;
-          modal.style.display = 'flex';
-          pauseAutoSlide();
+          const card = this.closest(".card");
+          const detailsText = card.getAttribute("data-details") || "No details available.";
+          modalBody.innerHTML = `<h3>Card ${card.getAttribute("data-card")} Details</h3><p>${detailsText}</p>`;
+          modal.style.display = "flex";
         });
       });
-      if(closeBtn) {
-        closeBtn.addEventListener('click', function() {
-          modal.style.display = 'none';
+      if (closeBtn) {
+        closeBtn.addEventListener("click", function () {
+          modal.style.display = "none";
         });
       }
-      window.addEventListener('click', function(e) {
-        if(e.target === modal) modal.style.display = 'none';
+      window.addEventListener("click", function (e) {
+        if (e.target === modal) modal.style.display = "none";
       });
       
       // Edit Form word count limits
@@ -781,16 +819,18 @@
       const DESC_LIMIT = 50;
       const DETAILS_LIMIT = 100;
       function updateCounter(field, counter, limit) {
-        let words = field.value.trim().split(/\s+/).filter(word => word.length > 0);
+        const words = field.value.trim().split(/\s+/).filter(function (word) {
+          return word.length > 0;
+        });
         counter.textContent = (limit - words.length) + " words remaining";
       }
-      document.getElementById("newTitle").addEventListener("input", function() {
+      document.getElementById("newTitle").addEventListener("input", function () {
         updateCounter(this, document.getElementById("titleCounter"), TITLE_LIMIT);
       });
-      document.getElementById("newDesc").addEventListener("input", function() {
+      document.getElementById("newDesc").addEventListener("input", function () {
         updateCounter(this, document.getElementById("descCounter"), DESC_LIMIT);
       });
-      document.getElementById("newDetails").addEventListener("input", function() {
+      document.getElementById("newDetails").addEventListener("input", function () {
         updateCounter(this, document.getElementById("detailsCounter"), DETAILS_LIMIT);
       });
     </script>
