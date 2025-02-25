@@ -71,6 +71,11 @@
         gap: 1rem;
         margin-bottom: 1.5rem;
       }
+      /* Profile Section for the form */
+      .profile-section-form {
+        display: grid;
+        gap: 1rem;
+      }
       .input-group {
         display: flex;
         flex-direction: column;
@@ -159,7 +164,7 @@
         border-radius: 4px;
         cursor: pointer;
       }
-      /* New Just for you Section (replacing Business Info) */
+      /* New "Just for you" Section (replacing removed Business Info) */
       .just-for-you-section {
         border: 1px solid var(--neutral-light);
         border-radius: 8px;
@@ -400,27 +405,31 @@
         <p>Fill in all required information</p>
       </div>
       <div class="form-grid">
-        <div class="image-upload-group">
-          <label for="profileImage">
-            <i class="fas fa-camera fa-2x"></i>
-            <p>Upload Profile Photo</p>
-          </label>
-          <input type="file" id="profileImage" accept="image/*" onchange="previewImage(event)" />
-          <img id="imagePreview" alt="Profile Preview" />
+        <!-- Profile Section: image upload + basic info -->
+        <div class="profile-section-form">
+          <div class="image-upload-group">
+            <label for="profileImage">
+              <i class="fas fa-camera fa-2x"></i>
+              <p>Upload Profile Photo</p>
+            </label>
+            <input type="file" id="profileImage" accept="image/*" onchange="previewImage(event)" />
+            <img id="imagePreview" alt="Profile Preview" />
+          </div>
+          <div class="input-group">
+            <label for="name">Full Name <span class="required">*</span></label>
+            <input type="text" id="name" placeholder="Full Name" required />
+          </div>
+          <div class="input-group">
+            <label for="businessName">Business Name <span class="required">*</span></label>
+            <input type="text" id="businessName" placeholder="Business Name" required />
+          </div>
         </div>
-        <div class="input-group">
-          <label for="name">Full Name <span class="required">*</span></label>
-          <input type="text" id="name" placeholder="Full Name" required />
-        </div>
-        <div class="input-group">
-          <label for="businessName">Business Name <span class="required">*</span></label>
-          <input type="text" id="businessName" placeholder="Business Name" required />
-        </div>
-        <!-- New "Just for you" section (replacing the removed Business Info) -->
+        <!-- New "Just for you" section moved below the profile section -->
         <div class="just-for-you-section">
           <h3>Just for you</h3>
           <p>This section is specially curated to provide personalized recommendations and content—exclusively for you!</p>
         </div>
+        <!-- Rest of the form fields -->
         <div class="input-group">
           <label for="address">Business Address <span class="required">*</span></label>
           <input type="text" id="address" placeholder="Business Address" required />
@@ -431,44 +440,19 @@
         </div>
         <div class="input-group">
           <label for="email">Email Address <span class="required">*</span></label>
-          <input
-            type="email"
-            id="email"
-            placeholder="Email Address"
-            required
-            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-            title="Please enter a valid email address."
-          />
+          <input type="email" id="email" placeholder="Email Address" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address." />
         </div>
         <div class="input-group">
           <label for="facebook">Facebook URL</label>
-          <input
-            type="url"
-            id="facebook"
-            placeholder="Facebook URL"
-            pattern="https?://(www\.)?facebook\.com/.*"
-            title="Please enter a valid Facebook URL."
-          />
+          <input type="url" id="facebook" placeholder="Facebook URL" pattern="https?://(www\.)?facebook\.com/.*" title="Please enter a valid Facebook URL." />
         </div>
         <div class="input-group">
           <label for="instagram">Instagram URL</label>
-          <input
-            type="url"
-            id="instagram"
-            placeholder="Instagram URL"
-            pattern="https?://(www\.)?instagram\.com/.*"
-            title="Please enter a valid Instagram URL."
-          />
+          <input type="url" id="instagram" placeholder="Instagram URL" pattern="https?://(www\.)?instagram\.com/.*" title="Please enter a valid Instagram URL." />
         </div>
         <div class="input-group">
           <label for="youtube">YouTube URL</label>
-          <input
-            type="url"
-            id="youtube"
-            placeholder="YouTube URL"
-            pattern="https?://(www\.)?youtube\.com/.*"
-            title="Please enter a valid YouTube URL."
-          />
+          <input type="url" id="youtube" placeholder="YouTube URL" pattern="https?://(www\.)?youtube\.com/.*" title="Please enter a valid YouTube URL." />
         </div>
         <!-- Exclusive Offers Section -->
         <div class="exclusive-offers-section">
@@ -516,18 +500,8 @@
               <div class="offer-details" id="offerDetailsContainer1">
                 <div id="offerEditor1" class="offer-editor"></div>
                 <textarea id="offerText1" name="offerText1" style="display:none;"></textarea>
-                <input
-                  type="file"
-                  id="offerFile1"
-                  accept="image/*"
-                  onchange="previewOfferFile(event,1)"
-                />
-                <img
-                  id="offerFilePreview1"
-                  src=""
-                  alt="Offer File Preview"
-                  style="display:none; width:50px; height:50px; margin-top:5px;"
-                />
+                <input type="file" id="offerFile1" accept="image/*" onchange="previewOfferFile(event,1)" />
+                <img id="offerFilePreview1" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
                 <br />
                 <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(1)">
                   Save &amp; Close
@@ -542,18 +516,8 @@
               <div class="offer-details" id="offerDetailsContainer2">
                 <div id="offerEditor2" class="offer-editor"></div>
                 <textarea id="offerText2" name="offerText2" style="display:none;"></textarea>
-                <input
-                  type="file"
-                  id="offerFile2"
-                  accept="image/*"
-                  onchange="previewOfferFile(event,2)"
-                />
-                <img
-                  id="offerFilePreview2"
-                  src=""
-                  alt="Offer File Preview"
-                  style="display:none; width:50px; height:50px; margin-top:5px;"
-                />
+                <input type="file" id="offerFile2" accept="image/*" onchange="previewOfferFile(event,2)" />
+                <img id="offerFilePreview2" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
                 <br />
                 <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(2)">
                   Save &amp; Close
@@ -568,18 +532,8 @@
               <div class="offer-details" id="offerDetailsContainer3">
                 <div id="offerEditor3" class="offer-editor"></div>
                 <textarea id="offerText3" name="offerText3" style="display:none;"></textarea>
-                <input
-                  type="file"
-                  id="offerFile3"
-                  accept="image/*"
-                  onchange="previewOfferFile(event,3)"
-                />
-                <img
-                  id="offerFilePreview3"
-                  src=""
-                  alt="Offer File Preview"
-                  style="display:none; width:50px; height:50px; margin-top:5px;"
-                />
+                <input type="file" id="offerFile3" accept="image/*" onchange="previewOfferFile(event,3)" />
+                <img id="offerFilePreview3" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
                 <br />
                 <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(3)">
                   Save &amp; Close
@@ -594,18 +548,8 @@
               <div class="offer-details" id="offerDetailsContainer4">
                 <div id="offerEditor4" class="offer-editor"></div>
                 <textarea id="offerText4" name="offerText4" style="display:none;"></textarea>
-                <input
-                  type="file"
-                  id="offerFile4"
-                  accept="image/*"
-                  onchange="previewOfferFile(event,4)"
-                />
-                <img
-                  id="offerFilePreview4"
-                  src=""
-                  alt="Offer File Preview"
-                  style="display:none; width:50px; height:50px; margin-top:5px;"
-                />
+                <input type="file" id="offerFile4" accept="image/*" onchange="previewOfferFile(event,4)" />
+                <img id="offerFilePreview4" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
                 <br />
                 <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(4)">
                   Save &amp; Close
@@ -630,7 +574,7 @@
         <button id="generateCard">Generate Card</button>
       </div>
       
-      <!-- Edit Form Section (moved from carousel.html) -->
+      <!-- Edit Form Section (shifted from carousel.html) -->
       <form id="editForm">
         <h3>Edit Card</h3>
         <label for="cardSelect">Select Card:</label>
@@ -659,7 +603,7 @@
         <button type="submit">Update Card</button>
       </form>
       
-      <!-- Modal for Card Details (moved from carousel.html) -->
+      <!-- Modal for Card Details (shifted from carousel.html) -->
       <div class="modal" id="detailsModal">
         <div class="modal-content">
           <button class="close-btn">&times;</button>
@@ -768,7 +712,7 @@
         alert("Offer style " + selectedOfferStyle + " applied!");
       }
       
-      // Carousel and Edit Form JS (moved from carousel.html)
+      // Carousel and Edit Form JS (shifted from carousel.html)
       const slidesContainer = document.querySelector('.slides');
       const dots = document.querySelectorAll('.dot');
       let currentSlide = 0;
