@@ -11,37 +11,52 @@
     />
     <!-- EmailJS Library -->
     <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-      rel="stylesheet"
-    />
     <style>
-      /* Reset & Global Styles */
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body {
-        font-family: 'Poppins', sans-serif;
-        background: linear-gradient(135deg, #cfd8dc, #eceff1);
-        padding: 20px;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+      :root {
+        --primary-color: #1e1e1e;
+        --secondary-color: #1e90ff;
+        --accent-color: #ff5722;
+        --neutral-light: rgba(245, 245, 245, 0.9);
+        --neutral-dark: #333333;
+        --card-background: #ffffff;
+        --body-bg: linear-gradient(135deg, #cfd8dc, #eceff1);
+        --business-info-bg: #ffffff;
+        --dropdown-header-color: #333;
+        --dropdown-btn-bg: #00796b;
+        --dropdown-btn-hover: #00695c;
       }
-      /* Card Container */
+      /* Remove default focus outline */
+      button:focus {
+        outline: none;
+      }
+      body {
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 1rem;
+        background: var(--body-bg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        position: relative;
+      }
       .card-container {
         position: relative;
         width: 90%;
         max-width: 600px;
-        background: #ffffff;
+        background: var(--card-background);
         border-radius: 20px;
         border: 2px solid transparent;
-        border-image: linear-gradient(45deg, #1e90ff, #ff5722, #3f51b5) 1;
+        border-image: linear-gradient(
+          45deg,
+          var(--secondary-color),
+          var(--accent-color),
+          #3f51b5
+        ) 1;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
         padding: 1.5rem;
         margin: 1rem auto;
+        transition: background-color 0.5s ease, box-shadow 0.5s ease;
         overflow: hidden;
       }
       /* Top Left Settings Icon */
@@ -59,7 +74,9 @@
         cursor: pointer;
         color: blue;
       }
-      #styleButton:hover { color: #1e90ff; }
+      #styleButton:hover {
+        color: var(--secondary-color);
+      }
       /* Top Right Share Icon */
       .top-icons {
         position: absolute;
@@ -75,27 +92,105 @@
         cursor: pointer;
         color: blue;
       }
-      .top-share-icon:hover { color: #1e90ff; }
+      .top-share-icon:hover {
+        color: var(--secondary-color);
+      }
+      /* Settings Dropdown Panel */
+      #styleDropdown {
+        display: none;
+        position: absolute;
+        top: 110%;
+        left: -20px;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        z-index: 10;
+        font-size: 0.75rem;
+        width: 100px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      }
+      .setting-group {
+        border-bottom: 1px solid #ddd;
+      }
+      .setting-group:last-child {
+        border-bottom: none;
+      }
+      .setting-header {
+        background: linear-gradient(to bottom, #f8f8f8, #dcdcdc);
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        color: var(--dropdown-header-color);
+        padding: 5px 8px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        margin: 3px 0;
+      }
+      .setting-header:hover {
+        box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.4);
+        transform: translateY(-1px);
+      }
+      .setting-content {
+        display: none;
+        padding: 5px;
+      }
+      .setting-options {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .setting-options li {
+        padding: 0.3rem 0.5rem;
+        cursor: pointer;
+        transition: background 0.3s;
+        color: #333;
+      }
+      .setting-options li:hover {
+        background: var(--secondary-color);
+        color: #fff;
+      }
+      .dropdown-btns {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-top: 5px;
+      }
+      .dropdown-btns button {
+        padding: 0.3rem;
+        border: none;
+        background: var(--dropdown-btn-bg);
+        color: #fff;
+        cursor: pointer;
+        font-size: 0.75rem;
+        transition: box-shadow 0.3s ease;
+      }
+      .dropdown-btns button:hover {
+        background: var(--dropdown-btn-hover);
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+      }
       /* Mini Icons */
       .mini-icons {
         display: flex;
         justify-content: center;
         gap: 1rem;
         padding: 1rem;
-        border-bottom: 2px solid #1e90ff;
+        border-bottom: 2px solid var(--secondary-color);
       }
       .mini-icons .icon {
         font-size: 1.5rem;
-        color: #333;
+        color: var(--neutral-dark);
         cursor: pointer;
         border-radius: 50%;
         padding: 0.5rem;
-        background: rgba(255,255,255,0.1);
+        background: rgba(255, 255, 255, 0.1);
         transition: transform 0.3s, box-shadow 0.3s;
       }
       .mini-icons .icon:hover {
+        color: var(--secondary-color);
         transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
       }
       /* Profile Section */
       .profile-section {
@@ -103,7 +198,7 @@
         align-items: center;
         padding: 1rem;
         margin: 0.5rem;
-        border-bottom: 2px solid #1e90ff;
+        border-bottom: 2px solid var(--secondary-color);
       }
       .profile-image-container {
         width: 40%;
@@ -116,14 +211,16 @@
         width: 90px;
         height: 90px;
         border-radius: 50%;
-        border: 2px solid rgba(245,245,245,0.9);
+        border: 2px solid var(--neutral-light);
         object-fit: cover;
         transition: box-shadow 0.3s ease;
       }
-      .profile-image:hover { box-shadow: 2px 2px 6px rgba(0,0,0,0.3); }
+      .profile-image:hover {
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+      }
       .profile-name {
-        color: #1e1e1e;
-        margin-top: 0.5rem;
+        color: var(--primary-color);
+        margin: 0.5rem 0 0;
         font-size: 1.1rem;
         text-align: center;
       }
@@ -136,121 +233,120 @@
         text-align: center;
       }
       .contact-info {
-        color: #333;
+        color: var(--neutral-dark);
         margin: 0.3rem 0;
         font-size: 0.85rem;
         line-height: 1.4;
       }
-      /* Business Info Section */
+      /* Business name styling */
+      #cardBusinessName {
+        color: green;
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+      /* Save Contact Icon adjustments */
+      .connect-btn {
+        align-self: center;
+        margin-left: 20px;
+        font-size: 1.2rem;
+        color: var(--secondary-color);
+        cursor: pointer;
+        transition: transform 0.3s;
+      }
+      .connect-btn:hover {
+        transform: scale(1.1);
+        color: var(--accent-color);
+      }
+      /* Business Info Section styling */
       .business-info-section {
         padding: 1rem;
         margin: 0.5rem 0;
         font-size: 0.9rem;
         line-height: 1.5;
-        background: #ffffff;
+        height: 150px;
+        background: var(--business-info-bg);
         border: 1px solid #ddd;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
+        position: relative;
+        overflow: hidden;
       }
       .business-info-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         text-align: center;
         font-weight: bold;
-        color: #333;
+        color: var(--neutral-dark);
         padding: 0.5rem;
+        overflow-y: auto;
       }
-      /* --- Carousel Section (as in original carousel.html) --- */
-      .carousel-wrapper {
+      /* Hide any scrollbar inside business info */
+      .business-info-content::-webkit-scrollbar {
+        display: none;
+      }
+      /* Exclusive Offers & Continuous Scroll */
+      .scroll-container {
+        overflow: hidden;
+        white-space: nowrap;
         position: relative;
         width: 100%;
-        margin-bottom: 20px;
-        overflow: hidden;
+        margin: 1rem 0;
       }
-      .slides {
-        display: flex;
-        transition: transform 0.8s ease;
+      .scroll-offer {
+        display: inline-block;
+        /* Change animation direction to left-to-right */
+        animation: scrollRight 20s linear infinite;
       }
-      .slide {
-        min-width: 100%;
-        display: flex;
-        justify-content: center;
-        padding: 20px;
+      @keyframes scrollRight {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
       }
-      /* Increase carousel card width to fill available container space */
-      .carousel-wrapper .card {
+      /* Offer Card (Flip Card) Styles – now non-clickable */
+      .flip-card {
+        background-color: transparent;
+        width: 150px;
+        height: 150px;
+        perspective: 1000px;
+        display: inline-block;
+        margin-right: 10px;
+      }
+      .flip-card-inner {
+        position: relative;
         width: 100%;
-        max-width: 100%;
-        border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        overflow: hidden;
-        cursor: pointer;
-        transition: transform 0.3s;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
       }
-      .carousel-wrapper .card:hover { transform: scale(1.02); }
-      .card.card-1 { background: #fde2e2; color: #7a1d1d; }
-      .card.card-2 { background: #e2f0cb; color: #355e03; }
-      .card.card-3 { background: #d0e6a5; color: #3b4e1d; }
-      .card.card-4 { background: #a8dadc; color: #084c61; }
-      .card-content {
+      .flip-card-front,
+      .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         display: flex;
         align-items: center;
-        gap: 20px;
-        padding: 16px;
+        justify-content: center;
+        background: #f1f1f1;
       }
-      .card-content.row { flex-direction: row; }
-      .card-content.row-reverse { flex-direction: row-reverse; }
-      .text-area { flex: 1; }
-      .text-area h2, .text-area p { margin-bottom: 8px; word-wrap: break-word; }
-      .text-area h2 { font-size: 1.8rem; font-weight: 600; }
-      .text-area p { font-size: 1rem; line-height: 1.5; }
-      .text-area [contenteditable="true"] {
-        border: 1px dashed rgba(0,0,0,0.3);
-        padding: 4px;
-        border-radius: 4px;
+      .flip-card-back {
+        transform: rotateY(180deg);
+        background: #e0e0e0;
+        color: #333;
+        font-size: 0.8rem;
+        padding: 5px;
       }
-      .image-area { flex: 0 0 auto; max-width: 300px; }
-      .image-area img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-        border: 2px dashed #007bff;
-        border-radius: 8px;
-      }
-      .upload-btn {
-        margin-top: 8px;
-        padding: 8px 16px;
-        background: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.9rem;
-      }
-      input[type="file"] { display: none; }
-      .dots {
-        text-align: center;
-        margin: 12px 0;
-      }
-      .dot {
-        display: inline-block;
-        width: 12px;
-        height: 12px;
-        margin: 0 5px;
-        border-radius: 50%;
-        background: #bbb;
-        cursor: pointer;
-        transition: background 0.3s;
-      }
-      .dot.active { background: #ff007f; }
-      /* Mobile adjustments for carousel */
-      @media (max-width: 600px) {
-        .text-area h2 { font-size: 1.6rem; }
-        .text-area p { font-size: 0.9rem; }
-        .upload-btn, .dot { font-size: 0.8rem; }
-        .card-content { flex-direction: column; }
-        .image-area { max-width: 100%; }
-      }
-      /* --- End Carousel Section --- */
-      /* Exclusive Offers Section */
+      /* Action Buttons Section */
       .action-buttons {
         display: grid;
         gap: 0.5rem;
@@ -264,10 +360,21 @@
         border-radius: 10px;
         cursor: pointer;
         color: #fff;
-        background: #1e90ff;
+        box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.3),
+          inset -2px -2px 4px rgba(255, 255, 255, 0.2);
         transition: transform 0.3s, box-shadow 0.3s;
       }
-      .action-btn:hover { transform: translateY(-2px); box-shadow: 2px 2px 5px rgba(0,0,0,0.3); }
+      .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      }
+      .action-btn:active {
+        filter: brightness(90%);
+      }
+      .contact-btn {
+        transition: none !important;
+      }
+      /* Social Links Section */
       .social-links {
         display: flex;
         justify-content: center;
@@ -276,15 +383,106 @@
       }
       .social-icon {
         font-size: 1.5rem;
-        color: #333;
+        color: var(--neutral-dark);
         visibility: hidden;
         border-radius: 50%;
-        padding: 0.5rem;
-        background: rgba(255,255,255,0.1);
         text-decoration: none;
+        padding: 0.5rem;
+        background: rgba(255, 255, 255, 0.1);
         transition: transform 0.3s, box-shadow 0.3s;
       }
-      .social-icon:hover { color: #1e90ff; transform: translateY(-2px); box-shadow: 2px 2px 5px rgba(0,0,0,0.3); }
+      .social-icon:hover {
+        color: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      }
+
+      /* New Carousel Editable Cards Styles */
+      .carousel-container {
+        width: 100%;
+        max-width: 600px;
+        margin: 1rem auto;
+        overflow: hidden;
+        position: relative;
+      }
+      .carousel-slides {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+      }
+      .carousel-slide {
+        min-width: 100%;
+        box-sizing: border-box;
+        padding: 1rem;
+      }
+      .editable-card {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .editable-card input[type="text"],
+      .editable-card textarea {
+        width: 100%;
+        padding: 0.5rem;
+        margin: 0.5rem 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .editable-card textarea {
+        resize: vertical;
+      }
+      .editable-card .countdown {
+        font-size: 0.8rem;
+        color: #666;
+        text-align: right;
+      }
+      .editable-card .color-settings {
+        display: flex;
+        justify-content: space-between;
+        margin: 0.5rem 0;
+      }
+      .editable-card .color-settings label {
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+      }
+      .editable-card .card-image-preview {
+        width: 100%;
+        max-height: 150px;
+        object-fit: cover;
+        display: none;
+        margin-top: 0.5rem;
+        border-radius: 4px;
+      }
+      .editable-card button.save-card {
+        padding: 0.5rem 1rem;
+        background: var(--secondary-color);
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 0.5rem;
+      }
+      .editable-card button.save-card:hover {
+        background: var(--accent-color);
+      }
+      .carousel-dots {
+        text-align: center;
+        margin-top: 0.5rem;
+      }
+      .carousel-dots .dot {
+        height: 10px;
+        width: 10px;
+        margin: 0 5px;
+        display: inline-block;
+        background-color: #bbb;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      .carousel-dots .dot.active {
+        background-color: var(--secondary-color);
+      }
     </style>
   </head>
   <body>
@@ -294,6 +492,63 @@
         <button id="styleButton" title="Settings">
           <i class="fas fa-cog"></i>
         </button>
+        <div id="styleDropdown">
+          <div class="setting-group" id="themeGroup">
+            <div class="setting-header">Theme</div>
+            <div class="setting-content">
+              <ul class="setting-options">
+                <li data-theme="default">Default</li>
+                <li data-theme="blue">Blue</li>
+                <li data-theme="red">Red</li>
+                <li data-theme="green">Green</li>
+              </ul>
+              <div class="dropdown-btns">
+                <button class="apply-btn" data-group="theme">Apply</button>
+              </div>
+            </div>
+          </div>
+          <div class="setting-group" id="moodGroup">
+            <div class="setting-header">Mood</div>
+            <div class="setting-content">
+              <ul class="setting-options">
+                <li data-mood="day">Day</li>
+                <li data-mood="night">Night</li>
+              </ul>
+              <div class="dropdown-btns">
+                <button class="apply-btn" data-group="mood">Apply</button>
+              </div>
+            </div>
+          </div>
+          <div class="setting-group" id="iconStyleGroup">
+            <div class="setting-header">Style</div>
+            <div class="setting-content">
+              <ul class="setting-options">
+                <li data-iconstyle="none">None</li>
+                <li data-iconstyle="styleA">Style A</li>
+                <li data-iconstyle="styleB">Style B</li>
+              </ul>
+              <div class="dropdown-btns">
+                <button class="apply-btn" data-group="style">Apply</button>
+              </div>
+            </div>
+          </div>
+          <div class="setting-group" id="soundGroup">
+            <div class="setting-header">Sounds</div>
+            <div class="setting-content">
+              <label
+                style="font-size:0.8rem; display: flex; align-items: center; padding: 5px;"
+              >
+                <input
+                  type="checkbox"
+                  id="soundToggle"
+                  checked
+                  style="margin-right: 5px;"
+                />
+                Enable Touch Sounds
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- Top Right Share Icon -->
       <div class="top-icons">
@@ -336,90 +591,167 @@
       <div class="business-info-section">
         <div id="businessInfoContent"></div>
       </div>
-      <!-- Carousel Section (as per original carousel.html) -->
-      <div class="carousel-wrapper">
-        <div class="slides">
+
+      <!-- Carousel Editable Cards Section -->
+      <div class="carousel-container">
+        <div class="carousel-slides">
           <!-- Slide 1 -->
-          <div class="slide">
-            <div class="card card-1" data-card="1" data-details="" data-img-pos="right">
-              <div class="card-content row">
-                <div class="text-area">
-                  <h2 id="title1" contenteditable="true">Card 1 Title</h2>
-                  <p id="desc1" contenteditable="true">Card 1 description goes here.</p>
-                </div>
-                <div class="image-area">
-                  <img id="img1" src="https://via.placeholder.com/300x200.png?text=Upload+Image" alt="Image 1">
-                  <button class="upload-btn" data-card="1">Upload Image</button>
-                  <input type="file" class="file-input" data-card="1" accept="image/*">
-                </div>
+          <div class="carousel-slide">
+            <div class="editable-card" id="editableCard1">
+              <input
+                type="text"
+                class="card-title"
+                placeholder="Enter Title"
+                maxlength="50"
+              />
+              <textarea
+                class="card-description"
+                placeholder="Enter Description"
+                maxlength="150"
+              ></textarea>
+              <div class="countdown" data-max="150">150 characters remaining</div>
+              <input type="file" accept="image/*" class="card-image-input" />
+              <img src="" class="card-image-preview" alt="Image Preview" />
+              <div class="color-settings">
+                <label
+                  >Background:
+                  <input type="color" class="card-bg-color" value="#ffffff" />
+                </label>
+                <label
+                  >Font:
+                  <input type="color" class="card-font-color" value="#000000" />
+                </label>
               </div>
+              <button class="save-card">Save Card</button>
             </div>
           </div>
           <!-- Slide 2 -->
-          <div class="slide">
-            <div class="card card-2" data-card="2" data-details="" data-img-pos="right">
-              <div class="card-content row">
-                <div class="text-area">
-                  <h2 id="title2" contenteditable="true">Card 2 Title</h2>
-                  <p id="desc2" contenteditable="true">Card 2 description goes here.</p>
-                </div>
-                <div class="image-area">
-                  <img id="img2" src="https://via.placeholder.com/300x200.png?text=Upload+Image" alt="Image 2">
-                  <button class="upload-btn" data-card="2">Upload Image</button>
-                  <input type="file" class="file-input" data-card="2" accept="image/*">
-                </div>
+          <div class="carousel-slide">
+            <div class="editable-card" id="editableCard2">
+              <input
+                type="text"
+                class="card-title"
+                placeholder="Enter Title"
+                maxlength="50"
+              />
+              <textarea
+                class="card-description"
+                placeholder="Enter Description"
+                maxlength="150"
+              ></textarea>
+              <div class="countdown" data-max="150">150 characters remaining</div>
+              <input type="file" accept="image/*" class="card-image-input" />
+              <img src="" class="card-image-preview" alt="Image Preview" />
+              <div class="color-settings">
+                <label
+                  >Background:
+                  <input type="color" class="card-bg-color" value="#ffffff" />
+                </label>
+                <label
+                  >Font:
+                  <input type="color" class="card-font-color" value="#000000" />
+                </label>
               </div>
+              <button class="save-card">Save Card</button>
             </div>
           </div>
           <!-- Slide 3 -->
-          <div class="slide">
-            <div class="card card-3" data-card="3" data-details="" data-img-pos="right">
-              <div class="card-content row">
-                <div class="text-area">
-                  <h2 id="title3" contenteditable="true">Card 3 Title</h2>
-                  <p id="desc3" contenteditable="true">Card 3 description goes here.</p>
-                </div>
-                <div class="image-area">
-                  <img id="img3" src="https://via.placeholder.com/300x200.png?text=Upload+Image" alt="Image 3">
-                  <button class="upload-btn" data-card="3">Upload Image</button>
-                  <input type="file" class="file-input" data-card="3" accept="image/*">
-                </div>
+          <div class="carousel-slide">
+            <div class="editable-card" id="editableCard3">
+              <input
+                type="text"
+                class="card-title"
+                placeholder="Enter Title"
+                maxlength="50"
+              />
+              <textarea
+                class="card-description"
+                placeholder="Enter Description"
+                maxlength="150"
+              ></textarea>
+              <div class="countdown" data-max="150">150 characters remaining</div>
+              <input type="file" accept="image/*" class="card-image-input" />
+              <img src="" class="card-image-preview" alt="Image Preview" />
+              <div class="color-settings">
+                <label
+                  >Background:
+                  <input type="color" class="card-bg-color" value="#ffffff" />
+                </label>
+                <label
+                  >Font:
+                  <input type="color" class="card-font-color" value="#000000" />
+                </label>
               </div>
+              <button class="save-card">Save Card</button>
             </div>
           </div>
           <!-- Slide 4 -->
-          <div class="slide">
-            <div class="card card-4" data-card="4" data-details="" data-img-pos="right">
-              <div class="card-content row">
-                <div class="text-area">
-                  <h2 id="title4" contenteditable="true">Card 4 Title</h2>
-                  <p id="desc4" contenteditable="true">Card 4 description goes here.</p>
-                </div>
-                <div class="image-area">
-                  <img id="img4" src="https://via.placeholder.com/300x200.png?text=Upload+Image" alt="Image 4">
-                  <button class="upload-btn" data-card="4">Upload Image</button>
-                  <input type="file" class="file-input" data-card="4" accept="image/*">
-                </div>
+          <div class="carousel-slide">
+            <div class="editable-card" id="editableCard4">
+              <input
+                type="text"
+                class="card-title"
+                placeholder="Enter Title"
+                maxlength="50"
+              />
+              <textarea
+                class="card-description"
+                placeholder="Enter Description"
+                maxlength="150"
+              ></textarea>
+              <div class="countdown" data-max="150">150 characters remaining</div>
+              <input type="file" accept="image/*" class="card-image-input" />
+              <img src="" class="card-image-preview" alt="Image Preview" />
+              <div class="color-settings">
+                <label
+                  >Background:
+                  <input type="color" class="card-bg-color" value="#ffffff" />
+                </label>
+                <label
+                  >Font:
+                  <input type="color" class="card-font-color" value="#000000" />
+                </label>
               </div>
+              <button class="save-card">Save Card</button>
             </div>
           </div>
         </div>
+        <div class="carousel-dots">
+          <span class="dot active" data-index="0"></span>
+          <span class="dot" data-index="1"></span>
+          <span class="dot" data-index="2"></span>
+          <span class="dot" data-index="3"></span>
+        </div>
       </div>
-      <!-- Dots Navigation -->
-      <div class="dots">
-        <span class="dot active" data-index="0"></span>
-        <span class="dot" data-index="1"></span>
-        <span class="dot" data-index="2"></span>
-        <span class="dot" data-index="3"></span>
-      </div>
-      <!-- (Note: The Edit Card form has been removed from card.html) -->
-      <!-- Exclusive Offers Section -->
+
+      <!-- Exclusive Offers Flip Card Section -->
       <div id="offersFlipCardSection"></div>
+
+      <!-- Action Buttons Section -->
       <div class="action-buttons">
-        <a id="callButton" class="action-btn contact-btn">Call</a>
-        <a id="whatsappButton" class="action-btn contact-btn" style="background: #25d366;">WhatsApp</a>
-        <a id="emailButton" class="action-btn contact-btn" style="background: var(--accent-color);">Email</a>
+        <a
+          id="callButton"
+          class="action-btn contact-btn"
+          style="background: var(--secondary-color);"
+        >
+          Call
+        </a>
+        <a
+          id="whatsappButton"
+          class="action-btn contact-btn"
+          style="background: #25d366;"
+        >
+          WhatsApp
+        </a>
+        <a
+          id="emailButton"
+          class="action-btn contact-btn"
+          style="background: var(--accent-color);"
+        >
+          Email
+        </a>
       </div>
+      <!-- Social Links Section -->
       <div class="social-links">
         <a id="facebookButton" class="social-icon">
           <i class="fab fa-facebook-f"></i>
@@ -432,242 +764,55 @@
         </a>
       </div>
     </div>
-    
-    <!-- Modal for Card Details -->
-    <div class="modal" id="detailsModal">
-      <div class="modal-content">
-        <button class="close-btn">&times;</button>
-        <div id="modalBody">
-          <!-- Details will be injected here -->
-        </div>
-      </div>
-    </div>
-    
+
     <script>
-      // ---------- Carousel Auto Slide & Dots Navigation ----------
-      const slidesContainer = document.querySelector('.slides');
-      const dots = document.querySelectorAll('.dot');
-      let currentSlide = 0;
-      const totalSlides = dots.length;
-      
-      function goToSlide(n) {
-        currentSlide = (n + totalSlides) % totalSlides;
-        slidesContainer.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
-        dots.forEach(dot => dot.classList.remove('active'));
-        dots[currentSlide].classList.add('active');
-      }
-      
-      let slideInterval = setInterval(() => {
-        goToSlide(currentSlide + 1);
-      }, 5000);
-      
-      function pauseAutoSlide(duration = 30000) {
-        clearInterval(slideInterval);
-        setTimeout(() => {
-          slideInterval = setInterval(() => {
-            goToSlide(currentSlide + 1);
-          }, 5000);
-        }, duration);
-      }
-      
-      dots.forEach(dot => {
-        dot.addEventListener('click', function() {
-          goToSlide(parseInt(this.getAttribute('data-index')));
-          pauseAutoSlide();
-        });
-      });
-      
-      // ---------- Editable Text with Word Limits ----------
-      const TITLE_LIMIT = 10;
-      const DESC_LIMIT = 50;
-      const DETAILS_LIMIT = 100;
-      
-      function enforceLimit(el, limit) {
-        let words = el.textContent.trim().split(/\s+/).filter(word => word.length > 0);
-        if (words.length > limit) {
-          el.textContent = words.slice(0, limit).join(" ");
-          placeCaretAtEnd(el);
-        }
-      }
-      
-      function placeCaretAtEnd(el) {
-        el.focus();
-        if (window.getSelection && document.createRange) {
-          let range = document.createRange();
-          range.selectNodeContents(el);
-          range.collapse(false);
-          let sel = window.getSelection();
-          sel.removeAllRanges();
-          sel.addRange(range);
-        }
-      }
-      
-      document.querySelectorAll('.text-area h2[contenteditable], .text-area p[contenteditable]').forEach(el => {
-        el.addEventListener('input', function() {
-          if(el.tagName === "H2") enforceLimit(el, TITLE_LIMIT);
-          else enforceLimit(el, DESC_LIMIT);
-        });
-      });
-      
-      // ---------- Image Upload, Resize, and Imgur Upload ----------
-      function resizeImage(file, maxWidth, fillColor, callback) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const img = new Image();
-          img.onload = function() {
-            let width = img.width;
-            let height = img.height;
-            if (width > maxWidth) {
-              height = height * (maxWidth / width);
-              width = maxWidth;
-            }
-            const canvas = document.createElement('canvas');
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-            ctx.fillStyle = fillColor;
-            ctx.fillRect(0, 0, width, height);
-            ctx.drawImage(img, 0, 0, width, height);
-            // Instead of returning the data URL directly,
-            // upload it to Imgur using the provided Imgur ID.
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-            uploadToImgur(dataUrl, callback);
-          }
-          img.src = e.target.result;
-        }
-        reader.readAsDataURL(file);
-      }
-      
-      // Pseudo-function: Upload image to Imgur using provided Client/Album ID
-      function uploadToImgur(dataUrl, callback) {
-        // Replace '048d9400ce02b71' with your actual Imgur Client-ID if needed.
-        fetch("https://api.imgur.com/3/image", {
-          method: "POST",
-          headers: {
-            Authorization: "Client-ID 048d9400ce02b71",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            image: dataUrl.split(",")[1],
-            type: "base64"
-            // Optionally include album or other parameters
-          })
-        })
-        .then(response => response.json())
-        .then(data => {
-          if(data.success) {
-            callback(data.data.link);
-          } else {
-            // If upload fails, fallback to data URL
-            callback(dataUrl);
-          }
-        })
-        .catch(() => callback(dataUrl));
-      }
-      
-      document.querySelectorAll('.file-input').forEach(input => {
-        input.addEventListener('change', function() {
-          const cardNum = this.getAttribute('data-card');
-          const file = this.files[0];
-          if(file) {
-            const card = document.querySelector('.card[data-card="' + cardNum + '"]');
-            const fillColor = window.getComputedStyle(card).backgroundColor;
-            resizeImage(file, 300, fillColor, function(resizedUrl) {
-              const imageEl = document.getElementById('img' + cardNum);
-              imageEl.src = resizedUrl;
-              imageEl.style.border = 'none';
-            });
-          }
-        });
-      });
-      
-      document.querySelectorAll('.upload-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const cardNum = this.getAttribute('data-card');
-          document.querySelector('.file-input[data-card="' + cardNum + '"]').click();
-        });
-      });
-      
-      // ---------- Details Modal Functionality ----------
-      const modal = document.getElementById('detailsModal');
-      const modalBody = document.getElementById('modalBody');
-      const closeBtn = document.querySelector('.close-btn');
-      
-      document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('click', function(e) {
-          if(e.target.classList.contains('upload-btn') || e.target.classList.contains('details-btn')) return;
-          const detailsText = this.getAttribute('data-details') || "No details available.";
-          modalBody.innerHTML = `<h3>Card ${this.getAttribute('data-card')} Details</h3><p>${detailsText}</p>`;
-          modal.style.display = 'flex';
-          pauseAutoSlide();
-        });
-      });
-      
-      document.querySelectorAll('.details-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const card = this.closest('.card');
-          const detailsText = card.getAttribute('data-details') || "No details available.";
-          modalBody.innerHTML = `<h3>Card ${card.getAttribute('data-card')} Details</h3><p>${detailsText}</p>`;
-          modal.style.display = 'flex';
-          pauseAutoSlide();
-        });
-      });
-      
-      closeBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-      });
-      
-      window.addEventListener('click', function(e) {
-        if(e.target === modal) modal.style.display = 'none';
-      });
-      
-      // ---------- (Optional) Countdown Functionality ----------
-      // If countdown is needed for any input fields, ensure the updateCountdown function is attached.
-      function updateCountdown(fieldId, counterId, limit) {
-        const field = document.getElementById(fieldId);
-        const counter = document.getElementById(counterId);
-        field.addEventListener('input', function() {
-          let words = this.value.trim().split(/\s+/).filter(word => word.length > 0);
-          let count = words.length;
-          let remaining = limit - count;
-          counter.textContent = remaining + " words remaining";
-        });
-      }
-      
-      // (If the edit form is removed, countdown may be unnecessary here.)
-      
-      // ---------- Load Stored Data ----------
       document.addEventListener("DOMContentLoaded", function () {
         "use strict";
-        // Retrieve main form data from localStorage
         const storedData = localStorage.getItem("formData");
         const formData = storedData ? JSON.parse(storedData) : {};
-        document.getElementById("cardProfileImage").src = formData.profileImage || "";
+
+        // Populate card fields
+        document.getElementById("cardProfileImage").src =
+          formData.profileImage || "";
         document.getElementById("cardName").textContent = formData.name || "";
-        document.getElementById("cardBusinessName").textContent = formData.businessName || "";
-        document.getElementById("cardAddress").textContent = formData.address || "";
+        document.getElementById("cardBusinessName").textContent =
+          formData.businessName || "";
+        document.getElementById("cardAddress").textContent =
+          formData.address || "";
         document.getElementById("cardPhone").textContent = formData.phone || "";
         document.getElementById("cardEmail").textContent = formData.email || "";
-        
-        // Populate Business Info Section if available
+
+        // Business Info
         const businessInfo = formData.businessInfo || "";
-        const paragraphs = businessInfo.split("\n").filter(p => p.trim() !== "");
+        const paragraphs = businessInfo.split("\n").filter((p) => p.trim() !== "");
         const businessInfoContainer = document.getElementById("businessInfoContent");
-        businessInfoContainer.innerHTML = paragraphs.map(p => `<div class="business-info-content"><p>${p}</p></div>`).join("");
-        
-        // (No edit form data is processed here since the form has been removed.)
-        
+        businessInfoContainer.innerHTML = paragraphs
+          .map((p) => `<div class="business-info-content"><p>${p}</p></div>`)
+          .join("");
+
+        const paragraphDivs =
+          businessInfoContainer.querySelectorAll(".business-info-content");
+        let currentIndex = 0;
+        paragraphDivs.forEach((div, idx) => {
+          div.style.display = idx === 0 ? "block" : "none";
+        });
+        if (paragraphDivs.length > 0) {
+          setInterval(() => {
+            paragraphDivs[currentIndex].style.display = "none";
+            currentIndex = (currentIndex + 1) % paragraphDivs.length;
+            paragraphDivs[currentIndex].style.display = "block";
+          }, 8000);
+        }
+
         // Social Links
         const socialLinks = {
           facebook: document.getElementById("facebookButton"),
           instagram: document.getElementById("instagramButton"),
-          youtube: document.getElementById("youtubeButton")
+          youtube: document.getElementById("youtubeButton"),
         };
         Object.entries(socialLinks).forEach(([platform, element]) => {
           const url = formData[platform];
-          if(url){
+          if (url) {
             element.href = url;
             element.style.visibility = "visible";
             element.target = "_blank";
@@ -675,6 +820,190 @@
             element.style.visibility = "hidden";
           }
         });
+
+        // Render Offers using horizontal flip card style (flip disabled)
+        if (formData.offers && formData.offerStyle === "horizontal") {
+          renderOffers(formData.offers, formData.offerStyle);
+        }
+
+        // --- Event Listeners for Button Icons ---
+        document
+          .getElementById("miniCallButton")
+          .addEventListener("click", function () {
+            if (formData.phone) window.location.href = "tel:" + formData.phone;
+            else alert("Phone number not available");
+          });
+
+        document
+          .getElementById("miniEmailButton")
+          .addEventListener("click", function () {
+            if (formData.email) window.location.href = "mailto:" + formData.email;
+            else alert("Email not available");
+          });
+
+        document
+          .getElementById("miniWhatsappButton")
+          .addEventListener("click", function () {
+            if (formData.phone)
+              window.open("https://wa.me/" + formData.phone, "_blank");
+            else alert("WhatsApp contact not available");
+          });
+
+        document
+          .getElementById("miniMapButton")
+          .addEventListener("click", function () {
+            if (formData.address)
+              window.open(
+                "https://www.google.com/maps/search/" +
+                  encodeURIComponent(formData.address),
+                "_blank"
+              );
+            else alert("Address not available");
+          });
+
+        document
+          .getElementById("topShareIcon")
+          .addEventListener("click", function () {
+            if (navigator.share) {
+              navigator
+                .share({
+                  title: formData.name || "Business Card",
+                  text: "Check out this business card.",
+                  url: window.location.href,
+                })
+                .catch((err) => console.log("Error sharing:", err));
+            } else {
+              alert("Share feature not supported in this browser.");
+            }
+          });
+
+        document.getElementById("callButton").addEventListener("click", function () {
+          if (formData.phone) window.location.href = "tel:" + formData.phone;
+          else alert("Phone number not available");
+        });
+
+        document
+          .getElementById("whatsappButton")
+          .addEventListener("click", function () {
+            if (formData.phone)
+              window.open("https://wa.me/" + formData.phone, "_blank");
+            else alert("WhatsApp contact not available");
+          });
+
+        document.getElementById("emailButton").addEventListener("click", function () {
+          if (formData.email) window.location.href = "mailto:" + formData.email;
+          else alert("Email not available");
+        });
+
+        document
+          .getElementById("connectButton")
+          .addEventListener("click", function () {
+            alert("Contact saved successfully!");
+          });
+
+        // Carousel functionality
+        const carouselSlides = document.querySelector(".carousel-slides");
+        const dots = document.querySelectorAll(".carousel-dots .dot");
+        let currentSlide = 0;
+
+        function showSlide(index) {
+          currentSlide = index;
+          const offset = -index * 100;
+          carouselSlides.style.transform = "translateX(" + offset + "%)";
+          dots.forEach((dot) => dot.classList.remove("active"));
+          dots[index].classList.add("active");
+        }
+
+        dots.forEach((dot) => {
+          dot.addEventListener("click", function () {
+            const index = parseInt(this.getAttribute("data-index"), 10);
+            showSlide(index);
+          });
+        });
+
+        // Editable card functionality
+        const editableCards = document.querySelectorAll(".editable-card");
+        editableCards.forEach((card) => {
+          const descriptionField = card.querySelector(".card-description");
+          const countdownElem = card.querySelector(".countdown");
+          const maxChars = parseInt(countdownElem.getAttribute("data-max"), 10);
+
+          // Character countdown
+          descriptionField.addEventListener("input", function () {
+            const remaining = maxChars - this.value.length;
+            countdownElem.textContent = remaining + " characters remaining";
+          });
+
+          // Image upload & preview
+          const imageInput = card.querySelector(".card-image-input");
+          const imagePreview = card.querySelector(".card-image-preview");
+          imageInput.addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = function (e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = "block";
+              };
+              reader.readAsDataURL(file);
+            }
+          });
+
+          // Background & Font color
+          const bgColorInput = card.querySelector(".card-bg-color");
+          const fontColorInput = card.querySelector(".card-font-color");
+          bgColorInput.addEventListener("input", function () {
+            card.style.backgroundColor = this.value;
+          });
+          fontColorInput.addEventListener("input", function () {
+            card.style.color = this.value;
+          });
+
+          // Save Card button
+          const saveButton = card.querySelector(".save-card");
+          saveButton.addEventListener("click", function () {
+            alert("Card saved successfully!");
+            // Additional save functionality can be implemented here
+          });
+        });
+      });
+
+      // Render offers (flip is disabled so cards are not clickable)
+      function renderOffers(offers, style) {
+        const container = document.getElementById("offersFlipCardSection");
+        container.innerHTML = "<h3>Exclusive Offers</h3>";
+        if (style === "horizontal") {
+          let html = '<div class="scroll-container"><div class="scroll-offer">';
+          offers.forEach((offer, index) => {
+            html += `
+              <div class="flip-card">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front">
+                    <h4>${offer.title || "Offer " + (index + 1)}</h4>
+                  </div>
+                  <div class="flip-card-back">
+                    <p>Details available on next page</p>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          html += "</div></div>";
+          container.innerHTML += html;
+        }
+      }
+
+      // Settings panel toggle
+      document.addEventListener("click", (e) => {
+        if (!document.getElementById("styleControlsContainer").contains(e.target)) {
+          document.getElementById("styleDropdown").style.display = "none";
+        }
+      });
+      document.getElementById("styleButton").addEventListener("click", (e) => {
+        e.stopPropagation();
+        const styleDropdown = document.getElementById("styleDropdown");
+        styleDropdown.style.display =
+          styleDropdown.style.display === "block" ? "none" : "block";
       });
     </script>
   </body>
