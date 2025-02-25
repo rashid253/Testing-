@@ -3,648 +3,779 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Business Card</title>
-    <!-- Font Awesome for icons -->
+    <title>Business Card Generator</title>
+    <!-- Font Awesome -->
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
       rel="stylesheet"
     />
-    <!-- EmailJS Library -->
-    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <!-- intl-tel-input CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
+    />
+    <!-- Quill CSS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
     <style>
       :root {
-        --primary-color: #1e1e1e;
-        --secondary-color: #1e90ff;
-        --accent-color: #ff5722;
-        --neutral-light: rgba(245, 245, 245, 0.9);
-        --neutral-dark: #333333;
-        --card-background: #ffffff;
-        --body-bg: linear-gradient(135deg, #cfd8dc, #eceff1);
-        --business-info-bg: #ffffff;
-        --dropdown-header-color: #333;
-        --dropdown-btn-bg: #00796b;
-        --dropdown-btn-hover: #00695c;
-      }
-      /* Remove default focus outline */
-      button:focus {
-        outline: none;
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --accent-color: #e74c3c;
+        --neutral-light: rgba(236, 240, 241, 0.9);
+        --neutral-dark: #34495e;
+        --background-color: #ffffff;
       }
       body {
         font-family: 'Segoe UI', sans-serif;
         margin: 0;
         padding: 1rem;
-        background: var(--body-bg);
+        background: var(--background-color);
         display: flex;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
-        position: relative;
+        transition: background 0.3s ease;
       }
-      .card-container {
-        position: relative;
-        width: 90%;
-        max-width: 600px;
-        background: var(--card-background);
-        border-radius: 20px;
-        border: 2px solid transparent;
-        border-image: linear-gradient(45deg, var(--secondary-color), var(--accent-color), #3f51b5) 1;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-        padding: 1.5rem;
-        margin: 1rem auto;
-        transition: background-color 0.5s ease, box-shadow 0.5s ease;
-        overflow: hidden;
-      }
-      /* Top Left Settings Icon */
-      #styleControlsContainer {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        z-index: 10;
-      }
-      #styleButton {
-        padding: 0.5rem;
-        font-size: 1.2rem;
-        border: none;
-        background: none;
-        cursor: pointer;
-        color: blue;
-      }
-      #styleButton:hover {
-        color: var(--secondary-color);
-      }
-      /* Top Right Share Icon */
-      .top-icons {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        z-index: 10;
-      }
-      .top-share-icon {
-        padding: 0.5rem;
-        font-size: 1.2rem;
-        border: none;
-        background: none;
-        cursor: pointer;
-        color: blue;
-      }
-      .top-share-icon:hover {
-        color: var(--secondary-color);
-      }
-      /* Settings Dropdown Panel */
-      #styleDropdown {
-        display: none;
-        position: absolute;
-        top: 110%;
-        left: -20px;
+      .form-container {
+        width: 100%;
+        max-width: 450px;
         background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        z-index: 10;
-        font-size: 0.75rem;
-        width: 100px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        border-radius: 15px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        padding: 1.5rem;
+        position: relative;
+        box-sizing: border-box;
       }
-      .setting-group {
-        border-bottom: 1px solid #ddd;
-      }
-      .setting-group:last-child {
-        border-bottom: none;
-      }
-      .setting-header {
-        background: linear-gradient(to bottom, #f8f8f8, #dcdcdc);
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-        color: var(--dropdown-header-color);
-        padding: 5px 8px;
-        cursor: pointer;
-        font-size: 0.8rem;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-        margin: 3px 0;
-      }
-      .setting-header:hover {
-        box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.4);
-        transform: translateY(-1px);
-      }
-      .setting-content {
-        display: none;
-        padding: 5px;
-      }
-      .setting-options {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-      .setting-options li {
-        padding: 0.3rem 0.5rem;
-        cursor: pointer;
-        transition: background 0.3s;
-        color: #333;
-      }
-      .setting-options li:hover {
-        background: var(--secondary-color);
-        color: #fff;
-      }
-      .dropdown-btns {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        margin-top: 5px;
-      }
-      .dropdown-btns button {
-        padding: 0.3rem;
-        border: none;
-        background: var(--dropdown-btn-bg);
-        color: #fff;
-        cursor: pointer;
-        font-size: 0.75rem;
-        transition: box-shadow 0.3s ease;
-      }
-      .dropdown-btns button:hover {
-        background: var(--dropdown-btn-hover);
-        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-      }
-      /* Mini Icons */
-      .mini-icons {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        padding: 1rem;
-        border-bottom: 2px solid var(--secondary-color);
-      }
-      .mini-icons .icon {
+      /* Top gear icon */
+      .gear-icon {
+        position: absolute;
+        top: -10px;
+        right: 1rem;
         font-size: 1.5rem;
-        color: var(--neutral-dark);
-        visibility: hidden;
-        border-radius: 50%;
-        text-decoration: none;
-        padding: 0.5rem;
-        background: rgba(255, 255, 255, 0.1);
-        transition: transform 0.3s, box-shadow 0.3s;
-      }
-      .mini-icons .icon:hover {
-        color: var(--secondary-color);
-        transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-      }
-      /* Profile Section */
-      .profile-section {
-        display: flex;
-        align-items: center;
-        padding: 1rem;
-        margin: 0.5rem;
-        border-bottom: 2px solid var(--secondary-color);
-      }
-      .profile-image-container {
-        width: 40%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-right: 1rem;
-      }
-      .profile-image {
-        width: 90px;
-        height: 90px;
-        border-radius: 50%;
-        border: 2px solid var(--neutral-light);
-        object-fit: cover;
-        transition: box-shadow 0.3s ease;
-      }
-      .profile-image:hover {
-        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
-      }
-      .profile-name {
         color: var(--primary-color);
-        margin: 0.5rem 0 0;
-        font-size: 1.1rem;
-        text-align: center;
+        cursor: pointer;
+        transition: transform 0.3s ease;
       }
-      .profile-info {
-        width: 60%;
-        padding-left: 1rem;
+      .gear-icon:hover {
+        transform: rotate(90deg);
+        color: var(--secondary-color);
+      }
+      .form-header {
+        text-align: center;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+      }
+      .form-grid {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .input-group {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        text-align: center;
+        gap: 0.3rem;
       }
-      .contact-info {
+      .input-group label {
+        font-weight: 600;
         color: var(--neutral-dark);
-        margin: 0.3rem 0;
-        font-size: 0.85rem;
-        line-height: 1.4;
       }
-      /* Business name styling */
-      #cardBusinessName {
-        color: green;
-        font-weight: bold;
-        font-size: 1.1rem;
-      }
-      /* Save Contact Icon adjustments */
-      .connect-btn {
-        align-self: center;
-        margin-left: 20px;
-        font-size: 1.2rem;
-        color: var(--secondary-color);
-        cursor: pointer;
-        transition: transform 0.3s;
-      }
-      .connect-btn:hover {
-        transform: scale(1.1);
+      .input-group .required {
         color: var(--accent-color);
       }
-      /* Business Info Section styling */
-      .business-info-section {
-        padding: 1rem;
-        margin: 0.5rem 0;
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 0.7rem;
+        border: 1px solid var(--neutral-light);
+        border-radius: 6px;
         font-size: 0.9rem;
-        line-height: 1.5;
-        height: 150px;
-        background: var(--business-info-bg);
-        border: 1px solid #ddd;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-        position: relative;
-        overflow: hidden;
+        box-sizing: border-box;
+        transition: border-color 0.2s ease;
       }
-      .business-info-content {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--secondary-color);
+        outline: none;
+      }
+      textarea {
+        resize: vertical;
+      }
+      .error {
+        border: 2px solid var(--accent-color);
+      }
+      .image-upload-group {
         text-align: center;
-        font-weight: bold;
-        color: var(--neutral-dark);
-        padding: 0.5rem;
-        overflow-y: auto;
+        border: 2px dashed var(--neutral-light);
+        padding: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
       }
-      /* Hide any scrollbar inside business info */
-      .business-info-content::-webkit-scrollbar {
+      #imagePreview {
+        width: 50px;
+        height: 50px;
+        border-radius: 4px;
+        object-fit: cover;
+        margin: 0.5rem auto;
         display: none;
       }
-      /* Exclusive Offers & Continuous Scroll */
-      .scroll-container {
-        overflow: hidden;
-        white-space: nowrap;
-        position: relative;
+      #generateCard {
+        background: var(--secondary-color);
+        color: #fff;
         width: 100%;
-        margin: 1rem 0;
+        padding: 0.8rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1rem;
       }
-      .scroll-offer {
-        display: inline-block;
-        /* Change animation direction to left-to-right */
-        animation: scrollRight 20s linear infinite;
-      }
-      @keyframes scrollRight {
-        0% { transform: translateX(-100%); }
-        100% { transform: translateX(100%); }
-      }
-      /* Offer Card (Flip Card) Styles – now non-clickable */
-      .flip-card {
-        background-color: transparent;
-        width: 150px;
-        height: 150px;
-        perspective: 1000px;
-        display: inline-block;
-        margin-right: 10px;
-        /* Remove cursor pointer as flip is disabled */
-      }
-      .flip-card-inner {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        text-align: center;
-        transition: transform 0.8s;
-        transform-style: preserve-3d;
-      }
-      /* Since details should not open on touch, we do not toggle flip */
-      .flip-card-front,
-      .flip-card-back {
+      /* Dropdown (gear) */
+      .dropdown-menu {
+        display: none;
         position: absolute;
-        width: 100%;
-        height: 100%;
-        backface-visibility: hidden;
-        border: 1px solid #ddd;
+        top: 2rem;
+        right: -20px;
+        background: #fff;
+        border: 1px solid var(--neutral-light);
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        padding: 0.5rem;
+        width: 80px;
+        z-index: 1000;
+        text-align: center;
+      }
+      .dropdown-menu.active {
+        display: block;
+      }
+      .dropdown-menu h4,
+      .dropdown-menu button {
+        font-size: 0.8rem;
+        margin: 0.2rem 0;
+        background: var(--secondary-color);
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      /* Banner field group */
+      .banner-field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        position: relative;
+      }
+      .banner-field {
         display: flex;
         align-items: center;
-        justify-content: center;
-        background: #f1f1f1;
-      }
-      .flip-card-back {
-        transform: rotateY(180deg);
-        background: #e0e0e0;
-        color: #333;
-        font-size: 0.8rem;
-        padding: 5px;
-      }
-      /* Action Buttons Section */
-      .action-buttons {
-        display: grid;
         gap: 0.5rem;
-        padding: 0.8rem;
       }
-      .action-btn {
-        text-align: center;
-        text-decoration: none;
-        padding: 0.6rem;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        color: #fff;
-        box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.3),
-          inset -2px -2px 4px rgba(255, 255, 255, 0.2);
-        transition: transform 0.3s, box-shadow 0.3s;
-      }
-      .action-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-      }
-      .action-btn:active {
-        filter: brightness(90%);
-      }
-      .contact-btn {
-        transition: none !important;
-      }
-      /* Social Links Section */
-      .social-links {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        padding: 1rem;
-      }
-      .social-icon {
-        font-size: 1.5rem;
-        color: var(--neutral-dark);
-        visibility: hidden;
-        border-radius: 50%;
-        text-decoration: none;
+      .banner-field input {
+        flex: 1;
         padding: 0.5rem;
-        background: rgba(255, 255, 255, 0.1);
-        transition: transform 0.3s, box-shadow 0.3s;
+        border: 1px solid var(--neutral-light);
+        border-radius: 4px;
       }
-      .social-icon:hover {
+      .banner-field button {
+        background: var(--secondary-color);
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 0.5rem;
+        cursor: pointer;
+      }
+      .banner-dropdown {
+        position: absolute;
+        top: -2.2rem;
+        left: 0;
+        background: #fff;
+        border: 1px solid var(--neutral-light);
+        border-radius: 4px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        padding: 0.5rem;
+        width: 250px;
+        display: none;
+        z-index: 999;
+      }
+      .banner-dropdown button {
+        width: 100%;
+        padding: 0.3rem;
+        margin: 0.2rem 0;
+        background: #fff;
+        border: 1px solid var(--neutral-light);
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8rem;
+      }
+      /* Offer Fields */
+      .offer-field {
+        border: 1px solid var(--neutral-light);
+        border-radius: 6px;
+        padding: 0.5rem;
+        margin-bottom: 0.8rem;
+      }
+      .offer-field-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .offer-field-row input[type="text"] {
+        flex: 1;
+      }
+      .offer-field-row button {
+        background: var(--secondary-color);
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 0.4rem 0.7rem;
+        cursor: pointer;
+      }
+      .offer-details {
+        margin-top: 0.5rem;
+        border-top: 1px dashed var(--neutral-light);
+        padding-top: 0.5rem;
+        display: none;
+      }
+      .offer-editor {
+        height: 120px;
+        background: #fff;
+        border: 1px solid var(--neutral-light);
+        border-radius: 4px;
+      }
+      .offer-details .close-offer-details {
+        margin-top: 0.5rem;
+        background: var(--accent-color);
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 0.4rem 0.7rem;
+        cursor: pointer;
+      }
+      /* Offer Style Selection */
+      .offer-style-selection {
+        text-align: center;
+        margin-top: 1rem;
+        position: relative;
+      }
+      #offerStyleBtn {
+        background: var(--secondary-color);
+        color: #fff;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        position: relative;
+      }
+      /* Add arrow indicator */
+      #offerStyleBtn::after {
+        content: "\f0d7";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .offer-style-dropdown {
+        display: none;
+        position: absolute;
+        top: calc(100% + 0.5rem);
+        left: 50%;
+        transform: translateX(-50%);
+        background: #fff;
+        border: 1px solid var(--neutral-light);
+        border-radius: 4px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        padding: 0.5rem;
+        width: 150px;
+        z-index: 1000;
+        text-align: center;
+      }
+      .offer-style-dropdown button {
+        width: 100%;
+        padding: 0.3rem;
+        margin: 0.2rem 0;
+        background: #fff;
         color: var(--secondary-color);
+        border: 1px solid var(--neutral-light);
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        transition: transform 0.1s ease;
+      }
+      .offer-style-dropdown button:hover {
         transform: translateY(-2px);
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      }
+      #offerPreview {
+        margin-top: 0.8rem;
+        border: 1px dashed var(--neutral-light);
+        padding: 0.5rem;
+        min-height: 80px;
+      }
+      #applyOfferStyleBtn {
+        margin-top: 0.5rem;
+        background: var(--secondary-color);
+        color: #fff;
+        border: none;
+        padding: 0.4rem 0.8rem;
+        border-radius: 4px;
+        cursor: pointer;
+        display: none;
       }
     </style>
   </head>
   <body>
-    <div class="card-container" id="cardContainer">
-      <!-- Top Left Settings Icon -->
-      <div id="styleControlsContainer">
-        <button id="styleButton" title="Settings">
-          <i class="fas fa-cog"></i>
-        </button>
-        <div id="styleDropdown">
-          <div class="setting-group" id="themeGroup">
-            <div class="setting-header">Theme</div>
-            <div class="setting-content">
-              <ul class="setting-options">
-                <li data-theme="default">Default</li>
-                <li data-theme="blue">Blue</li>
-                <li data-theme="red">Red</li>
-                <li data-theme="green">Green</li>
-              </ul>
-              <div class="dropdown-btns">
-                <button class="apply-btn" data-group="theme">Apply</button>
-              </div>
+    <div class="form-container" id="formContainer">
+      <!-- Gear Icon -->
+      <div class="gear-icon" onclick="toggleDropdown()">
+        <i class="fas fa-cog"></i>
+      </div>
+      <!-- Dropdown Menu -->
+      <div class="dropdown-menu" id="dropdownMenu">
+        <h4 onclick="toggleSubDropdown('mood')">Mood</h4>
+        <div id="moodSubDropdown" class="sub-dropdown">
+          <button onclick="previewMood('day')">Day</button>
+          <button onclick="previewMood('night')">Night</button>
+          <div class="action-buttons">
+            <button onclick="applyMood()">Apply</button>
+          </div>
+        </div>
+        <h4 onclick="toggleSubDropdown('theme')">Theme</h4>
+        <div id="themeSubDropdown" class="sub-dropdown">
+          <button onclick="previewTheme('default')">Default</button>
+          <button onclick="toggleSubDropdown('image')">Image</button>
+          <div id="imageSubDropdown" class="sub-dropdown">
+            <div class="image-thumbnails">
+              <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Image 1" onclick="previewTheme('image', this.src)">
+              <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Image 2" onclick="previewTheme('image', this.src)">
+              <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Image 3" onclick="previewTheme('image', this.src)">
+              <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Image 4" onclick="previewTheme('image', this.src)">
+              <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Image 5" onclick="previewTheme('image', this.src)">
             </div>
           </div>
-          <div class="setting-group" id="moodGroup">
-            <div class="setting-header">Mood</div>
-            <div class="setting-content">
-              <ul class="setting-options">
-                <li data-mood="day">Day</li>
-                <li data-mood="night">Night</li>
-              </ul>
-              <div class="dropdown-btns">
-                <button class="apply-btn" data-group="mood">Apply</button>
-              </div>
+          <button onclick="toggleSubDropdown('color')">Color</button>
+          <div id="colorSubDropdown" class="sub-dropdown">
+            <div class="color-thumbnails">
+              <div style="background-color: #3498db;" onclick="previewTheme('color', '#3498db')"></div>
+              <div style="background-color: #e74c3c;" onclick="previewTheme('color', '#e74c3c')"></div>
+              <div style="background-color: #2ecc71;" onclick="previewTheme('color', '#2ecc71')"></div>
+              <div style="background-color: #9b59b6;" onclick="previewTheme('color', '#9b59b6')"></div>
+              <div style="background-color: #f1c40f;" onclick="previewTheme('color', '#f1c40f')"></div>
             </div>
           </div>
-          <div class="setting-group" id="iconStyleGroup">
-            <div class="setting-header">Style</div>
-            <div class="setting-content">
-              <ul class="setting-options">
-                <li data-iconstyle="none">None</li>
-                <li data-iconstyle="styleA">Style A</li>
-                <li data-iconstyle="styleB">Style B</li>
-              </ul>
-              <div class="dropdown-btns">
-                <button class="apply-btn" data-group="style">Apply</button>
-              </div>
-            </div>
+          <div class="action-buttons">
+            <button onclick="applyTheme()">Apply</button>
           </div>
-          <div class="setting-group" id="soundGroup">
-            <div class="setting-header">Sounds</div>
-            <div class="setting-content">
-              <label style="font-size:0.8rem; display: flex; align-items: center; padding: 5px;">
-                <input type="checkbox" id="soundToggle" checked style="margin-right: 5px;"> Enable Touch Sounds
-              </label>
-            </div>
+        </div>
+        <h4 onclick="toggleSubDropdown('style')">Style</h4>
+        <div id="styleSubDropdown" class="sub-dropdown">
+          <button onclick="previewStyle('accordion'); closeOfferStyleDropdown()">Accordion</button>
+          <button onclick="previewStyle('horizontal'); closeOfferStyleDropdown()">Horizontal</button>
+          <button onclick="previewStyle('tab'); closeOfferStyleDropdown()">Tab-based</button>
+          <button onclick="previewStyle('modal'); closeOfferStyleDropdown()">Modal Popup</button>
+          <div class="action-buttons">
+            <button onclick="applyStyle()">Apply</button>
           </div>
         </div>
       </div>
-      <!-- Top Right Share Icon -->
-      <div class="top-icons">
-        <button class="top-share-icon" id="topShareIcon" title="Share">
-          <i class="fas fa-share-alt"></i>
-        </button>
+
+      <!-- Form Header -->
+      <div class="form-header">
+        <h2>Create Business Card</h2>
+        <p>Fill in all required information</p>
       </div>
-      <!-- Mini Icons -->
-      <div class="mini-icons">
-        <a id="miniCallButton" class="icon" title="Call">
-          <i class="fas fa-phone"></i>
-        </a>
-        <a id="miniEmailButton" class="icon" title="Email">
-          <i class="fas fa-envelope"></i>
-        </a>
-        <a id="miniWhatsappButton" class="icon" title="WhatsApp">
-          <i class="fab fa-whatsapp"></i>
-        </a>
-        <a id="miniMapButton" class="icon" title="Open in Google Maps">
-          <i class="fas fa-map-marker-alt"></i>
-        </a>
-      </div>
-      <!-- Profile Section -->
-      <div class="profile-section">
-        <div class="profile-image-container">
-          <img id="cardProfileImage" class="profile-image" alt="Profile" />
-          <h3 class="profile-name" id="cardName"></h3>
+
+      <div class="form-grid">
+        <div class="image-upload-group">
+          <label for="profileImage">
+            <i class="fas fa-camera fa-2x"></i>
+            <p>Upload Profile Photo</p>
+          </label>
+          <input type="file" id="profileImage" accept="image/*" onchange="previewImage(event)" />
+          <img id="imagePreview" alt="Profile Preview" />
         </div>
-        <div class="profile-info">
-          <p class="contact-info" id="cardBusinessName"></p>
-          <p class="contact-info" id="cardAddress"></p>
-          <p class="contact-info" id="cardPhone"></p>
-          <p class="contact-info" id="cardEmail"></p>
+        <div class="input-group">
+          <label for="name">Full Name <span class="required">*</span></label>
+          <input type="text" id="name" placeholder="Full Name" required />
         </div>
-        <div class="connect-btn" id="connectButton" title="Save Contact">
-          <i class="fas fa-save"></i>
+        <div class="input-group">
+          <label for="businessName">Business Name <span class="required">*</span></label>
+          <input type="text" id="businessName" placeholder="Business Name" required />
+        </div>
+        <!-- Business Info -->
+        <div class="input-group">
+          <label for="businessInfo">Business Info <span class="required">*</span></label>
+          <div id="editor-container"></div>
+          <textarea id="businessInfo" name="businessInfo" style="display:none;" required></textarea>
+          <small style="color: var(--neutral-dark); font-size: 0.8rem;">
+            Write 3–5 paragraphs (max 150 words each). Separate paragraphs by a new line.
+          </small>
+        </div>
+        <div class="input-group">
+          <label for="address">Business Address <span class="required">*</span></label>
+          <input type="text" id="address" placeholder="Business Address" required />
+        </div>
+        <div class="input-group">
+          <label for="phone">Phone Number <span class="required">*</span></label>
+          <input type="tel" id="phone" placeholder="Enter phone number" required />
+        </div>
+        <div class="input-group">
+          <label for="email">Email Address <span class="required">*</span></label>
+          <input type="email" id="email" placeholder="Email Address" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address." />
+        </div>
+        <div class="input-group">
+          <label for="facebook">Facebook URL</label>
+          <input type="url" id="facebook" placeholder="Facebook URL" pattern="https?://(www\.)?facebook\.com/.*" title="Please enter a valid Facebook URL." />
+        </div>
+        <div class="input-group">
+          <label for="instagram">Instagram URL</label>
+          <input type="url" id="instagram" placeholder="Instagram URL" pattern="https?://(www\.)?instagram\.com/.*" title="Please enter a valid Instagram URL." />
+        </div>
+        <div class="input-group">
+          <label for="youtube">YouTube URL</label>
+          <input type="url" id="youtube" placeholder="YouTube URL" pattern="https?://(www\.)?youtube\.com/.*" title="Please enter a valid YouTube URL." />
         </div>
       </div>
-      <!-- Business Info Section -->
-      <div class="business-info-section">
-        <div id="businessInfoContent"></div>
+
+      <!-- Exclusive Offers Section -->
+      <div class="exclusive-offers-section">
+        <!-- Banner Field Group -->
+        <div class="banner-field-group">
+          <label for="offerBanner">Initial Banner Text</label>
+          <div class="banner-field">
+            <input type="text" id="offerBanner" value="Grab your exclusive offers now!" />
+            <button type="button" onclick="toggleBannerDropdown('banner1Dropdown')">Options</button>
+          </div>
+          <div class="banner-dropdown" id="banner1Dropdown">
+            <button type="button" onclick="setBannerText('offerBanner','Discover unbeatable deals today!')">Discover unbeatable deals today!</button>
+            <button type="button" onclick="setBannerText('offerBanner','Unlock premium offers instantly!')">Unlock premium offers instantly!</button>
+            <button type="button" onclick="setBannerText('offerBanner','Experience exclusive savings now!')">Experience exclusive savings now!</button>
+          </div>
+
+          <label for="offerBannerClicked">On-Click Banner Text</label>
+          <div class="banner-field">
+            <input type="text" id="offerBannerClicked" value="Visit our store now!" />
+            <button type="button" onclick="toggleBannerDropdown('banner2Dropdown')">Options</button>
+          </div>
+          <div class="banner-dropdown" id="banner2Dropdown">
+            <button type="button" onclick="setBannerText('offerBannerClicked','Step into our store for exclusive deals!')">Step into our store for exclusive deals!</button>
+            <button type="button" onclick="setBannerText('offerBannerClicked','Your next big saving awaits!')">Your next big saving awaits!</button>
+            <button type="button" onclick="setBannerText('offerBannerClicked','Don’t miss our premium offers!')">Don’t miss our premium offers!</button>
+          </div>
+        </div>
+
+        <h3>Exclusive Offers</h3>
+        <div id="offersContainer">
+          <!-- Offer 1 -->
+          <div class="offer-field" id="offerField1">
+            <div class="offer-field-row">
+              <input type="text" id="offerTitle1" placeholder="Offer 1 Title" />
+              <button type="button" onclick="toggleOfferDetails(1)">Details</button>
+            </div>
+            <div class="offer-details" id="offerDetailsContainer1">
+              <div id="offerEditor1" class="offer-editor"></div>
+              <textarea id="offerText1" name="offerText1" style="display:none;"></textarea>
+              <input type="file" id="offerFile1" accept="image/*" onchange="previewOfferFile(event,1)" />
+              <img id="offerFilePreview1" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
+              <br />
+              <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(1)">Save &amp; Close</button>
+            </div>
+          </div>
+          <!-- Offer 2 -->
+          <div class="offer-field" id="offerField2">
+            <div class="offer-field-row">
+              <input type="text" id="offerTitle2" placeholder="Offer 2 Title" />
+              <button type="button" onclick="toggleOfferDetails(2)">Details</button>
+            </div>
+            <div class="offer-details" id="offerDetailsContainer2">
+              <div id="offerEditor2" class="offer-editor"></div>
+              <textarea id="offerText2" name="offerText2" style="display:none;"></textarea>
+              <input type="file" id="offerFile2" accept="image/*" onchange="previewOfferFile(event,2)" />
+              <img id="offerFilePreview2" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
+              <br />
+              <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(2)">Save &amp; Close</button>
+            </div>
+          </div>
+          <!-- Offer 3 -->
+          <div class="offer-field" id="offerField3">
+            <div class="offer-field-row">
+              <input type="text" id="offerTitle3" placeholder="Offer 3 Title" />
+              <button type="button" onclick="toggleOfferDetails(3)">Details</button>
+            </div>
+            <div class="offer-details" id="offerDetailsContainer3">
+              <div id="offerEditor3" class="offer-editor"></div>
+              <textarea id="offerText3" name="offerText3" style="display:none;"></textarea>
+              <input type="file" id="offerFile3" accept="image/*" onchange="previewOfferFile(event,3)" />
+              <img id="offerFilePreview3" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
+              <br />
+              <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(3)">Save &amp; Close</button>
+            </div>
+          </div>
+          <!-- Offer 4 -->
+          <div class="offer-field" id="offerField4">
+            <div class="offer-field-row">
+              <input type="text" id="offerTitle4" placeholder="Offer 4 Title" />
+              <button type="button" onclick="toggleOfferDetails(4)">Details</button>
+            </div>
+            <div class="offer-details" id="offerDetailsContainer4">
+              <div id="offerEditor4" class="offer-editor"></div>
+              <textarea id="offerText4" name="offerText4" style="display:none;"></textarea>
+              <input type="file" id="offerFile4" accept="image/*" onchange="previewOfferFile(event,4)" />
+              <img id="offerFilePreview4" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
+              <br />
+              <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(4)">Save &amp; Close</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Offer Style Selection -->
+        <div class="offer-style-selection">
+          <button type="button" id="offerStyleBtn" onclick="toggleOfferStyleDropdown()">Select Offer Style</button>
+          <div class="offer-style-dropdown" id="offerStyleDropdown">
+            <button type="button" onclick="selectOfferStyle('accordion')">Accordion</button>
+            <button type="button" onclick="selectOfferStyle('horizontal')">Horizontal</button>
+            <button type="button" onclick="selectOfferStyle('tab')">Tab-based</button>
+            <button type="button" onclick="selectOfferStyle('modal')">Modal Popup</button>
+          </div>
+          <div id="offerPreview"></div>
+          <button type="button" id="applyOfferStyleBtn" onclick="applyStyle()">Apply Offer Style</button>
+        </div>
       </div>
-      <!-- Exclusive Offers Flip Card Section -->
-      <div id="offersFlipCardSection"></div>
-      <!-- Action Buttons Section -->
-      <div class="action-buttons">
-        <a id="callButton" class="action-btn contact-btn" style="background: var(--secondary-color);">
-          Call
-        </a>
-        <a id="whatsappButton" class="action-btn contact-btn" style="background: #25d366;">
-          WhatsApp
-        </a>
-        <a id="emailButton" class="action-btn contact-btn" style="background: var(--accent-color);">
-          Email
-        </a>
-      </div>
-      <!-- Social Links Section -->
-      <div class="social-links">
-        <a id="facebookButton" class="social-icon">
-          <i class="fab fa-facebook-f"></i>
-        </a>
-        <a id="instagramButton" class="social-icon">
-          <i class="fab fa-instagram"></i>
-        </a>
-        <a id="youtubeButton" class="social-icon">
-          <i class="fab fa-youtube"></i>
-        </a>
-      </div>
+
+      <button id="generateCard">Generate Card</button>
     </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        "use strict";
-        const storedData = localStorage.getItem("formData");
-        const formData = storedData ? JSON.parse(storedData) : {};
-        // Populate card fields
-        document.getElementById("cardProfileImage").src = formData.profileImage || "";
-        document.getElementById("cardName").textContent = formData.name || "";
-        document.getElementById("cardBusinessName").textContent = formData.businessName || "";
-        document.getElementById("cardAddress").textContent = formData.address || "";
-        document.getElementById("cardPhone").textContent = formData.phone || "";
-        document.getElementById("cardEmail").textContent = formData.email || "";
-        // Business Info
-        const businessInfo = formData.businessInfo || "";
-        const paragraphs = businessInfo.split("\n").filter(p => p.trim() !== "");
-        const businessInfoContainer = document.getElementById("businessInfoContent");
-        businessInfoContainer.innerHTML = paragraphs.map(p => `<div class="business-info-content"><p>${p}</p></div>`).join("");
-        const paragraphDivs = businessInfoContainer.querySelectorAll(".business-info-content");
-        let currentIndex = 0;
-        paragraphDivs.forEach((div, idx) => {
-          div.style.display = (idx === 0) ? "block" : "none";
-        });
-        if (paragraphDivs.length > 0) {
-          setInterval(() => {
-            paragraphDivs[currentIndex].style.display = "none";
-            currentIndex = (currentIndex + 1) % paragraphDivs.length;
-            paragraphDivs[currentIndex].style.display = "block";
-          }, 8000);
-        }
-        // Social Links
-        const socialLinks = {
-          facebook: document.getElementById("facebookButton"),
-          instagram: document.getElementById("instagramButton"),
-          youtube: document.getElementById("youtubeButton")
-        };
-        Object.entries(socialLinks).forEach(([platform, element]) => {
-          const url = formData[platform];
-          if(url){
-            element.href = url;
-            element.style.visibility = "visible";
-            element.target = "_blank";
-          } else {
-            element.style.visibility = "hidden";
-          }
-        });
-        // Render Offers using horizontal flip card style (flip disabled)
-        if(formData.offers && formData.offerStyle === "horizontal"){
-          renderOffers(formData.offers, formData.offerStyle);
-        }
-        // --- Event Listeners for Button Icons ---
-        document.getElementById("miniCallButton").addEventListener("click", function() {
-          if(formData.phone) window.location.href = "tel:" + formData.phone;
-          else alert("Phone number not available");
-        });
-        document.getElementById("miniEmailButton").addEventListener("click", function() {
-          if(formData.email) window.location.href = "mailto:" + formData.email;
-          else alert("Email not available");
-        });
-        document.getElementById("miniWhatsappButton").addEventListener("click", function() {
-          if(formData.phone) window.open("https://wa.me/" + formData.phone, "_blank");
-          else alert("WhatsApp contact not available");
-        });
-        document.getElementById("miniMapButton").addEventListener("click", function() {
-          if(formData.address) window.open("https://www.google.com/maps/search/" + encodeURIComponent(formData.address), "_blank");
-          else alert("Address not available");
-        });
-        document.getElementById("topShareIcon").addEventListener("click", function() {
-          if(navigator.share) {
-            navigator.share({
-              title: formData.name || "Business Card",
-              text: "Check out this business card.",
-              url: window.location.href
-            }).catch(err => console.log("Error sharing:", err));
-          } else {
-            alert("Share feature not supported in this browser.");
-          }
-        });
-        document.getElementById("callButton").addEventListener("click", function() {
-          if(formData.phone) window.location.href = "tel:" + formData.phone;
-          else alert("Phone number not available");
-        });
-        document.getElementById("whatsappButton").addEventListener("click", function() {
-          if(formData.phone) window.open("https://wa.me/" + formData.phone, "_blank");
-          else alert("WhatsApp contact not available");
-        });
-        document.getElementById("emailButton").addEventListener("click", function() {
-          if(formData.email) window.location.href = "mailto:" + formData.email;
-          else alert("Email not available");
-        });
-        document.getElementById("connectButton").addEventListener("click", function() {
-          alert("Contact saved successfully!");
-        });
+      // Initialize main Quill Editor for Business Info
+      var quill = new Quill('#editor-container', {
+        theme: 'snow',
+        modules: { toolbar: [[{ font: [] }, { size: [] }], ['bold','italic','underline'], [{ color: [] }, { background: [] }], [{ align: [] }], ['clean']] }
       });
-      // Render offers (flip is disabled so cards are not clickable)
-      function renderOffers(offers, style) {
-        const container = document.getElementById("offersFlipCardSection");
-        container.innerHTML = "<h3>Exclusive Offers</h3>";
-        if(style === "horizontal") {
-          let html = '<div class="scroll-container"><div class="scroll-offer">';
-          offers.forEach((offer, index) => {
-            html += `
-              <div class="flip-card">
-                <div class="flip-card-inner">
-                  <div class="flip-card-front">
-                    <h4>${offer.title || "Offer " + (index+1)}</h4>
-                  </div>
-                  <div class="flip-card-back">
-                    <p>Details available on next page</p>
-                  </div>
-                </div>
-              </div>
-            `;
+      // Firebase config (replace placeholders)
+      var firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_AUTH_DOMAIN",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_STORAGE_BUCKET",
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+        appId: "YOUR_APP_ID"
+      };
+      firebase.initializeApp(firebaseConfig);
+      var phoneInput = document.querySelector("#phone");
+      var iti = window.intlTelInput(phoneInput, {
+        initialCountry: "auto",
+        separateDialCode: true,
+        geoIpLookup: function(success, failure) {
+          fetch("https://ipinfo.io/json?token=YOUR_TOKEN")
+            .then(resp => resp.json())
+            .then(data => success(data.country))
+            .catch(() => success("us"));
+        },
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+      });
+      function previewImage(event) {
+        const reader = new FileReader();
+        const preview = document.getElementById("imagePreview");
+        reader.onload = function(e) { preview.src = e.target.result; preview.style.display = "block"; };
+        reader.readAsDataURL(event.target.files[0]);
+      }
+      function resizeImage(file, callback) {
+        const img = new Image();
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          img.src = e.target.result;
+          img.onload = function() {
+            const canvas = document.createElement("canvas");
+            const MAX_WIDTH = 150, MAX_HEIGHT = 150;
+            let width = img.width, height = img.height;
+            if(width > height) { if(width > MAX_WIDTH){ height = height * (MAX_WIDTH/width); width = MAX_WIDTH; } }
+            else { if(height > MAX_HEIGHT){ width = width * (MAX_HEIGHT/height); height = MAX_HEIGHT; } }
+            canvas.width = width; canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+            canvas.toBlob(function(blob) { callback(blob); }, "image/jpeg", 0.4);
+          };
+        };
+        reader.readAsDataURL(file);
+      }
+      // Banner dropdown functions
+      function toggleBannerDropdown(id) {
+        const dd = document.getElementById(id);
+        dd.style.display = (dd.style.display==="block") ? "none" : "block";
+      }
+      function setBannerText(fieldId, text) {
+        document.getElementById(fieldId).value = text;
+        if(fieldId==="offerBanner") document.getElementById("banner1Dropdown").style.display = "none";
+        else document.getElementById("banner2Dropdown").style.display = "none";
+      }
+      // Offer details functions
+      window.offerEditors = {}; 
+      function toggleOfferDetails(index) {
+        const container = document.getElementById("offerDetailsContainer" + index);
+        container.style.display = (container.style.display==="block") ? "none" : "block";
+        if(container.style.display==="block" && !window.offerEditors[index]) {
+          window.offerEditors[index] = new Quill("#offerEditor" + index, {
+            theme: "snow",
+            modules: { toolbar: [[{ font: [] }, { size: [] }], ['bold','italic','underline'], [{ color: [] }, { background: [] }], [{ align: [] }], ['clean']] }
           });
-          html += "</div></div>";
-          container.innerHTML += html;
         }
       }
-      // Settings panel toggle
-      document.addEventListener("click", (e) => {
-        if (!document.getElementById("styleControlsContainer").contains(e.target)) {
-          document.getElementById("styleDropdown").style.display = "none";
+      function previewOfferFile(event, index) {
+        const reader = new FileReader();
+        const preview = document.getElementById("offerFilePreview" + index);
+        reader.onload = function(e) { preview.src = e.target.result; preview.style.display = "block"; };
+        reader.readAsDataURL(event.target.files[0]);
+      }
+      function saveAndCloseOfferDetails(index) {
+        if(window.offerEditors[index]) { document.getElementById("offerText" + index).value = window.offerEditors[index].root.innerHTML; }
+        document.getElementById("offerDetailsContainer" + index).style.display = "none";
+      }
+      // Offer style preview dropdown
+      function toggleOfferStyleDropdown() {
+        const dd = document.getElementById("offerStyleDropdown");
+        dd.style.display = (dd.style.display==="block") ? "none" : "block";
+      }
+      function closeOfferStyleDropdown() { document.getElementById("offerStyleDropdown").style.display = "none"; }
+      var selectedOfferStyle = "";
+      function selectOfferStyle(style) {
+        selectedOfferStyle = style;
+        showOfferPreview(style);
+        closeOfferStyleDropdown();
+        document.getElementById("applyOfferStyleBtn").style.display = "inline-block";
+      }
+      function showOfferPreview(style) {
+        const previewDiv = document.getElementById("offerPreview");
+        if(style==="accordion") previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Accordion Preview<br/><em>Click header to expand details.</em></div>';
+        else if(style==="horizontal") {
+          previewDiv.innerHTML = '<div style="overflow-x:auto; white-space:nowrap; border:1px solid #ccc; padding:10px;">' +
+            '<div style="display:inline-block; width:25vw; height:25vw; background:#3498db; margin-right:5px; color:#fff; text-align:center; line-height:25vw;">Offer 1</div>' +
+            '<div style="display:inline-block; width:25vw; height:25vw; background:#e74c3c; margin-right:5px; color:#fff; text-align:center; line-height:25vw;">Offer 2</div>' +
+            '</div>';
         }
-      });
-      document.getElementById("styleButton").addEventListener("click", (e) => {
-        e.stopPropagation();
-        const styleDropdown = document.getElementById("styleDropdown");
-        styleDropdown.style.display = (styleDropdown.style.display === "block") ? "none" : "block";
-      });
+        else if(style==="tab") previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Tab-based Preview<br/><em>Switch between tabs.</em></div>';
+        else if(style==="modal") previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Modal Popup Preview<br/><em>Click to open modal.</em></div>';
+        else previewDiv.innerHTML = "";
+      }
+      function applyStyle() {
+        alert("Offer style '" + selectedOfferStyle + "' applied.");
+      }
+      // Validate form
+      function validateForm() {
+        let valid = true;
+        const fields = ["name", "businessName", "address", "email"];
+        fields.forEach(id => { const f = document.getElementById(id); if(f){ f.classList.remove("error"); } });
+        fields.forEach(id => { const f = document.getElementById(id); if(!f.value.trim()){ valid = false; f.classList.add("error"); } });
+        if(!valid){ alert("Please fill all required fields."); return false; }
+        if(!iti.isValidNumber()){ phoneInput.classList.add("error"); alert("Please enter a valid phone number."); return false; }
+        const emailVal = document.getElementById("email").value.trim();
+        if(!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(emailVal)){
+          document.getElementById("email").classList.add("error");
+          alert("Please enter a valid email address.");
+          return false;
+        }
+        const social = [
+          { id:"facebook", regex:/^https?:\/\/(www\.)?facebook\.com\/.+$/i },
+          { id:"instagram", regex:/^https?:\/\/(www\.)?instagram\.com\/.+$/i },
+          { id:"youtube", regex:/^https?:\/\/(www\.)?youtube\.com\/.+$/i }
+        ];
+        social.forEach(s => {
+          const val = document.getElementById(s.id).value.trim();
+          if(val && !s.regex.test(val)){
+            document.getElementById(s.id).classList.add("error");
+            alert("Please enter a valid URL for " + s.id + ".");
+            valid = false;
+          }
+        });
+        if(!valid) return false;
+        document.getElementById("businessInfo").value = quill.root.innerHTML;
+        return true;
+      }
+      function uploadOfferFile(file) {
+        return new Promise((resolve, reject) => {
+          resizeImage(file, (blob) => {
+            const storageRef = firebase.storage().ref();
+            const imageRef = storageRef.child("offer_images/" + Date.now() + ".jpg");
+            imageRef.put(blob)
+              .then(snapshot => snapshot.ref.getDownloadURL())
+              .then(url => resolve(url))
+              .catch(err => reject(err));
+          });
+        });
+      }
+      function uploadImageToFirebase(blob, formData) {
+        const storageRef = firebase.storage().ref();
+        const imageRef = storageRef.child("profile_images/" + Date.now() + ".jpg");
+        imageRef.put(blob)
+          .then(snapshot => snapshot.ref.getDownloadURL())
+          .then(url => { formData.profileImage = url; proceedToCard(formData); })
+          .catch(err => { console.error("Error uploading image:", err); alert("Image upload failed."); });
+      }
+      document.getElementById("generateCard").onclick = function() {
+        if(!validateForm()) return;
+        let formData = {
+          name: document.getElementById("name").value.trim(),
+          businessName: document.getElementById("businessName").value.trim(),
+          businessInfo: document.getElementById("businessInfo").value.trim(),
+          address: document.getElementById("address").value.trim(),
+          phone: iti.getNumber(),
+          email: document.getElementById("email").value.trim(),
+          facebook: document.getElementById("facebook").value.trim(),
+          instagram: document.getElementById("instagram").value.trim(),
+          youtube: document.getElementById("youtube").value.trim(),
+          offerBanner: document.getElementById("offerBanner").value.trim(),
+          offerBannerClicked: document.getElementById("offerBannerClicked").value.trim()
+        };
+        let offers = [];
+        let uploadPromises = [];
+        for(let i = 1; i <= 4; i++){
+          let offer = {};
+          let title = document.getElementById("offerTitle" + i).value.trim();
+          offer.title = title || ("Offer " + i);
+          if(window.offerEditors[i]) {
+            offer.details = window.offerEditors[i].root.innerHTML;
+          } else {
+            offer.details = document.getElementById("offerText" + i).value.trim();
+          }
+          let fileInput = document.getElementById("offerFile" + i);
+          if(fileInput && fileInput.files[0]){
+            let file = fileInput.files[0];
+            let p = uploadOfferFile(file).then(url => { offer.file = url; }).catch(() => { offer.file = ""; });
+            uploadPromises.push(p);
+          } else {
+            offer.file = "";
+          }
+          offers.push(offer);
+        }
+        formData.offers = offers;
+        formData.offerStyle = selectedOfferStyle;
+        Promise.all(uploadPromises).then(() => {
+          const profileFile = document.getElementById("profileImage").files[0];
+          if(profileFile){
+            resizeImage(profileFile, blob => { uploadImageToFirebase(blob, formData); });
+          } else {
+            proceedToCard(formData);
+          }
+        });
+      };
+      function proceedToCard(formData) {
+        localStorage.setItem("formData", JSON.stringify(formData));
+        window.location.href = "card.html";
+      }
+      function toggleDropdown() {
+        const dd = document.getElementById("dropdownMenu");
+        dd.classList.toggle("active");
+      }
+      function toggleSubDropdown(id) {
+        const sub = document.getElementById(id + "SubDropdown");
+        if(sub) { sub.classList.toggle("active"); }
+      }
     </script>
   </body>
 </html>
