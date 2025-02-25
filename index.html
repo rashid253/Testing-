@@ -14,6 +14,8 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
     />
+    <!-- Quill CSS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
     <style>
       :root {
         --primary-color: #2c3e50;
@@ -24,7 +26,7 @@
         --background-color: #ffffff;
       }
       body {
-        font-family: "Segoe UI", sans-serif;
+        font-family: 'Segoe UI', sans-serif;
         margin: 0;
         padding: 1rem;
         background: var(--background-color);
@@ -41,10 +43,10 @@
         border-radius: 15px;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
         padding: 1.5rem;
-        box-sizing: border-box;
         position: relative;
+        box-sizing: border-box;
       }
-      /* Gear Icon & Dropdown */
+      /* Top gear icon */
       .gear-icon {
         position: absolute;
         top: -10px;
@@ -57,33 +59,6 @@
       .gear-icon:hover {
         transform: rotate(90deg);
         color: var(--secondary-color);
-      }
-      .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 2rem;
-        right: -20px;
-        background: #fff;
-        border: 1px solid var(--neutral-light);
-        border-radius: 8px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-        padding: 0.5rem;
-        width: 80px;
-        z-index: 1000;
-        text-align: center;
-      }
-      .dropdown-menu.active {
-        display: block;
-      }
-      .dropdown-menu h4,
-      .dropdown-menu button {
-        font-size: 0.8rem;
-        margin: 0.2rem 0;
-        background: var(--secondary-color);
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
       }
       .form-header {
         text-align: center;
@@ -127,6 +102,9 @@
       textarea {
         resize: vertical;
       }
+      .error {
+        border: 2px solid var(--accent-color);
+      }
       .image-upload-group {
         text-align: center;
         border: 2px dashed var(--neutral-light);
@@ -152,54 +130,208 @@
         cursor: pointer;
         font-size: 1rem;
       }
-      /* Edit Form (from carousel.html) */
-      #editForm {
-        margin-bottom: 1.5rem;
-        padding: 1rem;
-        border: 1px solid #ccc;
+      /* Dropdown (gear) */
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 2rem;
+        right: -20px;
+        background: #fff;
+        border: 1px solid var(--neutral-light);
         border-radius: 8px;
-        background: #f9f9f9;
-      }
-      #editForm h3 {
-        margin-bottom: 0.5rem;
-        font-size: 1.2rem;
-      }
-      #editForm label {
-        display: block;
-        margin: 0.5rem 0 0.2rem;
-        font-weight: 600;
-      }
-      #editForm input[type="text"],
-      #editForm textarea,
-      #editForm select {
-        width: 100%;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
         padding: 0.5rem;
-        margin-bottom: 0.5rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 0.9rem;
+        width: 80px;
+        z-index: 1000;
+        text-align: center;
       }
-      #editForm .counter {
+      .dropdown-menu.active {
+        display: block;
+      }
+      .dropdown-menu h4,
+      .dropdown-menu button {
         font-size: 0.8rem;
-        color: #666;
-        margin-bottom: 0.5rem;
+        margin: 0.2rem 0;
+        background: var(--secondary-color);
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
       }
-      /* Exclusive Offers Section */
-      .exclusive-offers-section {
-        margin-bottom: 1.5rem;
+      /* Banner field group */
+      .banner-field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        position: relative;
       }
-      .exclusive-offers-section h3 {
-        margin-bottom: 0.5rem;
+      .banner-field {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .banner-field input {
+        flex: 1;
+        padding: 0.5rem;
+        border: 1px solid var(--neutral-light);
+        border-radius: 4px;
+      }
+      .banner-field button {
+        background: var(--secondary-color);
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 0.5rem;
+        cursor: pointer;
+      }
+      .banner-dropdown {
+        position: absolute;
+        top: -2.2rem;
+        left: 0;
+        background: #fff;
+        border: 1px solid var(--neutral-light);
+        border-radius: 4px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        padding: 0.5rem;
+        width: 250px;
+        display: none;
+        z-index: 999;
+      }
+      .banner-dropdown button {
+        width: 100%;
+        padding: 0.3rem;
+        margin: 0.2rem 0;
+        background: #fff;
+        border: 1px solid var(--neutral-light);
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8rem;
+      }
+      /* Offer Fields */
+      .offer-field {
+        border: 1px solid var(--neutral-light);
+        border-radius: 6px;
+        padding: 0.5rem;
+        margin-bottom: 0.8rem;
+      }
+      .offer-field-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .offer-field-row input[type="text"] {
+        flex: 1;
+      }
+      .offer-field-row button {
+        background: var(--secondary-color);
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 0.4rem 0.7rem;
+        cursor: pointer;
+      }
+      .offer-details {
+        margin-top: 0.5rem;
+        border-top: 1px dashed var(--neutral-light);
+        padding-top: 0.5rem;
+        display: none;
+      }
+      .offer-editor {
+        height: 120px;
+        background: #fff;
+        border: 1px solid var(--neutral-light);
+        border-radius: 4px;
+      }
+      .offer-details .close-offer-details {
+        margin-top: 0.5rem;
+        background: var(--accent-color);
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 0.4rem 0.7rem;
+        cursor: pointer;
+      }
+      /* Offer Style Selection */
+      .offer-style-selection {
+        text-align: center;
+        margin-top: 1rem;
+        position: relative;
+      }
+      #offerStyleBtn {
+        background: var(--secondary-color);
+        color: #fff;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        position: relative;
+      }
+      /* Add arrow indicator */
+      #offerStyleBtn::after {
+        content: "\f0d7";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .offer-style-dropdown {
+        display: none;
+        position: absolute;
+        top: calc(100% + 0.5rem);
+        left: 50%;
+        transform: translateX(-50%);
+        background: #fff;
+        border: 1px solid var(--neutral-light);
+        border-radius: 4px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        padding: 0.5rem;
+        width: 150px;
+        z-index: 1000;
+        text-align: center;
+      }
+      .offer-style-dropdown button {
+        width: 100%;
+        padding: 0.3rem;
+        margin: 0.2rem 0;
+        background: #fff;
+        color: var(--secondary-color);
+        border: 1px solid var(--neutral-light);
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        transition: transform 0.1s ease;
+      }
+      .offer-style-dropdown button:hover {
+        transform: translateY(-2px);
+      }
+      #offerPreview {
+        margin-top: 0.8rem;
+        border: 1px dashed var(--neutral-light);
+        padding: 0.5rem;
+        min-height: 80px;
+      }
+      #applyOfferStyleBtn {
+        margin-top: 0.5rem;
+        background: var(--secondary-color);
+        color: #fff;
+        border: none;
+        padding: 0.4rem 0.8rem;
+        border-radius: 4px;
+        cursor: pointer;
+        display: none;
       }
     </style>
-    <!-- Permission granted for necessary changes by authorized user -->
   </head>
   <body>
     <div class="form-container" id="formContainer">
-      <!-- Gear Icon & Dropdown -->
+      <!-- Gear Icon -->
       <div class="gear-icon" onclick="toggleDropdown()">
         <i class="fas fa-cog"></i>
       </div>
+      <!-- Dropdown Menu -->
       <div class="dropdown-menu" id="dropdownMenu">
         <h4 onclick="toggleSubDropdown('mood')">Mood</h4>
         <div id="moodSubDropdown" class="sub-dropdown">
@@ -215,31 +347,11 @@
           <button onclick="toggleSubDropdown('image')">Image</button>
           <div id="imageSubDropdown" class="sub-dropdown">
             <div class="image-thumbnails">
-              <img
-                src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg"
-                alt="Image 1"
-                onclick="previewTheme('image', this.src)"
-              />
-              <img
-                src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg"
-                alt="Image 2"
-                onclick="previewTheme('image', this.src)"
-              />
-              <img
-                src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg"
-                alt="Image 3"
-                onclick="previewTheme('image', this.src)"
-              />
-              <img
-                src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg"
-                alt="Image 4"
-                onclick="previewTheme('image', this.src)"
-              />
-              <img
-                src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg"
-                alt="Image 5"
-                onclick="previewTheme('image', this.src)"
-              />
+              <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="Image 1" onclick="previewTheme('image', this.src)">
+              <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg" alt="Image 2" onclick="previewTheme('image', this.src)">
+              <img src="https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg" alt="Image 3" onclick="previewTheme('image', this.src)">
+              <img src="https://cdn.pixabay.com/photo/2018/08/21/23/29/forest-3622519_1280.jpg" alt="Image 4" onclick="previewTheme('image', this.src)">
+              <img src="https://cdn.pixabay.com/photo/2017/02/08/17/24/fantasy-2049567_1280.jpg" alt="Image 5" onclick="previewTheme('image', this.src)">
             </div>
           </div>
           <button onclick="toggleSubDropdown('color')">Color</button>
@@ -267,12 +379,13 @@
           </div>
         </div>
       </div>
+
       <!-- Form Header -->
       <div class="form-header">
         <h2>Create Business Card</h2>
         <p>Fill in all required information</p>
       </div>
-      <!-- Main Form Fields -->
+
       <div class="form-grid">
         <div class="image-upload-group">
           <label for="profileImage">
@@ -289,6 +402,15 @@
         <div class="input-group">
           <label for="businessName">Business Name <span class="required">*</span></label>
           <input type="text" id="businessName" placeholder="Business Name" required />
+        </div>
+        <!-- Business Info -->
+        <div class="input-group">
+          <label for="businessInfo">Business Info <span class="required">*</span></label>
+          <div id="editor-container"></div>
+          <textarea id="businessInfo" name="businessInfo" style="display:none;" required></textarea>
+          <small style="color: var(--neutral-dark); font-size: 0.8rem;">
+            Write 3–5 paragraphs (max 150 words each). Separate paragraphs by a new line.
+          </small>
         </div>
         <div class="input-group">
           <label for="address">Business Address <span class="required">*</span></label>
@@ -315,46 +437,137 @@
           <input type="url" id="youtube" placeholder="YouTube URL" pattern="https?://(www\.)?youtube\.com/.*" title="Please enter a valid YouTube URL." />
         </div>
       </div>
-      
-      <!-- Carousel Edit Form (remains integrated for editing purposes if needed) -->
-      <form id="editForm">
-        <h3>Edit Card</h3>
-        <label for="cardSelect">Select Card:</label>
-        <select id="cardSelect">
-          <option value="1">Card 1</option>
-          <option value="2">Card 2</option>
-          <option value="3">Card 3</option>
-          <option value="4">Card 4</option>
-        </select>
-        <label for="newTitle">Title (max 10 words):</label>
-        <input type="text" id="newTitle" placeholder="Enter new title" required />
-        <div class="counter" id="titleCounter">10 words remaining</div>
-        <label for="newDesc">Description (max 50 words):</label>
-        <textarea id="newDesc" rows="3" placeholder="Enter new description" required></textarea>
-        <div class="counter" id="descCounter">50 words remaining</div>
-        <label for="newDetails">Details (max 100 words):</label>
-        <textarea id="newDetails" rows="3" placeholder="Enter card details" required></textarea>
-        <div class="counter" id="detailsCounter">100 words remaining</div>
-        <label for="newImage">Upload New Image (optional):</label>
-        <input type="file" id="newImage" accept="image/*" />
-        <label for="imgPosition">Image Position:</label>
-        <select id="imgPosition">
-          <option value="right" selected>Right</option>
-          <option value="left">Left</option>
-        </select>
-      </form>
-      
-      <!-- Generate Card Button -->
+
+      <!-- Exclusive Offers Section -->
+      <div class="exclusive-offers-section">
+        <!-- Banner Field Group -->
+        <div class="banner-field-group">
+          <label for="offerBanner">Initial Banner Text</label>
+          <div class="banner-field">
+            <input type="text" id="offerBanner" value="Grab your exclusive offers now!" />
+            <button type="button" onclick="toggleBannerDropdown('banner1Dropdown')">Options</button>
+          </div>
+          <div class="banner-dropdown" id="banner1Dropdown">
+            <button type="button" onclick="setBannerText('offerBanner','Discover unbeatable deals today!')">Discover unbeatable deals today!</button>
+            <button type="button" onclick="setBannerText('offerBanner','Unlock premium offers instantly!')">Unlock premium offers instantly!</button>
+            <button type="button" onclick="setBannerText('offerBanner','Experience exclusive savings now!')">Experience exclusive savings now!</button>
+          </div>
+
+          <label for="offerBannerClicked">On-Click Banner Text</label>
+          <div class="banner-field">
+            <input type="text" id="offerBannerClicked" value="Visit our store now!" />
+            <button type="button" onclick="toggleBannerDropdown('banner2Dropdown')">Options</button>
+          </div>
+          <div class="banner-dropdown" id="banner2Dropdown">
+            <button type="button" onclick="setBannerText('offerBannerClicked','Step into our store for exclusive deals!')">Step into our store for exclusive deals!</button>
+            <button type="button" onclick="setBannerText('offerBannerClicked','Your next big saving awaits!')">Your next big saving awaits!</button>
+            <button type="button" onclick="setBannerText('offerBannerClicked','Don’t miss our premium offers!')">Don’t miss our premium offers!</button>
+          </div>
+        </div>
+
+        <h3>Exclusive Offers</h3>
+        <div id="offersContainer">
+          <!-- Offer 1 -->
+          <div class="offer-field" id="offerField1">
+            <div class="offer-field-row">
+              <input type="text" id="offerTitle1" placeholder="Offer 1 Title" />
+              <button type="button" onclick="toggleOfferDetails(1)">Details</button>
+            </div>
+            <div class="offer-details" id="offerDetailsContainer1">
+              <div id="offerEditor1" class="offer-editor"></div>
+              <textarea id="offerText1" name="offerText1" style="display:none;"></textarea>
+              <input type="file" id="offerFile1" accept="image/*" onchange="previewOfferFile(event,1)" />
+              <img id="offerFilePreview1" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
+              <br />
+              <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(1)">Save &amp; Close</button>
+            </div>
+          </div>
+          <!-- Offer 2 -->
+          <div class="offer-field" id="offerField2">
+            <div class="offer-field-row">
+              <input type="text" id="offerTitle2" placeholder="Offer 2 Title" />
+              <button type="button" onclick="toggleOfferDetails(2)">Details</button>
+            </div>
+            <div class="offer-details" id="offerDetailsContainer2">
+              <div id="offerEditor2" class="offer-editor"></div>
+              <textarea id="offerText2" name="offerText2" style="display:none;"></textarea>
+              <input type="file" id="offerFile2" accept="image/*" onchange="previewOfferFile(event,2)" />
+              <img id="offerFilePreview2" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
+              <br />
+              <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(2)">Save &amp; Close</button>
+            </div>
+          </div>
+          <!-- Offer 3 -->
+          <div class="offer-field" id="offerField3">
+            <div class="offer-field-row">
+              <input type="text" id="offerTitle3" placeholder="Offer 3 Title" />
+              <button type="button" onclick="toggleOfferDetails(3)">Details</button>
+            </div>
+            <div class="offer-details" id="offerDetailsContainer3">
+              <div id="offerEditor3" class="offer-editor"></div>
+              <textarea id="offerText3" name="offerText3" style="display:none;"></textarea>
+              <input type="file" id="offerFile3" accept="image/*" onchange="previewOfferFile(event,3)" />
+              <img id="offerFilePreview3" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
+              <br />
+              <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(3)">Save &amp; Close</button>
+            </div>
+          </div>
+          <!-- Offer 4 -->
+          <div class="offer-field" id="offerField4">
+            <div class="offer-field-row">
+              <input type="text" id="offerTitle4" placeholder="Offer 4 Title" />
+              <button type="button" onclick="toggleOfferDetails(4)">Details</button>
+            </div>
+            <div class="offer-details" id="offerDetailsContainer4">
+              <div id="offerEditor4" class="offer-editor"></div>
+              <textarea id="offerText4" name="offerText4" style="display:none;"></textarea>
+              <input type="file" id="offerFile4" accept="image/*" onchange="previewOfferFile(event,4)" />
+              <img id="offerFilePreview4" src="" alt="Offer File Preview" style="display:none; width:50px; height:50px; margin-top:5px;" />
+              <br />
+              <button type="button" class="close-offer-details" onclick="saveAndCloseOfferDetails(4)">Save &amp; Close</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Offer Style Selection -->
+        <div class="offer-style-selection">
+          <button type="button" id="offerStyleBtn" onclick="toggleOfferStyleDropdown()">Select Offer Style</button>
+          <div class="offer-style-dropdown" id="offerStyleDropdown">
+            <button type="button" onclick="selectOfferStyle('accordion')">Accordion</button>
+            <button type="button" onclick="selectOfferStyle('horizontal')">Horizontal</button>
+            <button type="button" onclick="selectOfferStyle('tab')">Tab-based</button>
+            <button type="button" onclick="selectOfferStyle('modal')">Modal Popup</button>
+          </div>
+          <div id="offerPreview"></div>
+          <button type="button" id="applyOfferStyleBtn" onclick="applyStyle()">Apply Offer Style</button>
+        </div>
+      </div>
+
       <button id="generateCard">Generate Card</button>
     </div>
 
     <!-- Scripts -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
     <script>
-      // Initialize intl-tel-input for the phone field
+      // Initialize main Quill Editor for Business Info
+      var quill = new Quill('#editor-container', {
+        theme: 'snow',
+        modules: { toolbar: [[{ font: [] }, { size: [] }], ['bold','italic','underline'], [{ color: [] }, { background: [] }], [{ align: [] }], ['clean']] }
+      });
+      // Firebase config (replace placeholders)
+      var firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_AUTH_DOMAIN",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_STORAGE_BUCKET",
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+        appId: "YOUR_APP_ID"
+      };
+      firebase.initializeApp(firebaseConfig);
       var phoneInput = document.querySelector("#phone");
       var iti = window.intlTelInput(phoneInput, {
         initialCountry: "auto",
@@ -367,98 +580,201 @@
         },
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
       });
-
-      // Preview Profile Image
       function previewImage(event) {
         const reader = new FileReader();
         const preview = document.getElementById("imagePreview");
-        reader.onload = function(e) {
-          preview.src = e.target.result;
-          preview.style.display = "block";
-        };
+        reader.onload = function(e) { preview.src = e.target.result; preview.style.display = "block"; };
         reader.readAsDataURL(event.target.files[0]);
       }
-
-      // Generate Card Button: Collect form data and trigger card.html
-      document.getElementById("generateCard").addEventListener("click", function(e) {
-        // Update carousel card details from edit form if needed (the carousel will appear in card.html)
-        var selectedCard = document.getElementById("cardSelect").value;
-        var newTitle = document.getElementById("newTitle").value;
-        var newDesc = document.getElementById("newDesc").value;
-        var newDetails = document.getElementById("newDetails").value;
-        // Save new carousel details in localStorage for use in card.html
-        var carouselData = {
-          selectedCard: selectedCard,
-          newTitle: newTitle,
-          newDesc: newDesc,
-          newDetails: newDetails,
-          // Optionally, handle newImage and imgPosition if needed
+      function resizeImage(file, callback) {
+        const img = new Image();
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          img.src = e.target.result;
+          img.onload = function() {
+            const canvas = document.createElement("canvas");
+            const MAX_WIDTH = 150, MAX_HEIGHT = 150;
+            let width = img.width, height = img.height;
+            if(width > height) { if(width > MAX_WIDTH){ height = height * (MAX_WIDTH/width); width = MAX_WIDTH; } }
+            else { if(height > MAX_HEIGHT){ width = width * (MAX_HEIGHT/height); height = MAX_HEIGHT; } }
+            canvas.width = width; canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+            canvas.toBlob(function(blob) { callback(blob); }, "image/jpeg", 0.4);
+          };
         };
-        localStorage.setItem("carouselData", JSON.stringify(carouselData));
-
-        // Collect main form data
-        var formData = {
-          name: document.getElementById("name").value,
-          businessName: document.getElementById("businessName").value,
-          address: document.getElementById("address").value,
-          phone: document.getElementById("phone").value,
-          email: document.getElementById("email").value,
-          facebook: document.getElementById("facebook").value,
-          instagram: document.getElementById("instagram").value,
-          youtube: document.getElementById("youtube").value
-        };
-        localStorage.setItem("formData", JSON.stringify(formData));
-
-        // Redirect to card.html where the carousel card will be visible
-        window.location.href = "card.html";
-      });
-
-      // Minimal dropdown toggle functions
-      function toggleDropdown() {
-        document.getElementById("dropdownMenu").classList.toggle("active");
+        reader.readAsDataURL(file);
       }
-      function toggleSubDropdown(id) { /* Implement if needed */ }
-      function previewMood(mood) { /* Implement if needed */ }
-      function applyMood() { /* Implement if needed */ }
-      function previewTheme(theme, value) { /* Implement if needed */ }
-      function applyTheme() { /* Implement if needed */ }
-      function previewStyle(style) { /* Implement if needed */ }
-      function closeOfferStyleDropdown() { /* Implement if needed */ }
-      function applyStyle() { /* Implement if needed */ }
-      function toggleOfferStyleDropdown() { /* Implement if needed */ }
-      function selectOfferStyle(style) { /* Implement if needed */ }
+      // Banner dropdown functions
+      function toggleBannerDropdown(id) {
+        const dd = document.getElementById(id);
+        dd.style.display = (dd.style.display==="block") ? "none" : "block";
+      }
+      function setBannerText(fieldId, text) {
+        document.getElementById(fieldId).value = text;
+        if(fieldId==="offerBanner") document.getElementById("banner1Dropdown").style.display = "none";
+        else document.getElementById("banner2Dropdown").style.display = "none";
+      }
+      // Offer details functions
+      window.offerEditors = {}; 
       function toggleOfferDetails(index) {
-        var container = document.getElementById("offerDetailsContainer" + index);
-        container.style.display = container.style.display === "block" ? "none" : "block";
-        if (container.style.display === "block" && !window["offerEditor" + index]) {
-          window["offerEditor" + index] = new Quill("#offerEditor" + index, {
+        const container = document.getElementById("offerDetailsContainer" + index);
+        container.style.display = (container.style.display==="block") ? "none" : "block";
+        if(container.style.display==="block" && !window.offerEditors[index]) {
+          window.offerEditors[index] = new Quill("#offerEditor" + index, {
             theme: "snow",
-            modules: {
-              toolbar: [
-                [{ font: [] }, { size: [] }],
-                ["bold", "italic", "underline"],
-                [{ color: [] }, { background: [] }],
-                [{ align: [] }],
-                ["clean"]
-              ]
-            }
+            modules: { toolbar: [[{ font: [] }, { size: [] }], ['bold','italic','underline'], [{ color: [] }, { background: [] }], [{ align: [] }], ['clean']] }
           });
         }
       }
       function previewOfferFile(event, index) {
         const reader = new FileReader();
         const preview = document.getElementById("offerFilePreview" + index);
-        reader.onload = function(e) {
-          preview.src = e.target.result;
-          preview.style.display = "block";
-        };
+        reader.onload = function(e) { preview.src = e.target.result; preview.style.display = "block"; };
         reader.readAsDataURL(event.target.files[0]);
       }
       function saveAndCloseOfferDetails(index) {
-        if (window["offerEditor" + index]) {
-          document.getElementById("offerText" + index).value = window["offerEditor" + index].root.innerHTML;
-        }
+        if(window.offerEditors[index]) { document.getElementById("offerText" + index).value = window.offerEditors[index].root.innerHTML; }
         document.getElementById("offerDetailsContainer" + index).style.display = "none";
+      }
+      // Offer style preview dropdown
+      function toggleOfferStyleDropdown() {
+        const dd = document.getElementById("offerStyleDropdown");
+        dd.style.display = (dd.style.display==="block") ? "none" : "block";
+      }
+      function closeOfferStyleDropdown() { document.getElementById("offerStyleDropdown").style.display = "none"; }
+      var selectedOfferStyle = "";
+      function selectOfferStyle(style) {
+        selectedOfferStyle = style;
+        showOfferPreview(style);
+        closeOfferStyleDropdown();
+        document.getElementById("applyOfferStyleBtn").style.display = "inline-block";
+      }
+      function showOfferPreview(style) {
+        const previewDiv = document.getElementById("offerPreview");
+        if(style==="accordion") previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Accordion Preview<br/><em>Click header to expand details.</em></div>';
+        else if(style==="horizontal") {
+          previewDiv.innerHTML = '<div style="overflow-x:auto; white-space:nowrap; border:1px solid #ccc; padding:10px;">' +
+            '<div style="display:inline-block; width:25vw; height:25vw; background:#3498db; margin-right:5px; color:#fff; text-align:center; line-height:25vw;">Offer 1</div>' +
+            '<div style="display:inline-block; width:25vw; height:25vw; background:#e74c3c; margin-right:5px; color:#fff; text-align:center; line-height:25vw;">Offer 2</div>' +
+            '</div>';
+        }
+        else if(style==="tab") previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Tab-based Preview<br/><em>Switch between tabs.</em></div>';
+        else if(style==="modal") previewDiv.innerHTML = '<div style="border:1px solid #ccc; padding:10px;">Modal Popup Preview<br/><em>Click to open modal.</em></div>';
+        else previewDiv.innerHTML = "";
+      }
+      function applyStyle() {
+        alert("Offer style '" + selectedOfferStyle + "' applied.");
+      }
+      // Validate form
+      function validateForm() {
+        let valid = true;
+        const fields = ["name", "businessName", "address", "email"];
+        fields.forEach(id => { const f = document.getElementById(id); if(f){ f.classList.remove("error"); } });
+        fields.forEach(id => { const f = document.getElementById(id); if(!f.value.trim()){ valid = false; f.classList.add("error"); } });
+        if(!valid){ alert("Please fill all required fields."); return false; }
+        if(!iti.isValidNumber()){ phoneInput.classList.add("error"); alert("Please enter a valid phone number."); return false; }
+        const emailVal = document.getElementById("email").value.trim();
+        if(!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(emailVal)){
+          document.getElementById("email").classList.add("error");
+          alert("Please enter a valid email address.");
+          return false;
+        }
+        const social = [
+          { id:"facebook", regex:/^https?:\/\/(www\.)?facebook\.com\/.+$/i },
+          { id:"instagram", regex:/^https?:\/\/(www\.)?instagram\.com\/.+$/i },
+          { id:"youtube", regex:/^https?:\/\/(www\.)?youtube\.com\/.+$/i }
+        ];
+        social.forEach(s => {
+          const val = document.getElementById(s.id).value.trim();
+          if(val && !s.regex.test(val)){
+            document.getElementById(s.id).classList.add("error");
+            alert("Please enter a valid URL for " + s.id + ".");
+            valid = false;
+          }
+        });
+        if(!valid) return false;
+        document.getElementById("businessInfo").value = quill.root.innerHTML;
+        return true;
+      }
+      function uploadOfferFile(file) {
+        return new Promise((resolve, reject) => {
+          resizeImage(file, (blob) => {
+            const storageRef = firebase.storage().ref();
+            const imageRef = storageRef.child("offer_images/" + Date.now() + ".jpg");
+            imageRef.put(blob)
+              .then(snapshot => snapshot.ref.getDownloadURL())
+              .then(url => resolve(url))
+              .catch(err => reject(err));
+          });
+        });
+      }
+      function uploadImageToFirebase(blob, formData) {
+        const storageRef = firebase.storage().ref();
+        const imageRef = storageRef.child("profile_images/" + Date.now() + ".jpg");
+        imageRef.put(blob)
+          .then(snapshot => snapshot.ref.getDownloadURL())
+          .then(url => { formData.profileImage = url; proceedToCard(formData); })
+          .catch(err => { console.error("Error uploading image:", err); alert("Image upload failed."); });
+      }
+      document.getElementById("generateCard").onclick = function() {
+        if(!validateForm()) return;
+        let formData = {
+          name: document.getElementById("name").value.trim(),
+          businessName: document.getElementById("businessName").value.trim(),
+          businessInfo: document.getElementById("businessInfo").value.trim(),
+          address: document.getElementById("address").value.trim(),
+          phone: iti.getNumber(),
+          email: document.getElementById("email").value.trim(),
+          facebook: document.getElementById("facebook").value.trim(),
+          instagram: document.getElementById("instagram").value.trim(),
+          youtube: document.getElementById("youtube").value.trim(),
+          offerBanner: document.getElementById("offerBanner").value.trim(),
+          offerBannerClicked: document.getElementById("offerBannerClicked").value.trim()
+        };
+        let offers = [];
+        let uploadPromises = [];
+        for(let i = 1; i <= 4; i++){
+          let offer = {};
+          let title = document.getElementById("offerTitle" + i).value.trim();
+          offer.title = title || ("Offer " + i);
+          if(window.offerEditors[i]) {
+            offer.details = window.offerEditors[i].root.innerHTML;
+          } else {
+            offer.details = document.getElementById("offerText" + i).value.trim();
+          }
+          let fileInput = document.getElementById("offerFile" + i);
+          if(fileInput && fileInput.files[0]){
+            let file = fileInput.files[0];
+            let p = uploadOfferFile(file).then(url => { offer.file = url; }).catch(() => { offer.file = ""; });
+            uploadPromises.push(p);
+          } else {
+            offer.file = "";
+          }
+          offers.push(offer);
+        }
+        formData.offers = offers;
+        formData.offerStyle = selectedOfferStyle;
+        Promise.all(uploadPromises).then(() => {
+          const profileFile = document.getElementById("profileImage").files[0];
+          if(profileFile){
+            resizeImage(profileFile, blob => { uploadImageToFirebase(blob, formData); });
+          } else {
+            proceedToCard(formData);
+          }
+        });
+      };
+      function proceedToCard(formData) {
+        localStorage.setItem("formData", JSON.stringify(formData));
+        window.location.href = "card.html";
+      }
+      function toggleDropdown() {
+        const dd = document.getElementById("dropdownMenu");
+        dd.classList.toggle("active");
+      }
+      function toggleSubDropdown(id) {
+        const sub = document.getElementById(id + "SubDropdown");
+        if(sub) { sub.classList.toggle("active"); }
       }
     </script>
   </body>
