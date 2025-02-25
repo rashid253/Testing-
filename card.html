@@ -2,13 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Business Card with Editable Carousel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Business Card</title>
     <!-- Font Awesome for icons -->
     <link
-      rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
     />
+    <!-- EmailJS Library -->
+    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <style>
       :root {
         --primary-color: #1e1e1e;
@@ -19,8 +21,14 @@
         --card-background: #ffffff;
         --body-bg: linear-gradient(135deg, #cfd8dc, #eceff1);
         --business-info-bg: #ffffff;
+        --dropdown-header-color: #333;
+        --dropdown-btn-bg: #00796b;
+        --dropdown-btn-hover: #00695c;
       }
-      /* Global Styles */
+      /* Remove default focus outline */
+      button:focus {
+        outline: none;
+      }
       body {
         font-family: 'Segoe UI', sans-serif;
         margin: 0;
@@ -30,31 +38,369 @@
         justify-content: center;
         align-items: center;
         min-height: 100vh;
+        position: relative;
       }
       .card-container {
-        width: 100%;
+        position: relative;
+        width: 90%;
         max-width: 600px;
         background: var(--card-background);
         border-radius: 20px;
+        border: 2px solid transparent;
+        border-image: linear-gradient(
+          45deg,
+          var(--secondary-color),
+          var(--accent-color),
+          #3f51b5
+        ) 1;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
         padding: 1.5rem;
+        margin: 1rem auto;
+        transition: background-color 0.5s ease, box-shadow 0.5s ease;
+        overflow: hidden;
       }
-      /* Business Info Section */
+      /* Top Left Settings Icon */
+      #styleControlsContainer {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 10;
+      }
+      #styleButton {
+        padding: 0.5rem;
+        font-size: 1.2rem;
+        border: none;
+        background: none;
+        cursor: pointer;
+        color: blue;
+      }
+      #styleButton:hover {
+        color: var(--secondary-color);
+      }
+      /* Top Right Share Icon */
+      .top-icons {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 10;
+      }
+      .top-share-icon {
+        padding: 0.5rem;
+        font-size: 1.2rem;
+        border: none;
+        background: none;
+        cursor: pointer;
+        color: blue;
+      }
+      .top-share-icon:hover {
+        color: var(--secondary-color);
+      }
+      /* Settings Dropdown Panel */
+      #styleDropdown {
+        display: none;
+        position: absolute;
+        top: 110%;
+        left: -20px;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        z-index: 10;
+        font-size: 0.75rem;
+        width: 100px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      }
+      .setting-group {
+        border-bottom: 1px solid #ddd;
+      }
+      .setting-group:last-child {
+        border-bottom: none;
+      }
+      .setting-header {
+        background: linear-gradient(to bottom, #f8f8f8, #dcdcdc);
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        color: var(--dropdown-header-color);
+        padding: 5px 8px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        margin: 3px 0;
+      }
+      .setting-header:hover {
+        box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.4);
+        transform: translateY(-1px);
+      }
+      .setting-content {
+        display: none;
+        padding: 5px;
+      }
+      .setting-options {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .setting-options li {
+        padding: 0.3rem 0.5rem;
+        cursor: pointer;
+        transition: background 0.3s;
+        color: #333;
+      }
+      .setting-options li:hover {
+        background: var(--secondary-color);
+        color: #fff;
+      }
+      .dropdown-btns {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-top: 5px;
+      }
+      .dropdown-btns button {
+        padding: 0.3rem;
+        border: none;
+        background: var(--dropdown-btn-bg);
+        color: #fff;
+        cursor: pointer;
+        font-size: 0.75rem;
+        transition: box-shadow 0.3s ease;
+      }
+      .dropdown-btns button:hover {
+        background: var(--dropdown-btn-hover);
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+      }
+      /* Mini Icons */
+      .mini-icons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        padding: 1rem;
+        border-bottom: 2px solid var(--secondary-color);
+      }
+      .mini-icons .icon {
+        font-size: 1.5rem;
+        color: var(--neutral-dark);
+        cursor: pointer;
+        border-radius: 50%;
+        padding: 0.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .mini-icons .icon:hover {
+        color: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      }
+      /* Profile Section */
+      .profile-section {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        margin: 0.5rem;
+        border-bottom: 2px solid var(--secondary-color);
+      }
+      .profile-image-container {
+        width: 40%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-right: 1rem;
+      }
+      .profile-image {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        border: 2px solid var(--neutral-light);
+        object-fit: cover;
+        transition: box-shadow 0.3s ease;
+      }
+      .profile-image:hover {
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+      }
+      .profile-name {
+        color: var(--primary-color);
+        margin: 0.5rem 0 0;
+        font-size: 1.1rem;
+        text-align: center;
+      }
+      .profile-info {
+        width: 60%;
+        padding-left: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+      }
+      .contact-info {
+        color: var(--neutral-dark);
+        margin: 0.3rem 0;
+        font-size: 0.85rem;
+        line-height: 1.4;
+      }
+      /* Business name styling */
+      #cardBusinessName {
+        color: green;
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+      /* Save Contact Icon adjustments */
+      .connect-btn {
+        align-self: center;
+        margin-left: 20px;
+        font-size: 1.2rem;
+        color: var(--secondary-color);
+        cursor: pointer;
+        transition: transform 0.3s;
+      }
+      .connect-btn:hover {
+        transform: scale(1.1);
+        color: var(--accent-color);
+      }
+      /* Business Info Section styling */
       .business-info-section {
         padding: 1rem;
-        margin: 1rem 0;
+        margin: 0.5rem 0;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        height: 150px;
         background: var(--business-info-bg);
         border: 1px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
+        position: relative;
+        overflow: hidden;
       }
       .business-info-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         text-align: center;
         font-weight: bold;
         color: var(--neutral-dark);
+        padding: 0.5rem;
+        overflow-y: auto;
       }
-      /* Carousel Container */
-      .carousel-container {
+      .business-info-content::-webkit-scrollbar {
+        display: none;
+      }
+      /* Exclusive Offers & Continuous Scroll */
+      .scroll-container {
+        overflow: hidden;
+        white-space: nowrap;
+        position: relative;
+        width: 100%;
         margin: 1rem 0;
+      }
+      .scroll-offer {
+        display: inline-block;
+        /* Animation direction left-to-right */
+        animation: scrollRight 20s linear infinite;
+      }
+      @keyframes scrollRight {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+      /* Offer Card (Flip Card) Styles – now non-clickable */
+      .flip-card {
+        background-color: transparent;
+        width: 150px;
+        height: 150px;
+        perspective: 1000px;
+        display: inline-block;
+        margin-right: 10px;
+      }
+      .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+      }
+      .flip-card-front,
+      .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f1f1f1;
+      }
+      .flip-card-back {
+        transform: rotateY(180deg);
+        background: #e0e0e0;
+        color: #333;
+        font-size: 0.8rem;
+        padding: 5px;
+      }
+      /* Action Buttons Section */
+      .action-buttons {
+        display: grid;
+        gap: 0.5rem;
+        padding: 0.8rem;
+      }
+      .action-btn {
+        text-align: center;
+        text-decoration: none;
+        padding: 0.6rem;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        color: #fff;
+        box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.3),
+          inset -2px -2px 4px rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      }
+      .action-btn:active {
+        filter: brightness(90%);
+      }
+      .contact-btn {
+        transition: none !important;
+      }
+      /* Social Links Section */
+      .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        padding: 1rem;
+      }
+      .social-icon {
+        font-size: 1.5rem;
+        color: var(--neutral-dark);
+        visibility: hidden;
+        border-radius: 50%;
+        text-decoration: none;
+        padding: 0.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .social-icon:hover {
+        color: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      }
+
+      /* New Carousel Editable Cards Styles */
+      .carousel-container {
+        width: 100%;
+        max-width: 600px;
+        margin: 1rem auto;
         overflow: hidden;
         position: relative;
       }
@@ -67,41 +413,41 @@
         box-sizing: border-box;
         padding: 1rem;
       }
-      /* Editable Card Styles */
       .editable-card {
         background: #fff;
-        border: 1px solid #ccc;
+        border: 1px solid #ddd;
         border-radius: 8px;
         padding: 1rem;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
       }
       .editable-card input[type="text"],
       .editable-card textarea {
         width: 100%;
         padding: 0.5rem;
         margin: 0.5rem 0;
-        border: 1px solid #aaa;
+        border: 1px solid #ccc;
         border-radius: 4px;
       }
       .editable-card textarea {
         resize: vertical;
       }
-      .countdown {
+      .editable-card .countdown {
         font-size: 0.8rem;
         color: #666;
         text-align: right;
       }
-      .color-settings {
+      .editable-card .color-settings {
         display: flex;
         justify-content: space-between;
         margin: 0.5rem 0;
       }
-      .color-settings label {
+      .editable-card .color-settings label {
         font-size: 0.8rem;
         display: flex;
         align-items: center;
       }
-      .card-image-preview {
+      .editable-card .card-image-preview {
         width: 100%;
         max-height: 150px;
         object-fit: cover;
@@ -109,7 +455,7 @@
         margin-top: 0.5rem;
         border-radius: 4px;
       }
-      .save-card {
+      .editable-card button.save-card {
         padding: 0.5rem 1rem;
         background: var(--secondary-color);
         color: #fff;
@@ -118,10 +464,9 @@
         cursor: pointer;
         margin-top: 0.5rem;
       }
-      .save-card:hover {
+      .editable-card button.save-card:hover {
         background: var(--accent-color);
       }
-      /* Carousel Dots */
       .carousel-dots {
         text-align: center;
         margin-top: 0.5rem;
@@ -138,94 +483,314 @@
       .carousel-dots .dot.active {
         background-color: var(--secondary-color);
       }
+
+      /* Alignment classes for the uploaded image */
+      .image-align-left .card-image-preview {
+        float: left;
+        margin-right: 10px;
+        margin-bottom: 10px;
+      }
+      .image-align-right .card-image-preview {
+        float: right;
+        margin-left: 10px;
+        margin-bottom: 10px;
+      }
+      .image-align-center .card-image-preview {
+        display: block;
+        margin: 0 auto 10px auto;
+      }
+
+      /* Responsive styling for mobile */
+      @media (max-width: 600px) {
+        .profile-section {
+          flex-direction: column;
+          text-align: center;
+        }
+        .profile-image-container,
+        .profile-info {
+          width: 100% !important;
+          padding: 0 !important;
+          margin: 0 auto !important;
+        }
+        .profile-image {
+          margin: 0 auto !important;
+        }
+        .mini-icons {
+          flex-wrap: wrap;
+        }
+        .carousel-container {
+          width: 100%;
+        }
+        .editable-card {
+          width: 100%;
+          padding: 0.8rem;
+        }
+      }
     </style>
   </head>
   <body>
-    <div class="card-container">
-      <!-- Business Info Section -->
-      <div class="business-info-section">
-        <div class="business-info-content" id="businessInfoContent">
-          <p>Welcome to Our Business</p>
-          <p>Quality Products and Services</p>
-          <p>Contact: +1234567890</p>
+    <div class="card-container" id="cardContainer">
+      <!-- Top Left Settings Icon -->
+      <div id="styleControlsContainer">
+        <button id="styleButton" title="Settings">
+          <i class="fas fa-cog"></i>
+        </button>
+        <div id="styleDropdown">
+          <div class="setting-group" id="themeGroup">
+            <div class="setting-header">Theme</div>
+            <div class="setting-content">
+              <ul class="setting-options">
+                <li data-theme="default">Default</li>
+                <li data-theme="blue">Blue</li>
+                <li data-theme="red">Red</li>
+                <li data-theme="green">Green</li>
+              </ul>
+              <div class="dropdown-btns">
+                <button class="apply-btn" data-group="theme">Apply</button>
+              </div>
+            </div>
+          </div>
+          <div class="setting-group" id="moodGroup">
+            <div class="setting-header">Mood</div>
+            <div class="setting-content">
+              <ul class="setting-options">
+                <li data-mood="day">Day</li>
+                <li data-mood="night">Night</li>
+              </ul>
+              <div class="dropdown-btns">
+                <button class="apply-btn" data-group="mood">Apply</button>
+              </div>
+            </div>
+          </div>
+          <div class="setting-group" id="iconStyleGroup">
+            <div class="setting-header">Style</div>
+            <div class="setting-content">
+              <ul class="setting-options">
+                <li data-iconstyle="none">None</li>
+                <li data-iconstyle="styleA">Style A</li>
+                <li data-iconstyle="styleB">Style B</li>
+              </ul>
+              <div class="dropdown-btns">
+                <button class="apply-btn" data-group="style">Apply</button>
+              </div>
+            </div>
+          </div>
+          <div class="setting-group" id="soundGroup">
+            <div class="setting-header">Sounds</div>
+            <div class="setting-content">
+              <label
+                style="font-size:0.8rem; display: flex; align-items: center; padding: 5px;"
+              >
+                <input
+                  type="checkbox"
+                  id="soundToggle"
+                  checked
+                  style="margin-right: 5px;"
+                />
+                Enable Touch Sounds
+              </label>
+            </div>
+          </div>
         </div>
       </div>
+      <!-- Top Right Share Icon -->
+      <div class="top-icons">
+        <button class="top-share-icon" id="topShareIcon" title="Share">
+          <i class="fas fa-share-alt"></i>
+        </button>
+      </div>
+      <!-- Mini Icons -->
+      <div class="mini-icons">
+        <a id="miniCallButton" class="icon" title="Call">
+          <i class="fas fa-phone"></i>
+        </a>
+        <a id="miniEmailButton" class="icon" title="Email">
+          <i class="fas fa-envelope"></i>
+        </a>
+        <a id="miniWhatsappButton" class="icon" title="WhatsApp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+        <a id="miniMapButton" class="icon" title="Open in Google Maps">
+          <i class="fas fa-map-marker-alt"></i>
+        </a>
+      </div>
+      <!-- Profile Section -->
+      <div class="profile-section">
+        <div class="profile-image-container">
+          <img id="cardProfileImage" class="profile-image" alt="Profile" />
+          <h3 class="profile-name" id="cardName"></h3>
+        </div>
+        <div class="profile-info">
+          <p class="contact-info" id="cardBusinessName"></p>
+          <p class="contact-info" id="cardAddress"></p>
+          <p class="contact-info" id="cardPhone"></p>
+          <p class="contact-info" id="cardEmail"></p>
+        </div>
+        <div class="connect-btn" id="connectButton" title="Save Contact">
+          <i class="fas fa-save"></i>
+        </div>
+      </div>
+      <!-- Business Info Section -->
+      <div class="business-info-section">
+        <div id="businessInfoContent"></div>
+      </div>
+
       <!-- Carousel Editable Cards Section -->
       <div class="carousel-container">
         <div class="carousel-slides">
           <!-- Slide 1 -->
           <div class="carousel-slide">
             <div class="editable-card" id="editableCard1">
-              <input type="text" class="card-title" placeholder="Enter Title" maxlength="50" />
-              <textarea class="card-description" placeholder="Enter Description" maxlength="150"></textarea>
+              <input
+                type="text"
+                class="card-title"
+                placeholder="Enter Title"
+                maxlength="50"
+              />
+              <textarea
+                class="card-description"
+                placeholder="Enter Description"
+                maxlength="150"
+              ></textarea>
               <div class="countdown" data-max="150">150 characters remaining</div>
               <input type="file" accept="image/*" class="card-image-input" />
               <img src="" class="card-image-preview" alt="Image Preview" />
               <div class="color-settings">
-                <label>Background:
+                <label
+                  >Background:
                   <input type="color" class="card-bg-color" value="#ffffff" />
                 </label>
-                <label>Font:
+                <label
+                  >Font:
                   <input type="color" class="card-font-color" value="#000000" />
                 </label>
               </div>
+              <!-- Image alignment option -->
+              <label class="image-alignment-label"
+                >Image Alignment:
+                <select class="image-alignment">
+                  <option value="left">Left</option>
+                  <option value="right">Right</option>
+                  <option value="center" selected>Center</option>
+                </select>
+              </label>
               <button class="save-card">Save Card</button>
             </div>
           </div>
           <!-- Slide 2 -->
           <div class="carousel-slide">
             <div class="editable-card" id="editableCard2">
-              <input type="text" class="card-title" placeholder="Enter Title" maxlength="50" />
-              <textarea class="card-description" placeholder="Enter Description" maxlength="150"></textarea>
+              <input
+                type="text"
+                class="card-title"
+                placeholder="Enter Title"
+                maxlength="50"
+              />
+              <textarea
+                class="card-description"
+                placeholder="Enter Description"
+                maxlength="150"
+              ></textarea>
               <div class="countdown" data-max="150">150 characters remaining</div>
               <input type="file" accept="image/*" class="card-image-input" />
               <img src="" class="card-image-preview" alt="Image Preview" />
               <div class="color-settings">
-                <label>Background:
+                <label
+                  >Background:
                   <input type="color" class="card-bg-color" value="#ffffff" />
                 </label>
-                <label>Font:
+                <label
+                  >Font:
                   <input type="color" class="card-font-color" value="#000000" />
                 </label>
               </div>
+              <!-- Image alignment option -->
+              <label class="image-alignment-label"
+                >Image Alignment:
+                <select class="image-alignment">
+                  <option value="left">Left</option>
+                  <option value="right">Right</option>
+                  <option value="center" selected>Center</option>
+                </select>
+              </label>
               <button class="save-card">Save Card</button>
             </div>
           </div>
           <!-- Slide 3 -->
           <div class="carousel-slide">
             <div class="editable-card" id="editableCard3">
-              <input type="text" class="card-title" placeholder="Enter Title" maxlength="50" />
-              <textarea class="card-description" placeholder="Enter Description" maxlength="150"></textarea>
+              <input
+                type="text"
+                class="card-title"
+                placeholder="Enter Title"
+                maxlength="50"
+              />
+              <textarea
+                class="card-description"
+                placeholder="Enter Description"
+                maxlength="150"
+              ></textarea>
               <div class="countdown" data-max="150">150 characters remaining</div>
               <input type="file" accept="image/*" class="card-image-input" />
               <img src="" class="card-image-preview" alt="Image Preview" />
               <div class="color-settings">
-                <label>Background:
+                <label
+                  >Background:
                   <input type="color" class="card-bg-color" value="#ffffff" />
                 </label>
-                <label>Font:
+                <label
+                  >Font:
                   <input type="color" class="card-font-color" value="#000000" />
                 </label>
               </div>
+              <!-- Image alignment option -->
+              <label class="image-alignment-label"
+                >Image Alignment:
+                <select class="image-alignment">
+                  <option value="left">Left</option>
+                  <option value="right">Right</option>
+                  <option value="center" selected>Center</option>
+                </select>
+              </label>
               <button class="save-card">Save Card</button>
             </div>
           </div>
           <!-- Slide 4 -->
           <div class="carousel-slide">
             <div class="editable-card" id="editableCard4">
-              <input type="text" class="card-title" placeholder="Enter Title" maxlength="50" />
-              <textarea class="card-description" placeholder="Enter Description" maxlength="150"></textarea>
+              <input
+                type="text"
+                class="card-title"
+                placeholder="Enter Title"
+                maxlength="50"
+              />
+              <textarea
+                class="card-description"
+                placeholder="Enter Description"
+                maxlength="150"
+              ></textarea>
               <div class="countdown" data-max="150">150 characters remaining</div>
               <input type="file" accept="image/*" class="card-image-input" />
               <img src="" class="card-image-preview" alt="Image Preview" />
               <div class="color-settings">
-                <label>Background:
+                <label
+                  >Background:
                   <input type="color" class="card-bg-color" value="#ffffff" />
                 </label>
-                <label>Font:
+                <label
+                  >Font:
                   <input type="color" class="card-font-color" value="#000000" />
                 </label>
               </div>
+              <!-- Image alignment option -->
+              <label class="image-alignment-label"
+                >Image Alignment:
+                <select class="image-alignment">
+                  <option value="left">Left</option>
+                  <option value="right">Right</option>
+                  <option value="center" selected>Center</option>
+                </select>
+              </label>
               <button class="save-card">Save Card</button>
             </div>
           </div>
@@ -236,69 +801,354 @@
           <span class="dot" data-index="2"></span>
           <span class="dot" data-index="3"></span>
         </div>
+        <!-- "Done" button to start auto-sliding -->
+        <button
+          id="doneButton"
+          style="
+            margin: 1rem auto;
+            display: block;
+            background: var(--accent-color);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          "
+        >
+          Done
+        </button>
+      </div>
+
+      <!-- Exclusive Offers Flip Card Section -->
+      <div id="offersFlipCardSection"></div>
+
+      <!-- Action Buttons Section -->
+      <div class="action-buttons">
+        <a
+          id="callButton"
+          class="action-btn contact-btn"
+          style="background: var(--secondary-color);"
+        >
+          Call
+        </a>
+        <a
+          id="whatsappButton"
+          class="action-btn contact-btn"
+          style="background: #25d366;"
+        >
+          WhatsApp
+        </a>
+        <a
+          id="emailButton"
+          class="action-btn contact-btn"
+          style="background: var(--accent-color);"
+        >
+          Email
+        </a>
+      </div>
+      <!-- Social Links Section -->
+      <div class="social-links">
+        <a id="facebookButton" class="social-icon">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a id="instagramButton" class="social-icon">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a id="youtubeButton" class="social-icon">
+          <i class="fab fa-youtube"></i>
+        </a>
       </div>
     </div>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // --- Carousel Functionality ---
-        const carouselSlides = document.querySelector('.carousel-slides');
-        const dots = document.querySelectorAll('.carousel-dots .dot');
+        "use strict";
+        const storedData = localStorage.getItem("formData");
+        const formData = storedData ? JSON.parse(storedData) : {};
+
+        // Populate card fields
+        document.getElementById("cardProfileImage").src =
+          formData.profileImage || "";
+        document.getElementById("cardName").textContent = formData.name || "";
+        document.getElementById("cardBusinessName").textContent =
+          formData.businessName || "";
+        document.getElementById("cardAddress").textContent =
+          formData.address || "";
+        document.getElementById("cardPhone").textContent = formData.phone || "";
+        document.getElementById("cardEmail").textContent = formData.email || "";
+
+        // Business Info
+        const businessInfo = formData.businessInfo || "";
+        const paragraphs = businessInfo.split("\n").filter((p) => p.trim() !== "");
+        const businessInfoContainer = document.getElementById("businessInfoContent");
+        businessInfoContainer.innerHTML = paragraphs
+          .map((p) => `<div class="business-info-content"><p>${p}</p></div>`)
+          .join("");
+
+        const paragraphDivs =
+          businessInfoContainer.querySelectorAll(".business-info-content");
+        let currentIndex = 0;
+        paragraphDivs.forEach((div, idx) => {
+          div.style.display = idx === 0 ? "block" : "none";
+        });
+        if (paragraphDivs.length > 0) {
+          setInterval(() => {
+            paragraphDivs[currentIndex].style.display = "none";
+            currentIndex = (currentIndex + 1) % paragraphDivs.length;
+            paragraphDivs[currentIndex].style.display = "block";
+          }, 8000);
+        }
+
+        // Social Links
+        const socialLinks = {
+          facebook: document.getElementById("facebookButton"),
+          instagram: document.getElementById("instagramButton"),
+          youtube: document.getElementById("youtubeButton"),
+        };
+        Object.entries(socialLinks).forEach(([platform, element]) => {
+          const url = formData[platform];
+          if (url) {
+            element.href = url;
+            element.style.visibility = "visible";
+            element.target = "_blank";
+          } else {
+            element.style.visibility = "hidden";
+          }
+        });
+
+        // Render Offers using horizontal flip card style (flip disabled)
+        if (formData.offers && formData.offerStyle === "horizontal") {
+          renderOffers(formData.offers, formData.offerStyle);
+        }
+
+        // --- Event Listeners for Button Icons ---
+        document
+          .getElementById("miniCallButton")
+          .addEventListener("click", function () {
+            if (formData.phone) window.location.href = "tel:" + formData.phone;
+            else alert("Phone number not available");
+          });
+
+        document
+          .getElementById("miniEmailButton")
+          .addEventListener("click", function () {
+            if (formData.email) window.location.href = "mailto:" + formData.email;
+            else alert("Email not available");
+          });
+
+        document
+          .getElementById("miniWhatsappButton")
+          .addEventListener("click", function () {
+            if (formData.phone)
+              window.open("https://wa.me/" + formData.phone, "_blank");
+            else alert("WhatsApp contact not available");
+          });
+
+        document
+          .getElementById("miniMapButton")
+          .addEventListener("click", function () {
+            if (formData.address)
+              window.open(
+                "https://www.google.com/maps/search/" +
+                  encodeURIComponent(formData.address),
+                "_blank"
+              );
+            else alert("Address not available");
+          });
+
+        document
+          .getElementById("topShareIcon")
+          .addEventListener("click", function () {
+            if (navigator.share) {
+              navigator
+                .share({
+                  title: formData.name || "Business Card",
+                  text: "Check out this business card.",
+                  url: window.location.href,
+                })
+                .catch((err) => console.log("Error sharing:", err));
+            } else {
+              alert("Share feature not supported in this browser.");
+            }
+          });
+
+        document.getElementById("callButton").addEventListener("click", function () {
+          if (formData.phone) window.location.href = "tel:" + formData.phone;
+          else alert("Phone number not available");
+        });
+
+        document
+          .getElementById("whatsappButton")
+          .addEventListener("click", function () {
+            if (formData.phone)
+              window.open("https://wa.me/" + formData.phone, "_blank");
+            else alert("WhatsApp contact not available");
+          });
+
+        document.getElementById("emailButton").addEventListener("click", function () {
+          if (formData.email) window.location.href = "mailto:" + formData.email;
+          else alert("Email not available");
+        });
+
+        document
+          .getElementById("connectButton")
+          .addEventListener("click", function () {
+            alert("Contact saved successfully!");
+          });
+
+        // Carousel functionality
+        const carouselSlides = document.querySelector(".carousel-slides");
+        const dots = document.querySelectorAll(".carousel-dots .dot");
         let currentSlide = 0;
+        const totalSlides = document.querySelectorAll(".carousel-slide").length;
+        let autoSlideInterval = null;
+
         function showSlide(index) {
           currentSlide = index;
           const offset = -index * 100;
-          carouselSlides.style.transform = 'translateX(' + offset + '%)';
-          dots.forEach(dot => dot.classList.remove('active'));
-          dots[index].classList.add('active');
+          carouselSlides.style.transform = "translateX(" + offset + "%)";
+          dots.forEach((dot) => dot.classList.remove("active"));
+          dots[index].classList.add("active");
         }
-        dots.forEach(dot => {
-          dot.addEventListener('click', function () {
-            const index = parseInt(this.getAttribute('data-index'), 10);
+
+        dots.forEach((dot) => {
+          dot.addEventListener("click", function () {
+            const index = parseInt(this.getAttribute("data-index"), 10);
             showSlide(index);
           });
         });
 
-        // --- Editable Card Functionality ---
-        const editableCards = document.querySelectorAll('.editable-card');
-        editableCards.forEach(card => {
-          // Character countdown for the description field
-          const descriptionField = card.querySelector('.card-description');
-          const countdownElem = card.querySelector('.countdown');
-          const maxChars = parseInt(countdownElem.getAttribute('data-max'), 10);
-          descriptionField.addEventListener('input', function () {
+        // Auto-slide function (triggered by the "Done" button)
+        function startAutoSlide() {
+          if (autoSlideInterval) clearInterval(autoSlideInterval);
+          autoSlideInterval = setInterval(() => {
+            showSlide((currentSlide + 1) % totalSlides);
+          }, 3000);
+        }
+
+        // "Done" button event listener
+        const doneButton = document.getElementById("doneButton");
+        doneButton.addEventListener("click", function () {
+          startAutoSlide();
+        });
+
+        // Editable card functionality
+        const editableCards = document.querySelectorAll(".editable-card");
+        editableCards.forEach((card) => {
+          const descriptionField = card.querySelector(".card-description");
+          const countdownElem = card.querySelector(".countdown");
+          const maxChars = parseInt(countdownElem.getAttribute("data-max"), 10);
+
+          // Character countdown
+          descriptionField.addEventListener("input", function () {
             const remaining = maxChars - this.value.length;
             countdownElem.textContent = remaining + " characters remaining";
           });
-          // Image upload preview
-          const imageInput = card.querySelector('.card-image-input');
-          const imagePreview = card.querySelector('.card-image-preview');
-          imageInput.addEventListener('change', function (e) {
-            const file = e.target.files[0];
+
+          // Image upload & preview
+          const imageInput = card.querySelector(".card-image-input");
+          const imagePreview = card.querySelector(".card-image-preview");
+          imageInput.addEventListener("change", function (event) {
+            const file = event.target.files[0];
             if (file) {
               const reader = new FileReader();
-              reader.onload = function (evt) {
-                imagePreview.src = evt.target.result;
-                imagePreview.style.display = 'block';
+              reader.onload = function (e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = "block";
               };
               reader.readAsDataURL(file);
             }
           });
-          // Color settings for background and font
-          const bgColorInput = card.querySelector('.card-bg-color');
-          const fontColorInput = card.querySelector('.card-font-color');
-          bgColorInput.addEventListener('input', function () {
+
+          // Background & Font color
+          const bgColorInput = card.querySelector(".card-bg-color");
+          const fontColorInput = card.querySelector(".card-font-color");
+          bgColorInput.addEventListener("input", function () {
             card.style.backgroundColor = this.value;
           });
-          fontColorInput.addEventListener('input', function () {
+          fontColorInput.addEventListener("input", function () {
             card.style.color = this.value;
           });
-          // Save button
-          const saveButton = card.querySelector('.save-card');
-          saveButton.addEventListener('click', function () {
+
+          // Save Card button
+          const saveButton = card.querySelector(".save-card");
+          saveButton.addEventListener("click", function () {
+            // Collect values
+            const titleValue = card.querySelector(".card-title").value;
+            const descValue = card.querySelector(".card-description").value;
+            const alignmentValue = card.querySelector(".image-alignment").value;
+
+            // Create final display elements
+            const finalTitle = document.createElement("h3");
+            finalTitle.innerText = titleValue;
+            const finalDesc = document.createElement("p");
+            finalDesc.innerText = descValue;
+
+            // Hide editing fields
+            card.querySelectorAll("input, textarea, .save-card, .countdown, .image-alignment-label").forEach(elem => {
+              elem.style.display = "none";
+            });
+            // Also hide color settings
+            const colorSettings = card.querySelector(".color-settings");
+            if (colorSettings) {
+              colorSettings.style.display = "none";
+            }
+
+            // Append final text to card
+            card.appendChild(finalTitle);
+            card.appendChild(finalDesc);
+
+            // Apply alignment class to the card
+            card.classList.remove("image-align-left", "image-align-right", "image-align-center");
+            if (alignmentValue === "left") {
+              card.classList.add("image-align-left");
+            } else if (alignmentValue === "right") {
+              card.classList.add("image-align-right");
+            } else {
+              card.classList.add("image-align-center");
+            }
+
             alert("Card saved successfully!");
-            // Additional save functionality can be added here.
           });
         });
+      });
+
+      // Render offers (flip is disabled so cards are not clickable)
+      function renderOffers(offers, style) {
+        const container = document.getElementById("offersFlipCardSection");
+        container.innerHTML = "<h3>Exclusive Offers</h3>";
+        if (style === "horizontal") {
+          let html = '<div class="scroll-container"><div class="scroll-offer">';
+          offers.forEach((offer, index) => {
+            html += `
+              <div class="flip-card">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front">
+                    <h4>${offer.title || "Offer " + (index + 1)}</h4>
+                  </div>
+                  <div class="flip-card-back">
+                    <p>Details available on next page</p>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          html += "</div></div>";
+          container.innerHTML += html;
+        }
+      }
+
+      // Settings panel toggle
+      document.addEventListener("click", (e) => {
+        if (!document.getElementById("styleControlsContainer").contains(e.target)) {
+          document.getElementById("styleDropdown").style.display = "none";
+        }
+      });
+      document.getElementById("styleButton").addEventListener("click", (e) => {
+        e.stopPropagation();
+        const styleDropdown = document.getElementById("styleDropdown");
+        styleDropdown.style.display =
+          styleDropdown.style.display === "block" ? "none" : "block";
       });
     </script>
   </body>
