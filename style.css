@@ -94,16 +94,13 @@ body {
   font-size: 1rem;
 }
 .side-menu a:last-child { border-bottom: none; }
-.side-menu.visible {
-  display: flex;
-}
+.side-menu.visible { display: flex; }
 
-/* Hero Section with Fixed Background and Glass Overlay */
+/* Hero Section */
 .hero {
   height: calc(100vh - 140px); /* Full viewport minus header & bottom nav */
-  background: url('https://images.unsplash.com/photo-1581091870621-8d4b7a745ec2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80') no-repeat center center/cover;
-  background-attachment: fixed;
-  position: relative;
+  background: linear-gradient(135deg, rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+    url('https://via.placeholder.com/1080x1920') no-repeat center center/cover;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -111,21 +108,9 @@ body {
   padding: 0 15px;
   color: #fff;
 }
-/* Reduced overlay opacity and blur for clearer image */
-.glass-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255,255,255,0.2);
-  backdrop-filter: blur(4px);
-  z-index: 1;
-}
 .hero-content {
-  position: relative;
-  z-index: 2;
-  color: #333; /* Dark text for contrast */
+  max-width: 600px;
+  margin: 0 auto;
 }
 .hero h1 {
   font-size: 2.8rem;
@@ -156,6 +141,48 @@ body {
   transition: background-color 0.3s;
 }
 .cta-buttons button:hover { background: #0056b3; }
+
+/* Features Section */
+.features {
+  padding: 40px 15px;
+  background: #ffffff;
+}
+.features h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #007bff;
+}
+.features-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+.feature-item {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  width: 280px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+.feature-item:hover { transform: translateY(-5px); }
+.feature-item i {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #007bff;
+}
+.feature-item h3 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+.feature-item p {
+  font-size: 1rem;
+  color: #666;
+}
 
 /* Mobile Bottom Navigation */
 .mobile-nav {
@@ -203,5 +230,5 @@ body {
   .mobile-nav { display: none; }
   .footer { display: none; }
   .side-menu { display: none !important; }
-  .hero { height: calc(100vh - 70px); }
+  .hero { height: calc(100vh - 60px); }
 }
