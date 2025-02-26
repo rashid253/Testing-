@@ -4,11 +4,11 @@ document.addEventListener("DOMContentLoaded", function() {
     window.open(url, '_blank');
   };
 
-  // Toggle mobile side menu (for hamburger)
-  window.toggleMenu = function() {
-    var mobileMenu = document.getElementById('mobile-menu');
-    if (mobileMenu) {
-      mobileMenu.classList.toggle('visible');
+  // Toggle mobile side menu visibility
+  window.toggleSideMenu = function() {
+    var sideMenu = document.getElementById('side-menu');
+    if (sideMenu) {
+      sideMenu.classList.toggle('visible');
     }
   };
 });
