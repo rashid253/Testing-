@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyBusiness - Analytics</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script>
+    function openPage(url) {
+      window.open(url, '_blank');
+    }
+  </script>
+  <style>
+    .chart-placeholder {
+      background-color: #ecf0f1;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #7f8c8d;
+      font-size: 18px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- App Bar -->
+  <header class="app-bar">
+    <div class="menu-icon" onclick="openPage('menu.html')"><i class="fas fa-bars"></i></div>
+    <div class="app-logo"><h1>MyBusiness Analytics</h1></div>
+    <div class="cart-icon" onclick="openPage('cart.html')"><i class="fas fa-shopping-cart"></i></div>
+  </header>
+
+  <!-- Analytics Content -->
+  <main class="page-content analytics-content">
+    <h2>Business Analytics Dashboard</h2>
+    <div class="analytics-card" onclick="openPage('sales-detail.html')">
+      <h3>Sales Overview</h3>
+      <div class="chart-placeholder">Chart Placeholder</div>
+    </div>
+    <div class="analytics-card" onclick="openPage('products-detail.html')">
+      <h3>Top Selling Products</h3>
+      <div class="chart-placeholder">Chart Placeholder</div>
+    </div>
+    <div class="analytics-card" onclick="openPage('engagement-detail.html')">
+      <h3>Customer Engagement</h3>
+      <div class="chart-placeholder">Chart Placeholder</div>
+    </div>
+  </main>
+
+  <!-- Footer Navigation -->
+  <footer class="footer-nav">
+    <a href="index.html" onclick="openPage('index.html')"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="offers.html" onclick="openPage('offers.html')"><i class="fas fa-tags"></i><span>Offers</span></a>
+    <a href="analytics.html" onclick="openPage('analytics.html')"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+    <a href="more.html" onclick="openPage('more.html')"><i class="fas fa-ellipsis-h"></i><span>More</span></a>
+  </footer>
+</body>
+</html>
