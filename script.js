@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", function() {
     window.open(url, '_blank');
   };
 
-  // Toggle mobile side menu
+  // Toggle mobile side menu visibility
   window.toggleSideMenu = function() {
-    const sideMenu = document.getElementById("side-menu");
+    var sideMenu = document.getElementById("side-menu");
     if (sideMenu) {
       sideMenu.classList.toggle("visible");
     }
