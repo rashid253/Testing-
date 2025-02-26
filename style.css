@@ -93,17 +93,16 @@ body {
   border-bottom: 1px solid #e0e0e0;
   font-size: 1rem;
 }
-.side-menu a:last-child {
-  border-bottom: none;
-}
+.side-menu a:last-child { border-bottom: none; }
 .side-menu.visible {
   display: flex;
 }
 
 /* Hero Section with Fixed Background and Glass Overlay */
 .hero {
-  height: calc(100vh - 140px); /* Full viewport minus header and bottom nav */
-  background: url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80') no-repeat center center/cover;
+  height: calc(100vh - 140px); /* Full viewport minus header & bottom nav */
+  background: linear-gradient(135deg, rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+    url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80') no-repeat center center/cover;
   background-attachment: fixed;
   position: relative;
   display: flex;
@@ -111,6 +110,7 @@ body {
   justify-content: center;
   text-align: center;
   padding: 0 15px;
+  color: #fff;
 }
 .glass-overlay {
   position: absolute;
@@ -183,7 +183,7 @@ body {
   margin-top: 3px;
 }
 
-/* Fixed Footer (Optional) */
+/* Fixed Footer (Optional Additional Info) */
 .footer {
   position: fixed;
   bottom: 70px; /* above mobile nav */
