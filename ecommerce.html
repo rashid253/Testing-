@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyBusiness - E-Commerce</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Shared CSS -->
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Carousel Styles */
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      max-height: 250px;
+      margin-bottom: 20px;
+    }
+    .carousel-images {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+    .carousel-images img {
+      width: 100%;
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+    }
+    .carousel-nav button {
+      background: rgba(0,0,0,0.5);
+      border: none;
+      color: #fff;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+    /* Products Section with Discount & Countdown */
+    .products-section {
+      padding: 0 20px;
+      margin-bottom: 30px;
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+    }
+    .product-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .product-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    .product-card h4 {
+      margin: 10px 0 5px;
+      font-size: 1rem;
+      color: #2c3e50;
+    }
+    .price {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+    .original-price {
+      text-decoration: line-through;
+      color: #7f8c8d;
+      margin-right: 5px;
+    }
+    .discount-price {
+      color: #e74c3c;
+      font-weight: bold;
+    }
+    .countdown {
+      font-size: 0.9rem;
+      color: #3498db;
+      margin-bottom: 10px;
+    }
+    .product-card button {
+      background-color: #e74c3c;
+      border: none;
+      padding: 8px 12px;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    /* Payment & Delivery Section */
+    .payment-delivery {
+      padding: 20px;
+      background: #fff;
+      margin: 0 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .payment-delivery h3 {
+      margin-bottom: 15px;
+      color: #2c3e50;
+    }
+    .payment-methods, .delivery-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .payment-methods img {
+      width: 50px;
+      height: auto;
+    }
+    /* Upload Product Section */
+    .upload-product {
+      padding: 20px;
+      background: #fff;
+      margin: 0 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .upload-product h3 {
+      margin-bottom: 15px;
+      color: #2c3e50;
+    }
+    .upload-product form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .upload-product input,
+    .upload-product textarea,
+    .upload-product button {
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    .upload-product button {
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    // Simple carousel script
+    let currentSlide = 0;
+    function showSlide(index) {
+      const slides = document.querySelectorAll('.carousel-images img');
+      if(index >= slides.length) { currentSlide = 0; }
+      else if(index < 0) { currentSlide = slides.length - 1; }
+      else { currentSlide = index; }
+      const carouselWidth = document.querySelector('.carousel').clientWidth;
+      document.querySelector('.carousel-images').style.transform = 'translateX(' + (-carouselWidth * currentSlide) + 'px)';
+    }
+    function nextSlide() { showSlide(currentSlide + 1); }
+    function prevSlide() { showSlide(currentSlide - 1); }
+    window.addEventListener('resize', () => showSlide(currentSlide));
+  </script>
+  <script>
+    function openPage(url) {
+      window.open(url, '_blank');
+    }
+  </script>
+</head>
+<body>
+  <!-- App Bar -->
+  <header class="app-bar">
+    <div class="menu-icon" onclick="openPage('menu.html')"><i class="fas fa-bars"></i></div>
+    <div class="app-logo"><h1>MyBusiness E‑Commerce</h1></div>
+    <div class="cart-icon" onclick="openPage('cart.html')"><i class="fas fa-shopping-cart"></i></div>
+  </header>
+
+  <!-- Carousel Banner Section -->
+  <section class="carousel">
+    <div class="carousel-images">
+      <img src="https://via.placeholder.com/600x250?text=Banner+1" alt="Banner 1">
+      <img src="https://via.placeholder.com/600x250?text=Banner+2" alt="Banner 2">
+      <img src="https://via.placeholder.com/600x250?text=Banner+3" alt="Banner 3">
+    </div>
+    <div class="carousel-nav">
+      <button onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
+      <button onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button>
+    </div>
+  </section>
+
+  <!-- Products Section with Discount & Countdown -->
+  <section class="products-section">
+    <h2 style="padding:0 20px; color:#2c3e50;">Featured Products</h2>
+    <div class="products-grid">
+      <!-- Example Product Card -->
+      <div class="product-card">
+        <img src="https://via.placeholder.com/150x120?text=Product+1" alt="Product 1">
+        <h4>Product 1</h4>
+        <p class="price">
+          <span class="original-price">$49.99</span>
+          <span class="discount-price">$29.99</span>
+        </p>
+        <p class="countdown" data-offer-end="2025-03-05T00:00:00Z">
+          Offer ends in: <span class="timer">--:--:--</span>
+        </p>
+        <button onclick="openPage('cart.html')">Add to Cart</button>
+      </div>
+      <!-- Add more product cards as needed -->
+    </div>
+  </section>
+
+  <!-- Payment & Delivery Section -->
+  <section class="payment-delivery">
+    <h3>Payment & Delivery Options</h3>
+    <div class="payment-methods">
+      <img src="https://via.placeholder.com/50?text=EP" alt="EasyPaisa" title="EasyPaisa">
+      <img src="https://via.placeholder.com/50?text=JC" alt="JazzCash" title="JazzCash">
+      <img src="https://via.placeholder.com/50?text=Online" alt="Online Payment" title="Online Payment">
+    </div>
+    <div class="delivery-info" style="margin-top:15px;">
+      <i class="fas fa-truck" style="font-size:24px; color:#3498db;"></i>
+      <span style="font-size:1rem; color:#2c3e50;">Home Delivery Available</span>
+    </div>
+  </section>
+
+  <!-- Upload Product Section (For Maxi Products) -->
+  <section class="upload-product">
+    <h3>Upload New Product</h3>
+    <form action="upload_product.php" method="post" enctype="multipart/form-data">
+      <input type="text" name="product_name" placeholder="Product Name" required>
+      <input type="number" name="product_price" placeholder="Price" step="0.01" required>
+      <textarea name="product_desc" placeholder="Product Description" rows="3" required></textarea>
+      <input type="file" name="product_image" accept="image/*" required>
+      <button type="submit">Upload Product</button>
+    </form>
+  </section>
+
+  <!-- Footer Navigation -->
+  <footer class="footer-nav">
+    <a href="index.html" onclick="openPage('index.html')">
+      <i class="fas fa-home"></i><span>Home</span>
+    </a>
+    <a href="offers.html" onclick="openPage('offers.html')">
+      <i class="fas fa-tags"></i><span>Offers</span>
+    </a>
+    <a href="analytics.html" onclick="openPage('analytics.html')">
+      <i class="fas fa-chart-line"></i><span>Analytics</span>
+    </a>
+    <a href="more.html" onclick="openPage('more.html')">
+      <i class="fas fa-ellipsis-h"></i><span>More</span>
+    </a>
+  </footer>
+
+  <!-- Countdown Timer Script -->
+  <script>
+    function updateCountdowns() {
+      const countdownElements = document.querySelectorAll('.countdown');
+      countdownElements.forEach(function(elem) {
+        const endTime = new Date(elem.getAttribute('data-offer-end')).getTime();
+        const now = new Date().getTime();
+        const distance = endTime - now;
+        if(distance < 0) {
+          elem.querySelector('.timer').textContent = "Expired";
+        } else {
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          elem.querySelector('.timer').textContent =
+            hours.toString().padStart(2, '0') + ":" +
+            minutes.toString().padStart(2, '0') + ":" +
+            seconds.toString().padStart(2, '0');
+        }
+      });
+    }
+    setInterval(updateCountdowns, 1000);
+  </script>
+</body>
+</html>
