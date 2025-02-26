@@ -1,0 +1,293 @@
+/* CSS Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  padding-bottom: 70px; /* Space for footer */
+}
+
+/* App Bar */
+.app-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  padding: 10px 20px;
+}
+.app-bar .menu-icon,
+.app-bar .cart-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+.app-bar .app-logo h1 {
+  font-size: 20px;
+}
+
+/* Profile Section */
+.profile-section {
+  background-color: #ecf0f1;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #bdc3c7;
+}
+.profile-section .profile-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 20px;
+  object-fit: cover;
+}
+.profile-section .profile-info h2 {
+  margin-bottom: 5px;
+}
+.profile-section .contact-icons a {
+  margin-right: 10px;
+  color: #2c3e50;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+/* Business Info */
+.business-info {
+  padding: 20px;
+  background-color: #fff;
+  margin: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  max-height: 300px;
+  overflow-y: auto;
+}
+.business-info h3 {
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+.business-info p,
+.business-info ul {
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+/* Exclusive Offers */
+.exclusive-offers {
+  padding: 20px;
+  background-color: #fff;
+  margin: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.exclusive-offers h3 {
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+.offers-container {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+.offer-card {
+  min-width: 200px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 10px;
+  text-align: center;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.offer-card img {
+  width: 100%;
+  height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+.offer-card button {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Special Buttons */
+.special-buttons {
+  padding: 20px;
+  background-color: #fff;
+  margin: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.special-buttons h3 {
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+.buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.buttons-grid button {
+  padding: 10px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Live Chat */
+#live-chat {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  z-index: 1000;
+}
+.chat-toggle {
+  background-color: #27ae60;
+  border: none;
+  color: #fff;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+.chat-window {
+  width: 300px;
+  height: 400px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.chat-window.hidden {
+  display: none;
+}
+.chat-header {
+  background-color: #27ae60;
+  color: #fff;
+  padding: 10px;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.chat-body {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+.chat-message {
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 4px;
+  max-width: 80%;
+}
+.chat-message.bot {
+  background-color: #ecf0f1;
+  align-self: flex-start;
+}
+.chat-message.user {
+  background-color: #3498db;
+  color: #fff;
+  align-self: flex-end;
+}
+.chat-input {
+  display: flex;
+  border-top: 1px solid #ccc;
+}
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+}
+.chat-input button {
+  background-color: #27ae60;
+  border: none;
+  padding: 10px;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Footer Navigation */
+.footer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #2c3e50;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  color: #ecf0f1;
+}
+.footer-nav a {
+  text-decoration: none;
+  color: #ecf0f1;
+  text-align: center;
+  font-size: 14px;
+}
+.footer-nav a i {
+  font-size: 18px;
+  display: block;
+  margin-bottom: 3px;
+}
+
+/* Page Content Wrapper (for inner pages) */
+.page-content {
+  margin: 20px;
+  padding-bottom: 80px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .profile-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  .profile-section .profile-pic {
+    margin-bottom: 10px;
+  }
+  .buttons-grid {
+    grid-template-columns: 1fr;
+  }
+  .chat-window {
+    width: 90%;
+    height: 300px;
+  }
+}
+
+/* Additional E-Commerce Styles */
+/* Pricing and Countdown */
+.price {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+.original-price {
+  text-decoration: line-through;
+  color: #7f8c8d;
+  margin-right: 5px;
+}
+.discount-price {
+  color: #e74c3c;
+  font-weight: bold;
+}
+.countdown {
+  font-size: 0.9rem;
+  color: #3498db;
+  margin-bottom: 10px;
+}
