@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyBusiness - More</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script>
+    function openPage(url) {
+      window.open(url, '_blank');
+    }
+  </script>
+  <style>
+    .more-section li { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <!-- App Bar -->
+  <header class="app-bar">
+    <div class="menu-icon" onclick="openPage('menu.html')"><i class="fas fa-bars"></i></div>
+    <div class="app-logo"><h1>More Options</h1></div>
+    <div class="cart-icon" onclick="openPage('cart.html')"><i class="fas fa-shopping-cart"></i></div>
+  </header>
+
+  <!-- More Options Content -->
+  <main class="page-content more-content">
+    <div class="more-section">
+      <h3>User Account</h3>
+      <ul>
+        <li onclick="openPage('profile-settings.html')"><i class="fas fa-user"></i> Profile Settings</li>
+        <li onclick="openPage('change-password.html')"><i class="fas fa-lock"></i> Change Password</li>
+        <li onclick="openPage('logout.html')"><i class="fas fa-sign-out-alt"></i> Logout</li>
+      </ul>
+    </div>
+    <div class="more-section">
+      <h3>Business Settings</h3>
+      <ul>
+        <li onclick="openPage('manage-branches.html')"><i class="fas fa-cogs"></i> Manage Branches</li>
+        <li onclick="openPage('view-reports.html')"><i class="fas fa-chart-pie"></i> View Reports</li>
+        <li onclick="openPage('notifications.html')"><i class="fas fa-bell"></i> Notifications</li>
+      </ul>
+    </div>
+    <div class="more-section">
+      <h3>Support</h3>
+      <ul>
+        <li onclick="openPage('faq.html')"><i class="fas fa-question-circle"></i> FAQ</li>
+        <li onclick="openPage('contact-support.html')"><i class="fas fa-headset"></i> Contact Support</li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- Footer Navigation -->
+  <footer class="footer-nav">
+    <a href="index.html" onclick="openPage('index.html')"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="offers.html" onclick="openPage('offers.html')"><i class="fas fa-tags"></i><span>Offers</span></a>
+    <a href="analytics.html" onclick="openPage('analytics.html')"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+    <a href="more.html" onclick="openPage('more.html')"><i class="fas fa-ellipsis-h"></i><span>More</span></a>
+  </footer>
+</body>
+</html>
