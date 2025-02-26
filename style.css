@@ -100,8 +100,8 @@ body {
 
 /* Hero Section with Fixed Background and Glass Overlay */
 .hero {
-  height: calc(100vh - 140px); /* Full viewport minus header and bottom nav */
-  background: url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80') no-repeat center center/cover;
+  height: calc(100vh - 140px); /* Full viewport minus header & bottom nav */
+  background: url('https://images.unsplash.com/photo-1581091870621-8d4b7a745ec2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80') no-repeat center center/cover;
   background-attachment: fixed;
   position: relative;
   display: flex;
@@ -111,20 +111,21 @@ body {
   padding: 0 15px;
   color: #fff;
 }
+/* Reduced overlay opacity and blur for clearer image */
 .glass-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255,255,255,0.4);
-  backdrop-filter: blur(8px);
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(4px);
   z-index: 1;
 }
 .hero-content {
   position: relative;
   z-index: 2;
-  color: #333; /* Dark text for clarity on overlay */
+  color: #333; /* Dark text for contrast */
 }
 .hero h1 {
   font-size: 2.8rem;
@@ -182,7 +183,7 @@ body {
   margin-top: 3px;
 }
 
-/* Fixed Footer (Optional) */
+/* Fixed Footer (Optional Additional Info) */
 .footer {
   position: fixed;
   bottom: 70px; /* above mobile nav */
