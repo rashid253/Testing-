@@ -1,4 +1,4 @@
-// Header shrink effect on scroll (for desktop)
+// Header shrink effect (desktop)
 window.addEventListener('scroll', function() {
   const header = document.getElementById('header');
   if (window.scrollY > 50) {
@@ -8,7 +8,7 @@ window.addEventListener('scroll', function() {
   }
 });
 
-// Mobile hamburger menu toggle
+// Mobile hamburger toggle (if applicable)
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
 if (hamburger) {
