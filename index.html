@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MyBusiness Premium</title>
+  <!-- Google Fonts for a modern look -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Shared CSS -->
@@ -13,20 +15,17 @@
 </head>
 <body>
   <!-- Fixed Header -->
-  <header class="fixed-header">
-    <div class="container">
+  <header class="header">
+    <div class="header-container">
       <div class="brand">
         <i class="fas fa-briefcase"></i>
         <span>MyBusiness</span>
       </div>
-      <!-- Hamburger icon for mobile (optional toggle menu) -->
-      <div class="header-actions">
-        <button class="hamburger" onclick="toggleMenu()">
-          <i class="fas fa-bars"></i>
-        </button>
-      </div>
-      <!-- For larger screens, an optional horizontal nav can be placed here -->
-      <nav class="nav-menu">
+      <button class="menu-toggle" onclick="toggleSideMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <!-- Desktop Navigation (hidden on mobile) -->
+      <nav class="nav-desktop">
         <a href="index.html" onclick="openPage('index.html')"><i class="fas fa-home"></i><span>Home</span></a>
         <a href="offers.html" onclick="openPage('offers.html')"><i class="fas fa-tags"></i><span>Offers</span></a>
         <a href="analytics.html" onclick="openPage('analytics.html')"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
@@ -36,35 +35,35 @@
     </div>
   </header>
 
-  <!-- Optional Mobile Side Menu (toggle via hamburger) -->
-  <div id="mobile-menu" class="mobile-menu">
-    <a href="index.html" onclick="openPage('index.html')">Home</a>
-    <a href="offers.html" onclick="openPage('offers.html')">Offers</a>
-    <a href="analytics.html" onclick="openPage('analytics.html')">Analytics</a>
-    <a href="ecommerce.html" onclick="openPage('ecommerce.html')">Shop</a>
-    <a href="more.html" onclick="openPage('more.html')">More</a>
-  </div>
+  <!-- Side Menu for Mobile -->
+  <aside id="side-menu" class="side-menu">
+    <a href="index.html" onclick="openPage('index.html'); toggleSideMenu()">Home</a>
+    <a href="offers.html" onclick="openPage('offers.html'); toggleSideMenu()">Offers</a>
+    <a href="analytics.html" onclick="openPage('analytics.html'); toggleSideMenu()">Analytics</a>
+    <a href="ecommerce.html" onclick="openPage('ecommerce.html'); toggleSideMenu()">Shop</a>
+    <a href="more.html" onclick="openPage('more.html'); toggleSideMenu()">More</a>
+  </aside>
 
   <!-- Main Content -->
   <main>
     <!-- Hero Section -->
     <section class="hero">
-      <div class="container">
-        <h1>Welcome to MyBusiness Premium</h1>
+      <div class="hero-content">
+        <h1>Elevate Your Business Experience</h1>
         <p>
-          Experience premium business solutions on the go. Discover exclusive offers, secure transactions, and a seamless interface—crafted for the elite business owner.
+          Discover a premium mobile application built for the elite. Enjoy secure transactions, exclusive offers, and a seamless interface—all in one place.
         </p>
         <div class="cta-buttons">
           <button onclick="openPage('ecommerce.html')">Shop Now</button>
-          <button onclick="openPage('about.html')">Learn More</button>
+          <button onclick="openPage('about.html')">Discover More</button>
         </div>
       </div>
     </section>
-
-    <!-- (Additional sections can be added here) -->
+    
+    <!-- (Other sections can be added below as needed) -->
   </main>
 
-  <!-- Fixed Bottom Navigation for Mobile -->
+  <!-- Fixed Bottom Navigation (Always visible on mobile) -->
   <nav class="mobile-nav">
     <a href="index.html" onclick="openPage('index.html')"><i class="fas fa-home"></i><span>Home</span></a>
     <a href="offers.html" onclick="openPage('offers.html')"><i class="fas fa-tags"></i><span>Offers</span></a>
@@ -73,9 +72,9 @@
     <a href="more.html" onclick="openPage('more.html')"><i class="fas fa-ellipsis-h"></i><span>More</span></a>
   </nav>
 
-  <!-- Fixed Footer (for additional info) -->
-  <footer class="fixed-footer">
-    <div class="container">
+  <!-- Fixed Footer (Optional extra info) -->
+  <footer class="footer">
+    <div class="footer-container">
       <p>&copy; 2025 MyBusiness Premium. All rights reserved.</p>
     </div>
   </footer>
