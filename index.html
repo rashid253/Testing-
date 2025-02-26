@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MyBusiness Premium</title>
-  <!-- Google Fonts for a modern look -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <!-- Shared CSS -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <!-- Shared JavaScript -->
   <script src="script.js" defer></script>
 </head>
@@ -21,21 +19,37 @@
         <i class="fas fa-briefcase"></i>
         <span>MyBusiness</span>
       </div>
+      <!-- Desktop navigation visible on larger screens -->
+      <nav class="nav-desktop">
+        <a href="index.html" onclick="openPage('index.html')">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </a>
+        <a href="offers.html" onclick="openPage('offers.html')">
+          <i class="fas fa-tags"></i>
+          <span>Offers</span>
+        </a>
+        <a href="analytics.html" onclick="openPage('analytics.html')">
+          <i class="fas fa-chart-line"></i>
+          <span>Analytics</span>
+        </a>
+        <a href="ecommerce.html" onclick="openPage('ecommerce.html')">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Shop</span>
+        </a>
+        <a href="more.html" onclick="openPage('more.html')">
+          <i class="fas fa-ellipsis-h"></i>
+          <span>More</span>
+        </a>
+      </nav>
+      <!-- Hamburger icon for mobile -->
       <button class="menu-toggle" onclick="toggleSideMenu()">
         <i class="fas fa-bars"></i>
       </button>
-      <!-- Desktop Navigation (hidden on mobile) -->
-      <nav class="nav-desktop">
-        <a href="index.html" onclick="openPage('index.html')"><i class="fas fa-home"></i><span>Home</span></a>
-        <a href="offers.html" onclick="openPage('offers.html')"><i class="fas fa-tags"></i><span>Offers</span></a>
-        <a href="analytics.html" onclick="openPage('analytics.html')"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
-        <a href="ecommerce.html" onclick="openPage('ecommerce.html')"><i class="fas fa-shopping-cart"></i><span>Shop</span></a>
-        <a href="more.html" onclick="openPage('more.html')"><i class="fas fa-ellipsis-h"></i><span>More</span></a>
-      </nav>
     </div>
   </header>
 
-  <!-- Side Menu for Mobile -->
+  <!-- Mobile Side Menu -->
   <aside id="side-menu" class="side-menu">
     <a href="index.html" onclick="openPage('index.html'); toggleSideMenu()">Home</a>
     <a href="offers.html" onclick="openPage('offers.html'); toggleSideMenu()">Offers</a>
@@ -51,28 +65,43 @@
       <div class="hero-content">
         <h1>Elevate Your Business Experience</h1>
         <p>
-          Discover a premium mobile application built for the elite. Enjoy secure transactions, exclusive offers, and a seamless interface—all in one place.
+          Discover a premium mobile application designed for the modern business owner. Enjoy secure transactions, exclusive offers, and a seamless interface—all at your fingertips.
         </p>
         <div class="cta-buttons">
           <button onclick="openPage('ecommerce.html')">Shop Now</button>
-          <button onclick="openPage('about.html')">Discover More</button>
+          <button onclick="openPage('about.html')">Learn More</button>
         </div>
       </div>
     </section>
-    
-    <!-- (Other sections can be added below as needed) -->
+
+    <!-- (Other content sections can be added here as needed) -->
   </main>
 
   <!-- Fixed Bottom Navigation (Always visible on mobile) -->
   <nav class="mobile-nav">
-    <a href="index.html" onclick="openPage('index.html')"><i class="fas fa-home"></i><span>Home</span></a>
-    <a href="offers.html" onclick="openPage('offers.html')"><i class="fas fa-tags"></i><span>Offers</span></a>
-    <a href="analytics.html" onclick="openPage('analytics.html')"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
-    <a href="ecommerce.html" onclick="openPage('ecommerce.html')"><i class="fas fa-shopping-cart"></i><span>Shop</span></a>
-    <a href="more.html" onclick="openPage('more.html')"><i class="fas fa-ellipsis-h"></i><span>More</span></a>
+    <a href="index.html" onclick="openPage('index.html')">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="offers.html" onclick="openPage('offers.html')">
+      <i class="fas fa-tags"></i>
+      <span>Offers</span>
+    </a>
+    <a href="analytics.html" onclick="openPage('analytics.html')">
+      <i class="fas fa-chart-line"></i>
+      <span>Analytics</span>
+    </a>
+    <a href="ecommerce.html" onclick="openPage('ecommerce.html')">
+      <i class="fas fa-shopping-cart"></i>
+      <span>Shop</span>
+    </a>
+    <a href="more.html" onclick="openPage('more.html')">
+      <i class="fas fa-ellipsis-h"></i>
+      <span>More</span>
+    </a>
   </nav>
 
-  <!-- Fixed Footer (Optional extra info) -->
+  <!-- Fixed Footer (Optional extra info for mobile or desktop) -->
   <footer class="footer">
     <div class="footer-container">
       <p>&copy; 2025 MyBusiness Premium. All rights reserved.</p>
