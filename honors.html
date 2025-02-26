@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>BrandName - Honors</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header id="header">
+    <div class="header-left">
+      <div class="logo" title="BrandName Home">
+        <i class="fa-solid fa-gem"></i> BrandName
+      </div>
+      <nav class="desktop-nav">
+        <ul class="nav-menu">
+          <li><a href="index.html" title="Home"><i class="fa-solid fa-house"></i><span>Home</span></a></li>
+          <li><a href="services.html" title="Services"><i class="fa-solid fa-briefcase"></i><span>Services</span></a></li>
+          <li><a href="products.html" title="Products"><i class="fa-solid fa-box-open"></i><span>Products</span></a></li>
+          <li><a href="honors.html" title="Honors"><i class="fa-solid fa-trophy"></i><span>Honors</span></a></li>
+          <li><a href="contact.html" title="Contact"><i class="fa-solid fa-envelope"></i><span>Contact</span></a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="header-right desktop-nav">
+      <a href="#" class="header-icon" title="Search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </a>
+      <a href="#" class="header-icon" title="Cart">
+        <i class="fa-solid fa-cart-shopping"></i>
+      </a>
+      <a href="#" class="header-icon" title="Login">
+        <i class="fa-solid fa-user-circle"></i>
+      </a>
+    </div>
+    <div class="mobile-nav">
+      <div class="mobile-header">
+        <div class="logo"><i class="fa-solid fa-gem"></i> BrandName</div>
+        <div class="hamburger" id="hamburger">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+      </div>
+      <nav class="mobile-menu" id="mobileMenu">
+        <ul>
+          <li><a href="index.html" onclick="closeMobileMenu()"><i class="fa-solid fa-house"></i> Home</a></li>
+          <li><a href="services.html" onclick="closeMobileMenu()"><i class="fa-solid fa-briefcase"></i> Services</a></li>
+          <li><a href="products.html" onclick="closeMobileMenu()"><i class="fa-solid fa-box-open"></i> Products</a></li>
+          <li><a href="honors.html" onclick="closeMobileMenu()"><i class="fa-solid fa-trophy"></i> Honors</a></li>
+          <li><a href="contact.html" onclick="closeMobileMenu()"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+          <li><a href="#" onclick="closeMobileMenu()"><i class="fa-solid fa-magnifying-glass"></i> Search</a></li>
+          <li><a href="#" onclick="closeMobileMenu()"><i class="fa-solid fa-cart-shopping"></i> Cart</a></li>
+          <li><a href="#" onclick="closeMobileMenu()"><i class="fa-solid fa-user-circle"></i> Login</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content for Honors Page -->
+  <main class="page-content">
+    <section class="page-hero">
+      <h1>Our Honors & Awards</h1>
+      <p>We celebrate excellence. Here are some of the awards and recognitions we’ve received.</p>
+    </section>
+    <section class="honors-gallery">
+      <div class="honor-card">
+        <i class="fa-solid fa-award"></i>
+        <h3>Award Title 1</h3>
+        <p>Description of the award or honor.</p>
+      </div>
+      <div class="honor-card">
+        <i class="fa-solid fa-award"></i>
+        <h3>Award Title 2</h3>
+        <p>Description of the award or honor.</p>
+      </div>
+      <div class="honor-card">
+        <i class="fa-solid fa-award"></i>
+        <h3>Award Title 3</h3>
+        <p>Description of the award or honor.</p>
+      </div>
+      <!-- More honor cards as needed -->
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <div class="footer-top desktop-footer">
+      <div class="footer-section about">
+        <h3>About BrandName</h3>
+        <p>We deliver top-notch services and products to businesses worldwide.</p>
+      </div>
+      <div class="footer-section app-download">
+        <h3>Get Our App</h3>
+        <div class="app-icons">
+          <a href="#" title="Download for Android"><i class="fa-brands fa-android"></i></a>
+          <a href="#" title="Download for iOS"><i class="fa-brands fa-apple"></i></a>
+        </div>
+        <p>Manage your business on the go.</p>
+      </div>
+      <div class="footer-section contact">
+        <h3>Contact Us</h3>
+        <ul class="footer-nav">
+          <li><i class="fa-solid fa-phone"></i> +92 123 456789</li>
+          <li><i class="fa-solid fa-envelope"></i> info@brandname.com</li>
+          <li><i class="fa-solid fa-location-dot"></i> Faisalabad, Pakistan</li>
+        </ul>
+      </div>
+      <div class="footer-section social">
+        <h3>Follow Us</h3>
+        <ul class="social-icons">
+          <li><a href="#" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a></li>
+          <li><a href="#" title="Twitter"><i class="fa-brands fa-twitter"></i></a></li>
+          <li><a href="#" title="Instagram"><i class="fa-brands fa-instagram"></i></a></li>
+          <li><a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a></li>
+        </ul>
+      </div>
+    </div>
+    <nav class="mobile-footer">
+      <ul>
+        <li><a href="index.html" title="Home"><i class="fa-solid fa-house"></i></a></li>
+        <li><a href="services.html" title="Services"><i class="fa-solid fa-briefcase"></i></a></li>
+        <li><a href="products.html" title="Products"><i class="fa-solid fa-box-open"></i></a></li>
+        <li><a href="honors.html" title="Honors"><i class="fa-solid fa-trophy"></i></a></li>
+        <li><a href="contact.html" title="Contact"><i class="fa-solid fa-envelope"></i></a></li>
+      </ul>
+    </nav>
+    <div class="footer-bottom desktop-footer">
+      <p>&copy; 2025 BrandName. All Rights Reserved.</p>
+      <a href="#" class="back-to-top" title="Back to Top"><i class="fa-solid fa-arrow-up"></i></a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
