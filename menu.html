@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyBusiness - Menu</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    function openPage(url) { window.open(url, '_blank'); }
+  </script>
+</head>
+<body>
+  <header class="app-bar">
+    <div class="menu-icon" onclick="openPage('menu.html')"><i class="fas fa-bars"></i></div>
+    <div class="app-logo"><h1>Menu</h1></div>
+  </header>
+  <main class="page-content">
+    <h2>Main Menu</h2>
+    <ul>
+      <li onclick="openPage('index.html')">Home</li>
+      <li onclick="openPage('offers.html')">Offers</li>
+      <li onclick="openPage('analytics.html')">Analytics</li>
+      <li onclick="openPage('more.html')">More</li>
+    </ul>
+  </main>
+  <footer class="footer-nav">
+    <a href="index.html" onclick="openPage('index.html')"><i class="fas fa-home"></i><span>Home</span></a>
+  </footer>
+</body>
+</html>
