@@ -4,72 +4,89 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MyBusiness Premium</title>
-  <link rel="stylesheet" href="style.css">
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Shared CSS -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Shared JavaScript -->
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <!-- Fixed Header -->
+  <!-- Fixed Header with Icons -->
   <header class="fixed-header">
     <div class="container">
-      <div class="brand">MyBusiness Premium</div>
+      <div class="brand">
+        <i class="fas fa-briefcase"></i>
+        <span>MyBusiness</span>
+      </div>
       <nav class="nav-menu">
-        <a href="index.html">Home</a>
-        <a href="offers.html">Offers</a>
-        <a href="analytics.html">Analytics</a>
-        <a href="ecommerce.html">Shop</a>
-        <a href="more.html">More</a>
+        <a href="index.html" onclick="openPage('index.html')"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="offers.html" onclick="openPage('offers.html')"><i class="fas fa-tags"></i><span>Offers</span></a>
+        <a href="analytics.html" onclick="openPage('analytics.html')"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+        <a href="ecommerce.html" onclick="openPage('ecommerce.html')"><i class="fas fa-shopping-cart"></i><span>Shop</span></a>
+        <a href="more.html" onclick="openPage('more.html')"><i class="fas fa-ellipsis-h"></i><span>More</span></a>
       </nav>
     </div>
   </header>
 
   <!-- Main Content -->
   <main>
+    <!-- Hero Section -->
     <section class="hero">
       <div class="container">
-        <h1>Welcome to MyBusiness Premium</h1>
-        <p>Experience the pinnacle of business solutions with our state-of-the-art mobile application.</p>
-        <button onclick="window.location.href='ecommerce.html'">Explore Shop</button>
+        <h1>Elevate Your Business</h1>
+        <p>
+          Experience the next generation of mobile business solutions with secure transactions, exclusive offers, and a seamless interface—all at your fingertips.
+        </p>
+        <div class="cta-buttons">
+          <button onclick="openPage('ecommerce.html')">Shop Now</button>
+          <button onclick="openPage('about.html')">Discover More</button>
+        </div>
       </div>
     </section>
 
+    <!-- Features Section -->
     <section class="features">
       <div class="container">
-        <h2>Exclusive Features</h2>
+        <h2>Our Premium Features</h2>
         <div class="feature-list">
           <div class="feature-item">
             <i class="fas fa-shield-alt"></i>
-            <h3>Secure Payments</h3>
-            <p>Utilize state-of-the-art security for online transactions with options like EasyPaisa, JazzCash, and more.</p>
+            <h3>Secure Transactions</h3>
+            <p>Utilize advanced security protocols for safe and reliable payments.</p>
           </div>
           <div class="feature-item">
             <i class="fas fa-truck"></i>
-            <h3>Swift Delivery</h3>
-            <p>Experience fast and reliable home delivery services that bring your orders right to your doorstep.</p>
+            <h3>Fast Delivery</h3>
+            <p>Enjoy expedited shipping services with real‑time tracking.</p>
           </div>
           <div class="feature-item">
             <i class="fas fa-tags"></i>
-            <h3>Exclusive Discounts</h3>
-            <p>Access premium discounts, seasonal offers, and time-sensitive deals with live countdown timers.</p>
+            <h3>Exclusive Deals</h3>
+            <p>Access premium discounts, seasonal offers, and time‑sensitive deals.</p>
           </div>
           <div class="feature-item">
             <i class="fas fa-upload"></i>
             <h3>Product Management</h3>
-            <p>Easily upload and manage your products, showcasing your inventory to a global audience.</p>
+            <p>Easily upload and manage your products using our intuitive platform.</p>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Fixed Footer -->
+  <!-- Fixed Footer with Icons -->
   <footer class="fixed-footer">
     <div class="container">
+      <nav class="footer-nav">
+        <a href="index.html" onclick="openPage('index.html')"><i class="fas fa-home"></i></a>
+        <a href="offers.html" onclick="openPage('offers.html')"><i class="fas fa-tags"></i></a>
+        <a href="analytics.html" onclick="openPage('analytics.html')"><i class="fas fa-chart-line"></i></a>
+        <a href="ecommerce.html" onclick="openPage('ecommerce.html')"><i class="fas fa-shopping-cart"></i></a>
+        <a href="more.html" onclick="openPage('more.html')"><i class="fas fa-ellipsis-h"></i></a>
+      </nav>
       <p>&copy; 2025 MyBusiness Premium. All rights reserved.</p>
     </div>
   </footer>
-
-  <!-- JavaScript -->
-  <script src="script.js"></script>
 </body>
 </html>
