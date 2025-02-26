@@ -4,11 +4,11 @@ document.addEventListener("DOMContentLoaded", function() {
     window.open(url, '_blank');
   };
 
-  // Toggle mobile side menu visibility
+  // Toggle mobile side menu
   window.toggleSideMenu = function() {
-    var sideMenu = document.getElementById('side-menu');
+    const sideMenu = document.getElementById("side-menu");
     if (sideMenu) {
-      sideMenu.classList.toggle('visible');
+      sideMenu.classList.toggle("visible");
     }
   };
 });
