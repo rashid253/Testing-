@@ -1,205 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MyBusiness Premium</title>
+  <link rel="stylesheet" href="style.css">
   <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <!-- Shared CSS -->
-  <link rel="stylesheet" href="style.css" />
-  <!-- Shared JavaScript -->
-  <script src="script.js"></script>
-  <style>
-    /* --- Premium Home Page Specific Styles --- */
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    }
-    /* Fixed Premium Navbar */
-    .premium-navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: 15px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(0, 0, 0, 0.75);
-      z-index: 100;
-    }
-    .premium-navbar .brand {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #fff;
-    }
-    .premium-navbar .nav-menu {
-      display: flex;
-      gap: 25px;
-    }
-    .premium-navbar .nav-menu a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 1rem;
-      transition: color 0.3s;
-    }
-    .premium-navbar .nav-menu a:hover {
-      color: #e74c3c;
-    }
-    /* Full-Screen Premium Hero Section */
-    .premium-hero {
-      background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-        url('https://via.placeholder.com/1080x1920') no-repeat center center/cover;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: #fff;
-      padding: 0 20px;
-    }
-    .premium-hero h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-      font-weight: 700;
-    }
-    .premium-hero p {
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin-bottom: 30px;
-      line-height: 1.5;
-    }
-    .premium-hero .cta-buttons {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .premium-hero .cta-buttons button {
-      background-color: #e74c3c;
-      border: none;
-      padding: 15px 30px;
-      font-size: 1rem;
-      color: #fff;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .premium-hero .cta-buttons button:hover {
-      background-color: #c0392b;
-    }
-    /* Premium Features Section */
-    .premium-features {
-      padding: 60px 20px;
-      text-align: center;
-      background: #fff;
-    }
-    .premium-features h2 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      color: #2c3e50;
-    }
-    .premium-features .feature-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
-    }
-    .premium-features .feature-item {
-      flex: 1 1 250px;
-      max-width: 300px;
-      background: #f8f9fa;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .premium-features .feature-item i {
-      font-size: 2rem;
-      margin-bottom: 15px;
-      color: #e74c3c;
-    }
-    .premium-features .feature-item h3 {
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-      color: #2c3e50;
-    }
-    .premium-features .feature-item p {
-      font-size: 1rem;
-      color: #7f8c8d;
-    }
-    /* Premium Footer */
-    .premium-footer {
-      background: #2c3e50;
-      color: #fff;
-      text-align: center;
-      padding: 20px;
-    }
-    @media (max-width: 600px) {
-      .premium-navbar .nav-menu {
-        display: none;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <!-- Premium Navbar -->
-  <header class="premium-navbar">
-    <div class="brand">MyBusiness Premium</div>
-    <nav class="nav-menu">
-      <a href="index.html" onclick="openPage('index.html')">Home</a>
-      <a href="offers.html" onclick="openPage('offers.html')">Offers</a>
-      <a href="analytics.html" onclick="openPage('analytics.html')">Analytics</a>
-      <a href="ecommerce.html" onclick="openPage('ecommerce.html')">Shop</a>
-      <a href="more.html" onclick="openPage('more.html')">More</a>
-    </nav>
+  <!-- Fixed Header -->
+  <header class="fixed-header">
+    <div class="container">
+      <div class="brand">MyBusiness Premium</div>
+      <nav class="nav-menu">
+        <a href="index.html">Home</a>
+        <a href="offers.html">Offers</a>
+        <a href="analytics.html">Analytics</a>
+        <a href="ecommerce.html">Shop</a>
+        <a href="more.html">More</a>
+      </nav>
+    </div>
   </header>
-  
-  <!-- Premium Hero Section -->
-  <section class="premium-hero">
-    <h1>Redefine Your Business Experience</h1>
-    <p>
-      Discover a premium mobile application crafted for the elite business owner. Enjoy exclusive offers, 
-      secure transactions, and a seamless shopping experience—all at your fingertips.
-    </p>
-    <div class="cta-buttons">
-      <button onclick="openPage('ecommerce.html')">Explore Shop</button>
-      <button onclick="openPage('about.html')">Learn More</button>
+
+  <!-- Main Content -->
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Welcome to MyBusiness Premium</h1>
+        <p>Experience the pinnacle of business solutions with our state-of-the-art mobile application.</p>
+        <button onclick="window.location.href='ecommerce.html'">Explore Shop</button>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="container">
+        <h2>Exclusive Features</h2>
+        <div class="feature-list">
+          <div class="feature-item">
+            <i class="fas fa-shield-alt"></i>
+            <h3>Secure Payments</h3>
+            <p>Utilize state-of-the-art security for online transactions with options like EasyPaisa, JazzCash, and more.</p>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-truck"></i>
+            <h3>Swift Delivery</h3>
+            <p>Experience fast and reliable home delivery services that bring your orders right to your doorstep.</p>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-tags"></i>
+            <h3>Exclusive Discounts</h3>
+            <p>Access premium discounts, seasonal offers, and time-sensitive deals with live countdown timers.</p>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-upload"></i>
+            <h3>Product Management</h3>
+            <p>Easily upload and manage your products, showcasing your inventory to a global audience.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Fixed Footer -->
+  <footer class="fixed-footer">
+    <div class="container">
+      <p>&copy; 2025 MyBusiness Premium. All rights reserved.</p>
     </div>
-  </section>
-  
-  <!-- Premium Features Section -->
-  <section class="premium-features">
-    <h2>Our Exclusive Features</h2>
-    <div class="feature-list">
-      <div class="feature-item">
-        <i class="fas fa-shield-alt"></i>
-        <h3>Secure Payments</h3>
-        <p>Utilize state-of-the-art security for online transactions with options like EasyPaisa, JazzCash, and more.</p>
-      </div>
-      <div class="feature-item">
-        <i class="fas fa-truck"></i>
-        <h3>Swift Delivery</h3>
-        <p>Experience fast and reliable home delivery services that bring your orders right to your doorstep.</p>
-      </div>
-      <div class="feature-item">
-        <i class="fas fa-tags"></i>
-        <h3>Exclusive Discounts</h3>
-        <p>Access premium discounts, seasonal offers, and time-sensitive deals with live countdown timers.</p>
-      </div>
-      <div class="feature-item">
-        <i class="fas fa-upload"></i>
-        <h3>Product Management</h3>
-        <p>Easily upload and manage your Maxi products, showcasing your inventory to a global audience.</p>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Premium Footer -->
-  <footer class="premium-footer">
-    <p>&copy; 2025 MyBusiness Premium. All rights reserved.</p>
   </footer>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
 </body>
 </html>
