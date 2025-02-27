@@ -1,4 +1,4 @@
-/* Reset some basic elements */
+/* Basic reset */
 * {
   margin: 0;
   padding: 0;
@@ -20,7 +20,7 @@ body {
   justify-content: space-between;
 }
 
-/* Style the menu icon */
+/* Menu icon styling */
 .menu-icon {
   cursor: pointer;
   font-size: 1.5rem;
@@ -29,15 +29,14 @@ body {
 /* App logo styling */
 .app-logo h1 {
   font-size: 1.8rem;
-  margin: 0;
 }
 
-/* Main content area styling */
+/* Main content styling */
 .page-content {
   padding: 2rem;
 }
 
-/* Footer styling for navigation */
+/* Footer styling */
 .footer-nav {
   background-color: #222;
   color: #fff;
@@ -55,8 +54,8 @@ body {
   font-size: 1rem;
 }
 
-/* Optional: Add some hover effects */
-.footer-nav a:hover,
-.menu-icon:hover {
+/* Hover effects */
+.menu-icon:hover,
+.footer-nav a:hover {
   opacity: 0.8;
 }
