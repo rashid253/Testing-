@@ -1,59 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MyBusiness - Offers</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link rel="stylesheet" href="style.css" />
-  <script>
-    function openPage(url) {
-      window.open(url, '_blank');
-    }
-  </script>
+  <!-- External CSS library (Font Awesome) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Shared JavaScript file -->
+  <script src="script.js"></script>
 </head>
 <body>
-  <!-- App Bar -->
   <header class="app-bar">
-    <div class="menu-icon" onclick="openPage('menu.html')"><i class="fas fa-bars"></i></div>
-    <div class="app-logo"><h1>MyBusiness Offers</h1></div>
-    <div class="cart-icon" onclick="openPage('cart.html')"><i class="fas fa-shopping-cart"></i></div>
+    <div class="menu-icon" onclick="openPage('menu.html')">
+      <i class="fas fa-bars"></i>
+    </div>
+    <div class="app-logo">
+      <h1>Offers</h1>
+    </div>
   </header>
-
-  <!-- Offers Detail Section -->
   <main class="page-content">
-    <section class="offers-detail">
-      <h2>Exclusive Offers</h2>
-      <p>Discover all the latest deals and promotions exclusively available for you.</p>
-      <div class="offers-container">
-        <div class="offer-card" onclick="openPage('offer1.html')">
-          <img src="https://via.placeholder.com/200x120" alt="Offer 1" />
-          <h4>Offer Title 1</h4>
-          <p>Enjoy a 20% discount on premium products.</p>
-          <button onclick="openPage('offer1.html')">View Offer</button>
-        </div>
-        <div class="offer-card" onclick="openPage('offer2.html')">
-          <img src="https://via.placeholder.com/200x120" alt="Offer 2" />
-          <h4>Offer Title 2</h4>
-          <p>Bundle deals to maximize your savings.</p>
-          <button onclick="openPage('offer2.html')">View Offer</button>
-        </div>
-        <div class="offer-card" onclick="openPage('offer3.html')">
-          <img src="https://via.placeholder.com/200x120" alt="Offer 3" />
-          <h4>Offer Title 3</h4>
-          <p>Limited time seasonal offer.</p>
-          <button onclick="openPage('offer3.html')">View Offer</button>
-        </div>
-      </div>
-    </section>
+    <h2>Special Offers</h2>
+    <p>Check out our latest offers and promotions!</p>
+    <!-- Add additional content here as needed -->
   </main>
-
-  <!-- Footer Navigation -->
   <footer class="footer-nav">
-    <a href="index.html" onclick="openPage('index.html')"><i class="fas fa-home"></i><span>Home</span></a>
-    <a href="offers.html" onclick="openPage('offers.html')"><i class="fas fa-tags"></i><span>Offers</span></a>
-    <a href="analytics.html" onclick="openPage('analytics.html')"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
-    <a href="more.html" onclick="openPage('more.html')"><i class="fas fa-ellipsis-h"></i><span>More</span></a>
+    <a href="index.html" onclick="openPage('index.html')">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
   </footer>
 </body>
 </html>
