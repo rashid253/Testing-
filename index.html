@@ -3,100 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MyBusiness Premium</title>
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Custom CSS -->
+  <title>MyBusiness - Home</title>
+  <!-- Link to the common CSS file -->
   <link rel="stylesheet" href="style.css">
-  <!-- Custom JavaScript -->
-  <script src="script.js" defer></script>
+  <script>
+    function openPage(url) {
+      window.open(url, '_blank');
+    }
+  </script>
 </head>
 <body>
-  <!-- Fixed Header -->
-  <header class="header">
-    <div class="header-content">
-      <div class="brand">
-         <i class="fas fa-briefcase"></i> <span>MyBusiness</span>
-      </div>
-      <!-- Desktop Navigation (visible on larger screens) -->
-      <nav class="nav-desktop">
-         <a href="index.html" onclick="openPage('index.html')"><i class="fas fa-home"></i></a>
-         <a href="offers.html" onclick="openPage('offers.html')"><i class="fas fa-tags"></i></a>
-         <a href="analytics.html" onclick="openPage('analytics.html')"><i class="fas fa-chart-line"></i></a>
-         <a href="ecommerce.html" onclick="openPage('ecommerce.html')"><i class="fas fa-shopping-cart"></i></a>
-         <a href="more.html" onclick="openPage('more.html')"><i class="fas fa-ellipsis-h"></i></a>
-      </nav>
-      <!-- Hamburger for Mobile -->
-      <button class="menu-toggle" onclick="toggleSideMenu()">
-        <i class="fas fa-bars"></i>
-      </button>
+  <header class="app-bar">
+    <div class="menu-icon" onclick="openPage('menu.html')">
+      <i class="fas fa-bars"></i>
+    </div>
+    <div class="app-logo">
+      <h1>MyBusiness</h1>
     </div>
   </header>
-
-  <!-- Mobile Side Menu -->
-  <aside id="side-menu" class="side-menu">
-    <a href="index.html" onclick="openPage('index.html'); toggleSideMenu()">Home</a>
-    <a href="offers.html" onclick="openPage('offers.html'); toggleSideMenu()">Offers</a>
-    <a href="analytics.html" onclick="openPage('analytics.html'); toggleSideMenu()">Analytics</a>
-    <a href="ecommerce.html" onclick="openPage('ecommerce.html'); toggleSideMenu()">Shop</a>
-    <a href="more.html" onclick="openPage('more.html'); toggleSideMenu()">More</a>
-  </aside>
-
-  <!-- Main Content -->
-  <main>
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-content">
-        <h1>Premium Business Solutions</h1>
-        <p>
-          Experience secure transactions, exclusive offers, and a seamless interface with our next‑generation mobile app.
-        </p>
-        <div class="cta-buttons">
-          <button onclick="openPage('ecommerce.html')">Shop Now</button>
-          <button onclick="openPage('about.html')">Learn More</button>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Features Section (Example Content) -->
-    <section class="features">
-      <div class="container">
-        <h2>Our Exclusive Features</h2>
-        <div class="features-grid">
-          <div class="feature-item">
-            <i class="fas fa-lock"></i>
-            <h3>Secure Payments</h3>
-            <p>State‑of‑the‑art security for your transactions.</p>
-          </div>
-          <div class="feature-item">
-            <i class="fas fa-truck"></i>
-            <h3>Fast Delivery</h3>
-            <p>Reliable, door‑to‑door delivery service.</p>
-          </div>
-          <div class="feature-item">
-            <i class="fas fa-tags"></i>
-            <h3>Exclusive Deals</h3>
-            <p>Premium discounts and seasonal offers.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+  <main class="page-content">
+    <h2>Welcome to MyBusiness</h2>
+    <p>This is the home page content.</p>
   </main>
-
-  <!-- Fixed Bottom Navigation (Mobile) -->
-  <nav class="mobile-nav">
-    <a href="index.html" onclick="openPage('index.html')"><i class="fas fa-home"></i><span>Home</span></a>
-    <a href="offers.html" onclick="openPage('offers.html')"><i class="fas fa-tags"></i><span>Offers</span></a>
-    <a href="analytics.html" onclick="openPage('analytics.html')"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
-    <a href="ecommerce.html" onclick="openPage('ecommerce.html')"><i class="fas fa-shopping-cart"></i><span>Shop</span></a>
-    <a href="more.html" onclick="openPage('more.html')"><i class="fas fa-ellipsis-h"></i><span>More</span></a>
-  </nav>
-  
-  <!-- Fixed Footer (Optional for additional info) -->
-  <footer class="footer">
-    <div class="footer-container">
-      <p>&copy; 2025 MyBusiness Premium. All rights reserved.</p>
-    </div>
+  <footer class="footer-nav">
+    <a href="about.html" onclick="openPage('about.html')">
+      <i class="fas fa-info-circle"></i>
+      <span>About Us</span>
+    </a>
   </footer>
 </body>
 </html>
