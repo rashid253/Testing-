@@ -3,154 +3,107 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Natural & Rain Scene Animations</title>
+  <title>E-commerce Hero Section</title>
   <style>
     /* Global Styles */
     body, html {
       margin: 0;
       padding: 0;
-      overflow: hidden;
-      font-family: sans-serif;
+      height: 100%;
+      font-family: Arial, sans-serif;
     }
-    .scene {
+    .hero {
       position: relative;
       width: 100%;
       height: 100vh;
+      overflow: hidden;
     }
-    .header {
+    /* Animated Gradient Background */
+    .animated-bg {
       position: absolute;
-      top: 20px;
-      left: 20px;
-      font-size: 24px;
-      color: white;
-      z-index: 10;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background: linear-gradient(45deg, #ff6b6b, #fbc531, #4cd137, #487eb0);
+      background-size: 400% 400%;
+      animation: gradientAnimation 15s ease infinite;
+      filter: blur(8px);
+      z-index: 1;
     }
-    .toggle-btn {
+    @keyframes gradientAnimation {
+      0% { transform: rotate(0deg) scale(1); background-position: 0% 50%; }
+      50% { transform: rotate(360deg) scale(1.1); background-position: 100% 50%; }
+      100% { transform: rotate(720deg) scale(1); background-position: 0% 50%; }
+    }
+    /* Floating Shapes for subtle visual effect */
+    .floating-shapes {
       position: absolute;
-      z-index: 20;
-      top: 20px;
-      right: 20px;
-      padding: 10px 20px;
-      background: rgba(0,0,0,0.5);
-      color: white;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 2;
+    }
+    .floating-shapes .shape {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0px); opacity: 1; }
+      50% { transform: translateY(-20px); opacity: 0.7; }
+      100% { transform: translateY(0px); opacity: 1; }
+    }
+    /* Hero Content */
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      padding: 0 20px;
+    }
+    .hero-content h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+    .hero-content p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+    .hero-content button {
+      padding: 15px 30px;
+      font-size: 1rem;
+      background-color: rgba(255, 255, 255, 0.9);
       border: none;
       cursor: pointer;
-      font-size: 16px;
       border-radius: 5px;
+      transition: background-color 0.3s ease;
     }
-    
-    /* Natural Scene (Sun & Clouds) */
-    .natural-scene {
-      background: linear-gradient(to top, #87CEEB, #e0f7fa);
-    }
-    .sun {
-      position: absolute;
-      top: 10%;
-      left: 10%;
-      width: 100px;
-      height: 100px;
-      background: #FFD700;
-      border-radius: 50%;
-      box-shadow: 0 0 50px #FFD700;
-    }
-    .cloud {
-      position: absolute;
-      background: #fff;
-      border-radius: 50%;
-      opacity: 0.8;
-    }
-    /* Three clouds with different sizes & positions */
-    .cloud:nth-of-type(1) {
-      width: 80px;
-      height: 50px;
-      top: 20%;
-      left: 30%;
-      animation: moveCloud 20s linear infinite;
-    }
-    .cloud:nth-of-type(2) {
-      width: 120px;
-      height: 70px;
-      top: 40%;
-      left: 60%;
-      animation: moveCloud 25s linear infinite;
-    }
-    .cloud:nth-of-type(3) {
-      width: 100px;
-      height: 60px;
-      top: 10%;
-      left: 70%;
-      animation: moveCloud 18s linear infinite;
-    }
-    @keyframes moveCloud {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-150%); }
-    }
-    
-    /* Rain Scene */
-    .rain-scene {
-      background: #1e1e2f;
-    }
-    .raindrop {
-      position: absolute;
-      bottom: 100%;
-      width: 2px;
-      height: 15px;
-      background: rgba(255, 255, 255, 0.6);
-      animation: fall linear infinite;
-    }
-    @keyframes fall {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(110vh); }
+    .hero-content button:hover {
+      background-color: rgba(255, 255, 255, 1);
     }
   </style>
 </head>
 <body>
-  <button class="toggle-btn" onclick="toggleScene()">Switch Scene</button>
-  
-  <!-- Natural Scene: Sun and Clouds -->
-  <div id="naturalScene" class="scene natural-scene">
-    <div class="header">Natural Scene</div>
-    <div class="sun"></div>
-    <div class="cloud"></div>
-    <div class="cloud"></div>
-    <div class="cloud"></div>
-  </div>
-  
-  <!-- Rain Scene: Falling Raindrops -->
-  <div id="rainScene" class="scene rain-scene" style="display: none;">
-    <div class="header">Rain Scene</div>
-    <!-- Raindrops will be generated by JavaScript -->
-  </div>
-  
-  <script>
-    // Toggle between the Natural and Rain scenes
-    function toggleScene() {
-      const natural = document.getElementById('naturalScene');
-      const rain = document.getElementById('rainScene');
-      if (natural.style.display === "none") {
-        natural.style.display = "block";
-        rain.style.display = "none";
-      } else {
-        natural.style.display = "none";
-        rain.style.display = "block";
-      }
-    }
-    
-    // Generate raindrops for the Rain Scene
-    const rainScene = document.getElementById('rainScene');
-    const numDrops = 150; // Adjust number of raindrops here
-    for (let i = 0; i < numDrops; i++) {
-      let drop = document.createElement('div');
-      drop.className = 'raindrop';
-      // Random horizontal position
-      drop.style.left = Math.random() * 100 + 'vw';
-      // Randomize animation duration (speed) and delay
-      let duration = Math.random() * 1 + 0.5; // 0.5s to 1.5s
-      drop.style.animationDuration = duration + 's';
-      drop.style.animationDelay = Math.random() * 2 + 's';
-      rainScene.appendChild(drop);
-    }
-  </script>
+  <section class="hero">
+    <div class="animated-bg"></div>
+    <div class="floating-shapes">
+      <div class="shape" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
+      <div class="shape" style="top: 40%; left: 70%; animation-delay: 2s;"></div>
+      <div class="shape" style="top: 70%; left: 30%; animation-delay: 1s;"></div>
+      <div class="shape" style="top: 50%; left: 50%; animation-delay: 3s;"></div>
+    </div>
+    <div class="hero-content">
+      <h1>Welcome to Our Store</h1>
+      <p>Discover the best products at unbeatable prices.</p>
+      <button onclick="window.location.href='#shop'">Shop Now</button>
+    </div>
+  </section>
 </body>
 </html>
