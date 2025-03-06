@@ -4,7 +4,7 @@
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
     <title>MyBusiness Premium</title>  
-    <!-- Font Awesome for icons -->
+    <!-- External Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Inline Custom CSS -->
     <style>
@@ -85,75 +85,10 @@
     </style>
   </head>
   <body>
-    <!-- Inline Header -->
-    <style>
-      /* Header Inline Styles */
-      .header { position: fixed; top: 0; left: 0; width: 100%; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 1000; }
-      .badge { display: inline-block; min-width: 20px; height: 20px; line-height: 20px; border-radius: 50%; text-align: center; font-size: 0.75rem; color: #fff; background: red; }
-      .side-menu { position: fixed; top: 70px; right: 0; width: 180px; background: #fff; box-shadow: -2px 0 4px rgba(0,0,0,0.1); padding: 20px; display: none; flex-direction: column; z-index: 1001; }
-      .side-menu.visible { display: flex; }
-      .side-menu a { margin-bottom: 10px; color: #333; text-decoration: none; }
-      .mobile-nav a { display: inline-block; margin: 0 10px; text-align: center; color: #333; text-decoration: none; }
-    </style>
-    <header class="header">
-      <div class="header-content">
-        <div class="brand">
-          <i class="fas fa-briefcase"></i>
-          <span>MyBusiness</span>
-        </div>
-        <nav class="nav-desktop">
-          <a href="index.html" onclick="openPage('index.html')">
-            <i class="fas fa-home"></i>
-          </a>
-          <a href="offers.html" onclick="openPage('offers.html')">
-            <i class="fas fa-tags"></i>
-          </a>
-          <a href="analytics.html" onclick="openPage('analytics.html')">
-            <i class="fas fa-chart-line"></i>
-          </a>
-          <a href="cart.html" onclick="openPage('cart.html')" style="position: relative;">
-            <i class="fas fa-shopping-cart"></i>
-            <span>Cart</span>
-            <span id="cartCount" class="badge" style="position: absolute; top: -5px; right: -10px;">0</span>
-          </a>
-          <a href="more.html" onclick="openPage('more.html')">
-            <i class="fas fa-ellipsis-h"></i>
-          </a>
-        </nav>
-        <button class="menu-toggle" onclick="toggleSideMenu()">
-          <i class="fas fa-bars"></i>
-        </button>
-      </div>
-      <aside id="side-menu" class="side-menu">
-        <a href="index.html" onclick="openPage('index.html'); toggleSideMenu()">Home</a>
-        <a href="offers.html" onclick="openPage('offers.html'); toggleSideMenu()">Offers</a>
-        <a href="analytics.html" onclick="openPage('analytics.html'); toggleSideMenu()">Analytics</a>
-        <a href="cart.html" onclick="openPage('cart.html'); toggleSideMenu()" style="position: relative;">
-          Cart
-          <span id="cartCountMobile" class="badge" style="position: absolute; top: 3px; right: -2px;">0</span>
-        </a>
-        <a href="more.html" onclick="openPage('more.html'); toggleSideMenu()">More</a>
-      </aside>
-      <nav class="mobile-nav">
-        <a href="index.html" onclick="openPage('index.html')">
-          <i class="fas fa-home"></i><span>Home</span>
-        </a>
-        <a href="offers.html" onclick="openPage('offers.html')">
-          <i class="fas fa-tags"></i><span>Offers</span>
-        </a>
-        <a href="analytics.html" onclick="openPage('analytics.html')">
-          <i class="fas fa-chart-line"></i><span>Analytics</span>
-        </a>
-        <a href="cart.html" onclick="openPage('cart.html')" style="position: relative;">
-          <i class="fas fa-shopping-cart"></i><span>Cart</span>
-          <span id="cartCountMobile2" class="badge" style="position: absolute; top: -5px; right: -10px;">0</span>
-        </a>
-        <a href="more.html" onclick="openPage('more.html')">
-          <i class="fas fa-ellipsis-h"></i><span>More</span>
-        </a>
-      </nav>
-    </header>
+    <!-- External Header -->
+    <div id="header-placeholder"></div>
     
+    <!-- Main Content -->
     <main style="margin-top: 120px;">
       <!-- Hero Section -->
       <section class="hero">
@@ -193,12 +128,8 @@
       </section>    
     </main>
     
-    <!-- Inline Footer -->
-    <footer class="footer">
-      <div class="footer-container" style="text-align: center; padding: 10px; background: #333; color: #fff;">
-        <p>&copy; 2025 MyBusiness Premium. All rights reserved.</p>
-      </div>
-    </footer>
+    <!-- External Footer -->
+    <div id="footer-placeholder"></div>
     
     <!-- Inline Script -->
     <script>
@@ -208,6 +139,19 @@
       function toggleSideMenu() {
         document.getElementById('side-menu').classList.toggle('visible');
       }
+    </script>
+    <!-- Load External Header and Footer -->
+    <script>
+      function loadHTML(elementId, url) {
+        fetch(url)
+          .then(response => response.text())
+          .then(html => { document.getElementById(elementId).innerHTML = html; })
+          .catch(error => console.error("Error loading " + url, error));
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        loadHTML("header-placeholder", "header.html");
+        loadHTML("footer-placeholder", "footer.html");
+      });
     </script>
   </body>
 </html>
