@@ -3,169 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Icon Generator</title>
+    <title>Shopping Business Card Icons</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
-            background: #f0f0f0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
         }
         .container {
-            max-width: 500px;
+            max-width: 800px;
             margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            color: #ffd700;
+            margin-bottom: 30px;
+        }
+        .icon-set {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .icon-box {
             background: white;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .icon-box h3 {
+            color: #333;
+            margin-bottom: 10px;
         }
         canvas {
-            border: 2px solid #ccc;
-            margin: 20px 0;
+            border: 3px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            margin: 10px 0;
         }
         .btn {
-            background: #4CAF50;
+            background: #ff6b6b;
             color: white;
-            padding: 10px 20px;
             border: none;
-            border-radius: 5px;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 50px;
             cursor: pointer;
             margin: 10px;
-            font-size: 16px;
+            transition: all 0.3s;
         }
         .btn:hover {
-            background: #45a049;
+            background: #ff5252;
+            transform: scale(1.05);
         }
-        .icon-preview {
+        .btn-download {
+            background: #4ecdc4;
+        }
+        .btn-download:hover {
+            background: #26a69a;
+        }
+        .preview {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
-            gap: 10px;
+            gap: 20px;
             margin: 20px 0;
+            flex-wrap: wrap;
         }
-        .icon-item {
-            text-align: center;
-        }
-        .icon-item img {
-            border: 1px solid #ddd;
-            margin: 5px;
+        .preview img {
+            width: 100px;
+            height: 100px;
+            border: 3px solid white;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Business Card Icon Generator</h2>
-        <p>Click "Generate Icon" then download all sizes</p>
+        <h1>🛍️ Shopping Business Card Icons</h1>
+        <p>Generate professional icons for your shopping business card</p>
         
-        <button class="btn" onclick="generateIcon()">Generate Icon</button>
+        <div class="icon-set">
+            <div class="icon-box">
+                <h3>Icon Set 1: Cart Style</h3>
+                <canvas id="cartCanvas" width="200" height="200"></canvas>
+                <button class="btn" onclick="generateIcon('cart')">Generate</button>
+                <button class="btn btn-download" onclick="downloadIcon('cart')">Download</button>
+            </div>
+            
+            <div class="icon-box">
+                <h3>Icon Set 2: Bag Style</h3>
+                <canvas id="bagCanvas" width="200" height="200"></canvas>
+                <button class="btn" onclick="generateIcon('bag')">Generate</button>
+                <button class="btn btn-download" onclick="downloadIcon('bag')">Download</button>
+            </div>
+        </div>
         
-        <div class="icon-preview" id="iconPreview"></div>
+        <h3>Preview:</h3>
+        <div class="preview" id="previewArea"></div>
         
-        <button class="btn" onclick="downloadAll()">Download All Icons</button>
+        <div style="margin-top: 30px;">
+            <button class="btn" onclick="downloadAllIcons()" style="background: #ffd700; color: #333;">
+                📥 Download All Icons (ZIP)
+            </button>
+        </div>
         
-        <p><strong>Instructions:</strong><br>
-        1. Click "Generate Icon"<br>
-        2. Click "Download All Icons"<br>
-        3. Extract ZIP file<br>
-        4. Upload all PNG files to GitHub</p>
+        <div style="margin-top: 30px; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px;">
+            <h3>Instructions:</h3>
+            <p>1. Click "Generate" on both icons</p>
+            <p>2. Click "Download All Icons"</p>
+            <p>3. Extract ZIP file and upload to GitHub</p>
+            <p>4. Use <strong>icon-192.png</strong> as your main app icon</p>
+        </div>
     </div>
 
     <script>
-        // Icon sizes needed for PWA
-        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
-        
-        function generateIcon() {
-            const preview = document.getElementById('iconPreview');
-            preview.innerHTML = '';
+        // Shopping icons designs
+        const designs = {
+            cart: {
+                bgColor: '#ff6b6b',
+                mainColor: '#ffffff',
+                text: '🛒',
+                secondaryColor: '#ffd700'
+            },
+            bag: {
+                bgColor: '#4ecdc4',
+                mainColor: '#ffffff',
+                text: '👜',
+                secondaryColor: '#ff9ff3'
+            }
+        };
+
+        // Generate icon on canvas
+        function generateIcon(type) {
+            const canvas = document.getElementById(type + 'Canvas');
+            const ctx = canvas.getContext('2d');
+            const design = designs[type];
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw background
+            ctx.fillStyle = design.bgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw center circle
+            ctx.fillStyle = design.mainColor;
+            ctx.beginPath();
+            ctx.arc(canvas.width/2, canvas.height/2, 70, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw shopping icon
+            ctx.fillStyle = design.bgColor;
+            ctx.font = 'bold 80px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(design.text, canvas.width/2, canvas.height/2);
+            
+            // Add decorative border
+            ctx.strokeStyle = design.secondaryColor;
+            ctx.lineWidth = 8;
+            ctx.strokeRect(10, 10, canvas.width-20, canvas.height-20);
+            
+            // Add shine effect
+            const gradient = ctx.createRadialGradient(
+                canvas.width/3, canvas.height/3, 10,
+                canvas.width/2, canvas.height/2, 100
+            );
+            gradient.addColorStop(0, 'rgba(255,255,255,0.3)');
+            gradient.addColorStop(1, 'rgba(255,255,255,0)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Store data
+            canvas.dataset.generated = 'true';
+            canvas.dataset.type = type;
+            updatePreview(type, canvas.toDataURL());
+        }
+
+        // Update preview area
+        function updatePreview(type, dataUrl) {
+            const previewArea = document.getElementById('previewArea');
+            let existing = document.getElementById('preview-' + type);
+            
+            if (existing) {
+                existing.src = dataUrl;
+            } else {
+                const img = document.createElement('img');
+                img.id = 'preview-' + type;
+                img.src = dataUrl;
+                img.alt = type + ' icon';
+                previewArea.appendChild(img);
+            }
+        }
+
+        // Download single icon
+        function downloadIcon(type) {
+            const canvas = document.getElementById(type + 'Canvas');
+            if (!canvas.dataset.generated) {
+                alert('Please generate the icon first');
+                return;
+            }
+            
+            const link = document.createElement('a');
+            link.download = 'icon-' + type + '.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // Generate all PWA icon sizes
+        function generateAllSizes(type) {
+            const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+            const icons = [];
             
             sizes.forEach(size => {
                 const canvas = document.createElement('canvas');
                 canvas.width = size;
                 canvas.height = size;
                 const ctx = canvas.getContext('2d');
+                const design = designs[type];
                 
                 // Draw background
-                ctx.fillStyle = '#1e90ff'; // Blue color
+                ctx.fillStyle = design.bgColor;
                 ctx.fillRect(0, 0, size, size);
                 
-                // Draw white circle
-                ctx.fillStyle = 'white';
+                // Draw center circle
+                ctx.fillStyle = design.mainColor;
                 ctx.beginPath();
-                ctx.arc(size/2, size/2, size/2 - size/10, 0, Math.PI * 2);
+                ctx.arc(size/2, size/2, size/3, 0, Math.PI * 2);
                 ctx.fill();
                 
-                // Draw "BC" text
-                ctx.fillStyle = '#1e90ff';
-                ctx.font = `bold ${size/3}px Arial`;
+                // Draw shopping icon
+                ctx.fillStyle = design.bgColor;
+                ctx.font = 'bold ' + (size/3) + 'px Arial';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText('BC', size/2, size/2);
+                ctx.fillText(design.text, size/2, size/2);
                 
                 // Add border
-                ctx.strokeStyle = '#fff';
+                ctx.strokeStyle = design.secondaryColor;
                 ctx.lineWidth = size/50;
-                ctx.strokeRect(0, 0, size, size);
+                ctx.strokeRect(size/20, size/20, size - size/10, size - size/10);
                 
-                // Create preview
-                const dataURL = canvas.toDataURL('image/png');
-                const div = document.createElement('div');
-                div.className = 'icon-item';
-                div.innerHTML = `
-                    <img src="${dataURL}" width="64" height="64">
-                    <div>${size}x${size}</div>
-                `;
-                preview.appendChild(div);
-                
-                // Store canvas
-                canvas.dataset.size = size;
-                canvas.dataset.url = dataURL;
-                preview.appendChild(canvas);
+                icons.push({
+                    size: size,
+                    dataUrl: canvas.toDataURL(),
+                    filename: 'icon-' + size + '.png'
+                });
             });
-        }
-        
-        function downloadAll() {
-            const canvases = document.querySelectorAll('canvas');
-            if (canvases.length === 0) {
-                alert('Please generate icon first');
-                return;
-            }
             
-            // Create ZIP file using JSZip
+            return icons;
+        }
+
+        // Download all icons as ZIP
+        function downloadAllIcons() {
+            // Load JSZip library
             const script = document.createElement('script');
             script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+            
             script.onload = function() {
                 const zip = new JSZip();
                 
-                canvases.forEach(canvas => {
-                    const size = canvas.dataset.size;
-                    // Convert data URL to blob
-                    const data = canvas.dataset.url.split(',')[1];
-                    zip.file(`icon-${size}.png`, data, {base64: true});
-                });
+                // Generate cart icons (192x192 and 512x512)
+                const cart192 = generateAllSizes('cart').find(icon => icon.size === 192);
+                const cart512 = generateAllSizes('cart').find(icon => icon.size === 512);
                 
-                // Generate manifest.json
+                // Generate bag icons (alternative)
+                const bag192 = generateAllSizes('bag').find(icon => icon.size === 192);
+                
+                // Add icons to ZIP
+                if (cart192) {
+                    const cartData = cart192.dataUrl.split(',')[1];
+                    zip.file('icon-192.png', cartData, {base64: true});
+                }
+                
+                if (cart512) {
+                    const cartData = cart512.dataUrl.split(',')[1];
+                    zip.file('icon-512.png', cartData, {base64: true});
+                }
+                
+                // Add manifest.json
                 const manifest = {
-                    "name": "Business Card",
-                    "short_name": "BizCard",
-                    "description": "Smart Business Card",
+                    "name": "Shopping Card",
+                    "short_name": "ShopCard",
+                    "description": "Shopping Business Card",
                     "start_url": "./card.html",
                     "display": "standalone",
-                    "background_color": "#1e90ff",
-                    "theme_color": "#1e90ff",
+                    "background_color": "#ff6b6b",
+                    "theme_color": "#ff6b6b",
                     "orientation": "portrait",
-                    "icons": sizes.map(size => ({
-                        "src": `icon-${size}.png`,
-                        "sizes": `${size}x${size}`,
-                        "type": "image/png"
-                    }))
+                    "icons": [
+                        {
+                            "src": "icon-192.png",
+                            "sizes": "192x192",
+                            "type": "image/png"
+                        },
+                        {
+                            "src": "icon-512.png",
+                            "sizes": "512x512",
+                            "type": "image/png"
+                        }
+                    ]
                 };
                 
-                zip.file("manifest.json", JSON.stringify(manifest, null, 2));
+                zip.file('manifest.json', JSON.stringify(manifest, null, 2));
                 
-                // Generate service worker
-                const sw = `const CACHE_NAME = 'business-card-v1';
+                // Add service worker
+                const sw = `const CACHE_NAME = 'shopping-card-v1';
 const urlsToCache = [
   './card.html',
+  './icon-192.png',
+  './icon-512.png',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'
 ];
 
@@ -188,23 +341,27 @@ self.addEventListener('fetch', event => {
   );
 });`;
                 
-                zip.file("sw.js", sw);
+                zip.file('sw.js', sw);
                 
                 // Generate and download ZIP
                 zip.generateAsync({type: "blob"})
                     .then(function(content) {
                         const link = document.createElement('a');
                         link.href = URL.createObjectURL(content);
-                        link.download = 'pwa-icons.zip';
+                        link.download = 'shopping-icons.zip';
                         link.click();
-                        alert('All files downloaded! Extract and upload to GitHub.');
+                        alert('✅ All shopping icons downloaded! Upload to GitHub.');
                     });
             };
+            
             document.head.appendChild(script);
         }
-        
-        // Auto-generate on load
-        window.onload = generateIcon;
+
+        // Auto-generate on page load
+        window.onload = function() {
+            generateIcon('cart');
+            generateIcon('bag');
+        };
     </script>
 </body>
 </html>
