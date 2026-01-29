@@ -1,230 +1,210 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Attendance Management</title>
-
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet" />
-
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-  <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-
-  <!-- Custom CSS -->
-  <link href="style.css" rel="stylesheet" />
-
-  <!-- idb-keyval storage helper -->
-  <script type="module">
-    import * as idbKeyvalModule from 'https://cdn.jsdelivr.net/npm/idb-keyval@6/+esm';
-    window.idbKeyval = idbKeyvalModule;
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        canvas {
+            border: 2px solid #ccc;
+            margin: 20px 0;
+        }
+        .btn {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background: #45a049;
+        }
+        .icon-preview {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .icon-item {
+            text-align: center;
+        }
+        .icon-item img {
+            border: 1px solid #ddd;
+            margin: 5px;
+        }
+    </style>
 </head>
-<body class="bg-light text-dark" style="font-family: 'Roboto', sans-serif;">
-
-  <!-- Header -->
-  <header class="bg-primary text-white text-center py-4">
-    <h1><i class="fas fa-school me-2"></i>Attendance Management</h1>
-    <div class="d-flex justify-content-center gap-4 mt-3">
-      <div><i class="fas fa-users"></i> <strong id="totalSchoolCount">0</strong> Students</div>
-      <div><i class="fas fa-chalkboard-teacher"></i> <strong id="totalClassCount">0</strong> Class</div>
-      <div><i class="fas fa-layer-group"></i> <strong id="totalSectionCount">0</strong> Section</div>
-    </div>
-  </header>
-
-  <main class="container my-4">
-
-    <!-- Setup -->
-    <div class="card mb-3">
-      <div class="card-header" data-bs-toggle="collapse" data-bs-target="#setupCard">
-        <h2><i class="fas fa-cog me-2"></i>Setup</h2>
-      </div>
-      <div id="setupCard" class="collapse show">
-        <div class="card-body">
-          <div id="setupForm" class="d-flex flex-wrap gap-2 mb-3">
-            <input id="schoolNameInput" class="form-control" placeholder="School Name" />
-            <select id="teacherClassSelect" class="form-select">
-              <option value="">--Class--</option>
-              <option>Pre-Play</option><option>Pre-Prep</option><option>Nursery</option><option>Pre-One</option>
-              <option>One</option><option>Two</option><option>Three</option><option>Four</option><option>Five</option>
-              <option>Six</option><option>Seven</option><option>Eight</option><option>Nine</option><option>Ten</option>
-            </select>
-            <select id="teacherSectionSelect" class="form-select">
-              <option value="">--Section--</option><option>A</option><option>B</option><option>C</option>
-            </select>
-            <button id="saveSetup" class="btn btn-success btn-sm">
-              <i class="fas fa-save me-1"></i>Save
-            </button>
-          </div>
-          <div id="setupDisplay" class="d-none">
-            <h4 id="setupText"></h4>
-            <button id="editSetup" class="btn btn-info btn-sm">
-              <i class="fas fa-edit me-1"></i>Edit
-            </button>
-          </div>
-        </div>
-      </div>
+<body>
+    <div class="container">
+        <h2>Business Card Icon Generator</h2>
+        <p>Click "Generate Icon" then download all sizes</p>
+        
+        <button class="btn" onclick="generateIcon()">Generate Icon</button>
+        
+        <div class="icon-preview" id="iconPreview"></div>
+        
+        <button class="btn" onclick="downloadAll()">Download All Icons</button>
+        
+        <p><strong>Instructions:</strong><br>
+        1. Click "Generate Icon"<br>
+        2. Click "Download All Icons"<br>
+        3. Extract ZIP file<br>
+        4. Upload all PNG files to GitHub</p>
     </div>
 
-    <!-- Student Registration -->
-    <div class="card mb-3">
-      <div class="card-header" data-bs-toggle="collapse" data-bs-target="#regCard">
-        <h2><i class="fas fa-user-graduate me-2"></i>Student Registration</h2>
-      </div>
-      <div id="regCard" class="collapse">
-        <div class="card-body">
-          <div id="regForm" class="d-flex flex-wrap gap-2 mb-3">
-            <input id="studentName" class="form-control" placeholder="Name" />
-            <input id="admissionNo" class="form-control" placeholder="Adm#" />
-            <input id="parentName" class="form-control" placeholder="Parent" />
-            <input id="parentContact" class="form-control" placeholder="Contact" />
-            <input id="parentOccupation" class="form-control" placeholder="Occupation" />
-            <input id="parentAddress" class="form-control" placeholder="Address" />
-            <button id="addStudent" class="btn btn-primary btn-sm">
-              <i class="fas fa-plus-circle me-1"></i>Add
-            </button>
-          </div>
-          <div id="studentTableWrapper" class="table-responsive mb-3">
-            <table id="studentTable" class="table table-striped">
-              <thead>
-                <tr>
-                  <th><input type="checkbox" id="selectAllStudents" /></th>
-                  <th>Sr#</th><th>Name</th><th>Adm#</th><th>Parent</th>
-                  <th>Contact</th><th>Occ.</th><th>Address</th><th>Share</th>
-                </tr>
-              </thead>
-              <tbody id="studentsBody"></tbody>
-            </table>
-          </div>
-          <div class="d-flex gap-2">
-            <button id="editSelected" class="btn btn-warning btn-sm" disabled>Edit</button>
-            <button id="deleteSelected" class="btn btn-danger btn-sm" disabled>Delete</button>
-            <button id="saveRegistration" class="btn btn-success btn-sm">Save</button>
-            <button id="shareRegistration" class="btn btn-primary btn-sm d-none">Share</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <script>
+        // Icon sizes needed for PWA
+        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        
+        function generateIcon() {
+            const preview = document.getElementById('iconPreview');
+            preview.innerHTML = '';
+            
+            sizes.forEach(size => {
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+                
+                // Draw background
+                ctx.fillStyle = '#1e90ff'; // Blue color
+                ctx.fillRect(0, 0, size, size);
+                
+                // Draw white circle
+                ctx.fillStyle = 'white';
+                ctx.beginPath();
+                ctx.arc(size/2, size/2, size/2 - size/10, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Draw "BC" text
+                ctx.fillStyle = '#1e90ff';
+                ctx.font = `bold ${size/3}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('BC', size/2, size/2);
+                
+                // Add border
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = size/50;
+                ctx.strokeRect(0, 0, size, size);
+                
+                // Create preview
+                const dataURL = canvas.toDataURL('image/png');
+                const div = document.createElement('div');
+                div.className = 'icon-item';
+                div.innerHTML = `
+                    <img src="${dataURL}" width="64" height="64">
+                    <div>${size}x${size}</div>
+                `;
+                preview.appendChild(div);
+                
+                // Store canvas
+                canvas.dataset.size = size;
+                canvas.dataset.url = dataURL;
+                preview.appendChild(canvas);
+            });
+        }
+        
+        function downloadAll() {
+            const canvases = document.querySelectorAll('canvas');
+            if (canvases.length === 0) {
+                alert('Please generate icon first');
+                return;
+            }
+            
+            // Create ZIP file using JSZip
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+            script.onload = function() {
+                const zip = new JSZip();
+                
+                canvases.forEach(canvas => {
+                    const size = canvas.dataset.size;
+                    // Convert data URL to blob
+                    const data = canvas.dataset.url.split(',')[1];
+                    zip.file(`icon-${size}.png`, data, {base64: true});
+                });
+                
+                // Generate manifest.json
+                const manifest = {
+                    "name": "Business Card",
+                    "short_name": "BizCard",
+                    "description": "Smart Business Card",
+                    "start_url": "./card.html",
+                    "display": "standalone",
+                    "background_color": "#1e90ff",
+                    "theme_color": "#1e90ff",
+                    "orientation": "portrait",
+                    "icons": sizes.map(size => ({
+                        "src": `icon-${size}.png`,
+                        "sizes": `${size}x${size}`,
+                        "type": "image/png"
+                    }))
+                };
+                
+                zip.file("manifest.json", JSON.stringify(manifest, null, 2));
+                
+                // Generate service worker
+                const sw = `const CACHE_NAME = 'business-card-v1';
+const urlsToCache = [
+  './card.html',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'
+];
 
-    <!-- Mark Attendance -->
-    <div class="card mb-3">
-      <div class="card-header" data-bs-toggle="collapse" data-bs-target="#attCard">
-        <h2><i class="fas fa-clipboard-list me-2"></i>Mark Attendance</h2>
-      </div>
-      <div id="attCard" class="collapse show">
-        <div class="card-body">
-          <div class="mb-3">
-            <label for="dateInput" class="form-label">Select date</label>
-            <input type="date" id="dateInput" class="form-control" placeholder="Select date" />
-            <button type="button" id="loadAttendance" class="btn btn-primary btn-sm mt-2">Load</button>
-          </div>
-          <div id="attendanceList" class="d-grid gap-2"></div>
-          <button type="button" id="saveAttendance" class="btn btn-success btn-sm mt-3 d-none">Save</button>
-        </div>
-      </div>
-    </div>
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
+  );
+});
 
-    <!-- Attendance Summary -->
-    <div id="attendance-result" class="card mb-3 d-none">
-      <div class="card-header"><h2>Attendance Summary</h2></div>
-      <div class="card-body">
-        <table class="table"><tbody id="summaryBody"></tbody></table>
-        <div class="d-flex gap-2">
-          <button id="resetAttendance" class="btn btn-secondary btn-sm">Reset</button>
-          <button id="shareAttendanceSummary" class="btn btn-primary btn-sm">Share</button>
-          <button id="downloadAttendancePDF" class="btn btn-danger btn-sm">PDF</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Analytics -->
-    <div class="card mb-3">
-      <div class="card-header" data-bs-toggle="collapse" data-bs-target="#analyticsCard">
-        <h2><i class="fas fa-chart-bar me-2"></i>Analytics</h2>
-      </div>
-      <div id="analyticsCard" class="collapse">
-        <div class="card-body">
-          <div id="analyticsActions" class="d-flex flex-wrap gap-2 mb-3">
-            <select id="analyticsTarget" class="form-select form-select-sm">
-              <option value="">-- Target --</option>
-              <option value="class">Class</option>
-              <option value="section">Section</option>
-              <option value="student">Student</option>
-            </select>
-            <input type="text" id="studentAdmInput" class="form-control form-control-sm d-none" placeholder="Adm#" />
-            <select id="analyticsType" class="form-select form-select-sm">
-              <option value="">-- Type --</option>
-              <option value="date">Date</option>
-              <option value="month">Month</option>
-              <option value="semester">Semester</option>
-              <option value="year">Year</option>
-            </select>
-            <input type="date" id="analyticsDate" class="form-control form-control-sm d-none" placeholder="Select date" />
-            <input type="month" id="analyticsMonth" class="form-control form-control-sm d-none" placeholder="Select month" />
-            <input type="month" id="semesterStart" class="form-control form-control-sm d-none" placeholder="Start month" />
-            <input type="month" id="semesterEnd" class="form-control form-control-sm d-none" placeholder="End month" />
-            <input type="number" id="yearStart" class="form-control form-control-sm d-none" placeholder="Year" />
-            <button id="loadAnalytics" class="btn btn-primary btn-sm">Load</button>
-            <button id="resetAnalytics" class="btn btn-secondary btn-sm d-none">Reset</button>
-          </div>
-          <div id="instructions" class="mb-2 text-truncate d-none" style="overflow-x:auto;"></div>
-          <div id="analyticsContainer" class="d-none"></div>
-          <div id="graphs" class="d-flex gap-4 d-none overflow-auto">
-            <canvas id="barChart" width="400" height="200"></canvas>
-            <canvas id="pieChart" width="400" height="200"></canvas>
-          </div>
-          <div id="analyticsActions2" class="mt-2 d-none">
-            <button id="shareAnalytics" class="btn btn-primary btn-sm">Share</button>
-            <button id="downloadAnalytics" class="btn btn-danger btn-sm">PDF</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Attendance Register -->
-    <div class="card mb-3">
-      <div class="card-header" data-bs-toggle="collapse" data-bs-target="#registerCard">
-        <h2><i class="fas fa-calendar-alt me-2"></i>Attendance Register</h2>
-      </div>
-      <div id="registerCard" class="collapse">
-        <div class="card-body">
-          <div class="mb-3">
-            <label for="registerMonth" class="form-label">Select month</label>
-            <input type="month" id="registerMonth" class="form-control" placeholder="Select month" />
-          </div>
-          <div class="d-flex gap-2 mb-3">
-            <button id="loadRegister" class="btn btn-primary btn-sm">Load</button>
-            <button id="changeRegister" class="btn btn-secondary btn-sm d-none">Change</button>
-          </div>
-          <div id="registerTableWrapper" class="table-responsive d-none">
-            <table id="registerTable" class="table table-bordered">
-              <thead><tr></tr></thead>
-              <tbody id="registerBody"></tbody>
-            </table>
-          </div>
-          <div id="registerSummarySection" class="d-none">
-            <h5>Summary</h5>
-            <table class="table"><tbody id="registerSummaryBody"></tbody></table>
-          </div>
-          <div class="d-flex gap-2 mt-2">
-            <button id="shareRegister" class="btn btn-primary btn-sm">Share</button>
-            <button id="downloadRegisterPDF" class="btn btn-danger btn-sm">PDF</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-  <script type="module" src="app.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/eruda"></script><script>eruda.init();</script>
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        if (response) {
+          return response;
+        }
+        return fetch(event.request);
+      })
+  );
+});`;
+                
+                zip.file("sw.js", sw);
+                
+                // Generate and download ZIP
+                zip.generateAsync({type: "blob"})
+                    .then(function(content) {
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(content);
+                        link.download = 'pwa-icons.zip';
+                        link.click();
+                        alert('All files downloaded! Extract and upload to GitHub.');
+                    });
+            };
+            document.head.appendChild(script);
+        }
+        
+        // Auto-generate on load
+        window.onload = generateIcon;
+    </script>
 </body>
 </html>
